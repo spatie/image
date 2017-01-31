@@ -160,6 +160,12 @@ class Manipulations
         return $this->setManipulation(func_get_args());
     }
 
+    public function hasManipulation($manipulationName): bool
+    {
+        return array_key_exists($manipulationName, $this->manipulations);
+    }
+
+
     protected function setManipulation(array $arguments, string $operation = null)
     {
         $operation = $operation ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
