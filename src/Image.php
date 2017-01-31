@@ -33,10 +33,7 @@ class Image
         $this->imageDriver = $imageDriver;
     }
 
-    /**
-     * @param callable|Manipulations $manipulations
-     */
-    public function manipulate($manipulations): self
+    public function manipulate($manipulations)
     {
         if (is_callable($manipulations)) {
             $manipulations($this->manipulations);
@@ -62,7 +59,7 @@ class Image
 
     public function save($outputPath = '')
     {
-        if ($path = '') {
+        if ($outputPath == '') {
             $outputPath = $this->pathToImage;
         }
 
