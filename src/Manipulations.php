@@ -170,7 +170,11 @@ class Manipulations
         return ! is_null($this->getManipulation($manipulationName));
     }
 
-    public function getManipulation($manipulationName): bool
+    /**
+     * @param string $manipulationName
+     * @return arrau|null
+     */
+    public function getManipulation(string $manipulationName)
     {
         foreach($this->manipulations as $manipulation) {
             if ($manipulation[0] === $manipulationName) {
