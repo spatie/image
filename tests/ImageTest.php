@@ -25,8 +25,11 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $targetFile = $this->tempDir->path('conversion.jpg');
 
         Image::create($this->getTestJpg())
-            ->manipulate(function(Manipulations $manipulations) {
-                $manipulations->blur(20);
+            ->manipulate(function (Manipulations $manipulations) {
+                $manipulations
+                    ->blur(20)
+                    ->width(50);
+
             })
             ->save(($targetFile));
 
@@ -51,6 +54,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
     protected function getTestJpg(): string
     {
-        return __DIR__.'/testfiles/test.jpg';
+        return __DIR__ . '/testfiles/test.jpg';
     }
 }
