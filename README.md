@@ -8,7 +8,36 @@
 [![StyleCI](https://styleci.io/repos/80513668/shield?branch=master)](https://styleci.io/repos/80513668)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/image.svg?style=flat-square)](https://packagist.org/packages/spatie/image)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+Image manipulation doesn't have to be hard. Here are a few examples on how this package makes it very easy to manipulate images.
+
+```php
+// modifying the image so it fits in a 100x100 rectangle without altering aspact ratio
+Image::create($pathToImage)
+   ->width(100)
+   ->height(100)
+   ->save($pathToNewImage);
+   
+// overwriting the original image with a greyscale version   
+Image::create($pathToImage)
+   ->greyscale()
+   ->save();
+   
+// make image darker an save it in low quality
+Image::create($pathToImage)
+   ->brightness()
+   ->quality(25)
+   ->save();
+   
+// rotate the image and sharpen it
+Image::create($pathToImage)
+   ->rotate(90)
+   ->sharpen(15)
+   ->save();
+```
+
+You'll find more examples in [the full documentation](https://docs.spatie.be/image).
+
+Under the hood [Glide](http://glide.thephpleague.com/) by [Jonathan Reinink](https://twitter.com/reinink) is used.
 
 ## Postcardware
 
@@ -28,10 +57,7 @@ composer require spatie/image
 
 ## Usage
 
-``` php
-$skeleton = new Spatie\Skeleton();
-echo $skeleton->echoPhrase('Hello, Spatie!');
-```
+Head over to [the full documentation](https://docs.spatie.be/image).
 
 ## Changelog
 
@@ -55,6 +81,8 @@ If you discover any security related issues, please email freek@spatie.be instea
 
 - [Freek Van der Herten](https://github.com/freekmurze)
 - [All Contributors](../../contributors)
+
+Under the hood [Glide](http://glide.thephpleague.com/) by [Jonathan Reinink](https://twitter.com/reinink) is used. We've based our documentation on docblocks on test found in [the Glide documentation](http://glide.thephpleague.com/)
 
 ## About Spatie
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
