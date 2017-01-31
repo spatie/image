@@ -55,7 +55,7 @@ class Manipulations
         return $this;
     }
 
-    public function setManipulation(array $arguments)
+    protected function setManipulation(array $arguments)
     {
         $callingFunctionName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
