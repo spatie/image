@@ -62,9 +62,9 @@ class Manipulations
     public function crop(string $cropMethod, int $width, int $height)
     {
         return $this
-            ->setManipulation($cropMethod, 'crop')
-            ->setManipulation($width, 'width')
-            ->setManipulation($height, 'height');
+            ->setManipulation([$cropMethod], 'crop')
+            ->setManipulation([$width], 'width')
+            ->setManipulation([$height], 'height');
     }
 
     /**
