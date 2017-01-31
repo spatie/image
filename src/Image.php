@@ -2,6 +2,7 @@
 
 namespace Spatie\Image;
 
+/** @mixin \Spatie\Image\Manipulations */
 class Image
 {
     /** @var string */
