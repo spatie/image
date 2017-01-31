@@ -162,7 +162,13 @@ class Manipulations
 
     public function hasManipulation($manipulationName): bool
     {
-        return array_key_exists($manipulationName, $this->manipulations);
+        foreach($this->manipulations as $manipulation) {
+            if ($manipulation[0] === $manipulationName) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
