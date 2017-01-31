@@ -2,6 +2,7 @@
 
 namespace Spatie\Image;
 
+use Exception;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 
@@ -65,7 +66,6 @@ final class GlideManipulator
             return;
         }
 
-
         rename($this->conversionResult, $outputFile);
     }
 
@@ -87,6 +87,19 @@ final class GlideManipulator
             'height' => 'h',
             'blur' => 'blur',
             'pixelate' => 'pixel',
+            'crop' => 'fit',
+            'orientation' => 'orientation',
+            'fit' => 'fit',
+            'devicePixelRatio' => 'dpr',
+            'brightness' => 'bri',
+            'contrast' => 'con',
+            'gamma' => 'gam',
+            'sharpen' => 'sharp',
+            'filter' => 'filt',
+            'background' => 'bg',
+            'border' => 'border',
+            'quality' => 'q',
+            'format' => 'fm',
         ];
 
         if (! isset($conversions[$manipulationFunctionName])) {

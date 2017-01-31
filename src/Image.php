@@ -1,6 +1,7 @@
 <?php
 
 namespace Spatie\Image;
+use Exception;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Image
@@ -36,19 +37,21 @@ class Image
      */
     public function manipulate($manipulations): self
     {
-        if (is_callable($manipulationConfiguration = $manipulations)) {
-            $manipulationConfiguration($this->manipulations);
+        if (is_callable($manipulations)) {
+            $manipulations($this->manipulations);
         }
 
-        $this->manipulations = $manipulations;
-
+        if ($manipulations instanceof Manipulations) {
+            $this->manipulations->mergeManipulations($manipulations);
+        }
+        
         return $this;
     }
 
     public function __call($name, $arguments)
     {
         if (!method_exists($this->manipulations, $name)) {
-            throw new Exception('manipulation does not exist');
+            throw new Exception("Manipulation `{$name}` does not exist");
         }
 
         $this->manipulations->$name(...$arguments);

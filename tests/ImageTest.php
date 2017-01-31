@@ -44,7 +44,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $targetFile = $this->tempDir->path('conversion.jpg');
 
         Image::create($this->getTestJpg())
-            ->blur(20)
             ->save(($targetFile));
 
         $this->assertFileExists($targetFile);

@@ -4,31 +4,64 @@ namespace Spatie\Image;
 
 class Manipulations
 {
+    const CROP_TOP_LEFT = 'crop-top-left';
+    const CROP_TOP = 'crop-top';
+    const CROP_TOP_RIGHT = 'crop-top-right';
+    const CROP_LEFT = 'crop-left';
+    const CROP_CENTER = 'crop-center';
+    const CROP_RIGHT= 'crop-right';
+    const CROP_BOTTOM_LEFT = 'crop-bottom-left';
+    const CROP_BOTTOM = 'crop-bottom';
+    const CROP_BOTTOM_RIGHT = 'crop-bottom-right';
+
+    const ORIENTATION_AUTO = 'auto';
+    const ORIENTATION_90 = 90;
+    const ORIENTATION_180 = 180;
+    const ORIENTATION_270 = 270;
+
+    const FIT_CONTAIN = 'contain';
+    const FIT_MAX = 'max';
+    const FIT_FILL = 'fill';
+    const FIT_STRETCH = 'stretch';
+    const FIT_CROP = 'crop';
+
+    const BORDER_OVERLAY = 'overlay';
+    CONST BORDER_SHRINK = 'shrink';
+    CONST BORDER_EXPAND = 'expand';
+
+    const FORMAT_JPG = 'jpg';
+    const FORMAT_PJPG = 'pjpg';
+    const FORMAT_PNG = 'png';
+    const FORMAT_GIF = 'gif';
+
+
     /** @var array */
     protected $manipulations = [];
 
     /**
-     * @param int $blur
-     *
+     * @param string $orientation
      * @return $this
      */
-    public function blur(int $blur)
+    public function orientation(string $orientation)
     {
-        $this->setManipulation(func_get_args());
-
-        return $this;
+        return $this->setManipulation(func_get_args());
     }
 
     /**
-     * @param int $pixelate
-     *
+     * @param string $cropMethod
+     * @param int $width
+     * @param int $height
      * @return $this
+     *
+     * @internal param string $method
+     *
      */
-    public function pixelate(int $pixelate)
+    public function crop(string $cropMethod, int $width, int $height)
     {
-        $this->setManipulation(func_get_args());
-
-        return $this;
+        return $this
+            ->setManipulation($cropMethod, 'crop')
+            ->setManipulation($width, 'width')
+            ->setManipulation($height, 'height');
     }
 
     /**
@@ -38,9 +71,7 @@ class Manipulations
      */
     public function width(int $width)
     {
-        $this->setManipulation(func_get_args());
-
-        return $this;
+        return $this->setManipulation(func_get_args());
     }
 
     /**
@@ -50,16 +81,100 @@ class Manipulations
      */
     public function height(int $height)
     {
-        $this->setManipulation(func_get_args());
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function fit(string $fitMethod, int $width, int $height)
+    {
+        return $this
+            ->setManipulation($fitMethod, 'fit')
+            ->setManipulation($width, 'width')
+            ->setManipulation($height, 'height');
+    }
+
+    public function devicePixelRatio(int $ratio)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function brightness(int $brightness)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function gamma(float $gamma)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function contrast(int $contrast)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function sharpen(int $sharpen)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function blur(int $blur)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function pixelate(int $pixelate)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function greyscale()
+    {
+        return $this->filter('greyscale');
+    }
+
+    public function sepia()
+    {
+        return $this->filter('sepia');
+    }
+
+    public function background(string $colorName)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function border(int $width, string $color,string $borderType = 'overlay')
+    {
+        return $this->setManipulation(["{$width},{$color},{$borderType}"], 'border');
+    }
+
+    public function quality(int $quality)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    public function format(string $format)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    protected function filter(string $filterName)
+    {
+        return $this->setManipulation(func_get_args());
+    }
+
+    protected function setManipulation(array $arguments, string $operation = null)
+    {
+        $operation = $operation ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
+
+        $this->manipulations[] = array_merge([$operation], $arguments);
 
         return $this;
     }
 
-    protected function setManipulation(array $arguments)
-    {
-        $callingFunctionName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
+    public function mergeManipulations(Manipulations $manipulations) {
+        $this->manipulations = array_merge($this->manipulations, $manipulations->toArray());
 
-        $this->manipulations[] = array_merge([$callingFunctionName], $arguments);
+        return $this;
     }
 
     public function toArray(): array
