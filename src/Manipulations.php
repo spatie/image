@@ -162,13 +162,18 @@ class Manipulations
 
     public function hasManipulation($manipulationName): bool
     {
+        return ! is_null($this->getManipulation($manipulationName));
+    }
+
+    public function getManipulation($manipulationName): bool
+    {
         foreach($this->manipulations as $manipulation) {
             if ($manipulation[0] === $manipulationName) {
-                return true;
+                return $manipulation;
             }
         }
 
-        return false;
+        return null;
     }
 
 
