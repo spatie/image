@@ -9,7 +9,7 @@ class Manipulations
     const CROP_TOP_RIGHT = 'crop-top-right';
     const CROP_LEFT = 'crop-left';
     const CROP_CENTER = 'crop-center';
-    const CROP_RIGHT= 'crop-right';
+    const CROP_RIGHT = 'crop-right';
     const CROP_BOTTOM_LEFT = 'crop-bottom-left';
     const CROP_BOTTOM = 'crop-bottom';
     const CROP_BOTTOM_RIGHT = 'crop-bottom-right';
@@ -26,14 +26,13 @@ class Manipulations
     const FIT_CROP = 'crop';
 
     const BORDER_OVERLAY = 'overlay';
-    CONST BORDER_SHRINK = 'shrink';
-    CONST BORDER_EXPAND = 'expand';
+    const BORDER_SHRINK = 'shrink';
+    const BORDER_EXPAND = 'expand';
 
     const FORMAT_JPG = 'jpg';
     const FORMAT_PJPG = 'pjpg';
     const FORMAT_PNG = 'png';
     const FORMAT_GIF = 'gif';
-
 
     /** @var array */
     protected $manipulations = [];
@@ -54,7 +53,6 @@ class Manipulations
      * @return $this
      *
      * @internal param string $method
-     *
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
@@ -142,7 +140,7 @@ class Manipulations
         return $this->setManipulation(func_get_args());
     }
 
-    public function border(int $width, string $color,string $borderType = 'overlay')
+    public function border(int $width, string $color, string $borderType = 'overlay')
     {
         return $this->setManipulation(["{$width},{$color},{$borderType}"], 'border');
     }
@@ -171,7 +169,8 @@ class Manipulations
         return $this;
     }
 
-    public function mergeManipulations(Manipulations $manipulations) {
+    public function mergeManipulations(Manipulations $manipulations)
+    {
         $this->manipulations = array_merge($this->manipulations, $manipulations->toArray());
 
         return $this;
