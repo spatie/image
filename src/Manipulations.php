@@ -37,7 +37,7 @@ class Manipulations
     /** @var array */
     protected $manipulations = [];
 
-    public function __construct(array $manipulations)
+    public function __construct(array $manipulations = [])
     {
         $this->manipulations = $manipulations;
     }
