@@ -1,6 +1,7 @@
 <?php
 
 namespace Spatie\Image;
+
 use Exception;
 
 /** @mixin \Spatie\Image\Manipulations */
@@ -50,7 +51,7 @@ class Image
 
     public function __call($name, $arguments)
     {
-        if (!method_exists($this->manipulations, $name)) {
+        if (! method_exists($this->manipulations, $name)) {
             throw new Exception("Manipulation `{$name}` does not exist");
         }
 
@@ -70,6 +71,4 @@ class Image
             ->performManipulations($this->manipulations)
             ->save($outputPath);
     }
-
-
 }

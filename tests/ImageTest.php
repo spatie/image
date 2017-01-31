@@ -2,8 +2,8 @@
 
 namespace Spatie\Image\Test;
 
-use PHPUnit_Framework_TestCase;
 use Spatie\Image\Image;
+use PHPUnit_Framework_TestCase;
 use Spatie\Image\Manipulations;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
@@ -29,7 +29,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
                 $manipulations
                     ->blur(20)
                     ->width(50);
-
             })
             ->save($targetFile);
 
@@ -54,6 +53,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
     protected function getTestJpg(): string
     {
-        return __DIR__ . '/testfiles/test.jpg';
+        return __DIR__.'/testfiles/test.jpg';
     }
 }
