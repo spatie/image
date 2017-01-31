@@ -20,7 +20,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_modify_an_image()
+    public function it_can_modify_an_image_using_manipulations()
     {
         $targetFile = $this->tempDir->path('conversion.jpg');
 
@@ -28,6 +28,20 @@ class ImageTest extends PHPUnit_Framework_TestCase
             ->manipulate(function(Manipulations $manipulations) {
                 $manipulations->blur(20);
             })
+            ->save(($targetFile));
+
+        $this->assertFileExists($targetFile);
+
+        echo $targetFile;
+    }
+
+    /** @test */
+    public function it_can_modify_an_image_using_a_direct_manipulation_call()
+    {
+        $targetFile = $this->tempDir->path('conversion.jpg');
+
+        Image::create($this->getTestJpg())
+            ->blur(20)
             ->save(($targetFile));
 
         $this->assertFileExists($targetFile);

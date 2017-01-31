@@ -86,6 +86,7 @@ final class GlideManipulator
             'width' => 'w',
             'height' => 'h',
             'blur' => 'blur',
+            'pixelate' => 'pixel',
         ];
 
         if (! isset($conversions[$manipulationFunctionName])) {

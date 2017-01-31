@@ -20,11 +20,11 @@ class Manipulations
     }
 
     /**
-     * @param int $blur
+     * @param int $pixelate
      *
      * @return $this
      */
-    public function crop(int $blur)
+    public function pixelate(int $pixelate)
     {
         $this->setManipulation(func_get_args());
 

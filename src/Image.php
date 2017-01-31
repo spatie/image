@@ -7,10 +7,10 @@ class Image
     /** @var string */
     protected $pathToImage;
 
-    /** @var \Spatie\Image\Manipulations  */
+    /** @var \Spatie\Image\Manipulations */
     protected $manipulations;
 
-    /** @var  */
+    /** @var */
     protected $imageDriver = 'gd';
 
     public static function create($pathToImage)
@@ -42,6 +42,17 @@ class Image
         }
 
         $this->manipulations = $manipulations;
+
+        return $this;
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (!method_exists($this->manipulations, $name)) {
+            throw new Exception('manipulation does not exist');
+        }
+
+        $this->manipulations->$name(...$arguments);
 
         return $this;
     }
