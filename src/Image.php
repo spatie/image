@@ -44,7 +44,7 @@ class Image
         if ($manipulations instanceof Manipulations) {
             $this->manipulations->mergeManipulations($manipulations);
         }
-        
+
         return $this;
     }
 

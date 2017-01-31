@@ -31,7 +31,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
                     ->width(50);
 
             })
-            ->save(($targetFile));
+            ->save($targetFile);
 
         $this->assertFileExists($targetFile);
 
@@ -44,7 +44,8 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $targetFile = $this->tempDir->path('conversion.jpg');
 
         Image::create($this->getTestJpg())
-            ->save(($targetFile));
+            ->greyscale()
+            ->save($targetFile);
 
         $this->assertFileExists($targetFile);
 
