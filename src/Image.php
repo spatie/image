@@ -37,9 +37,7 @@ class Image
     public function manipulate($manipulations): self
     {
         if (is_callable($manipulationConfiguration = $manipulations)) {
-            $manipulations = new Manipulations();
-
-            $manipulationConfiguration($manipulations);
+            $manipulationConfiguration($this->manipulations);
         }
 
         $this->manipulations = $manipulations;
