@@ -37,6 +37,11 @@ class Manipulations
     /** @var array */
     protected $manipulations = [];
 
+    public function __construct(array $manipulations)
+    {
+        $this->manipulations = $manipulations;
+    }
+
     /**
      * @param string $orientation
      * @return $this

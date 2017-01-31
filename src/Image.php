@@ -16,7 +16,7 @@ class Image
     /** @var */
     protected $imageDriver = 'gd';
 
-    public static function create($pathToImage)
+    public static function load($pathToImage)
     {
         return new static($pathToImage);
     }

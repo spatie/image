@@ -18,18 +18,18 @@ Image::create($pathToImage)
    ->save($pathToNewImage);
    
 // overwriting the original image with a greyscale version   
-Image::create($pathToImage)
+Image::load($pathToImage)
    ->greyscale()
    ->save();
    
 // make image darker an save it in low quality
-Image::create($pathToImage)
+Image::load($pathToImage)
    ->brightness()
    ->quality(25)
    ->save();
    
 // rotate the image and sharpen it
-Image::create($pathToImage)
+Image::load($pathToImage)
    ->rotate(90)
    ->sharpen(15)
    ->save();
