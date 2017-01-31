@@ -20,6 +20,18 @@ class Manipulations
     }
 
     /**
+     * @param int $blur
+     *
+     * @return $this
+     */
+    public function crop(int $blur)
+    {
+        $this->setManipulation(func_get_args());
+
+        return $this;
+    }
+
+    /**
      * @param int $width
      *
      * @return $this
@@ -43,11 +55,11 @@ class Manipulations
         return $this;
     }
 
-    public function setManipulation(...$arguments)
+    public function setManipulation(array $arguments)
     {
-        $callingFunctionName = debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[1]['function'];
+        $callingFunctionName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
-        $this->manipulations[] = [$callingFunctionName, $arguments];
+        $this->manipulations[] = array_merge([$callingFunctionName], $arguments);
     }
 
     public function toArray(): array

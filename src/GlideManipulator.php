@@ -11,10 +11,10 @@ final class GlideManipulator
     protected $inputImage;
 
     /** @var string */
-    protected $imageDriver = 'imagick';
+    protected $imageDriver = 'gd';
 
     /** @var string */
-    protected $conversionResult = '';
+    protected $conversionResult = null;
 
     public static function create(string $inputImage): self
     {
@@ -35,16 +35,17 @@ final class GlideManipulator
 
     public function performManipulations(Manipulations $manipulations)
     {
-        $manipulations = $this->prepareManipulations($manipulations);
-
         $glideServer = $this->createGlideServer();
 
-        $sourceFileName = pathinfo($this->sourceFile, PATHINFO_BASENAME);
+        $inputImageFileName = pathinfo($this->inputImage, PATHINFO_BASENAME);
 
-        $this->conversionResult = $glideServer->getCachePath() . $glideServer->makeImage(
-                $sourceFileName,
-                $manipulations
+
+        $this->conversionResult = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $glideServer->makeImage(
+                $this->conversionResult ?? $inputImageFileName,
+                $this->prepareManipulations($manipulations)
             );
+
+        return $this;
     }
 
     protected function createGlideServer(): Server
@@ -52,7 +53,7 @@ final class GlideManipulator
         return ServerFactory::create([
             'source' => dirname($this->inputImage),
             'cache' => sys_get_temp_dir(),
-            'driver' => $this->driver,
+            'driver' => $this->imageDriver,
         ]);
     }
 
@@ -64,23 +65,27 @@ final class GlideManipulator
             return;
         }
 
+
         rename($this->conversionResult, $outputFile);
     }
 
     protected function prepareManipulations(Manipulations $manipulations): array
     {
-        return array_map(function(array $manipulationsParameters) {
-            $manipulationsParameters[0] = $this->convertToGlideParameter($manipulationsParameters[0]);
+        return array_reduce($manipulations->toArray(), function(array $glideManipulations, array $manipulation) {
+            $manipulationName = $this->convertToGlideParameter($manipulation[0]);
 
-            return $manipulationsParameters;
-        }, $manipulations->toArray());
+            $glideManipulations[$manipulationName] = $manipulation[1];
+
+            return $glideManipulations;
+
+        }, []);
     }
 
     protected function convertToGlideParameter(string $manipulationFunctionName): string {
         $conversions = [
             'width' => 'w',
             'height' => 'h',
-            'blur' => 'b',
+            'blur' => 'blur',
         ];
 
         if (! isset($conversions[$manipulationFunctionName])) {

@@ -26,11 +26,13 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
         Image::create($this->getTestJpg())
             ->manipulate(function(Manipulations $manipulations) {
-                $manipulations->blur(50);
+                $manipulations->blur(20);
             })
             ->save(($targetFile));
 
         $this->assertFileExists($targetFile);
+
+        echo $targetFile;
     }
 
     protected function getTestJpg(): string

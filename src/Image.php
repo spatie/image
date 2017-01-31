@@ -11,7 +11,7 @@ class Image
     protected $manipulations;
 
     /** @var  */
-    protected $imageDriver = 'imagick';
+    protected $imageDriver = 'gd';
 
     public static function create($pathToImage)
     {
@@ -35,8 +35,10 @@ class Image
      */
     public function manipulate($manipulations): self
     {
-        if (is_callable($manipulations)) {
-            $manipulations = $manipulations(new Manipulations());
+        if (is_callable($manipulationConfiguration = $manipulations)) {
+            $manipulations = new Manipulations();
+
+            $manipulationConfiguration($manipulations);
         }
 
         $this->manipulations = $manipulations;
@@ -52,7 +54,7 @@ class Image
 
         GlideManipulator::create($this->pathToImage)
             ->useImageDriver($this->imageDriver)
-            ->peformManipulations($this->manipulations)
+            ->performManipulations($this->manipulations)
             ->save($outputPath);
     }
 
