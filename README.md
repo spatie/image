@@ -11,25 +11,25 @@
 Image manipulation doesn't have to be hard. Here are a few examples on how this package makes it very easy to manipulate images.
 
 ```php
-// modifying the image so it fits in a 100x100 rectangle without altering aspact ratio
+// modifying the image so it fits in a 100x100 rectangle without altering aspect ratio
 Image::create($pathToImage)
    ->width(100)
    ->height(100)
    ->save($pathToNewImage);
    
 // overwriting the original image with a greyscale version   
-Image::create($pathToImage)
+Image::load($pathToImage)
    ->greyscale()
    ->save();
    
 // make image darker an save it in low quality
-Image::create($pathToImage)
-   ->brightness()
+Image::load($pathToImage)
+   ->brightness(-30)
    ->quality(25)
    ->save();
    
 // rotate the image and sharpen it
-Image::create($pathToImage)
+Image::load($pathToImage)
    ->rotate(90)
    ->sharpen(15)
    ->save();

@@ -26,7 +26,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
     {
         $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::create($this->getTestJpg())
+        Image::load($this->getTestJpg())
             ->manipulate(function (Manipulations $manipulations) {
                 $manipulations
                     ->blur(20)
@@ -45,7 +45,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
     {
         $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::create($this->getTestJpg())
+        Image::load($this->getTestJpg())
             ->greyscale()
             ->save($targetFile);
 

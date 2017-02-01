@@ -43,6 +43,11 @@ class Manipulations
     }
 
 
+    public function __construct(array $manipulations = [])
+    {
+        $this->manipulations = $manipulations;
+    }
+
     /**
      * @param string $orientation
      * @return $this
@@ -63,9 +68,9 @@ class Manipulations
     public function crop(string $cropMethod, int $width, int $height)
     {
         return $this
-            ->setManipulation($cropMethod, 'crop')
-            ->setManipulation($width, 'width')
-            ->setManipulation($height, 'height');
+            ->setManipulation([$cropMethod], 'crop')
+            ->setManipulation([$width], 'width')
+            ->setManipulation([$height], 'height');
     }
 
     /**
@@ -166,10 +171,34 @@ class Manipulations
         return $this->setManipulation(func_get_args());
     }
 
+
     public function apply()
     {
         $this-$this->manipulationSets->startNewSet();
     }
+
+
+    public function hasManipulation($manipulationName): bool
+    {
+        return ! is_null($this->getManipulation($manipulationName));
+    }
+
+    /**
+     * @param string $manipulationName
+     * @return arrau|null
+     */
+    public function getManipulation(string $manipulationName)
+    {
+        foreach($this->manipulations as $manipulation) {
+            if ($manipulation[0] === $manipulationName) {
+                return $manipulation;
+            }
+        }
+
+        return null;
+    }
+
+
 
     protected function setManipulation(array $arguments, string $operation = null)
     {
