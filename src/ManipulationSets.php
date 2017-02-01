@@ -36,7 +36,7 @@ class ManipulationSets implements IteratorAggregate
 
     public function merge(ManipulationSets $manipulationSets)
     {
-        $this->manipulationSets = array_merge($manipulationSets->toArray());
+        $this->manipulationSets = array_merge($this->manipulationSets, $manipulationSets->toArray());
     }
 
     /**
