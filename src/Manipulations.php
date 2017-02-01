@@ -44,7 +44,8 @@ class Manipulations
 
     /**
      * @param string $orientation
-     * @return $this
+     *
+     * @return static
      */
     public function orientation(string $orientation)
     {
@@ -55,9 +56,8 @@ class Manipulations
      * @param string $cropMethod
      * @param int $width
      * @param int $height
-     * @return $this
      *
-     * @internal param string $method
+     * @return static
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
@@ -80,13 +80,20 @@ class Manipulations
     /**
      * @param int $height
      *
-     * @return $this
+     * @return static
      */
     public function height(int $height)
     {
         return $this->setManipulation($height);
     }
 
+    /**
+     * @param string $fitMethod
+     * @param int $width
+     * @param int $height
+     *
+     * @return static
+     */
     public function fit(string $fitMethod, int $width, int $height)
     {
         return $this
@@ -95,77 +102,147 @@ class Manipulations
             ->setManipulation($height, 'height');
     }
 
+    /**
+     * @param int $ratio
+     *
+     * @return static
+     */
     public function devicePixelRatio(int $ratio)
     {
         return $this->setManipulation($ratio);
     }
 
+    /**
+     * @param int $brightness
+     *
+     * @return static
+     */
     public function brightness(int $brightness)
     {
         return $this->setManipulation($brightness);
     }
 
+    /**
+     * @param float $gamma
+     *
+     * @return static
+     */
     public function gamma(float $gamma)
     {
         return $this->setManipulation($gamma);
     }
 
+    /**
+     * @param int $contrast
+     *
+     * @return static
+     */
     public function contrast(int $contrast)
     {
         return $this->setManipulation($contrast);
     }
 
+    /**
+     * @param int $sharpen
+     *
+     * @return static
+     */
     public function sharpen(int $sharpen)
     {
         return $this->setManipulation($sharpen);
     }
 
+    /**
+     * @param int $blur
+     *
+     * @return static
+     */
     public function blur(int $blur)
     {
         return $this->setManipulation($blur);
     }
 
+    /**
+     * @param int $pixelate
+     *
+     * @return static
+     */
     public function pixelate(int $pixelate)
     {
         return $this->setManipulation($pixelate);
     }
 
+    /**
+     * @return static
+     */
     public function greyscale()
     {
         return $this->filter('greyscale');
     }
 
+    /**
+     * @return static
+     */
     public function sepia()
     {
         return $this->filter('sepia');
     }
 
+    /**
+     * @param string $colorName
+     *
+     * @return static
+     */
     public function background(string $colorName)
     {
         return $this->setManipulation($colorName);
     }
 
+    /**
+     * @param int $width
+     * @param string $color
+     * @param string $borderType
+     *
+     * @return static
+     */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
         return $this->setManipulation(["{$width},{$color},{$borderType}"], 'border');
     }
 
+    /**
+     * @param int $quality
+     *
+     * @return static
+     */
     public function quality(int $quality)
     {
         return $this->setManipulation($quality);
     }
 
+    /**
+     * @param string $format
+     *
+     * @return static
+     */
     public function format(string $format)
     {
         return $this->setManipulation($format);
     }
 
+    /**
+     * @param string $filterName
+     *
+     * @return static
+     */
     protected function filter(string $filterName)
     {
         return $this->setManipulation($filterName);
     }
 
-
+    /**
+     * @return static
+     */
     public function apply()
     {
         $this->manipulationSets->startNewSet();
@@ -174,7 +251,7 @@ class Manipulations
     }
 
 
-    public function hasManipulation($manipulationName): bool
+    public function hasManipulation(string $manipulationName): bool
     {
         return ! is_null($this->getManipulation($manipulationName));
     }
@@ -194,7 +271,7 @@ class Manipulations
         return null;
     }
 
-    protected function setManipulation($argument, string $operation = null)
+    protected function setManipulation(string $argument, string $operation = null)
     {
         $operation = $operation ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 

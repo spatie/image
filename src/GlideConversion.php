@@ -6,7 +6,7 @@ use Exception;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 
-final class GlideManipulator
+final class GlideConversion
 {
     /** @var string */
     protected $inputImage;

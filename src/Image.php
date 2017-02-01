@@ -28,11 +28,22 @@ class Image
         $this->manipulations = new Manipulations();
     }
 
-    public function useImageDriver($imageDriver)
+    /**
+     * @param string $imageDriver
+     *
+     * @return $this
+     */
+    public function useImageDriver(string $imageDriver)
     {
         $this->imageDriver = $imageDriver;
+
+        return $this;
     }
 
+    /**
+     * @param callable|$manipulations
+     * @return $this
+     */
     public function manipulate($manipulations)
     {
         if (is_callable($manipulations)) {
@@ -63,7 +74,7 @@ class Image
             $outputPath = $this->pathToImage;
         }
 
-        GlideManipulator::create($this->pathToImage)
+        GlideConversion::create($this->pathToImage)
             ->useImageDriver($this->imageDriver)
             ->performManipulations($this->manipulations)
             ->save($outputPath);

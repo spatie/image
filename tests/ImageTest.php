@@ -14,8 +14,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->tempDir = (new TemporaryDirectory())
-            ->location(__DIR__)
+        $this->tempDir = (new TemporaryDirectory(__DIR__))
             ->name('temp')
             ->force()
             ->create()
@@ -36,8 +35,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
             ->save($targetFile);
 
         $this->assertFileExists($targetFile);
-
-        echo $targetFile;
     }
 
     /** @test */
@@ -47,7 +44,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
         Image::load($this->getTestJpg())
             ->width(5)
-            ->apply()
             ->width(500)
             ->save($targetFile);
 

@@ -2,15 +2,24 @@
 
 namespace Spatie\Image;
 
+use ArrayIterator;
 use IteratorAggregate;
 
 class ManipulationSets implements IteratorAggregate
 {
+    /** @var array */
     protected $manipulationSets = [];
 
+    /** @var bool  */
     protected $openNewSet = true;
 
-    public function addManipulation(string $operation, $argument)
+    /**
+     * @param string $operation
+     * @param string $argument
+     *
+     * @return static
+     */
+    public function addManipulation(string $operation, string $argument)
     {
         if ($this->openNewSet) {
             $this->manipulationSets[] = [];
@@ -21,11 +30,18 @@ class ManipulationSets implements IteratorAggregate
         $this->manipulationSets[$lastIndex][$operation] = $argument;
 
         $this->openNewSet = false;
+
+        return $this;
     }
 
+    /**
+     * @return static
+     */
     public function startNewSet()
     {
         $this->openNewSet = true;
+
+        return $this;
     }
 
     public function getSets(): array
@@ -33,8 +49,8 @@ class ManipulationSets implements IteratorAggregate
         return $this->manipulationSets;
     }
 
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->manipulationSets);
+        return new ArrayIterator($this->manipulationSets);
     }
 }
