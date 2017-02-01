@@ -51,7 +51,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
         $this->assertFileExists($targetFile);
 
-        excect $targetFile;
+        exec("imagcat {$targetFile}");
     }
 
     protected function getTestJpg(): string

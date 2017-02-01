@@ -37,15 +37,9 @@ class Manipulations
     /** @var array */
     protected $manipulationSets = [];
 
-    public function __construct()
+    public function __construct(array $manipulations)
     {
         $this->manipulationSets = new ManipulationSets();
-    }
-
-
-    public function __construct(array $manipulations = [])
-    {
-        $this->manipulations = $manipulations;
     }
 
     /**
