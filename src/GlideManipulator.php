@@ -40,10 +40,12 @@ final class GlideManipulator
 
         $inputImageFileName = pathinfo($this->inputImage, PATHINFO_BASENAME);
 
-        $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
-                $this->conversionResult ?? $inputImageFileName,
-                $this->prepareManipulations($manipulations)
-            );
+        foreach($manipulations->getManipulationSets() as $manipulations) {
+            $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
+                    $this->conversionResult ?? $inputImageFileName,
+                    $this->prepareManipulations($manipulations)
+                );
+        }
 
         return $this;
     }
@@ -68,15 +70,15 @@ final class GlideManipulator
         rename($this->conversionResult, $outputFile);
     }
 
-    protected function prepareManipulations(Manipulations $manipulations): array
+    protected function prepareManipulations(array $manipulations): array
     {
-        return array_reduce($manipulations->toArray(), function (array $glideManipulations, array $manipulation) {
-            $manipulationName = $this->convertToGlideParameter($manipulation[0]);
+        $glideManipulations = [];
 
-            $glideManipulations[$manipulationName] = $manipulation[1];
+        foreach($manipulations as $operation => $argument){
+            $glideManipulations[$this->convertToGlideParameter($operation)] = $argument;
+        }
 
-            return $glideManipulations;
-        }, []);
+        return $glideManipulations;
     }
 
     protected function convertToGlideParameter(string $manipulationFunctionName): string

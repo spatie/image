@@ -14,9 +14,11 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        (new TemporaryDirectory('imageTest', true))->delete();
-
-        $this->tempDir = new TemporaryDirectory('imageTest', true);
+        $this->tempDir = (new TemporaryDirectory())
+            ->name('image-test')
+            ->force()
+            ->create()
+            ->empty();
     }
 
     /** @test */
@@ -29,6 +31,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
                 $manipulations
                     ->blur(20)
                     ->width(50);
+
             })
             ->save($targetFile);
 
@@ -48,7 +51,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
         $this->assertFileExists($targetFile);
 
-        echo $targetFile;
+        excect $targetFile;
     }
 
     protected function getTestJpg(): string

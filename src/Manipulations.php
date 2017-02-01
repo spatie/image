@@ -35,7 +35,13 @@ class Manipulations
     const FORMAT_GIF = 'gif';
 
     /** @var array */
-    protected $manipulations = [];
+    protected $manipulationSets = [];
+
+    public function __construct()
+    {
+        $this->manipulationSets = new ManipulationSets();
+    }
+
 
     /**
      * @param string $orientation
@@ -160,11 +166,16 @@ class Manipulations
         return $this->setManipulation(func_get_args());
     }
 
+    public function apply()
+    {
+        $this-$this->manipulationSets->startNewSet();
+    }
+
     protected function setManipulation(array $arguments, string $operation = null)
     {
         $operation = $operation ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
-        $this->manipulations[] = array_merge([$operation], $arguments);
+        $this->manipulationSets->addManipulation($operation, $arguments);
 
         return $this;
     }
@@ -176,8 +187,8 @@ class Manipulations
         return $this;
     }
 
-    public function toArray(): array
+    public function getManipulationSets(): ManipulationSets
     {
-        return $this->manipulations;
+        return $this->manipulationSets;
     }
 }
