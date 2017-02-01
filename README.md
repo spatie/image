@@ -11,7 +11,7 @@
 Image manipulation doesn't have to be hard. Here are a few examples on how this package makes it very easy to manipulate images.
 
 ```php
-// modifying the image so it fits in a 100x100 rectangle without altering aspact ratio
+// modifying the image so it fits in a 100x100 rectangle without altering aspect ratio
 Image::create($pathToImage)
    ->width(100)
    ->height(100)
