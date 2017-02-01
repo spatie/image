@@ -122,7 +122,7 @@ class Manipulations
 
     public function blur(int $blur)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($blur);
     }
 
     public function pixelate(int $pixelate)
