@@ -63,4 +63,16 @@ class ManipulationSets implements IteratorAggregate
     {
         return new ArrayIterator($this->manipulationSets);
     }
+
+    public function removeManipulation($manipulationName)
+    {
+        foreach($this->manipulationSets as &$manipulationSet) {
+            if (array_key_exists($manipulationName, $manipulationSet)) {
+                unset($manipulationSet[$manipulationName]);
+
+            }
+        }
+
+        return $this;
+    }
 }

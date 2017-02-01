@@ -286,6 +286,11 @@ class Manipulations
 
         return $this;
     }
+    
+    public function removeManipulation(string $manipulationName)
+    {
+        $this->manipulationSets->removeManipulation($manipulationName);    
+    }
 
     public function getManipulationSets(): ManipulationSets
     {
