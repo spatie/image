@@ -258,13 +258,13 @@ class Manipulations
 
     /**
      * @param string $manipulationName
-     * @return arrau|null
+     * @return string|null
      */
-    public function getManipulation(string $manipulationName)
+    public function getManipulationArgument(string $manipulationName)
     {
         foreach ($this->manipulationSets->getSets() as $manipulationSet) {
             if (array_key_exists($manipulationName, $manipulationSet)) {
-                return [$manipulationName => $manipulationSet[$manipulationName]];
+                return $manipulationSet[$manipulationName];
             }
         }
 
