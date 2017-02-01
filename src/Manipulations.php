@@ -34,7 +34,7 @@ class Manipulations
     const FORMAT_PNG = 'png';
     const FORMAT_GIF = 'gif';
 
-    /** @var array */
+    /** @var \Spatie\Image\ManipulationSets */
     protected $manipulationSets = [];
 
     public function __construct(array $manipulations = [])
@@ -248,6 +248,11 @@ class Manipulations
         $this->manipulationSets->startNewSet();
 
         return $this;
+    }
+
+    public function removeManipulation(string $name)
+    {
+        $this->manipulationSets->removeManipulation($name);
     }
 
 
