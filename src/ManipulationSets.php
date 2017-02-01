@@ -3,7 +3,6 @@
 namespace Spatie\Image;
 
 use IteratorAggregate;
-use Traversable;
 
 class ManipulationSets implements IteratorAggregate
 {
@@ -11,7 +10,7 @@ class ManipulationSets implements IteratorAggregate
 
     protected $openNewSet = true;
 
-    public function addManipulation($operation, $arguments)
+    public function addManipulation(string $operation, $argument)
     {
         if ($this->openNewSet) {
             $this->manipulationSets[] = [];
@@ -19,7 +18,7 @@ class ManipulationSets implements IteratorAggregate
 
         $lastIndex = count($this->manipulationSets) - 1;
 
-        $this->manipulationSets[$lastIndex][$operation] = $arguments;
+        $this->manipulationSets[$lastIndex][$operation] = $argument;
 
         $this->openNewSet = false;
     }

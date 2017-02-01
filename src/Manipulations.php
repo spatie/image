@@ -37,7 +37,7 @@ class Manipulations
     /** @var array */
     protected $manipulationSets = [];
 
-    public function __construct(array $manipulations)
+    public function __construct(array $manipulations = [])
     {
         $this->manipulationSets = new ManipulationSets();
     }
@@ -48,7 +48,7 @@ class Manipulations
      */
     public function orientation(string $orientation)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($orientation);
     }
 
     /**
@@ -74,7 +74,7 @@ class Manipulations
      */
     public function width(int $width)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($width);
     }
 
     /**
@@ -84,7 +84,7 @@ class Manipulations
      */
     public function height(int $height)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($height);
     }
 
     public function fit(string $fitMethod, int $width, int $height)
@@ -97,27 +97,27 @@ class Manipulations
 
     public function devicePixelRatio(int $ratio)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($ratio);
     }
 
     public function brightness(int $brightness)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($brightness);
     }
 
     public function gamma(float $gamma)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($gamma);
     }
 
     public function contrast(int $contrast)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($contrast);
     }
 
     public function sharpen(int $sharpen)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($sharpen);
     }
 
     public function blur(int $blur)
@@ -127,7 +127,7 @@ class Manipulations
 
     public function pixelate(int $pixelate)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($pixelate);
     }
 
     public function greyscale()
@@ -142,7 +142,7 @@ class Manipulations
 
     public function background(string $colorName)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($colorName);
     }
 
     public function border(int $width, string $color, string $borderType = 'overlay')
@@ -152,23 +152,25 @@ class Manipulations
 
     public function quality(int $quality)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($quality);
     }
 
     public function format(string $format)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($format);
     }
 
     protected function filter(string $filterName)
     {
-        return $this->setManipulation(func_get_args());
+        return $this->setManipulation($filterName);
     }
 
 
     public function apply()
     {
-        $this-$this->manipulationSets->startNewSet();
+        $this->manipulationSets->startNewSet();
+
+        return $this;
     }
 
 
@@ -192,13 +194,11 @@ class Manipulations
         return null;
     }
 
-
-
-    protected function setManipulation(array $arguments, string $operation = null)
+    protected function setManipulation($argument, string $operation = null)
     {
         $operation = $operation ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
-        $this->manipulationSets->addManipulation($operation, $arguments);
+        $this->manipulationSets->addManipulation($operation, $argument);
 
         return $this;
     }

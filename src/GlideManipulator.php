@@ -36,13 +36,13 @@ final class GlideManipulator
 
     public function performManipulations(Manipulations $manipulations)
     {
-        $glideServer = $this->createGlideServer();
+        foreach ($manipulations->getManipulationSets() as $manipulations) {
+            $inputFile = $this->conversionResult ?? $this->inputImage;
 
-        $inputImageFileName = pathinfo($this->inputImage, PATHINFO_BASENAME);
+            $glideServer = $this->createGlideServer($inputFile);
 
-        foreach($manipulations->getManipulationSets() as $manipulations) {
-            $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
-                    $this->conversionResult ?? $inputImageFileName,
+            $this->conversionResult = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $glideServer->makeImage(
+                    pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulations)
                 );
         }
@@ -50,10 +50,10 @@ final class GlideManipulator
         return $this;
     }
 
-    protected function createGlideServer(): Server
+    protected function createGlideServer($inputFile): Server
     {
         return ServerFactory::create([
-            'source' => dirname($this->inputImage),
+            'source' => dirname($inputFile),
             'cache' => sys_get_temp_dir(),
             'driver' => $this->imageDriver,
         ]);
@@ -74,7 +74,7 @@ final class GlideManipulator
     {
         $glideManipulations = [];
 
-        foreach($manipulations as $operation => $argument){
+        foreach ($manipulations as $operation => $argument) {
             $glideManipulations[$this->convertToGlideParameter($operation)] = $argument;
         }
 
@@ -103,7 +103,7 @@ final class GlideManipulator
             'format' => 'fm',
         ];
 
-        if (! isset($conversions[$manipulationFunctionName])) {
+        if (!isset($conversions[$manipulationFunctionName])) {
             throw new Exception('Unknown');
         }
 

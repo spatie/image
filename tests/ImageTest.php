@@ -46,12 +46,14 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $targetFile = $this->tempDir->path('conversion.jpg');
 
         Image::load($this->getTestJpg())
-            ->greyscale()
+            ->width(5)
+            ->apply()
+            ->width(500)
             ->save($targetFile);
 
         $this->assertFileExists($targetFile);
 
-        exec("imagcat {$targetFile}");
+        echo $targetFile . PHP_EOL;
     }
 
     protected function getTestJpg(): string
