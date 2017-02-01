@@ -5,6 +5,7 @@ namespace Spatie\Image;
 use Exception;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
+use Spatie\Image\Exceptions\CouldNotConvert;
 
 final class GlideConversion
 {
@@ -81,7 +82,7 @@ final class GlideConversion
         return $glideManipulations;
     }
 
-    protected function convertToGlideParameter(string $manipulationFunctionName): string
+    protected function convertToGlideParameter(string $operation): string
     {
         $conversions = [
             'width' => 'w',
@@ -103,10 +104,10 @@ final class GlideConversion
             'format' => 'fm',
         ];
 
-        if (!isset($conversions[$manipulationFunctionName])) {
-            throw new Exception('Unknown');
+        if (!isset($conversions[$operation])) {
+            throw CouldNotConvert::unknownOperation($operation);
         }
 
-        return $conversions[$manipulationFunctionName];
+        return $conversions[$operation];
     }
 }

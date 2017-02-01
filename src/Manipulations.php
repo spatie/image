@@ -282,7 +282,7 @@ class Manipulations
 
     public function mergeManipulations(Manipulations $manipulations)
     {
-        $this->manipulationSets = array_merge($this->manipulations, $manipulations->toArray());
+        $this->manipulationSets->merge($manipulations->manipulationSets);
 
         return $this;
     }

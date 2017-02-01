@@ -34,6 +34,11 @@ class ManipulationSets implements IteratorAggregate
         return $this;
     }
 
+    public function merge(ManipulationSets $manipulationSets)
+    {
+        $this->manipulationSets = array_merge($manipulationSets->toArray());
+    }
+
     /**
      * @return static
      */
@@ -42,6 +47,11 @@ class ManipulationSets implements IteratorAggregate
         $this->openNewSet = true;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return $this->manipulationSets;
     }
 
     public function getSets(): array
