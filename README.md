@@ -24,7 +24,7 @@ Image::load($pathToImage)
    
 // make image darker an save it in low quality
 Image::load($pathToImage)
-   ->brightness()
+   ->brightness(-30)
    ->quality(25)
    ->save();
    
