@@ -253,7 +253,7 @@ class Manipulations
 
     public function hasManipulation(string $manipulationName): bool
     {
-        return ! is_null($this->getManipulation($manipulationName));
+        return !is_null($this->getManipulation($manipulationName));
     }
 
     /**
@@ -262,9 +262,9 @@ class Manipulations
      */
     public function getManipulation(string $manipulationName)
     {
-        foreach($this->manipulations as $manipulation) {
-            if ($manipulation[0] === $manipulationName) {
-                return $manipulation;
+        foreach ($this->manipulationSets->getSets() as $manipulationSet) {
+            if (array_key_exists($manipulationName)) {
+                return [$manipulationName => $manipulationSet[$manipulationName]];
             }
         }
 
