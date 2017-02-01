@@ -11,7 +11,7 @@ class ManipulationSets implements IteratorAggregate
     protected $manipulationSets = [];
 
     /** @var bool  */
-    protected $openNewSet = true;
+    protected $startNewSet = true;
 
     /**
      * @param string $operation
@@ -21,7 +21,7 @@ class ManipulationSets implements IteratorAggregate
      */
     public function addManipulation(string $operation, string $argument)
     {
-        if ($this->openNewSet) {
+        if ($this->startNewSet) {
             $this->manipulationSets[] = [];
         }
 
@@ -29,14 +29,22 @@ class ManipulationSets implements IteratorAggregate
 
         $this->manipulationSets[$lastIndex][$operation] = $argument;
 
-        $this->openNewSet = false;
+        $this->startNewSet = false;
 
         return $this;
     }
 
     public function merge(ManipulationSets $manipulationSets)
     {
-        $this->manipulationSets = array_merge($this->manipulationSets, $manipulationSets->toArray());
+        foreach($manipulationSets->toArray() as $manipulationSet) {
+            foreach($manipulationSet as $name => $argument) {
+                $this->addManipulation($name, $argument);
+            }
+
+            if(next($manipulationSets)) {
+                $this->startNewSet();
+            }
+        }
     }
 
     /**
@@ -44,19 +52,19 @@ class ManipulationSets implements IteratorAggregate
      */
     public function startNewSet()
     {
-        $this->openNewSet = true;
+        $this->startNewSet = true;
 
         return $this;
     }
 
     public function toArray(): array
     {
-        return $this->manipulationSets;
+        return $this->getSets();
     }
 
     public function getSets(): array
     {
-        return $this->manipulationSets;
+        return $this->sanitizeManipulationSets($this->manipulationSets);
     }
 
     public function getIterator(): ArrayIterator
@@ -69,10 +77,16 @@ class ManipulationSets implements IteratorAggregate
         foreach($this->manipulationSets as &$manipulationSet) {
             if (array_key_exists($manipulationName, $manipulationSet)) {
                 unset($manipulationSet[$manipulationName]);
-
             }
         }
 
         return $this;
+    }
+
+    protected function sanitizeManipulationSets(array $manipulationSets): array
+    {
+        return array_filter($manipulationSets, function(array $manipulationSet) {
+            return count($manipulationSet);
+        });
     }
 }

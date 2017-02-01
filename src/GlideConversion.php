@@ -38,6 +38,7 @@ final class GlideConversion
     public function performManipulations(Manipulations $manipulations)
     {
         foreach ($manipulations->getManipulationSets() as $manipulations) {
+
             $inputFile = $this->conversionResult ?? $this->inputImage;
 
             $glideServer = $this->createGlideServer($inputFile);
