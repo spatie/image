@@ -263,7 +263,7 @@ class Manipulations
     public function getManipulation(string $manipulationName)
     {
         foreach ($this->manipulationSets->getSets() as $manipulationSet) {
-            if (array_key_exists($manipulationName)) {
+            if (array_key_exists($manipulationName, $manipulationSet)) {
                 return [$manipulationName => $manipulationSet[$manipulationName]];
             }
         }
