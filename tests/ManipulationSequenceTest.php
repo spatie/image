@@ -112,7 +112,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
 
         foreach ($manipulationSequence as $manipulationSet) {
             $this->assertEquals([
-                'height' => 100
+                'height' => 100,
             ], $manipulationSet);
         }
     }
@@ -223,6 +223,4 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($sequence->toArray(), $unserializedSequence->toArray());
     }
-
-
 }

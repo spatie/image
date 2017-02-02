@@ -255,10 +255,9 @@ class Manipulations
         $this->manipulationSequence->removeManipulation($name);
     }
 
-
     public function hasManipulation(string $manipulationName): bool
     {
-        return !is_null($this->getManipulationArgument($manipulationName));
+        return ! is_null($this->getManipulationArgument($manipulationName));
     }
 
     /**
@@ -273,8 +272,6 @@ class Manipulations
                 return $manipulationSet[$manipulationName];
             }
         }
-
-        return null;
     }
 
     protected function addManipulation(string $manipulationArgument, string $manipulationName = null)
