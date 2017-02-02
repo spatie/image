@@ -105,7 +105,5 @@ class Image
         if (in_array($outputExtension, $supportedFormats)) {
             $this->manipulations->format($outputExtension);
         }
-
-
     }
 }

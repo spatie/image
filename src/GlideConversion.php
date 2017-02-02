@@ -36,7 +36,7 @@ final class GlideConversion
 
     public function performManipulations(Manipulations $manipulations)
     {
-        foreach ($manipulations->getManipulationSequence() as $manipulations) {
+        foreach ($manipulations->getManipulationSequence() as $manipulationGroup) {
 
             $inputFile = $this->conversionResult ?? $this->inputImage;
 
@@ -44,7 +44,7 @@ final class GlideConversion
 
             $this->conversionResult = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
-                    $this->prepareManipulations($manipulations)
+                    $this->prepareManipulations($manipulationGroup)
                 );
         }
 
@@ -71,11 +71,11 @@ final class GlideConversion
         rename($this->conversionResult, $outputFile);
     }
 
-    protected function prepareManipulations(array $manipulations): array
+    protected function prepareManipulations(array $manipulationGroup): array
     {
         $glideManipulations = [];
 
-        foreach ($manipulations as $name => $argument) {
+        foreach ($manipulationGroup as $name => $argument) {
             $glideManipulations[$this->convertToGlideParameter($name)] = $argument;
         }
 
@@ -90,7 +90,7 @@ final class GlideConversion
             'blur' => 'blur',
             'pixelate' => 'pixel',
             'crop' => 'fit',
-            'orientation' => 'orientation',
+            'orientation' => 'or',
             'fit' => 'fit',
             'devicePixelRatio' => 'dpr',
             'brightness' => 'bri',

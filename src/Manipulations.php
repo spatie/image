@@ -207,7 +207,7 @@ class Manipulations
      */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
-        return $this->addManipulation(["{$width},{$color},{$borderType}"], 'border');
+        return $this->addManipulation("{$width},{$color},{$borderType}", 'border');
     }
 
     /**
