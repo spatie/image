@@ -24,4 +24,22 @@ class ManipulationsTest extends PHPUnit_Framework_TestCase
             $unserializedManipulations->getManipulationSequence()->toArray()
         );
     }
+
+    /** @test */
+    public function it_can_be_constructed_with_a_sequence_array()
+    {
+        $sequenceArray = [
+            [
+                'greyscale' => '',
+                'width' => 50,
+            ],
+            [
+                'height' => 100,
+            ]
+        ];
+
+        $manipulations = (new Manipulations($sequenceArray));
+
+        $this->assertEquals($sequenceArray, $manipulations->getManipulationSequence()->toArray());
+    }
 }
