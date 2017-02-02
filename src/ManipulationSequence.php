@@ -34,14 +34,16 @@ class ManipulationSequence implements IteratorAggregate
         return $this;
     }
 
-    public function merge(ManipulationSequence $manipulationSets)
+    public function merge(ManipulationSequence $sequence)
     {
-        foreach($manipulationSets->toArray() as $manipulationSet) {
-            foreach($manipulationSet as $name => $argument) {
+        $sequenceArray = $sequence->toArray();
+
+        foreach($sequenceArray as $group) {
+            foreach($group as $name => $argument) {
                 $this->addManipulation($name, $argument);
             }
 
-            if(next($manipulationSets)) {
+            if(next($sequenceArray)) {
                 $this->startNewGroup();
             }
         }

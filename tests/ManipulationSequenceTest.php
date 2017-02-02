@@ -26,7 +26,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([
             [
                 'height' => 100,
-            ]
+            ],
         ], $manipulationSequence->toArray());
     }
 
@@ -43,7 +43,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
             [
                 'height' => 100,
                 'width' => 200,
-            ]
+            ],
         ], $manipulationSequence->toArray());
     }
 
@@ -61,7 +61,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
             [
                 'height' => 300,
                 'width' => 200,
-            ]
+            ],
         ], $manipulationSequence->toArray());
     }
 
@@ -83,7 +83,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
             ],
             [
                 'height' => 300,
-            ]
+            ],
         ], $manipulationSequence->toArray());
     }
 
@@ -100,7 +100,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([
             [
                 'width' => 200,
-            ]
+            ],
         ], $manipulationSequence->toArray());
     }
 
@@ -132,7 +132,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([
             [
                 'width' => 200,
-            ]
+            ],
         ], $manipulationSequence->toArray());
     }
 
@@ -148,7 +148,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([
             [
                 'height' => 200,
-            ]
+            ],
         ], $manipulationSequence1->toArray());
     }
 
@@ -170,8 +170,45 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
                 'width' => '50',
                 'height' => 200,
                 'pixelate' => '',
-            ]
+            ],
         ], $manipulationSequence1->toArray());
     }
+
+    /** @test */
+    public function it_can_merge_two_sequences_containing_multiple_groups()
+    {
+        $manipulationSequence1 = (new ManipulationSequence())
+            ->addManipulation('width', 50)
+            ->addManipulation('height', 100)
+            ->startNewGroup()
+            ->addManipulation('width', 50)
+            ->addManipulation('height', 100);
+
+        $manipulationSequence2 = (new ManipulationSequence())
+            ->addManipulation('height', 200)
+            ->addManipulation('pixelate', '')
+            ->startNewGroup()
+            ->addManipulation('brightness', 200)
+            ->addManipulation('format', 'png');
+
+        $manipulationSequence1->merge($manipulationSequence2);
+
+        $this->assertEquals([
+            [
+                'width' => 50,
+                'height' => 100,
+            ],
+            [
+                'width' => '50',
+                'height' => 200,
+                'pixelate' => '',
+            ],
+            [
+                'brightness' => 200,
+                'format' => 'png',
+            ],
+        ], $manipulationSequence1->toArray());
+    }
+
 
 }
