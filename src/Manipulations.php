@@ -258,7 +258,7 @@ class Manipulations
 
     public function hasManipulation(string $manipulationName): bool
     {
-        return !is_null($this->getManipulation($manipulationName));
+        return !is_null($this->getManipulationArgument($manipulationName));
     }
 
     /**

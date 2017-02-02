@@ -79,9 +79,33 @@ class Image
             $outputPath = $this->pathToImage;
         }
 
+        $this->addFormatManipulation($outputPath);
+
         GlideConversion::create($this->pathToImage)
             ->useImageDriver($this->imageDriver)
             ->performManipulations($this->manipulations)
             ->save($outputPath);
+    }
+
+    protected function addFormatManipulation($outputPath)
+    {
+        if ($this->manipulations->hasManipulation('format')) {
+            return;
+        }
+
+        $inputExtension = strtolower(pathinfo($this->pathToImage, PATHINFO_EXTENSION));
+        $outputExtension = strtolower(pathinfo($outputPath, PATHINFO_EXTENSION));
+
+        if ($inputExtension === $outputExtension) {
+            return;
+        }
+
+        $supportedFormats = ['jpg', 'png', 'gif'];
+
+        if (in_array($outputExtension, $supportedFormats)) {
+            $this->manipulations->format($outputExtension);
+        }
+
+
     }
 }
