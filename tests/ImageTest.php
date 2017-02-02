@@ -65,6 +65,16 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertImageType($targetFile, IMAGETYPE_JPEG);
     }
 
+    /** @test */
+    public function it_will_not_force_the_format_according_to_the_output_extension_when_a_format_manipulation_was_already_set()
+    {
+        $targetFile = $this->tempDir->path('conversion.gif');
+
+        Image::load($this->getTestJpg())->format('jpg')->save($targetFile);
+
+        $this->assertImageType($targetFile, IMAGETYPE_JPEG);
+    }
+
     protected function getTestJpg(): string
     {
         return __DIR__.'/testfiles/test.jpg';
