@@ -73,7 +73,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
         Image::load($this->getTestJpg())->format('jpg')->save($targetFile);
 
         $this->assertImageType($targetFile, IMAGETYPE_JPEG);
-
     }
 
     /** @test */
@@ -91,7 +90,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
     {
         $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100 ,500)->save($targetFile);
+        Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100, 500)->save($targetFile);
 
         $this->assertFileExists($targetFile);
     }

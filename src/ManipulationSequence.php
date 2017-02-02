@@ -10,7 +10,7 @@ class ManipulationSequence implements IteratorAggregate
     /** @var array */
     protected $groups = [];
 
-    /** @var bool  */
+    /** @var bool */
     protected $startNewGroup = true;
 
     /**
@@ -38,12 +38,12 @@ class ManipulationSequence implements IteratorAggregate
     {
         $sequenceArray = $sequence->toArray();
 
-        foreach($sequenceArray as $group) {
-            foreach($group as $name => $argument) {
+        foreach ($sequenceArray as $group) {
+            foreach ($group as $name => $argument) {
                 $this->addManipulation($name, $argument);
             }
 
-            if(next($sequenceArray)) {
+            if (next($sequenceArray)) {
                 $this->startNewGroup();
             }
         }
@@ -81,7 +81,7 @@ class ManipulationSequence implements IteratorAggregate
      */
     public function removeManipulation(string $manipulationName)
     {
-        foreach($this->groups as &$group) {
+        foreach ($this->groups as &$group) {
             if (array_key_exists($manipulationName, $group)) {
                 unset($group[$manipulationName]);
             }
@@ -92,7 +92,7 @@ class ManipulationSequence implements IteratorAggregate
 
     protected function sanitizeManipulationSets(array $groups): array
     {
-        return array_values(array_filter($groups, function(array $manipulationSet) {
+        return array_values(array_filter($groups, function (array $manipulationSet) {
             return count($manipulationSet);
         }));
     }

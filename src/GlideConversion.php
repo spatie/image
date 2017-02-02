@@ -37,12 +37,11 @@ final class GlideConversion
     public function performManipulations(Manipulations $manipulations)
     {
         foreach ($manipulations->getManipulationSequence() as $manipulationGroup) {
-
             $inputFile = $this->conversionResult ?? $this->inputImage;
 
             $glideServer = $this->createGlideServer($inputFile);
 
-            $this->conversionResult = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $glideServer->makeImage(
+            $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
                 );
@@ -104,7 +103,7 @@ final class GlideConversion
             'format' => 'fm',
         ];
 
-        if (!isset($conversions[$manipulationName])) {
+        if (! isset($conversions[$manipulationName])) {
             throw CouldNotConvert::unknownManipulation($manipulationName);
         }
 
