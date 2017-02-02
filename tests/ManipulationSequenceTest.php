@@ -2,7 +2,6 @@
 
 namespace Spatie\Image\Test;
 
-
 use PHPUnit_Framework_TestCase;
 use Spatie\Image\ManipulationSequence;
 
@@ -208,6 +207,21 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
                 'format' => 'png',
             ],
         ], $manipulationSequence1->toArray());
+    }
+
+    /** @test */
+    public function it_is_serializable()
+    {
+        $sequence = (new ManipulationSequence())
+            ->addManipulation('width', 50)
+            ->addManipulation('height', 100)
+            ->startNewGroup()
+            ->addManipulation('width', 50)
+            ->addManipulation('height', 100);
+
+        $unserializedSequence = unserialize(serialize($sequence));
+
+        $this->assertEquals($sequence->toArray(), $unserializedSequence->toArray());
     }
 
 

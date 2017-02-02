@@ -68,6 +68,11 @@ class Image
         return $this;
     }
 
+    public function getManipulationSequence(): ManipulationSequence
+    {
+        return $this->manipulations->getManipulationSequence();
+    }
+
     public function save($outputPath = '')
     {
         if ($outputPath == '') {

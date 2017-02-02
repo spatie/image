@@ -35,11 +35,11 @@ class Manipulations
     const FORMAT_GIF = 'gif';
 
     /** @var \Spatie\Image\ManipulationSequence */
-    protected $manipulationSets = [];
+    protected $manipulationSequence;
 
     public function __construct(array $manipulations = [])
     {
-        $this->manipulationSets = new ManipulationSequence();
+        $this->manipulationSequence = new ManipulationSequence();
     }
 
     /**
@@ -245,14 +245,14 @@ class Manipulations
      */
     public function apply()
     {
-        $this->manipulationSets->startNewGroup();
+        $this->manipulationSequence->startNewGroup();
 
         return $this;
     }
 
     public function removeManipulation(string $name)
     {
-        $this->manipulationSets->removeManipulation($name);
+        $this->manipulationSequence->removeManipulation($name);
     }
 
 
@@ -267,7 +267,7 @@ class Manipulations
      */
     public function getManipulationArgument(string $manipulationName)
     {
-        foreach ($this->manipulationSets->getGroups() as $manipulationSet) {
+        foreach ($this->manipulationSequence->getGroups() as $manipulationSet) {
             if (array_key_exists($manipulationName, $manipulationSet)) {
                 return $manipulationSet[$manipulationName];
             }
@@ -280,20 +280,20 @@ class Manipulations
     {
         $manipulationName = $manipulationName ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
-        $this->manipulationSets->addManipulation($manipulationName, $manipulationArgument);
+        $this->manipulationSequence->addManipulation($manipulationName, $manipulationArgument);
 
         return $this;
     }
 
     public function mergeManipulations(Manipulations $manipulations)
     {
-        $this->manipulationSets->merge($manipulations->manipulationSets);
+        $this->manipulationSequence->merge($manipulations->manipulationSequence);
 
         return $this;
     }
 
-    public function getManipulationSets(): ManipulationSequence
+    public function getManipulationSequence(): ManipulationSequence
     {
-        return $this->manipulationSets;
+        return $this->manipulationSequence;
     }
 }
