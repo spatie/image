@@ -35,7 +35,7 @@ class ManipulationsTest extends PHPUnit_Framework_TestCase
             ],
             [
                 'height' => 100,
-            ]
+            ],
         ];
 
         $manipulations = (new Manipulations($sequenceArray));
