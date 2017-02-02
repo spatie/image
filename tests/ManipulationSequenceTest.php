@@ -4,38 +4,38 @@ namespace Spatie\Image\Test;
 
 
 use PHPUnit_Framework_TestCase;
-use Spatie\Image\ManipulationSets;
+use Spatie\Image\ManipulationSequence;
 
-class ManipulationSetsTest extends PHPUnit_Framework_TestCase
+class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
 {
     /** @test */
     public function it_can_hold_an_empty_set()
     {
-        $manipulationSets = new ManipulationSets();
+        $manipulationSequence = new ManipulationSequence();
 
-        $this->assertEquals([], $manipulationSets->toArray());
+        $this->assertEquals([], $manipulationSequence->toArray());
     }
 
     /** @test */
     public function it_can_hold_a_manipulation()
     {
-        $manipulationSets = new ManipulationSets();
+        $manipulationSequence = new ManipulationSequence();
 
-        $manipulationSets->addManipulation('height', 100);
+        $manipulationSequence->addManipulation('height', 100);
 
         $this->assertEquals([
             [
                 'height' => 100,
             ]
-        ], $manipulationSets->toArray());
+        ], $manipulationSequence->toArray());
     }
 
     /** @test */
     public function it_can_hold_multiple_manipulations()
     {
-        $manipulationSets = new ManipulationSets();
+        $manipulationSequence = new ManipulationSequence();
 
-        $manipulationSets
+        $manipulationSequence
             ->addManipulation('height', 100)
             ->addManipulation('width', 200);
 
@@ -44,15 +44,15 @@ class ManipulationSetsTest extends PHPUnit_Framework_TestCase
                 'height' => 100,
                 'width' => 200,
             ]
-        ], $manipulationSets->toArray());
+        ], $manipulationSequence->toArray());
     }
 
     /** @test */
     public function it_will_replace_a_manipulation_if_its_applied_multiple_times()
     {
-        $manipulationSets = new ManipulationSets();
+        $manipulationSequence = new ManipulationSequence();
 
-        $manipulationSets
+        $manipulationSequence
             ->addManipulation('height', 100)
             ->addManipulation('width', 200)
             ->addManipulation('height', 300);
@@ -62,18 +62,18 @@ class ManipulationSetsTest extends PHPUnit_Framework_TestCase
                 'height' => 300,
                 'width' => 200,
             ]
-        ], $manipulationSets->toArray());
+        ], $manipulationSequence->toArray());
     }
 
     /** @test */
     public function it_can_start_a_new_set()
     {
-        $manipulationSets = new ManipulationSets();
+        $manipulationSequence = new ManipulationSequence();
 
-        $manipulationSets
+        $manipulationSequence
             ->addManipulation('height', 100)
             ->addManipulation('width', 200)
-            ->startNewSet()
+            ->startNewGroup()
             ->addManipulation('height', 300);
 
         $this->assertEquals([
@@ -84,15 +84,15 @@ class ManipulationSetsTest extends PHPUnit_Framework_TestCase
             [
                 'height' => 300,
             ]
-        ], $manipulationSets->toArray());
+        ], $manipulationSequence->toArray());
     }
 
     /** @test */
     public function it_can_remove_a_manipulation()
     {
-        $manipulationSets = new ManipulationSets();
+        $manipulationSequence = new ManipulationSequence();
 
-        $manipulationSets
+        $manipulationSequence
             ->addManipulation('height', 100)
             ->addManipulation('width', 200)
             ->removeManipulation('height');
@@ -101,22 +101,45 @@ class ManipulationSetsTest extends PHPUnit_Framework_TestCase
             [
                 'width' => 200,
             ]
-        ], $manipulationSets->toArray());
+        ], $manipulationSequence->toArray());
     }
 
     /** @test */
     public function it_can_be_iterated_over()
     {
-        $manipulationSets = new ManipulationSets();
+        $manipulationSequence = new ManipulationSequence();
 
-        $manipulationSets->addManipulation('height', 100);
+        $manipulationSequence->addManipulation('height', 100);
 
-        foreach ($manipulationSets as $manipulationSet) {
+        foreach ($manipulationSequence as $manipulationSet) {
             $this->assertEquals([
                 'height' => 100
             ], $manipulationSet);
-
         }
+    }
+
+    /** @test */
+    public function it_will_remove_empty_sets()
+    {
+        $manipulationSequence = new ManipulationSequence();
+
+        $manipulationSequence
+            ->addManipulation('height', 100)
+            ->startNewGroup()
+            ->addManipulation('width', 200)
+            ->removeManipulation('height');
+
+        $this->assertEquals([
+            [
+                'width' => 200,
+            ]
+        ], $manipulationSequence->toArray());
+    }
+
+    /** @test */
+    public function it_can_merge_two_manipulation_sets_containing_a_single_set()
+    {
+        $manipulationSequence = new ManipulationSequence();
     }
 
 }

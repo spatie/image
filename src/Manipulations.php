@@ -34,12 +34,12 @@ class Manipulations
     const FORMAT_PNG = 'png';
     const FORMAT_GIF = 'gif';
 
-    /** @var \Spatie\Image\ManipulationSets */
+    /** @var \Spatie\Image\ManipulationSequence */
     protected $manipulationSets = [];
 
     public function __construct(array $manipulations = [])
     {
-        $this->manipulationSets = new ManipulationSets();
+        $this->manipulationSets = new ManipulationSequence();
     }
 
     /**
@@ -49,7 +49,7 @@ class Manipulations
      */
     public function orientation(string $orientation)
     {
-        return $this->setManipulation($orientation);
+        return $this->addManipulation($orientation);
     }
 
     /**
@@ -62,9 +62,9 @@ class Manipulations
     public function crop(string $cropMethod, int $width, int $height)
     {
         return $this
-            ->setManipulation($cropMethod, 'crop')
-            ->setManipulation($width, 'width')
-            ->setManipulation($height, 'height');
+            ->addManipulation($cropMethod, 'crop')
+            ->addManipulation($width, 'width')
+            ->addManipulation($height, 'height');
     }
 
     /**
@@ -74,7 +74,7 @@ class Manipulations
      */
     public function width(int $width)
     {
-        return $this->setManipulation($width);
+        return $this->addManipulation($width);
     }
 
     /**
@@ -84,7 +84,7 @@ class Manipulations
      */
     public function height(int $height)
     {
-        return $this->setManipulation($height);
+        return $this->addManipulation($height);
     }
 
     /**
@@ -97,9 +97,9 @@ class Manipulations
     public function fit(string $fitMethod, int $width, int $height)
     {
         return $this
-            ->setManipulation($fitMethod, 'fit')
-            ->setManipulation($width, 'width')
-            ->setManipulation($height, 'height');
+            ->addManipulation($fitMethod, 'fit')
+            ->addManipulation($width, 'width')
+            ->addManipulation($height, 'height');
     }
 
     /**
@@ -109,7 +109,7 @@ class Manipulations
      */
     public function devicePixelRatio(int $ratio)
     {
-        return $this->setManipulation($ratio);
+        return $this->addManipulation($ratio);
     }
 
     /**
@@ -119,7 +119,7 @@ class Manipulations
      */
     public function brightness(int $brightness)
     {
-        return $this->setManipulation($brightness);
+        return $this->addManipulation($brightness);
     }
 
     /**
@@ -129,7 +129,7 @@ class Manipulations
      */
     public function gamma(float $gamma)
     {
-        return $this->setManipulation($gamma);
+        return $this->addManipulation($gamma);
     }
 
     /**
@@ -139,7 +139,7 @@ class Manipulations
      */
     public function contrast(int $contrast)
     {
-        return $this->setManipulation($contrast);
+        return $this->addManipulation($contrast);
     }
 
     /**
@@ -149,7 +149,7 @@ class Manipulations
      */
     public function sharpen(int $sharpen)
     {
-        return $this->setManipulation($sharpen);
+        return $this->addManipulation($sharpen);
     }
 
     /**
@@ -159,7 +159,7 @@ class Manipulations
      */
     public function blur(int $blur)
     {
-        return $this->setManipulation($blur);
+        return $this->addManipulation($blur);
     }
 
     /**
@@ -169,7 +169,7 @@ class Manipulations
      */
     public function pixelate(int $pixelate)
     {
-        return $this->setManipulation($pixelate);
+        return $this->addManipulation($pixelate);
     }
 
     /**
@@ -195,7 +195,7 @@ class Manipulations
      */
     public function background(string $colorName)
     {
-        return $this->setManipulation($colorName);
+        return $this->addManipulation($colorName);
     }
 
     /**
@@ -207,7 +207,7 @@ class Manipulations
      */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
-        return $this->setManipulation(["{$width},{$color},{$borderType}"], 'border');
+        return $this->addManipulation(["{$width},{$color},{$borderType}"], 'border');
     }
 
     /**
@@ -217,7 +217,7 @@ class Manipulations
      */
     public function quality(int $quality)
     {
-        return $this->setManipulation($quality);
+        return $this->addManipulation($quality);
     }
 
     /**
@@ -227,7 +227,7 @@ class Manipulations
      */
     public function format(string $format)
     {
-        return $this->setManipulation($format);
+        return $this->addManipulation($format);
     }
 
     /**
@@ -237,7 +237,7 @@ class Manipulations
      */
     protected function filter(string $filterName)
     {
-        return $this->setManipulation($filterName);
+        return $this->addManipulation($filterName);
     }
 
     /**
@@ -245,7 +245,7 @@ class Manipulations
      */
     public function apply()
     {
-        $this->manipulationSets->startNewSet();
+        $this->manipulationSets->startNewGroup();
 
         return $this;
     }
@@ -267,7 +267,7 @@ class Manipulations
      */
     public function getManipulationArgument(string $manipulationName)
     {
-        foreach ($this->manipulationSets->getSets() as $manipulationSet) {
+        foreach ($this->manipulationSets->getGroups() as $manipulationSet) {
             if (array_key_exists($manipulationName, $manipulationSet)) {
                 return $manipulationSet[$manipulationName];
             }
@@ -276,11 +276,11 @@ class Manipulations
         return null;
     }
 
-    protected function setManipulation(string $argument, string $operation = null)
+    protected function addManipulation(string $manipulationArgument, string $manipulationName = null)
     {
-        $operation = $operation ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
+        $manipulationName = $manipulationName ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
-        $this->manipulationSets->addManipulation($operation, $argument);
+        $this->manipulationSets->addManipulation($manipulationName, $manipulationArgument);
 
         return $this;
     }
@@ -292,7 +292,7 @@ class Manipulations
         return $this;
     }
 
-    public function getManipulationSets(): ManipulationSets
+    public function getManipulationSets(): ManipulationSequence
     {
         return $this->manipulationSets;
     }

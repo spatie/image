@@ -2,7 +2,6 @@
 
 namespace Spatie\Image;
 
-use Exception;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
@@ -76,14 +75,14 @@ final class GlideConversion
     {
         $glideManipulations = [];
 
-        foreach ($manipulations as $operation => $argument) {
-            $glideManipulations[$this->convertToGlideParameter($operation)] = $argument;
+        foreach ($manipulations as $name => $argument) {
+            $glideManipulations[$this->convertToGlideParameter($name)] = $argument;
         }
 
         return $glideManipulations;
     }
 
-    protected function convertToGlideParameter(string $operation): string
+    protected function convertToGlideParameter(string $manipulationName): string
     {
         $conversions = [
             'width' => 'w',
@@ -105,10 +104,10 @@ final class GlideConversion
             'format' => 'fm',
         ];
 
-        if (!isset($conversions[$operation])) {
-            throw CouldNotConvert::unknownOperation($operation);
+        if (!isset($conversions[$manipulationName])) {
+            throw CouldNotConvert::unknownManipulation($manipulationName);
         }
 
-        return $conversions[$operation];
+        return $conversions[$manipulationName];
     }
 }
