@@ -46,7 +46,8 @@ class ManipulationSequence implements IteratorAggregate
         $this->mergeArray($sequenceArray);
     }
 
-    public function mergeArray(array $sequenceArray) {
+    public function mergeArray(array $sequenceArray)
+    {
         foreach ($sequenceArray as $group) {
             foreach ($group as $name => $argument) {
                 $this->addManipulation($name, $argument);

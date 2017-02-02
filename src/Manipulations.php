@@ -40,7 +40,6 @@ class Manipulations
     public function __construct(array $manipulations = [])
     {
         $this->manipulationSequence = new ManipulationSequence($manipulations);
-
     }
 
     /**
