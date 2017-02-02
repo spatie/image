@@ -30,7 +30,7 @@ class ManipulationsTest extends PHPUnit_Framework_TestCase
     {
         $sequenceArray = [
             [
-                'greyscale' => '',
+                'filter' => 'greyscale',
                 'width' => 50,
             ],
             [
