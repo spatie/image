@@ -74,7 +74,12 @@ class ManipulationSequence implements IteratorAggregate
         return new ArrayIterator($this->groups);
     }
 
-    public function removeManipulation($manipulationName)
+    /**
+     * @param string $manipulationName
+     *
+     * @return static
+     */
+    public function removeManipulation(string $manipulationName)
     {
         foreach($this->groups as &$group) {
             if (array_key_exists($manipulationName, $group)) {

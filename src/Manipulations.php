@@ -263,6 +263,7 @@ class Manipulations
 
     /**
      * @param string $manipulationName
+     *
      * @return string|null
      */
     public function getManipulationArgument(string $manipulationName)
