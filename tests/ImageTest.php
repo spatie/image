@@ -226,11 +226,6 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertFileExists($targetFile);
     }
 
-    protected function getTestJpg(): string
-    {
-        return __DIR__.'/testfiles/test.jpg';
-    }
-
     protected function assertImageType(string $filePath, $expectedType)
     {
         $expectedType = image_type_to_mime_type($expectedType);
@@ -238,5 +233,15 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $type = image_type_to_mime_type(exif_imagetype($filePath));
 
         $this->assertTrue($expectedType === $type, "The file `{$filePath}` isn't an `{$expectedType}`, but an `{$type}`");
+    }
+
+    protected function getTestJpg(): string
+    {
+        return $this->getTestFile('test.jpg');
+    }
+
+    protected function getTestFile($fileName): string
+    {
+        return __DIR__."/testfiles/{$fileName}";
     }
 }
