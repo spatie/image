@@ -9,7 +9,7 @@ use Spatie\Image\ManipulationSequence;
 class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
 {
     /** @test */
-    public function it_can_hold_an_empty_set()
+    public function it_can_hold_an_empty_sequence()
     {
         $manipulationSequence = new ManipulationSequence();
 
@@ -66,7 +66,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_start_a_new_set()
+    public function it_can_start_a_new_group()
     {
         $manipulationSequence = new ManipulationSequence();
 
@@ -119,7 +119,7 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_will_remove_empty_sets()
+    public function it_will_remove_empty_groups()
     {
         $manipulationSequence = new ManipulationSequence();
 
@@ -137,9 +137,41 @@ class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_can_merge_two_manipulation_sets_containing_a_single_set()
+    public function it_can_merge_two_sequences_containing_the_same_manipulation()
     {
-        $manipulationSequence = new ManipulationSequence();
+        $manipulationSequence1 = (new ManipulationSequence())->addManipulation('height', 100);
+
+        $manipulationSequence2 = (new ManipulationSequence())->addManipulation('height', 200);
+
+        $manipulationSequence1->merge($manipulationSequence2);
+
+        $this->assertEquals([
+            [
+                'height' => 200,
+            ]
+        ], $manipulationSequence1->toArray());
+    }
+
+    /** @test */
+    public function it_can_merge_two_sequences_containing_multiple_manipulations()
+    {
+        $manipulationSequence1 = (new ManipulationSequence())
+            ->addManipulation('width', 50)
+            ->addManipulation('height', 100);
+
+        $manipulationSequence2 = (new ManipulationSequence())
+            ->addManipulation('height', 200)
+            ->addManipulation('pixelate', '');
+
+        $manipulationSequence1->merge($manipulationSequence2);
+
+        $this->assertEquals([
+            [
+                'width' => '50',
+                'height' => 200,
+                'pixelate' => '',
+            ]
+        ], $manipulationSequence1->toArray());
     }
 
 }
