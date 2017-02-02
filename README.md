@@ -12,7 +12,7 @@ Image manipulation doesn't have to be hard. Here are a few examples on how this 
 
 ```php
 // modifying the image so it fits in a 100x100 rectangle without altering aspect ratio
-Image::create($pathToImage)
+Image::load($pathToImage)
    ->width(100)
    ->height(100)
    ->save($pathToNewImage);
