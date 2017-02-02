@@ -2,10 +2,12 @@
 
 namespace Spatie\Image\Exceptions;
 
-class CouldNotConvert extends \Exception
+use Exception;
+
+class CouldNotConvert extends Exception
 {
-    public static function unknownManipulation(string $operationName)
+    public static function unknownManipulation(string $operationName): self
     {
-        return new static("Can not convert image. Unknown operation `{$operationName}` used");
+        return new self("Can not convert image. Unknown operation `{$operationName}` used");
     }
 }
