@@ -2,6 +2,8 @@
 
 namespace Spatie\Image;
 
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 class Manipulations
 {
     const CROP_TOP_LEFT = 'crop-top-left';
@@ -71,9 +73,14 @@ class Manipulations
      * @param int $width
      *
      * @return $this
+     * @throws InvalidManipulation
      */
     public function width(int $width)
     {
+        if ($width < 0) {
+            throw InvalidManipulation::invalidWidth($width);
+        }
+
         return $this->addManipulation($width);
     }
 
