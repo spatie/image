@@ -1,6 +1,7 @@
 <?php
 
 namespace Spatie\Image\Test;
+
 use PHPUnit\Framework\TestCase;
 use Spatie\Image\ManipulationSequence;
 
