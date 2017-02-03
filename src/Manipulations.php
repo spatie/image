@@ -71,6 +71,35 @@ class Manipulations
 
     /**
      * @param int $width
+     * @param int $height
+     * @param int $focalX Crop center X in percent
+     * @param int $focalY Crop center Y in percent
+     *
+     * @return static
+     */
+    public function focalCrop(int $width, int $height, $focalX, $focalY)
+    {
+        return $this
+            ->addManipulation("crop-{$focalX}-{$focalY}", 'crop')
+            ->addManipulation($width, 'width')
+            ->addManipulation($height, 'height');
+    }
+
+    /**
+     * @param int $width
+     * @param int $height
+     * @param int $x
+     * @param int $y
+     *
+     * @return static
+     */
+    public function manualCrop(int $width, int $height, int $x, int $y)
+    {
+        return $this->addManipulation("{$width},{$height},{$x},{$y}");
+    }
+
+    /**
+     * @param int $width
      *
      * @return $this
      * @throws InvalidManipulation

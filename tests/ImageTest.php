@@ -2,8 +2,8 @@
 
 namespace Spatie\Image\Test;
 
-use PHPUnit\Framework\TestCase;
 use Spatie\Image\Image;
+use PHPUnit\Framework\TestCase;
 use Spatie\Image\Manipulations;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
@@ -91,6 +91,26 @@ class ImageTest extends TestCase
         $targetFile = $this->tempDir->path('conversion.jpg');
 
         Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100, 500)->save($targetFile);
+
+        $this->assertFileExists($targetFile);
+    }
+
+    /** @test */
+    public function it_can_focal_crop()
+    {
+        $targetFile = $this->tempDir->path('conversion.jpg');
+
+        Image::load($this->getTestJpg())->focalCrop(100, 500, 100, 100)->save($targetFile);
+
+        $this->assertFileExists($targetFile);
+    }
+
+    /** @test */
+    public function it_can_manual_crop()
+    {
+        $targetFile = $this->tempDir->path('conversion.jpg');
+
+        Image::load($this->getTestJpg())->manualCrop(100, 500, 30, 30)->save($targetFile);
 
         $this->assertFileExists($targetFile);
     }

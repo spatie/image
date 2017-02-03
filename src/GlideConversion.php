@@ -89,6 +89,7 @@ final class GlideConversion
             'blur' => 'blur',
             'pixelate' => 'pixel',
             'crop' => 'fit',
+            'manualCrop' => 'crop',
             'orientation' => 'or',
             'fit' => 'fit',
             'devicePixelRatio' => 'dpr',
