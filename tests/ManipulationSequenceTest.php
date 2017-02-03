@@ -222,4 +222,22 @@ class ManipulationSequenceTest extends TestCase
 
         $this->assertEquals($sequence->toArray(), $unserializedSequence->toArray());
     }
+
+    /** @test */
+    public function it_can_be_constructed_with_a_sequence_array()
+    {
+        $sequenceArray = [
+            [
+                'greyscale' => '',
+                'width' => 50,
+            ],
+            [
+                'height' => 100,
+            ],
+        ];
+
+        $sequence = (new ManipulationSequence($sequenceArray));
+
+        $this->assertEquals($sequenceArray, $sequence->toArray());
+    }
 }

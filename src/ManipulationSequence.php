@@ -13,6 +13,11 @@ class ManipulationSequence implements IteratorAggregate
     /** @var bool */
     protected $startNewGroup = true;
 
+    public function __construct(array $sequenceArray = [])
+    {
+        $this->mergeArray($sequenceArray);
+    }
+
     /**
      * @param string $operation
      * @param string $argument
@@ -38,6 +43,11 @@ class ManipulationSequence implements IteratorAggregate
     {
         $sequenceArray = $sequence->toArray();
 
+        $this->mergeArray($sequenceArray);
+    }
+
+    public function mergeArray(array $sequenceArray)
+    {
         foreach ($sequenceArray as $group) {
             foreach ($group as $name => $argument) {
                 $this->addManipulation($name, $argument);
