@@ -2,8 +2,8 @@
 
 namespace Spatie\Image\Test;
 
-use PHPUnit\Framework\TestCase;
 use Spatie\Image\Image;
+use PHPUnit\Framework\TestCase;
 use Spatie\Image\Manipulations;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
