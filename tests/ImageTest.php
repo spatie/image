@@ -96,6 +96,26 @@ class ImageTest extends TestCase
     }
 
     /** @test */
+    public function it_can_focal_crop()
+    {
+        $targetFile = $this->tempDir->path('conversion.jpg');
+
+        Image::load($this->getTestJpg())->focalCrop(100, 500, 100, 100)->save($targetFile);
+
+        $this->assertFileExists($targetFile);
+    }
+
+    /** @test */
+    public function it_can_manual_crop()
+    {
+        $targetFile = $this->tempDir->path('conversion.jpg');
+
+        Image::load($this->getTestJpg())->manualCrop(100, 500, 30, 30)->save($targetFile);
+
+        $this->assertFileExists($targetFile);
+    }
+
+    /** @test */
     public function it_can_set_the_width()
     {
         $targetFile = $this->tempDir->path('conversion.jpg');
