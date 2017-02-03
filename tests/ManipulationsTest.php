@@ -2,10 +2,10 @@
 
 namespace Spatie\Image\Test;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Spatie\Image\Manipulations;
 
-class ManipulationsTest extends PHPUnit_Framework_TestCase
+class ManipulationsTest extends TestCase
 {
     /** @test */
     public function it_can_be_serialized()

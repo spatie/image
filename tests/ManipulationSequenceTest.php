@@ -1,11 +1,10 @@
 <?php
 
 namespace Spatie\Image\Test;
-
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Spatie\Image\ManipulationSequence;
 
-class ManipulationSequenceTest extends PHPUnit_Framework_TestCase
+class ManipulationSequenceTest extends TestCase
 {
     /** @test */
     public function it_can_hold_an_empty_sequence()

@@ -2,14 +2,14 @@
 
 namespace Spatie\Image\Test;
 
+use PHPUnit\Framework\TestCase;
 use Spatie\Image\Image;
-use PHPUnit_Framework_TestCase;
 use Spatie\Image\Manipulations;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
-class ImageTest extends PHPUnit_Framework_TestCase
+class ImageTest extends TestCase
 {
-    /** @var TemporaryDirectory */
+    /** @var \Spatie\TemporaryDirectory\TemporaryDirectory */
     protected $tempDir;
 
     public function setUp()
