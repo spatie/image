@@ -2,10 +2,10 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\Image\Test\TestCase;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 class CropTest extends TestCase
 {
@@ -42,6 +42,4 @@ class CropTest extends TestCase
 
         Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 10, -10);
     }
-
-
 }

@@ -2,9 +2,9 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 class FocalCropTest extends TestCase
 {
@@ -25,6 +25,4 @@ class FocalCropTest extends TestCase
 
         Image::load($this->getTestJpg())->focalCrop(-100, 500, 100, 100);
     }
-
-
 }

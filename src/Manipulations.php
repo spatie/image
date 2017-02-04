@@ -56,7 +56,7 @@ class Manipulations
      */
     public function orientation(string $orientation)
     {
-        if (!$this->classHasConstantValue($orientation, 'orientation')) {
+        if (! $this->classHasConstantValue($orientation, 'orientation')) {
             throw InvalidManipulation::invalidParameter(
                 'orientation',
                 $orientation,
@@ -77,7 +77,7 @@ class Manipulations
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
-        if (!$this->classHasConstantValue($cropMethod, 'crop')) {
+        if (! $this->classHasConstantValue($cropMethod, 'crop')) {
             throw InvalidManipulation::invalidParameter(
                 'cropmethod',
                 $cropMethod,
@@ -169,7 +169,7 @@ class Manipulations
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
-        if (!$this->classHasConstantValue($fitMethod, 'fit')) {
+        if (! $this->classHasConstantValue($fitMethod, 'fit')) {
             throw InvalidManipulation::invalidParameter(
                 'fit',
                 $fitMethod,
@@ -328,7 +328,7 @@ class Manipulations
             throw InvalidManipulation::invalidWidth($width);
         }
 
-        if (!$this->classHasConstantValue($borderType, 'border')) {
+        if (! $this->classHasConstantValue($borderType, 'border')) {
             throw InvalidManipulation::invalidParameter(
                 'border',
                 $borderType,
@@ -362,7 +362,7 @@ class Manipulations
      */
     public function format(string $format)
     {
-        if (!$this->classHasConstantValue($format, 'format')) {
+        if (! $this->classHasConstantValue($format, 'format')) {
             throw InvalidManipulation::invalidParameter(
                 'format',
                 $format,
@@ -381,7 +381,7 @@ class Manipulations
      */
     protected function filter(string $filterName)
     {
-        if (!$this->classHasConstantValue($filterName, 'filter')) {
+        if (! $this->classHasConstantValue($filterName, 'filter')) {
             throw InvalidManipulation::invalidParameter(
                 'filter',
                 $filterName,
@@ -409,7 +409,7 @@ class Manipulations
 
     public function hasManipulation(string $manipulationName): bool
     {
-        return !is_null($this->getManipulationArgument($manipulationName));
+        return ! is_null($this->getManipulationArgument($manipulationName));
     }
 
     /**
@@ -454,7 +454,7 @@ class Manipulations
     {
         $allConstants = (new ReflectionClass(static::class))->getConstants();
 
-        return array_filter($allConstants, function($constantValue, $constantName) use ($namePrefix) {
+        return array_filter($allConstants, function ($constantValue, $constantName) use ($namePrefix) {
             return strpos($constantName, strtoupper($namePrefix)) === 0;
         }, ARRAY_FILTER_USE_BOTH);
     }
