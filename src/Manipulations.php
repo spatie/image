@@ -50,8 +50,8 @@ class Manipulations
 
     /**
      * @param string $orientation
-     * @return static
      *
+     * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function orientation(string $orientation)
@@ -200,8 +200,8 @@ class Manipulations
 
     /**
      * @param int $brightness A value between -100 and 100
-     * @return static
      *
+     * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function brightness(int $brightness)
@@ -230,8 +230,8 @@ class Manipulations
 
     /**
      * @param int $contrast A value between -100 and 100
-     * @return static
      *
+     * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function contrast(int $contrast)
@@ -245,8 +245,8 @@ class Manipulations
 
     /**
      * @param int $sharpen A value between 0 and 100
-     * @return static
      *
+     * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function sharpen(int $sharpen)
@@ -356,8 +356,8 @@ class Manipulations
 
     /**
      * @param string $format
-     * @return static
      *
+     * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function format(string $format)
