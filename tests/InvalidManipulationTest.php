@@ -2,7 +2,6 @@
 
 namespace Spatie\Image\Test;
 
-use PHPUnit\Framework\TestCase;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Manipulations;
 
