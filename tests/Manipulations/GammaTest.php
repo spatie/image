@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
 
@@ -15,5 +16,13 @@ class GammaTest extends TestCase
         Image::load($this->getTestJpg())->gamma(9.5)->save($targetFile);
 
         $this->assertFileExists($targetFile);
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_when_passing_an_invalid_gamma()
+    {
+        $this->expectException(InvalidManipulation::class);
+
+        Image::load($this->getTestJpg())->gamma(101);
     }
 }

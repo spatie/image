@@ -168,6 +168,14 @@ class Manipulations
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
+        if (!$this->classHasConstantValue($fitMethod, 'fit')) {
+            throw InvalidManipulation::invalidParameter(
+                'fit',
+                $fitMethod,
+                $this->getConstantValues('fit')
+            );
+        }
+
         $this->width($width);
         $this->height($height);
 

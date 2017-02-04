@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
 
@@ -16,4 +17,14 @@ class FocalCropTest extends TestCase
 
         $this->assertFileExists($targetFile);
     }
+
+    /** @test */
+    public function it_will_throw_an_exception_when_passing_an_invalid_width()
+    {
+        $this->expectException(InvalidManipulation::class);
+
+        Image::load($this->getTestJpg())->focalCrop(-100, 500, 100, 100);
+    }
+
+
 }
