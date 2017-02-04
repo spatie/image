@@ -54,7 +54,8 @@ class Manipulations
     public function orientation(string $orientation)
     {
         if (!$this->classHasConstantValue($orientation, 'orientation')) {
-            throw InvalidManipulation::invalidOrientation(
+            throw InvalidManipulation::invalidParameter(
+                'orientation',
                 $orientation,
                 $this->getConstantValues('orientation')
             );
@@ -69,9 +70,27 @@ class Manipulations
      * @param int $height
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
+        if (!$this->classHasConstantValue($cropMethod, 'crop')) {
+            throw InvalidManipulation::invalidParameter(
+                'cropmethod',
+                $cropMethod,
+                $this->getConstantValues('crop')
+            );
+        }
+
+        if ($width < 0) {
+            throw InvalidManipulation::invalidWidth($width);
+        }
+
+        if ($height < 0) {
+            throw InvalidManipulation::invalidWidth($height);
+        }
+
+
         return $this
             ->addManipulation($cropMethod, 'crop')
             ->addManipulation($width, 'width')
