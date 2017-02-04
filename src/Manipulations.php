@@ -2,6 +2,7 @@
 
 namespace Spatie\Image;
 
+use ReflectionClass;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 class Manipulations
@@ -46,11 +47,19 @@ class Manipulations
 
     /**
      * @param string $orientation
-     *
      * @return static
+     *
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function orientation(string $orientation)
     {
+        if (!$this->classHasConstantValue($orientation, 'orientation')) {
+            throw InvalidManipulation::invalidOrientation(
+                $orientation,
+                $this->getConstantValues('orientation')
+            );
+        }
+
         return $this->addManipulation($orientation);
     }
 
@@ -293,7 +302,7 @@ class Manipulations
 
     public function hasManipulation(string $manipulationName): bool
     {
-        return ! is_null($this->getManipulationArgument($manipulationName));
+        return !is_null($this->getManipulationArgument($manipulationName));
     }
 
     /**
@@ -329,5 +338,19 @@ class Manipulations
     public function getManipulationSequence(): ManipulationSequence
     {
         return $this->manipulationSequence;
+    }
+
+    protected function classHasConstantValue(string $value, string $constantNamePrefix): bool
+    {
+        return in_array($value, $this->getConstantValues($constantNamePrefix));
+    }
+
+    protected function getConstantValues(string $namePrefix): array
+    {
+        $allConstants = (new ReflectionClass(static::class))->getConstants();
+
+        return array_filter($allConstants, function($constantValue, $constantName) use ($namePrefix) {
+            return strpos($constantName, strtoupper($namePrefix)) === 0;
+        }, ARRAY_FILTER_USE_BOTH);
     }
 }

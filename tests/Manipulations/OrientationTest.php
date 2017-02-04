@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\Image\Test\TestCase;
@@ -16,5 +17,13 @@ class OrientationTest extends TestCase
         Image::load($this->getTestJpg())->orientation(Manipulations::ORIENTATION_90)->save($targetFile);
 
         $this->assertFileExists($targetFile);
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_when_passing_an_invalid_orientation()
+    {
+        $this->expectException(InvalidManipulation::class);
+
+        Image::load($this->getTestJpg())->orientation('blabla');
     }
 }
