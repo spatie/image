@@ -165,6 +165,7 @@ class Manipulations
      * @param int $height
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
@@ -183,7 +184,7 @@ class Manipulations
     }
 
     /**
-     * @param int $ratio
+     * @param int $ratio A value between 1 and 8
      *
      * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
@@ -198,7 +199,7 @@ class Manipulations
     }
 
     /**
-     * @param int $brightness
+     * @param int $brightness A value between -100 and 100
      * @return static
      *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
@@ -213,7 +214,7 @@ class Manipulations
     }
 
     /**
-     * @param float $gamma
+     * @param float $gamma A value between 0.01 and 9.99
      *
      * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
@@ -228,7 +229,7 @@ class Manipulations
     }
 
     /**
-     * @param int $contrast
+     * @param int $contrast A value between -100 and 100
      * @return static
      *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
@@ -243,7 +244,7 @@ class Manipulations
     }
 
     /**
-     * @param int $sharpen
+     * @param int $sharpen A value between 0 and 100
      * @return static
      *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
@@ -258,7 +259,7 @@ class Manipulations
     }
 
     /**
-     * @param int $blur
+     * @param int $blur A value between 0 and 100
      *
      * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
@@ -273,7 +274,7 @@ class Manipulations
     }
 
     /**
-     * @param int $pixelate
+     * @param int $pixelate A value between 0 and 1000
      *
      * @return static
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
