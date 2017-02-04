@@ -2,8 +2,8 @@
 
 namespace Spatie\Image\Test;
 
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 abstract class TestCase extends PHPUnitTestCase
 {

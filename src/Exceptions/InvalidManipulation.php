@@ -34,15 +34,10 @@ class InvalidManipulation extends Exception
 
     protected static function formatValues(array $values): string
     {
-        $quotedValues = array_map(function(string $value) {
+        $quotedValues = array_map(function (string $value) {
             return "`{$value}`";
         }, $values);
 
         return implode(', ', $quotedValues);
-
     }
-
-
-
-
 }
