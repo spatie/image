@@ -39,11 +39,18 @@ class ManipulationSequence implements IteratorAggregate
         return $this;
     }
 
+    /**
+     * @param \Spatie\Image\ManipulationSequence $sequence
+     *
+     * @return static
+     */
     public function merge(ManipulationSequence $sequence)
     {
         $sequenceArray = $sequence->toArray();
 
         $this->mergeArray($sequenceArray);
+
+        return $this;
     }
 
     public function mergeArray(array $sequenceArray)
