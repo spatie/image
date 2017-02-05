@@ -9,13 +9,13 @@ use Spatie\Image\Exceptions\CouldNotConvert;
 final class GlideConversion
 {
     /** @var string */
-    protected $inputImage;
+    private $inputImage;
 
     /** @var string */
-    protected $imageDriver = 'gd';
+    private $imageDriver = 'gd';
 
     /** @var string */
-    protected $conversionResult = null;
+    private $conversionResult = null;
 
     public static function create(string $inputImage): self
     {
