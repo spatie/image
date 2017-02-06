@@ -59,7 +59,7 @@ class Manipulations
             throw InvalidManipulation::invalidParameter(
                 'orientation',
                 $orientation,
-                $this->getManipulationOptions('orientation')
+                $this->getValidManipulationOptions('orientation')
             );
         }
 
@@ -79,7 +79,7 @@ class Manipulations
             throw InvalidManipulation::invalidParameter(
                 'cropmethod',
                 $cropMethod,
-                $this->getManipulationOptions('crop')
+                $this->getValidManipulationOptions('crop')
             );
         }
 
@@ -167,7 +167,7 @@ class Manipulations
             throw InvalidManipulation::invalidParameter(
                 'fit',
                 $fitMethod,
-                $this->getManipulationOptions('fit')
+                $this->getValidManipulationOptions('fit')
             );
         }
 
@@ -318,7 +318,7 @@ class Manipulations
             throw InvalidManipulation::invalidParameter(
                 'border',
                 $borderType,
-                $this->getManipulationOptions('border')
+                $this->getValidManipulationOptions('border')
             );
         }
 
@@ -350,7 +350,7 @@ class Manipulations
             throw InvalidManipulation::invalidParameter(
                 'format',
                 $format,
-                $this->getManipulationOptions('format')
+                $this->getValidManipulationOptions('format')
             );
         }
 
@@ -368,7 +368,7 @@ class Manipulations
             throw InvalidManipulation::invalidParameter(
                 'filter',
                 $filterName,
-                $this->getManipulationOptions('filter')
+                $this->getValidManipulationOptions('filter')
             );
         }
 
@@ -430,15 +430,15 @@ class Manipulations
 
     protected function validateManipulation(string $value, string $constantNamePrefix): bool
     {
-        return in_array($value, $this->getManipulationOptions($constantNamePrefix));
+        return in_array($value, $this->getValidManipulationOptions($constantNamePrefix));
     }
 
-    protected function getManipulationOptions(string $namePrefix): array
+    protected function getValidManipulationOptions(string $manipulation): array
     {
         $options = (new ReflectionClass(static::class))->getConstants();
 
-        return array_filter($options, function ($constantValue, $constantName) use ($namePrefix) {
-            return strpos($constantName, strtoupper($namePrefix)) === 0;
+        return array_filter($options, function ($value, $name) use ($manipulation) {
+            return strpos($name, strtoupper($manipulation)) === 0;
         }, ARRAY_FILTER_USE_BOTH);
     }
 }
