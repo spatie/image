@@ -2,6 +2,9 @@
 
 namespace Spatie\Image;
 
+use ReflectionClass;
+use Spatie\Image\Exceptions\InvalidManipulation;
+
 class Manipulations
 {
     const CROP_TOP_LEFT = 'crop-top-left';
@@ -34,6 +37,9 @@ class Manipulations
     const FORMAT_PNG = 'png';
     const FORMAT_GIF = 'gif';
 
+    const FILTER_GREYSCALE = 'greyscale';
+    const FILTER_SEPIA = 'sepia';
+
     /** @var \Spatie\Image\ManipulationSequence */
     protected $manipulationSequence;
 
@@ -46,9 +52,18 @@ class Manipulations
      * @param string $orientation
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function orientation(string $orientation)
     {
+        if (! $this->classHasConstantValue($orientation, 'orientation')) {
+            throw InvalidManipulation::invalidParameter(
+                'orientation',
+                $orientation,
+                $this->getConstantValues('orientation')
+            );
+        }
+
         return $this->addManipulation('orientation', $orientation);
     }
 
@@ -58,13 +73,22 @@ class Manipulations
      * @param int $height
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
-        return $this
-            ->addManipulation('crop', $cropMethod)
-            ->addManipulation('width', $width)
-            ->addManipulation('height', $height);
+        if (! $this->classHasConstantValue($cropMethod, 'crop')) {
+            throw InvalidManipulation::invalidParameter(
+                'cropmethod',
+                $cropMethod,
+                $this->getConstantValues('crop')
+            );
+        }
+
+        $this->width($width);
+        $this->height($height);
+
+        return $this->addManipulation('crop', $cropMethod);
     }
 
     /**
@@ -77,10 +101,10 @@ class Manipulations
      */
     public function focalCrop(int $width, int $height, int $focalX, int $focalY)
     {
-        return $this
-            ->addManipulation('crop', "crop-{$focalX}-{$focalY}")
-            ->addManipulation('width', $width)
-            ->addManipulation('height', $height);
+        $this->width($width);
+        $this->height($height);
+
+        return $this->addManipulation('crop', "crop-{$focalX}-{$focalY}");
     }
 
     /**
@@ -90,9 +114,18 @@ class Manipulations
      * @param int $y
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function manualCrop(int $width, int $height, int $x, int $y)
     {
+        if ($width < 0) {
+            throw InvalidManipulation::invalidWidth($width);
+        }
+
+        if ($height < 0) {
+            throw InvalidManipulation::invalidWidth($height);
+        }
+
         return $this->addManipulation('manualCrop', "{$width},{$height},{$x},{$y}");
     }
 
@@ -100,9 +133,14 @@ class Manipulations
      * @param int $width
      *
      * @return $this
+     * @throws InvalidManipulation
      */
     public function width(int $width)
     {
+        if ($width < 0) {
+            throw InvalidManipulation::invalidWidth($width);
+        }
+
         return $this->addManipulation('width', $width);
     }
 
@@ -110,9 +148,14 @@ class Manipulations
      * @param int $height
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function height(int $height)
     {
+        if ($height < 0) {
+            throw InvalidManipulation::invalidWidth($height);
+        }
+
         return $this->addManipulation('height', $height);
     }
 
@@ -122,82 +165,126 @@ class Manipulations
      * @param int $height
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
-        return $this
-            ->addManipulation('fit', $fitMethod)
-            ->addManipulation('width', $width)
-            ->addManipulation('height', $height);
+        if (! $this->classHasConstantValue($fitMethod, 'fit')) {
+            throw InvalidManipulation::invalidParameter(
+                'fit',
+                $fitMethod,
+                $this->getConstantValues('fit')
+            );
+        }
+
+        $this->width($width);
+        $this->height($height);
+
+        return $this->addManipulation('fit', $fitMethod);
     }
 
     /**
-     * @param int $ratio
+     * @param int $ratio A value between 1 and 8
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function devicePixelRatio(int $ratio)
     {
+        if ($ratio < 1 || $ratio > 8) {
+            throw InvalidManipulation::valueNotInRange('ratio', $ratio, 1, 8);
+        }
+
         return $this->addManipulation('devicePixelRatio', $ratio);
     }
 
     /**
-     * @param int $brightness
+     * @param int $brightness A value between -100 and 100
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function brightness(int $brightness)
     {
+        if ($brightness < -100 || $brightness > 100) {
+            throw InvalidManipulation::valueNotInRange('brightness', $brightness, -100, 100);
+        }
+
         return $this->addManipulation('brightness', $brightness);
     }
 
     /**
-     * @param float $gamma
+     * @param float $gamma A value between 0.01 and 9.99
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function gamma(float $gamma)
     {
+        if ($gamma < 0.01 || $gamma > 9.99) {
+            throw InvalidManipulation::valueNotInRange('gamma', $gamma, 0.01, 9.00);
+        }
+
         return $this->addManipulation('gamma', $gamma);
     }
 
     /**
-     * @param int $contrast
+     * @param int $contrast A value between -100 and 100
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function contrast(int $contrast)
     {
+        if ($contrast < -100 || $contrast > 100) {
+            throw InvalidManipulation::valueNotInRange('contrast', $contrast, -100, 100);
+        }
+
         return $this->addManipulation('contrast', $contrast);
     }
 
     /**
-     * @param int $sharpen
+     * @param int $sharpen A value between 0 and 100
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function sharpen(int $sharpen)
     {
+        if ($sharpen < 0 || $sharpen > 100) {
+            throw InvalidManipulation::valueNotInRange('sharpen', $sharpen, 0, 100);
+        }
+
         return $this->addManipulation('sharpen', $sharpen);
     }
 
     /**
-     * @param int $blur
+     * @param int $blur A value between 0 and 100
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function blur(int $blur)
     {
+        if ($blur < 0 || $blur > 100) {
+            throw InvalidManipulation::valueNotInRange('blur', $blur, 0, 100);
+        }
+
         return $this->addManipulation('blur', $blur);
     }
 
     /**
-     * @param int $pixelate
+     * @param int $pixelate A value between 0 and 1000
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function pixelate(int $pixelate)
     {
+        if ($pixelate < 0 || $pixelate > 1000) {
+            throw InvalidManipulation::valueNotInRange('pixelate', $pixelate, 0, 1000);
+        }
+
         return $this->addManipulation('pixelate', $pixelate);
     }
 
@@ -233,9 +320,22 @@ class Manipulations
      * @param string $borderType
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
+        if ($width < 0) {
+            throw InvalidManipulation::invalidWidth($width);
+        }
+
+        if (! $this->classHasConstantValue($borderType, 'border')) {
+            throw InvalidManipulation::invalidParameter(
+                'border',
+                $borderType,
+                $this->getConstantValues('border')
+            );
+        }
+
         return $this->addManipulation('border', "{$width},{$color},{$borderType}");
     }
 
@@ -243,9 +343,14 @@ class Manipulations
      * @param int $quality
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function quality(int $quality)
     {
+        if ($quality < 0 || $quality > 100) {
+            throw InvalidManipulation::valueNotInRange('quality', $quality, 0, 100);
+        }
+
         return $this->addManipulation('quality', $quality);
     }
 
@@ -253,9 +358,18 @@ class Manipulations
      * @param string $format
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function format(string $format)
     {
+        if (! $this->classHasConstantValue($format, 'format')) {
+            throw InvalidManipulation::invalidParameter(
+                'format',
+                $format,
+                $this->getConstantValues('format')
+            );
+        }
+
         return $this->addManipulation('format', $format);
     }
 
@@ -263,9 +377,18 @@ class Manipulations
      * @param string $filterName
      *
      * @return static
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     protected function filter(string $filterName)
     {
+        if (! $this->classHasConstantValue($filterName, 'filter')) {
+            throw InvalidManipulation::invalidParameter(
+                'filter',
+                $filterName,
+                $this->getConstantValues('filter')
+            );
+        }
+
         return $this->addManipulation('filter', $filterName);
     }
 
@@ -303,9 +426,9 @@ class Manipulations
         }
     }
 
-    protected function addManipulation(string $manipulation, string $argument)
+    protected function addManipulation(string $manipulationName, string $manipulationArgument)
     {
-        $this->manipulationSequence->addManipulation($manipulation, $argument);
+        $this->manipulationSequence->addManipulation($manipulationName, $manipulationArgument);
 
         return $this;
     }
@@ -320,5 +443,19 @@ class Manipulations
     public function getManipulationSequence(): ManipulationSequence
     {
         return $this->manipulationSequence;
+    }
+
+    protected function classHasConstantValue(string $value, string $constantNamePrefix): bool
+    {
+        return in_array($value, $this->getConstantValues($constantNamePrefix));
+    }
+
+    protected function getConstantValues(string $namePrefix): array
+    {
+        $allConstants = (new ReflectionClass(static::class))->getConstants();
+
+        return array_filter($allConstants, function ($constantValue, $constantName) use ($namePrefix) {
+            return strpos($constantName, strtoupper($namePrefix)) === 0;
+        }, ARRAY_FILTER_USE_BOTH);
     }
 }
