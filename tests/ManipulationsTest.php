@@ -42,4 +42,26 @@ class ManipulationsTest extends TestCase
 
         $this->assertEquals($sequenceArray, $manipulations->getManipulationSequence()->toArray());
     }
+
+    /** @test */
+    public function it_can_merge_itself_with_another_instance()
+    {
+        $manipulations1 = (new Manipulations())
+            ->width(10)
+            ->pixelate(10);
+
+        $manipulations2 = (new Manipulations())
+            ->width(20)
+            ->height(10)
+            ->blur(10);
+
+        $mergedManipulations = $manipulations1->mergeManipulations($manipulations2);
+
+        $this->assertEquals([[
+            'width' => 20,
+            'pixelate' => 10,
+            'height' => 10,
+            'blur' => 10,
+        ]], $mergedManipulations->getManipulationSequence()->toArray());
+    }
 }
