@@ -2,7 +2,7 @@
 
 namespace Spatie\Image;
 
-use Exception;
+use BadMethodCallException;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Image
@@ -16,7 +16,12 @@ class Image
     /** @var */
     protected $imageDriver = 'gd';
 
-    public static function load($pathToImage)
+    /**
+     * @param string $pathToImage
+     *
+     * @return static
+     */
+    public static function load(string $pathToImage)
     {
         return new static($pathToImage);
     }
@@ -42,6 +47,7 @@ class Image
 
     /**
      * @param callable|$manipulations
+     *
      * @return $this
      */
     public function manipulate($manipulations)
@@ -60,7 +66,7 @@ class Image
     public function __call($name, $arguments)
     {
         if (! method_exists($this->manipulations, $name)) {
-            throw new Exception("Manipulation `{$name}` does not exist");
+            throw new BadMethodCallException("Manipulation `{$name}` does not exist");
         }
 
         $this->manipulations->$name(...$arguments);

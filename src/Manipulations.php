@@ -49,7 +49,7 @@ class Manipulations
      */
     public function orientation(string $orientation)
     {
-        return $this->addManipulation($orientation);
+        return $this->addManipulation('orientation', $orientation);
     }
 
     /**
@@ -62,9 +62,9 @@ class Manipulations
     public function crop(string $cropMethod, int $width, int $height)
     {
         return $this
-            ->addManipulation($cropMethod, 'crop')
-            ->addManipulation($width, 'width')
-            ->addManipulation($height, 'height');
+            ->addManipulation('crop', $cropMethod)
+            ->addManipulation('width', $width)
+            ->addManipulation('height', $height);
     }
 
     /**
@@ -75,12 +75,12 @@ class Manipulations
      *
      * @return static
      */
-    public function focalCrop(int $width, int $height, $focalX, $focalY)
+    public function focalCrop(int $width, int $height, int $focalX, int $focalY)
     {
         return $this
-            ->addManipulation("crop-{$focalX}-{$focalY}", 'crop')
-            ->addManipulation($width, 'width')
-            ->addManipulation($height, 'height');
+            ->addManipulation('crop', "crop-{$focalX}-{$focalY}")
+            ->addManipulation('width', $width)
+            ->addManipulation('height', $height);
     }
 
     /**
@@ -93,7 +93,7 @@ class Manipulations
      */
     public function manualCrop(int $width, int $height, int $x, int $y)
     {
-        return $this->addManipulation("{$width},{$height},{$x},{$y}");
+        return $this->addManipulation('manualCrop', "{$width},{$height},{$x},{$y}");
     }
 
     /**
@@ -103,7 +103,7 @@ class Manipulations
      */
     public function width(int $width)
     {
-        return $this->addManipulation($width);
+        return $this->addManipulation('width', $width);
     }
 
     /**
@@ -113,7 +113,7 @@ class Manipulations
      */
     public function height(int $height)
     {
-        return $this->addManipulation($height);
+        return $this->addManipulation('height', $height);
     }
 
     /**
@@ -126,9 +126,9 @@ class Manipulations
     public function fit(string $fitMethod, int $width, int $height)
     {
         return $this
-            ->addManipulation($fitMethod, 'fit')
-            ->addManipulation($width, 'width')
-            ->addManipulation($height, 'height');
+            ->addManipulation('fit', $fitMethod)
+            ->addManipulation('width', $width)
+            ->addManipulation('height', $height);
     }
 
     /**
@@ -138,7 +138,7 @@ class Manipulations
      */
     public function devicePixelRatio(int $ratio)
     {
-        return $this->addManipulation($ratio);
+        return $this->addManipulation('devicePixelRatio', $ratio);
     }
 
     /**
@@ -148,7 +148,7 @@ class Manipulations
      */
     public function brightness(int $brightness)
     {
-        return $this->addManipulation($brightness);
+        return $this->addManipulation('brightness', $brightness);
     }
 
     /**
@@ -158,7 +158,7 @@ class Manipulations
      */
     public function gamma(float $gamma)
     {
-        return $this->addManipulation($gamma);
+        return $this->addManipulation('gamma', $gamma);
     }
 
     /**
@@ -168,7 +168,7 @@ class Manipulations
      */
     public function contrast(int $contrast)
     {
-        return $this->addManipulation($contrast);
+        return $this->addManipulation('contrast', $contrast);
     }
 
     /**
@@ -178,7 +178,7 @@ class Manipulations
      */
     public function sharpen(int $sharpen)
     {
-        return $this->addManipulation($sharpen);
+        return $this->addManipulation('sharpen', $sharpen);
     }
 
     /**
@@ -188,7 +188,7 @@ class Manipulations
      */
     public function blur(int $blur)
     {
-        return $this->addManipulation($blur);
+        return $this->addManipulation('blur', $blur);
     }
 
     /**
@@ -198,7 +198,7 @@ class Manipulations
      */
     public function pixelate(int $pixelate)
     {
-        return $this->addManipulation($pixelate);
+        return $this->addManipulation('pixelate', $pixelate);
     }
 
     /**
@@ -224,7 +224,7 @@ class Manipulations
      */
     public function background(string $colorName)
     {
-        return $this->addManipulation($colorName);
+        return $this->addManipulation('background', $colorName);
     }
 
     /**
@@ -236,7 +236,7 @@ class Manipulations
      */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
-        return $this->addManipulation("{$width},{$color},{$borderType}", 'border');
+        return $this->addManipulation('border', "{$width},{$color},{$borderType}");
     }
 
     /**
@@ -246,7 +246,7 @@ class Manipulations
      */
     public function quality(int $quality)
     {
-        return $this->addManipulation($quality);
+        return $this->addManipulation('quality', $quality);
     }
 
     /**
@@ -256,7 +256,7 @@ class Manipulations
      */
     public function format(string $format)
     {
-        return $this->addManipulation($format);
+        return $this->addManipulation('format', $format);
     }
 
     /**
@@ -266,7 +266,7 @@ class Manipulations
      */
     protected function filter(string $filterName)
     {
-        return $this->addManipulation($filterName);
+        return $this->addManipulation('filter', $filterName);
     }
 
     /**
@@ -303,11 +303,9 @@ class Manipulations
         }
     }
 
-    protected function addManipulation(string $manipulationArgument, string $manipulationName = null)
+    protected function addManipulation(string $manipulation, string $argument)
     {
-        $manipulationName = $manipulationName ?? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
-
-        $this->manipulationSequence->addManipulation($manipulationName, $manipulationArgument);
+        $this->manipulationSequence->addManipulation($manipulation, $argument);
 
         return $this;
     }
