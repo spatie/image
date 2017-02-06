@@ -3,6 +3,7 @@
 namespace Spatie\Image;
 
 use BadMethodCallException;
+use Spatie\Image\Exceptions\InvalidImageDriver;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Image
@@ -40,6 +41,10 @@ class Image
      */
     public function useImageDriver(string $imageDriver)
     {
+        if (! in_array($imageDriver, ['gd', 'imagick'])) {
+            throw InvalidImageDriver::driver($imageDriver);
+        }
+
         $this->imageDriver = $imageDriver;
 
         return $this;
