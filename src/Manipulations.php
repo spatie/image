@@ -51,7 +51,7 @@ class Manipulations
     /**
      * @param string $orientation
      *
-     * @return static
+     * @return $this
      */
     public function orientation(string $orientation)
     {
@@ -71,7 +71,7 @@ class Manipulations
      * @param int $width
      * @param int $height
      *
-     * @return static
+     * @return $this
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
@@ -95,7 +95,7 @@ class Manipulations
      * @param int $focalX Crop center X in percent
      * @param int $focalY Crop center Y in percent
      *
-     * @return static
+     * @return $this
      */
     public function focalCrop(int $width, int $height, int $focalX, int $focalY)
     {
@@ -111,7 +111,7 @@ class Manipulations
      * @param int $x
      * @param int $y
      *
-     * @return static
+     * @return $this
      */
     public function manualCrop(int $width, int $height, int $x, int $y)
     {
@@ -143,7 +143,7 @@ class Manipulations
     /**
      * @param int $height
      *
-     * @return static
+     * @return $this
      */
     public function height(int $height)
     {
@@ -159,7 +159,7 @@ class Manipulations
      * @param int $width
      * @param int $height
      *
-     * @return static
+     * @return $this
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
@@ -180,7 +180,7 @@ class Manipulations
     /**
      * @param int $ratio A value between 1 and 8
      *
-     * @return static
+     * @return $this
      */
     public function devicePixelRatio(int $ratio)
     {
@@ -194,7 +194,7 @@ class Manipulations
     /**
      * @param int $brightness A value between -100 and 100
      *
-     * @return static
+     * @return $this
      */
     public function brightness(int $brightness)
     {
@@ -208,7 +208,7 @@ class Manipulations
     /**
      * @param float $gamma A value between 0.01 and 9.99
      *
-     * @return static
+     * @return $this
      */
     public function gamma(float $gamma)
     {
@@ -222,7 +222,7 @@ class Manipulations
     /**
      * @param int $contrast A value between -100 and 100
      *
-     * @return static
+     * @return $this
      */
     public function contrast(int $contrast)
     {
@@ -236,7 +236,7 @@ class Manipulations
     /**
      * @param int $sharpen A value between 0 and 100
      *
-     * @return static
+     * @return $this
      */
     public function sharpen(int $sharpen)
     {
@@ -250,7 +250,7 @@ class Manipulations
     /**
      * @param int $blur A value between 0 and 100
      *
-     * @return static
+     * @return $this
      */
     public function blur(int $blur)
     {
@@ -264,7 +264,7 @@ class Manipulations
     /**
      * @param int $pixelate A value between 0 and 1000
      *
-     * @return static
+     * @return $this
      */
     public function pixelate(int $pixelate)
     {
@@ -276,7 +276,7 @@ class Manipulations
     }
 
     /**
-     * @return static
+     * @return $this
      */
     public function greyscale()
     {
@@ -284,7 +284,7 @@ class Manipulations
     }
 
     /**
-     * @return static
+     * @return $this
      */
     public function sepia()
     {
@@ -294,7 +294,7 @@ class Manipulations
     /**
      * @param string $colorName
      *
-     * @return static
+     * @return $this
      */
     public function background(string $colorName)
     {
@@ -306,7 +306,7 @@ class Manipulations
      * @param string $color
      * @param string $borderType
      *
-     * @return static
+     * @return $this
      */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
@@ -328,7 +328,7 @@ class Manipulations
     /**
      * @param int $quality
      *
-     * @return static
+     * @return $this
      */
     public function quality(int $quality)
     {
@@ -342,7 +342,7 @@ class Manipulations
     /**
      * @param string $format
      *
-     * @return static
+     * @return $this
      */
     public function format(string $format)
     {
@@ -360,7 +360,7 @@ class Manipulations
     /**
      * @param string $filterName
      *
-     * @return static
+     * @return $this
      */
     protected function filter(string $filterName)
     {
@@ -376,7 +376,7 @@ class Manipulations
     }
 
     /**
-     * @return static
+     * @return $this
      */
     public function apply()
     {

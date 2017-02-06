@@ -20,7 +20,7 @@ class ManipulationSequence implements IteratorAggregate
      * @param string $operation
      * @param string $argument
      *
-     * @return static
+     * @return $this
      */
     public function addManipulation(string $operation, string $argument)
     {
@@ -34,7 +34,7 @@ class ManipulationSequence implements IteratorAggregate
     /**
      * @param \Spatie\Image\ManipulationSequence $sequence
      *
-     * @return static
+     * @return $this
      */
     public function merge(ManipulationSequence $sequence)
     {
@@ -57,7 +57,7 @@ class ManipulationSequence implements IteratorAggregate
     }
 
     /**
-     * @return static
+     * @return $this
      */
     public function startNewGroup()
     {
@@ -84,7 +84,7 @@ class ManipulationSequence implements IteratorAggregate
     /**
      * @param string $manipulationName
      *
-     * @return static
+     * @return $this
      */
     public function removeManipulation(string $manipulationName)
     {
