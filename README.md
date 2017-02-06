@@ -30,7 +30,7 @@ Image::load($pathToImage)
    
 // rotate the image and sharpen it
 Image::load($pathToImage)
-   ->rotate(90)
+   ->orientation(90)
    ->sharpen(15)
    ->save();
 ```
