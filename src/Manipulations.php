@@ -52,15 +52,14 @@ class Manipulations
      * @param string $orientation
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function orientation(string $orientation)
     {
-        if (! $this->validateOption($orientation, 'orientation')) {
+        if (! $this->validateManipulation($orientation, 'orientation')) {
             throw InvalidManipulation::invalidParameter(
                 'orientation',
                 $orientation,
-                $this->getOptions('orientation')
+                $this->getManipulationOptions('orientation')
             );
         }
 
@@ -73,15 +72,14 @@ class Manipulations
      * @param int $height
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
-        if (! $this->validateOption($cropMethod, 'crop')) {
+        if (! $this->validateManipulation($cropMethod, 'crop')) {
             throw InvalidManipulation::invalidParameter(
                 'cropmethod',
                 $cropMethod,
-                $this->getOptions('crop')
+                $this->getManipulationOptions('crop')
             );
         }
 
@@ -114,7 +112,6 @@ class Manipulations
      * @param int $y
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function manualCrop(int $width, int $height, int $x, int $y)
     {
@@ -133,7 +130,6 @@ class Manipulations
      * @param int $width
      *
      * @return $this
-     * @throws InvalidManipulation
      */
     public function width(int $width)
     {
@@ -148,7 +144,6 @@ class Manipulations
      * @param int $height
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function height(int $height)
     {
@@ -165,15 +160,14 @@ class Manipulations
      * @param int $height
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
-        if (! $this->validateOption($fitMethod, 'fit')) {
+        if (! $this->validateManipulation($fitMethod, 'fit')) {
             throw InvalidManipulation::invalidParameter(
                 'fit',
                 $fitMethod,
-                $this->getOptions('fit')
+                $this->getManipulationOptions('fit')
             );
         }
 
@@ -187,7 +181,6 @@ class Manipulations
      * @param int $ratio A value between 1 and 8
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function devicePixelRatio(int $ratio)
     {
@@ -202,7 +195,6 @@ class Manipulations
      * @param int $brightness A value between -100 and 100
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function brightness(int $brightness)
     {
@@ -217,7 +209,6 @@ class Manipulations
      * @param float $gamma A value between 0.01 and 9.99
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function gamma(float $gamma)
     {
@@ -232,7 +223,6 @@ class Manipulations
      * @param int $contrast A value between -100 and 100
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function contrast(int $contrast)
     {
@@ -247,7 +237,6 @@ class Manipulations
      * @param int $sharpen A value between 0 and 100
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function sharpen(int $sharpen)
     {
@@ -262,7 +251,6 @@ class Manipulations
      * @param int $blur A value between 0 and 100
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function blur(int $blur)
     {
@@ -277,7 +265,6 @@ class Manipulations
      * @param int $pixelate A value between 0 and 1000
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function pixelate(int $pixelate)
     {
@@ -320,7 +307,6 @@ class Manipulations
      * @param string $borderType
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
@@ -328,11 +314,11 @@ class Manipulations
             throw InvalidManipulation::invalidWidth($width);
         }
 
-        if (! $this->validateOption($borderType, 'border')) {
+        if (! $this->validateManipulation($borderType, 'border')) {
             throw InvalidManipulation::invalidParameter(
                 'border',
                 $borderType,
-                $this->getOptions('border')
+                $this->getManipulationOptions('border')
             );
         }
 
@@ -343,7 +329,6 @@ class Manipulations
      * @param int $quality
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function quality(int $quality)
     {
@@ -358,15 +343,14 @@ class Manipulations
      * @param string $format
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function format(string $format)
     {
-        if (! $this->validateOption($format, 'format')) {
+        if (! $this->validateManipulation($format, 'format')) {
             throw InvalidManipulation::invalidParameter(
                 'format',
                 $format,
-                $this->getOptions('format')
+                $this->getManipulationOptions('format')
             );
         }
 
@@ -377,15 +361,14 @@ class Manipulations
      * @param string $filterName
      *
      * @return static
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     protected function filter(string $filterName)
     {
-        if (! $this->validateOption($filterName, 'filter')) {
+        if (! $this->validateManipulation($filterName, 'filter')) {
             throw InvalidManipulation::invalidParameter(
                 'filter',
                 $filterName,
-                $this->getOptions('filter')
+                $this->getManipulationOptions('filter')
             );
         }
 
@@ -445,12 +428,12 @@ class Manipulations
         return $this->manipulationSequence;
     }
 
-    protected function validateOption(string $value, string $constantNamePrefix): bool
+    protected function validateManipulation(string $value, string $constantNamePrefix): bool
     {
-        return in_array($value, $this->getOptions($constantNamePrefix));
+        return in_array($value, $this->getManipulationOptions($constantNamePrefix));
     }
 
-    protected function getOptions(string $namePrefix): array
+    protected function getManipulationOptions(string $namePrefix): array
     {
         $options = (new ReflectionClass(static::class))->getConstants();
 
