@@ -10,11 +10,9 @@ class ManipulationSequence implements IteratorAggregate
     /** @var array */
     protected $groups = [];
 
-    /** @var bool */
-    protected $startNewGroup = true;
-
     public function __construct(array $sequenceArray = [])
     {
+        $this->startNewGroup();
         $this->mergeArray($sequenceArray);
     }
 
@@ -22,19 +20,13 @@ class ManipulationSequence implements IteratorAggregate
      * @param string $operation
      * @param string $argument
      *
-     * @return static
+     * @return $this
      */
     public function addManipulation(string $operation, string $argument)
     {
-        if ($this->startNewGroup) {
-            $this->groups[] = [];
-        }
-
         $lastIndex = count($this->groups) - 1;
 
         $this->groups[$lastIndex][$operation] = $argument;
-
-        $this->startNewGroup = false;
 
         return $this;
     }
@@ -42,7 +34,7 @@ class ManipulationSequence implements IteratorAggregate
     /**
      * @param \Spatie\Image\ManipulationSequence $sequence
      *
-     * @return static
+     * @return $this
      */
     public function merge(ManipulationSequence $sequence)
     {
@@ -60,18 +52,16 @@ class ManipulationSequence implements IteratorAggregate
                 $this->addManipulation($name, $argument);
             }
 
-            if (next($sequenceArray)) {
-                $this->startNewGroup();
-            }
+            $this->startNewGroup();
         }
     }
 
     /**
-     * @return static
+     * @return $this
      */
     public function startNewGroup()
     {
-        $this->startNewGroup = true;
+        $this->groups[] = [];
 
         return $this;
     }
@@ -94,7 +84,7 @@ class ManipulationSequence implements IteratorAggregate
     /**
      * @param string $manipulationName
      *
-     * @return static
+     * @return $this
      */
     public function removeManipulation(string $manipulationName)
     {

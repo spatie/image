@@ -6,6 +6,7 @@ use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
 
+/** @private */
 final class GlideConversion
 {
     /** @var string */
@@ -19,7 +20,7 @@ final class GlideConversion
 
     public static function create(string $inputImage): self
     {
-        return new static($inputImage);
+        return new self($inputImage);
     }
 
     public function __construct(string $inputImage)
@@ -50,7 +51,7 @@ final class GlideConversion
         return $this;
     }
 
-    protected function createGlideServer($inputFile): Server
+    private function createGlideServer($inputFile): Server
     {
         return ServerFactory::create([
             'source' => dirname($inputFile),
@@ -70,7 +71,7 @@ final class GlideConversion
         rename($this->conversionResult, $outputFile);
     }
 
-    protected function prepareManipulations(array $manipulationGroup): array
+    private function prepareManipulations(array $manipulationGroup): array
     {
         $glideManipulations = [];
 
@@ -81,7 +82,7 @@ final class GlideConversion
         return $glideManipulations;
     }
 
-    protected function convertToGlideParameter(string $manipulationName): string
+    private function convertToGlideParameter(string $manipulationName): string
     {
         $conversions = [
             'width' => 'w',

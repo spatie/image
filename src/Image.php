@@ -2,7 +2,8 @@
 
 namespace Spatie\Image;
 
-use Exception;
+use BadMethodCallException;
+use Spatie\Image\Exceptions\InvalidImageDriver;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Image
@@ -16,7 +17,12 @@ class Image
     /** @var */
     protected $imageDriver = 'gd';
 
-    public static function load($pathToImage)
+    /**
+     * @param string $pathToImage
+     *
+     * @return static
+     */
+    public static function load(string $pathToImage)
     {
         return new static($pathToImage);
     }
@@ -35,6 +41,10 @@ class Image
      */
     public function useImageDriver(string $imageDriver)
     {
+        if (! in_array($imageDriver, ['gd', 'imagick'])) {
+            throw InvalidImageDriver::driver($imageDriver);
+        }
+
         $this->imageDriver = $imageDriver;
 
         return $this;
@@ -42,6 +52,7 @@ class Image
 
     /**
      * @param callable|$manipulations
+     *
      * @return $this
      */
     public function manipulate($manipulations)
@@ -60,7 +71,7 @@ class Image
     public function __call($name, $arguments)
     {
         if (! method_exists($this->manipulations, $name)) {
-            throw new Exception("Manipulation `{$name}` does not exist");
+            throw new BadMethodCallException("Manipulation `{$name}` does not exist");
         }
 
         $this->manipulations->$name(...$arguments);
