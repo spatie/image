@@ -56,11 +56,11 @@ class Manipulations
      */
     public function orientation(string $orientation)
     {
-        if (! $this->classHasConstantValue($orientation, 'orientation')) {
+        if (! $this->validateOption($orientation, 'orientation')) {
             throw InvalidManipulation::invalidParameter(
                 'orientation',
                 $orientation,
-                $this->getConstantValues('orientation')
+                $this->getOptions('orientation')
             );
         }
 
@@ -77,11 +77,11 @@ class Manipulations
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
-        if (! $this->classHasConstantValue($cropMethod, 'crop')) {
+        if (! $this->validateOption($cropMethod, 'crop')) {
             throw InvalidManipulation::invalidParameter(
                 'cropmethod',
                 $cropMethod,
-                $this->getConstantValues('crop')
+                $this->getOptions('crop')
             );
         }
 
@@ -169,11 +169,11 @@ class Manipulations
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
-        if (! $this->classHasConstantValue($fitMethod, 'fit')) {
+        if (! $this->validateOption($fitMethod, 'fit')) {
             throw InvalidManipulation::invalidParameter(
                 'fit',
                 $fitMethod,
-                $this->getConstantValues('fit')
+                $this->getOptions('fit')
             );
         }
 
@@ -328,11 +328,11 @@ class Manipulations
             throw InvalidManipulation::invalidWidth($width);
         }
 
-        if (! $this->classHasConstantValue($borderType, 'border')) {
+        if (! $this->validateOption($borderType, 'border')) {
             throw InvalidManipulation::invalidParameter(
                 'border',
                 $borderType,
-                $this->getConstantValues('border')
+                $this->getOptions('border')
             );
         }
 
@@ -362,11 +362,11 @@ class Manipulations
      */
     public function format(string $format)
     {
-        if (! $this->classHasConstantValue($format, 'format')) {
+        if (! $this->validateOption($format, 'format')) {
             throw InvalidManipulation::invalidParameter(
                 'format',
                 $format,
-                $this->getConstantValues('format')
+                $this->getOptions('format')
             );
         }
 
@@ -381,11 +381,11 @@ class Manipulations
      */
     protected function filter(string $filterName)
     {
-        if (! $this->classHasConstantValue($filterName, 'filter')) {
+        if (! $this->validateOption($filterName, 'filter')) {
             throw InvalidManipulation::invalidParameter(
                 'filter',
                 $filterName,
-                $this->getConstantValues('filter')
+                $this->getOptions('filter')
             );
         }
 
@@ -445,16 +445,16 @@ class Manipulations
         return $this->manipulationSequence;
     }
 
-    protected function classHasConstantValue(string $value, string $constantNamePrefix): bool
+    protected function validateOption(string $value, string $constantNamePrefix): bool
     {
-        return in_array($value, $this->getConstantValues($constantNamePrefix));
+        return in_array($value, $this->getOptions($constantNamePrefix));
     }
 
-    protected function getConstantValues(string $namePrefix): array
+    protected function getOptions(string $namePrefix): array
     {
-        $allConstants = (new ReflectionClass(static::class))->getConstants();
+        $options = (new ReflectionClass(static::class))->getConstants();
 
-        return array_filter($allConstants, function ($constantValue, $constantName) use ($namePrefix) {
+        return array_filter($options, function ($constantValue, $constantName) use ($namePrefix) {
             return strpos($constantName, strtoupper($namePrefix)) === 0;
         }, ARRAY_FILTER_USE_BOTH);
     }
