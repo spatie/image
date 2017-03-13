@@ -52,6 +52,8 @@ class Manipulations
      * @param string $orientation
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function orientation(string $orientation)
     {
@@ -72,6 +74,8 @@ class Manipulations
      * @param int $height
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
@@ -112,6 +116,8 @@ class Manipulations
      * @param int $y
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function manualCrop(int $width, int $height, int $x, int $y)
     {
@@ -130,6 +136,8 @@ class Manipulations
      * @param int $width
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function width(int $width)
     {
@@ -144,6 +152,8 @@ class Manipulations
      * @param int $height
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function height(int $height)
     {
@@ -160,6 +170,8 @@ class Manipulations
      * @param int $height
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
@@ -181,6 +193,8 @@ class Manipulations
      * @param int $ratio A value between 1 and 8
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function devicePixelRatio(int $ratio)
     {
@@ -195,6 +209,8 @@ class Manipulations
      * @param int $brightness A value between -100 and 100
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function brightness(int $brightness)
     {
@@ -209,6 +225,8 @@ class Manipulations
      * @param float $gamma A value between 0.01 and 9.99
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function gamma(float $gamma)
     {
@@ -223,6 +241,8 @@ class Manipulations
      * @param int $contrast A value between -100 and 100
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function contrast(int $contrast)
     {
@@ -237,6 +257,8 @@ class Manipulations
      * @param int $sharpen A value between 0 and 100
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function sharpen(int $sharpen)
     {
@@ -251,6 +273,8 @@ class Manipulations
      * @param int $blur A value between 0 and 100
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function blur(int $blur)
     {
@@ -265,6 +289,8 @@ class Manipulations
      * @param int $pixelate A value between 0 and 1000
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function pixelate(int $pixelate)
     {
@@ -307,6 +333,8 @@ class Manipulations
      * @param string $borderType
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
@@ -329,6 +357,8 @@ class Manipulations
      * @param int $quality
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function quality(int $quality)
     {
@@ -343,6 +373,8 @@ class Manipulations
      * @param string $format
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function format(string $format)
     {
@@ -361,6 +393,8 @@ class Manipulations
      * @param string $filterName
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     protected function filter(string $filterName)
     {
