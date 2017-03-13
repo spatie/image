@@ -38,7 +38,7 @@ class Image
      * @param string $imageDriver
      *
      * @return $this
-     * 
+     *
      * @throws InvalidImageDriver
      */
     public function useImageDriver(string $imageDriver)

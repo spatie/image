@@ -2,6 +2,7 @@
 
 namespace Spatie\Image;
 
+use League\Flysystem\FileNotFoundException;
 use ReflectionClass;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
@@ -39,6 +40,19 @@ class Manipulations
 
     const FILTER_GREYSCALE = 'greyscale';
     const FILTER_SEPIA = 'sepia';
+
+    const UNIT_PIXELS = 'px';
+    const UNIT_PERCENT = '%';
+
+    const POSITION_TOP_LEFT = 'top-left';
+    const POSITION_TOP = 'top';
+    const POSITION_TOP_RIGHT = 'top-right';
+    const POSITION_LEFT = 'left';
+    const POSITION_CENTER = 'center';
+    const POSITION_RIGHT = 'right';
+    const POSITION_BOTTOM_LEFT = 'bottom-left';
+    const POSITION_BOTTOM = 'bottom';
+    const POSITION_BOTTOM_RIGHT = 'bottom-right';
 
     /** @var \Spatie\Image\ManipulationSequence */
     protected $manipulationSequence;
@@ -407,6 +421,127 @@ class Manipulations
         }
 
         return $this->addManipulation('filter', $filterName);
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return $this
+     *
+     * @throws FileNotFoundException
+     */
+    public function watermark(string $filePath)
+    {
+        if (! file_exists($filePath)) {
+            throw new FileNotFoundException($filePath);
+        }
+
+        $this->addManipulation('watermark', $filePath);
+
+        return $this;
+    }
+
+    /**
+     * @param int    $width The width of the watermark in pixels (default) or percent.
+     * @param string $unit  The unit of the `$width` parameter. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
+     *
+     * @return $this
+     */
+    public function watermarkWidth(int $width, string $unit = 'px')
+    {
+        $width = ($unit == static::UNIT_PERCENT ? $width.'w' : $width);
+
+        return $this->addManipulation('watermarkWidth', $width);
+    }
+
+    /**
+     * @param int    $height The height of the watermark in pixels (default) or percent.
+     * @param string $unit   The unit of the `$height` parameter. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
+     *
+     * @return $this
+     */
+    public function watermarkHeight(int $height, string $unit = 'px')
+    {
+        $height = ($unit == static::UNIT_PERCENT ? $height.'h' : $height);
+
+        return $this->addManipulation('watermarkHeight', $height);
+    }
+
+    /**
+     * @param string $fitMethod How is the watermark fitted into the watermarkWidth and watermarkHeight properties.
+     *
+     * @return $this
+     *
+     * @throws InvalidManipulation
+     */
+    public function watermarkFit(string $fitMethod) {
+        if (! $this->validateManipulation($fitMethod, 'fit')) {
+            throw InvalidManipulation::invalidParameter(
+                'watermarkFit',
+                $fitMethod,
+                $this->getValidManipulationOptions('fit')
+            );
+        }
+
+        return $this->addManipulation('watermarkFit', $fitMethod);
+    }
+
+    /**
+     * @param int $xPadding         How far is the watermark placed from the top and bottom edges of the image.
+     * @param int|null $yPadding    How far is the watermark placed from the left and right edges of the image.
+     * @param string $unit          Unit of the padding values. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
+     *
+     * @return $this
+     */
+    public function watermarkPadding(int $xPadding, ?int $yPadding = null, string $unit = 'px')
+    {
+        $yPadding = $yPadding ?? $xPadding;
+
+        $xPadding = ($unit == static::UNIT_PERCENT ? $xPadding.'h' : $xPadding);
+        $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
+
+        $this->addManipulation('watermarkPaddingX', $xPadding);
+        $this->addManipulation('watermarkPaddingY', $yPadding);
+
+        return $this;
+    }
+
+    /**
+     * @param string $position
+     *
+     * @return $this
+     *
+     * @throws InvalidManipulation
+     */
+    public function watermarkPosition(string $position)
+    {
+        if (! $this->validateManipulation($position, 'position')) {
+            throw InvalidManipulation::invalidParameter(
+                'watermarkPosition',
+                $position,
+                $this->getValidManipulationOptions('position')
+            );
+        }
+
+        return $this->addManipulation('watermarkPosition', $position);
+    }
+
+    /**
+     * Sets the opacity of the watermark. Only works with the `imagick` driver.
+     *
+     * @param int $opacity A value between 0 and 100.
+     *
+     * @return $this
+     *
+     * @throws InvalidManipulation
+     */
+    public function watermarkOpacity(int $opacity)
+    {
+        if ($opacity < 0 || $opacity > 100) {
+            throw InvalidManipulation::valueNotInRange('opacity', $opacity, 0, 100);
+        }
+
+        return $this->addManipulation('watermarkOpacity', $opacity);
     }
 
     /**
