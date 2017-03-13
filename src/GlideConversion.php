@@ -40,7 +40,9 @@ final class GlideConversion
         foreach ($manipulations->getManipulationSequence() as $manipulationGroup) {
             $inputFile = $this->conversionResult ?? $this->inputImage;
 
-            $glideServer = $this->createGlideServer($inputFile);
+            $watermarkPath = $this->extractWatermarkPath($manipulationGroup);
+
+            $glideServer = $this->createGlideServer($inputFile, $watermarkPath);
 
             $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
@@ -51,13 +53,40 @@ final class GlideConversion
         return $this;
     }
 
-    private function createGlideServer($inputFile): Server
+    /**
+     * Removes the watermark path from the manipulationGroup and returns it. This way it can be injected into the Glide
+     * server as the `watermarks` path.
+     *
+     * @param $manipulationGroup
+     *
+     * @return null|string
+     */
+    private function extractWatermarkPath(&$manipulationGroup): string
     {
-        return ServerFactory::create([
+        if (array_key_exists('watermark', $manipulationGroup)) {
+            $watermarkPath = dirname($manipulationGroup['watermark']);
+
+            $manipulationGroup['watermark'] = basename($manipulationGroup['watermark']);
+
+            return $watermarkPath;
+        }
+
+        return null;
+    }
+
+    private function createGlideServer($inputFile, ?string $watermarkPath = null): Server
+    {
+        $config = [
             'source' => dirname($inputFile),
             'cache' => sys_get_temp_dir(),
             'driver' => $this->imageDriver,
-        ]);
+        ];
+
+        if ($watermarkPath) {
+            $config['watermarks'] = $watermarkPath;
+        }
+
+        return ServerFactory::create($config);
     }
 
     public function save(string $outputFile)
@@ -77,6 +106,7 @@ final class GlideConversion
 
         foreach ($manipulationGroup as $name => $argument) {
             $glideManipulations[$this->convertToGlideParameter($name)] = $argument;
+            dump($argument);
         }
 
         return $glideManipulations;
@@ -103,6 +133,7 @@ final class GlideConversion
             'border' => 'border',
             'quality' => 'q',
             'format' => 'fm',
+            'watermark' => 'mark',
         ];
 
         if (! isset($conversions[$manipulationName])) {

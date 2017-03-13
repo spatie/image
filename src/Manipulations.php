@@ -2,6 +2,8 @@
 
 namespace Spatie\Image;
 
+use League\Flysystem\Exception;
+use League\Flysystem\FileNotFoundException;
 use ReflectionClass;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
@@ -407,6 +409,22 @@ class Manipulations
         }
 
         return $this->addManipulation('filter', $filterName);
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return $this
+     *
+     * @throws FileNotFoundException
+     */
+    public function watermark(string $filePath)
+    {
+        if (! file_exists($filePath)) {
+            throw new FileNotFoundException($filePath);
+        }
+
+        return $this->addManipulation('watermark', $filePath);
     }
 
     /**
