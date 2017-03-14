@@ -499,7 +499,7 @@ class Manipulations
         $yPadding = $yPadding ?? $xPadding;
 
         $xPadding = ($unit == static::UNIT_PERCENT ? $xPadding.'h' : $xPadding);
-        $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
+        $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'w' : $yPadding);
 
         $this->addManipulation('watermarkPaddingX', $xPadding);
         $this->addManipulation('watermarkPaddingY', $yPadding);
