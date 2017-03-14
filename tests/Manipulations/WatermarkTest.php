@@ -2,7 +2,6 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
-use InvalidArgumentException;
 use League\Flysystem\FileNotFoundException;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
