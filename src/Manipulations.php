@@ -488,8 +488,8 @@ class Manipulations
     }
 
     /**
-     * @param int $xPadding         How far is the watermark placed from the top and bottom edges of the image.
-     * @param int|null $yPadding    How far is the watermark placed from the left and right edges of the image.
+     * @param int $xPadding         How far is the watermark placed from the left and right edges of the image.
+     * @param int|null $yPadding    How far is the watermark placed from the top and bottom edges of the image.
      * @param string $unit          Unit of the padding values. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
      *
      * @return $this
@@ -498,8 +498,8 @@ class Manipulations
     {
         $yPadding = $yPadding ?? $xPadding;
 
-        $xPadding = ($unit == static::UNIT_PERCENT ? $xPadding.'h' : $xPadding);
-        $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'w' : $yPadding);
+        $xPadding = ($unit == static::UNIT_PERCENT ? $xPadding.'w' : $xPadding);
+        $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
 
         $this->addManipulation('watermarkPaddingX', $xPadding);
         $this->addManipulation('watermarkPaddingY', $yPadding);
