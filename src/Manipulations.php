@@ -2,8 +2,8 @@
 
 namespace Spatie\Image;
 
-use League\Flysystem\FileNotFoundException;
 use ReflectionClass;
+use League\Flysystem\FileNotFoundException;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 class Manipulations
@@ -474,7 +474,8 @@ class Manipulations
      *
      * @throws InvalidManipulation
      */
-    public function watermarkFit(string $fitMethod) {
+    public function watermarkFit(string $fitMethod)
+    {
         if (! $this->validateManipulation($fitMethod, 'fit')) {
             throw InvalidManipulation::invalidParameter(
                 'watermarkFit',

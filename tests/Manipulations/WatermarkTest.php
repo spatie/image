@@ -2,10 +2,10 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
-use League\Flysystem\FileNotFoundException;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\Image\Test\TestCase;
+use League\Flysystem\FileNotFoundException;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 class WatermarkTest extends TestCase

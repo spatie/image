@@ -70,8 +70,6 @@ final class GlideConversion
 
             return $watermarkPath;
         }
-
-        return null;
     }
 
     private function createGlideServer($inputFile, ?string $watermarkPath = null): Server
