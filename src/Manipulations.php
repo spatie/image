@@ -3,6 +3,7 @@
 namespace Spatie\Image;
 
 use ReflectionClass;
+use League\Flysystem\FileNotFoundException;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 class Manipulations
@@ -40,6 +41,19 @@ class Manipulations
     const FILTER_GREYSCALE = 'greyscale';
     const FILTER_SEPIA = 'sepia';
 
+    const UNIT_PIXELS = 'px';
+    const UNIT_PERCENT = '%';
+
+    const POSITION_TOP_LEFT = 'top-left';
+    const POSITION_TOP = 'top';
+    const POSITION_TOP_RIGHT = 'top-right';
+    const POSITION_LEFT = 'left';
+    const POSITION_CENTER = 'center';
+    const POSITION_RIGHT = 'right';
+    const POSITION_BOTTOM_LEFT = 'bottom-left';
+    const POSITION_BOTTOM = 'bottom';
+    const POSITION_BOTTOM_RIGHT = 'bottom-right';
+
     /** @var \Spatie\Image\ManipulationSequence */
     protected $manipulationSequence;
 
@@ -52,6 +66,8 @@ class Manipulations
      * @param string $orientation
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function orientation(string $orientation)
     {
@@ -72,6 +88,8 @@ class Manipulations
      * @param int $height
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function crop(string $cropMethod, int $width, int $height)
     {
@@ -112,6 +130,8 @@ class Manipulations
      * @param int $y
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function manualCrop(int $width, int $height, int $x, int $y)
     {
@@ -130,6 +150,8 @@ class Manipulations
      * @param int $width
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function width(int $width)
     {
@@ -144,6 +166,8 @@ class Manipulations
      * @param int $height
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function height(int $height)
     {
@@ -160,6 +184,8 @@ class Manipulations
      * @param int $height
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function fit(string $fitMethod, int $width, int $height)
     {
@@ -181,6 +207,8 @@ class Manipulations
      * @param int $ratio A value between 1 and 8
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function devicePixelRatio(int $ratio)
     {
@@ -195,6 +223,8 @@ class Manipulations
      * @param int $brightness A value between -100 and 100
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function brightness(int $brightness)
     {
@@ -209,6 +239,8 @@ class Manipulations
      * @param float $gamma A value between 0.01 and 9.99
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function gamma(float $gamma)
     {
@@ -223,6 +255,8 @@ class Manipulations
      * @param int $contrast A value between -100 and 100
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function contrast(int $contrast)
     {
@@ -237,6 +271,8 @@ class Manipulations
      * @param int $sharpen A value between 0 and 100
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function sharpen(int $sharpen)
     {
@@ -251,6 +287,8 @@ class Manipulations
      * @param int $blur A value between 0 and 100
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function blur(int $blur)
     {
@@ -265,6 +303,8 @@ class Manipulations
      * @param int $pixelate A value between 0 and 1000
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function pixelate(int $pixelate)
     {
@@ -307,6 +347,8 @@ class Manipulations
      * @param string $borderType
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function border(int $width, string $color, string $borderType = 'overlay')
     {
@@ -329,6 +371,8 @@ class Manipulations
      * @param int $quality
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function quality(int $quality)
     {
@@ -343,6 +387,8 @@ class Manipulations
      * @param string $format
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     public function format(string $format)
     {
@@ -361,6 +407,8 @@ class Manipulations
      * @param string $filterName
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
     protected function filter(string $filterName)
     {
@@ -373,6 +421,128 @@ class Manipulations
         }
 
         return $this->addManipulation('filter', $filterName);
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return $this
+     *
+     * @throws FileNotFoundException
+     */
+    public function watermark(string $filePath)
+    {
+        if (! file_exists($filePath)) {
+            throw new FileNotFoundException($filePath);
+        }
+
+        $this->addManipulation('watermark', $filePath);
+
+        return $this;
+    }
+
+    /**
+     * @param int    $width The width of the watermark in pixels (default) or percent.
+     * @param string $unit  The unit of the `$width` parameter. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
+     *
+     * @return $this
+     */
+    public function watermarkWidth(int $width, string $unit = 'px')
+    {
+        $width = ($unit == static::UNIT_PERCENT ? $width.'w' : $width);
+
+        return $this->addManipulation('watermarkWidth', $width);
+    }
+
+    /**
+     * @param int    $height The height of the watermark in pixels (default) or percent.
+     * @param string $unit   The unit of the `$height` parameter. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
+     *
+     * @return $this
+     */
+    public function watermarkHeight(int $height, string $unit = 'px')
+    {
+        $height = ($unit == static::UNIT_PERCENT ? $height.'h' : $height);
+
+        return $this->addManipulation('watermarkHeight', $height);
+    }
+
+    /**
+     * @param string $fitMethod How is the watermark fitted into the watermarkWidth and watermarkHeight properties.
+     *
+     * @return $this
+     *
+     * @throws InvalidManipulation
+     */
+    public function watermarkFit(string $fitMethod)
+    {
+        if (! $this->validateManipulation($fitMethod, 'fit')) {
+            throw InvalidManipulation::invalidParameter(
+                'watermarkFit',
+                $fitMethod,
+                $this->getValidManipulationOptions('fit')
+            );
+        }
+
+        return $this->addManipulation('watermarkFit', $fitMethod);
+    }
+
+    /**
+     * @param int $xPadding         How far is the watermark placed from the left and right edges of the image.
+     * @param int|null $yPadding    How far is the watermark placed from the top and bottom edges of the image.
+     * @param string $unit          Unit of the padding values. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
+     *
+     * @return $this
+     */
+    public function watermarkPadding(int $xPadding, int $yPadding = null, string $unit = 'px')
+    {
+        $yPadding = $yPadding ?? $xPadding;
+
+        $xPadding = ($unit == static::UNIT_PERCENT ? $xPadding.'w' : $xPadding);
+        $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
+
+        $this->addManipulation('watermarkPaddingX', $xPadding);
+        $this->addManipulation('watermarkPaddingY', $yPadding);
+
+        return $this;
+    }
+
+    /**
+     * @param string $position
+     *
+     * @return $this
+     *
+     * @throws InvalidManipulation
+     */
+    public function watermarkPosition(string $position)
+    {
+        if (! $this->validateManipulation($position, 'position')) {
+            throw InvalidManipulation::invalidParameter(
+                'watermarkPosition',
+                $position,
+                $this->getValidManipulationOptions('position')
+            );
+        }
+
+        return $this->addManipulation('watermarkPosition', $position);
+    }
+
+    /**
+     * Sets the opacity of the watermark. Only works with the `imagick` driver.
+     *
+     * @param int $opacity A value between 0 and 100.
+     *
+     * @return $this
+     *
+     * @throws InvalidManipulation
+     */
+    public function watermarkOpacity(int $opacity)
+    {
+        if ($opacity < 0 || $opacity > 100) {
+            throw InvalidManipulation::valueNotInRange('opacity', $opacity, 0, 100);
+        }
+
+        return $this->addManipulation('watermarkOpacity', $opacity);
     }
 
     /**
