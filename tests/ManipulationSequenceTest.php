@@ -240,4 +240,26 @@ class ManipulationSequenceTest extends TestCase
 
         $this->assertEquals($sequenceArray, $sequence->toArray());
     }
+
+    /** @test */
+    public function it_does_not_return_empty_groups_when_iterating_a_merged_sequence()
+    {
+        $sequenceArray = [
+            [
+                'width' => 100,
+                'height' => 100,
+            ],
+        ];
+
+        $sequence1 = new ManipulationSequence();
+        $sequence2 = new ManipulationSequence($sequenceArray);
+
+        $mergedSequence = $sequence1->merge($sequence2);
+
+        $this->assertCount(1, $mergedSequence);
+
+        foreach ($mergedSequence as $sequence) {
+            $this->assertEquals($sequenceArray[0], $sequence);
+        }
+    }
 }
