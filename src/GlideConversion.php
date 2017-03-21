@@ -95,11 +95,7 @@ final class GlideConversion
             return;
         }
 
-        $conversionResultDirectory = pathinfo($this->conversionResult, PATHINFO_DIRNAME);
-
         rename($this->conversionResult, $outputFile);
-
-        rmdir($conversionResultDirectory);
     }
 
     private function prepareManipulations(array $manipulationGroup): array
