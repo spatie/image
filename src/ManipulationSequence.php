@@ -52,7 +52,9 @@ class ManipulationSequence implements IteratorAggregate
                 $this->addManipulation($name, $argument);
             }
 
-            $this->startNewGroup();
+            if (next($sequenceArray)) {
+                $this->startNewGroup();
+            }
         }
     }
 
@@ -78,7 +80,7 @@ class ManipulationSequence implements IteratorAggregate
 
     public function getIterator(): ArrayIterator
     {
-        return new ArrayIterator($this->groups);
+        return new ArrayIterator($this->toArray());
     }
 
     /**
