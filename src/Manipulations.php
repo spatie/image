@@ -59,7 +59,14 @@ class Manipulations
 
     public function __construct(array $manipulations = [])
     {
-        $this->manipulationSequence = new ManipulationSequence($manipulations);
+        //Check if is a single array or multi arrays
+        if ($this->checkIfHasMultipleConversions($manipulations)) {
+            foreach ($manipulations as $manipulation) {
+                $this->manipulationSequence = new ManipulationSequence($manipulation);
+            }
+        } else {
+            $this->manipulationSequence = new ManipulationSequence($manipulations);
+        }
     }
 
     /**
@@ -553,6 +560,43 @@ class Manipulations
         $this->manipulationSequence->startNewGroup();
 
         return $this;
+    }
+
+    /**
+     * Create new manipulations class
+     *
+     * @return self
+     */
+    public static function create()
+    {
+        return new self();
+    }
+
+    /**
+     * Return manipulationSequence as array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->manipulationSequence->toArray();
+    }
+
+    /**
+     * Checks if the given manipulations has arrays inside or not
+     *
+     * @param  Array $manipulations
+     * @return bool
+     */
+    private function checkIfHasMultipleConversions($manipulations)
+    {
+        $hasArrays = false;
+        foreach ($manipulations as $manipulation) {
+            if (isset($manipulation[0]) && is_array($manipulation[0])) {
+                $hasArrays = true;
+            }
+        }
+        return $hasArrays;
     }
 
     public function removeManipulation(string $name)
