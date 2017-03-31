@@ -59,7 +59,7 @@ class Manipulations
 
     public function __construct(array $manipulations = [])
     {
-        if (!$this->hasMultipleConversions($manipulations)) {
+        if (! $this->hasMultipleConversions($manipulations)) {
             $manipulations = [$manipulations];
         }
 
@@ -564,7 +564,7 @@ class Manipulations
     /**
      * Create new manipulations class.
      *
-     * @param Array $manipulations
+     * @param array $manipulations
      *
      * @return self
      */
@@ -573,8 +573,7 @@ class Manipulations
         return new self($manipulations);
     }
 
-    
-    public function toArray()
+    public function toArray() : array
     {
         return $this->manipulationSequence->toArray();
     }

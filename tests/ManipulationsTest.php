@@ -62,7 +62,7 @@ class ManipulationsTest extends TestCase
     public function it_can_return_an_array_of_manipulations()
     {
         $sequenceArray = [
-            ['width' => "123"],
+            ['width' => '123'],
             ['manualCrop' => '20,10,10,10'],
         ];
 
@@ -78,7 +78,7 @@ class ManipulationsTest extends TestCase
     public function it_can_create_from_sequence_array()
     {
         $sequenceArray = [
-            ['width' => "123"],
+            ['width' => '123'],
             ['manualCrop' => '20,10,10,10'],
         ];
         
@@ -93,7 +93,7 @@ class ManipulationsTest extends TestCase
         $sequence = [
             [
                 'manualCrop' => '20,10,10,10',
-                'width' => "123",
+                ['width' => '123'],
             ]
         ];
 
