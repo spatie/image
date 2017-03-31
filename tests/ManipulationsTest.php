@@ -93,7 +93,7 @@ class ManipulationsTest extends TestCase
         $sequence = [
             [
                 'manualCrop' => '20,10,10,10',
-                ['width' => '123'],
+                'width' => '123',
             ]
         ];
 
