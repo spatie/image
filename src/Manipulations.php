@@ -59,13 +59,12 @@ class Manipulations
 
     public function __construct(array $manipulations = [])
     {
-        //Check if is a single array or multi arrays
-        if ($this->checkIfHasMultipleConversions($manipulations)) {
-            foreach ($manipulations as $manipulation) {
-                $this->manipulationSequence = new ManipulationSequence($manipulation);
-            }
-        } else {
-            $this->manipulationSequence = new ManipulationSequence($manipulations);
+        if (!$this->hasMultipleConversions($manipulations)) {
+            $manipulations = [$manipulations];
+        }
+
+        foreach ($manipulations as $manipulation) {
+            $this->manipulationSequence = new ManipulationSequence($manipulation);
         }
     }
 
@@ -563,40 +562,38 @@ class Manipulations
     }
 
     /**
-     * Create new manipulations class
+     * Create new manipulations class.
+     *
+     * @param Array $manipulations
      *
      * @return self
      */
-    public static function create()
+    public static function create(array $manipulations = [])
     {
-        return new self();
+        return new self($manipulations);
     }
 
-    /**
-     * Return manipulationSequence as array
-     *
-     * @return array
-     */
+    
     public function toArray()
     {
         return $this->manipulationSequence->toArray();
     }
 
     /**
-     * Checks if the given manipulations has arrays inside or not
+     * Checks if the given manipulations has arrays inside or not.
      *
-     * @param  Array $manipulations
+     * @param  array $manipulations
+     *
      * @return bool
      */
-    private function checkIfHasMultipleConversions($manipulations)
+    private function hasMultipleConversions(array $manipulations) : bool
     {
-        $hasArrays = false;
         foreach ($manipulations as $manipulation) {
             if (isset($manipulation[0]) && is_array($manipulation[0])) {
-                $hasArrays = true;
+                return true;
             }
         }
-        return $hasArrays;
+        return false;
     }
 
     public function removeManipulation(string $name)
