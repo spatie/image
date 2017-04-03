@@ -2,6 +2,7 @@
 
 namespace Spatie\Image;
 
+use FilesystemIterator;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
@@ -95,7 +96,15 @@ final class GlideConversion
             return;
         }
 
+        $conversionResultDirectory = pathinfo($this->conversionResult, PATHINFO_DIRNAME);
+
         rename($this->conversionResult, $outputFile);
+
+        $iterator = new FilesystemIterator($conversionResultDirectory);
+
+        if(! $iterator->valid()) {
+            rmdir($conversionResultDirectory);
+        }
     }
 
     private function prepareManipulations(array $manipulationGroup): array
