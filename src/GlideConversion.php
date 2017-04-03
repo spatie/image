@@ -102,7 +102,7 @@ final class GlideConversion
 
         $iterator = new FilesystemIterator($conversionResultDirectory);
 
-        if(! $iterator->valid()) {
+        if (! $iterator->valid()) {
             rmdir($conversionResultDirectory);
         }
     }
