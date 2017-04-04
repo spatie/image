@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.1.2 - 2017-04-04
+
+- remove conversion directory after converting image
+
 ## 1.1.1 - 2017-03-17
 
 - avoid processing empty manipulations groups

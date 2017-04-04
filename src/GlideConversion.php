@@ -100,9 +100,7 @@ final class GlideConversion
 
         rename($this->conversionResult, $outputFile);
 
-        $iterator = new FilesystemIterator($conversionResultDirectory);
-
-        if (! $iterator->valid()) {
+        if ($this->directoryIsEmpty($conversionResultDirectory)) {
             rmdir($conversionResultDirectory);
         }
     }
@@ -154,5 +152,12 @@ final class GlideConversion
         }
 
         return $conversions[$manipulationName];
+    }
+
+    private function directoryIsEmpty(string $directory): bool
+    {
+        $iterator = new FilesystemIterator($directory);
+
+        return ! $iterator->valid();
     }
 }
