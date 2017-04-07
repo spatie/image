@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.1.3 - 2017-04-07
+
+- improve support for multi-volume systems
+
 ## 1.1.2 - 2017-04-04
 
 - remove conversion directory after converting image
