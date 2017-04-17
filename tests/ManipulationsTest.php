@@ -81,7 +81,7 @@ class ManipulationsTest extends TestCase
             ['width' => '123'],
             ['manualCrop' => '20,10,10,10'],
         ];
-        
+
         $manipulations = Manipulations::create($sequenceArray);
 
         $this->assertEquals($sequenceArray, $manipulations->toArray());
@@ -94,7 +94,7 @@ class ManipulationsTest extends TestCase
             [
                 'manualCrop' => '20,10,10,10',
                 'width' => '123',
-            ]
+            ],
         ];
 
         $manipulations = Manipulations::create($sequence);

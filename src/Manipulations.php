@@ -592,6 +592,7 @@ class Manipulations
                 return true;
             }
         }
+
         return false;
     }
 
