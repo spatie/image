@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.2.0 - 2017-04-17
+
+- allow `Manipulations` to be constructed with an array of arrays
+
 ## 1.1.3 - 2017-04-07
 
 - improve support for multi-volume systems
