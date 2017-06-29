@@ -4,7 +4,7 @@ All notable changes to `image` will be documented in this file
 
 ## 1.2.1 - 2017-06-29
 
-- add methods to determine emptyness to `Manipulations` and `ManipuliationSequence`.
+- add methods to determine emptyness to `Manipulations` and `ManipulationSequence`
 
 ## 1.2.0 - 2017-04-17
 
