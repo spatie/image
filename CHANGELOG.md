@@ -2,9 +2,17 @@
 
 All notable changes to `image` will be documented in this file
 
-## 1.1.2 - 2017-06-29
+## 1.2.1 - 2017-06-29
 
 - add methods to determine emptyness to `Manipulations` and `ManipuliationSequence`.
+
+## 1.2.0 - 2017-04-17
+
+- allow `Manipulations` to be constructed with an array of arrays
+
+## 1.1.3 - 2017-04-07
+
+- improve support for multi-volume systems
 
 ## 1.1.2 - 2017-04-04
 
