@@ -64,4 +64,16 @@ class ManipulationsTest extends TestCase
             'blur' => 10,
         ]], $mergedManipulations->getManipulationSequence()->toArray());
     }
+
+    /** @test */
+    public function it_can_determine_that_it_is_empty()
+    {
+        $manipulations = new Manipulations();
+
+        $this->assertTrue($manipulations->isEmpty());
+
+        $manipulations->width(100);
+
+        $this->assertFalse($manipulations->isEmpty());
+    }
 }

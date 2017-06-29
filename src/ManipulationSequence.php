@@ -99,6 +99,19 @@ class ManipulationSequence implements IteratorAggregate
         return $this;
     }
 
+    public function isEmpty(): bool
+    {
+        if (count($this->groups) > 1) {
+            return false;
+        }
+
+        if (count($this->groups[0]) > 0) {
+            return false;
+        }
+
+        return true;
+    }
+
     protected function sanitizeManipulationSets(array $groups): array
     {
         return array_values(array_filter($groups, function (array $manipulationSet) {

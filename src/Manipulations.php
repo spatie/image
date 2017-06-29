@@ -611,4 +611,9 @@ class Manipulations
             return strpos($name, strtoupper($manipulation)) === 0;
         }, ARRAY_FILTER_USE_BOTH);
     }
+
+    public function isEmpty(): bool
+    {
+        return $this->manipulationSequence->isEmpty();
+    }
 }

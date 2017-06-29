@@ -262,4 +262,16 @@ class ManipulationSequenceTest extends TestCase
             $this->assertEquals($sequenceArray[0], $sequence);
         }
     }
+
+    /** @test */
+    public function it_can_determine_that_the_sequence_is_empty()
+    {
+        $sequence = new ManipulationSequence();
+
+        $this->assertTrue($sequence->isEmpty());
+
+        $sequence->addManipulation('width', 50);
+
+        $this->assertFalse($sequence->isEmpty());
+    }
 }
