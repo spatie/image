@@ -3,6 +3,7 @@
 namespace Spatie\Image;
 
 use BadMethodCallException;
+use ImageOptimizer\OptimizerFactory;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 
 /** @mixin \Spatie\Image\Manipulations */
@@ -14,8 +15,9 @@ class Image
     /** @var \Spatie\Image\Manipulations */
     protected $manipulations;
 
-    /** @var */
     protected $imageDriver = 'gd';
+
+    protected $shouldOptimize = false;
 
     /**
      * @param string $pathToImage
@@ -43,7 +45,7 @@ class Image
      */
     public function useImageDriver(string $imageDriver)
     {
-        if (! in_array($imageDriver, ['gd', 'imagick'])) {
+        if (!in_array($imageDriver, ['gd', 'imagick'])) {
             throw InvalidImageDriver::driver($imageDriver);
         }
 
@@ -72,7 +74,7 @@ class Image
 
     public function __call($name, $arguments)
     {
-        if (! method_exists($this->manipulations, $name)) {
+        if (!method_exists($this->manipulations, $name)) {
             throw new BadMethodCallException("Manipulation `{$name}` does not exist");
         }
 
@@ -84,6 +86,16 @@ class Image
     public function getManipulationSequence(): ManipulationSequence
     {
         return $this->manipulations->getManipulationSequence();
+    }
+
+    /**
+     * @return $this
+     */
+    public function optimize()
+    {
+        $this->shouldOptimize = true;
+
+        return $this;
     }
 
     public function save($outputPath = '')
@@ -98,6 +110,19 @@ class Image
             ->useImageDriver($this->imageDriver)
             ->performManipulations($this->manipulations)
             ->save($outputPath);
+
+        if ($this->shouldOptimize) {
+            $this->performOptimization($outputPath);
+        }
+    }
+
+    protected function performOptimization($path)
+    {
+        $factory = new OptimizerFactory();
+
+        $optimizer = $factory->get();
+
+        $optimizer->optimize($path);
     }
 
     protected function addFormatManipulation($outputPath)

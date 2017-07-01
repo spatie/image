@@ -18,6 +18,7 @@
     "require": {
         "php": "^7.0",
         "league/glide": "^1.2",
+        "ps/image-optimizer": "^1.1",
         "spatie/temporary-directory": "^1.0.0"
     },
     "require-dev": {
