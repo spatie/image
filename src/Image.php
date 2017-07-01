@@ -18,6 +18,7 @@ class Image
     protected $imageDriver = 'gd';
 
     protected $shouldOptimize = false;
+    protected $optimizationOptions = [];
 
     /**
      * @param string $pathToImage
@@ -89,10 +90,14 @@ class Image
     }
 
     /**
+     * @param array $optimizationOptions
+     *
      * @return $this
      */
-    public function optimize()
+    public function optimize($optimizationOptions = [])
     {
+        $this->optimizationOptions = $optimizationOptions;
+
         $this->shouldOptimize = true;
 
         return $this;
@@ -118,7 +123,7 @@ class Image
 
     protected function performOptimization($path)
     {
-        $factory = new OptimizerFactory();
+        $factory = new OptimizerFactory($this->optimizationOptions);
 
         $optimizer = $factory->get();
 
