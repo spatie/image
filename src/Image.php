@@ -46,7 +46,7 @@ class Image
      */
     public function useImageDriver(string $imageDriver)
     {
-        if (!in_array($imageDriver, ['gd', 'imagick'])) {
+        if (! in_array($imageDriver, ['gd', 'imagick'])) {
             throw InvalidImageDriver::driver($imageDriver);
         }
 
@@ -75,7 +75,7 @@ class Image
 
     public function __call($name, $arguments)
     {
-        if (!method_exists($this->manipulations, $name)) {
+        if (! method_exists($this->manipulations, $name)) {
             throw new BadMethodCallException("Manipulation `{$name}` does not exist");
         }
 
