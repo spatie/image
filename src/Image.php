@@ -3,6 +3,7 @@
 namespace Spatie\Image;
 
 use BadMethodCallException;
+use ImageOptimizer\OptimizerFactory;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 
 /** @mixin \Spatie\Image\Manipulations */
@@ -14,8 +15,10 @@ class Image
     /** @var \Spatie\Image\Manipulations */
     protected $manipulations;
 
-    /** @var */
     protected $imageDriver = 'gd';
+
+    protected $shouldOptimize = false;
+    protected $optimizationOptions = [];
 
     /**
      * @param string $pathToImage
@@ -86,6 +89,20 @@ class Image
         return $this->manipulations->getManipulationSequence();
     }
 
+    /**
+     * @param array $optimizationOptions
+     *
+     * @return $this
+     */
+    public function optimize($optimizationOptions = [])
+    {
+        $this->optimizationOptions = $optimizationOptions;
+
+        $this->shouldOptimize = true;
+
+        return $this;
+    }
+
     public function save($outputPath = '')
     {
         if ($outputPath == '') {
@@ -98,6 +115,19 @@ class Image
             ->useImageDriver($this->imageDriver)
             ->performManipulations($this->manipulations)
             ->save($outputPath);
+
+        if ($this->shouldOptimize) {
+            $this->performOptimization($outputPath);
+        }
+    }
+
+    protected function performOptimization($path)
+    {
+        $factory = new OptimizerFactory($this->optimizationOptions);
+
+        $optimizer = $factory->get();
+
+        $optimizer->optimize($path);
     }
 
     protected function addFormatManipulation($outputPath)
