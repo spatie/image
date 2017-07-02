@@ -145,7 +145,7 @@ class ManipulationsTest extends TestCase
 
         $manipulations->optimize();
 
-        $this->assertEquals("[]", $manipulations->getManipulationArgument('optimize'));
+        $this->assertEquals('[]', $manipulations->getManipulationArgument('optimize'));
 
         $manipulations = new Manipulations();
 

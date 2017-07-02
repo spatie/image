@@ -130,7 +130,8 @@ class ManipulationSequence implements IteratorAggregate
                     return $argument;
                 }
             }
-            return null;
+
+            return;
         }
     }
 
@@ -145,6 +146,7 @@ class ManipulationSequence implements IteratorAggregate
                     return true;
                 }
             }
+
             return false;
         }
     }

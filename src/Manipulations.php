@@ -552,7 +552,7 @@ class Manipulations
     }
 
     /**
-     * Shave off some kilobytes by optimize the image
+     * Shave off some kilobytes by optimize the image.
      *
      * @param array $optimizationOptions
      *
