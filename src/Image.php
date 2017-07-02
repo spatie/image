@@ -102,7 +102,7 @@ class Image
         if ($this->shouldOptimize()) {
             $opmitizationOptions = $this->manipulations->getFirstManipulationArgument('optimize');
 
-            $opmitizationOptions = json_decode("{}", true);
+            $opmitizationOptions = json_decode('{}', true);
 
             $this->performOptimization($outputPath, $opmitizationOptions);
         }

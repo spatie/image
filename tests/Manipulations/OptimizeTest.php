@@ -4,7 +4,6 @@ namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 class OptimizeTest extends TestCase
 {
