@@ -99,17 +99,22 @@ class Image
             ->performManipulations($this->manipulations)
             ->save($outputPath);
 
-        if ($this->manipulations->contain('optimize')) {
+        if ($this->shouldOptimize()) {
+            $opmitizationOptions = $this->manipulations->getFirstManipulationArgument('optimize');
 
+            $opmitizationOptions = json_decode("{}", true);
 
-            $this->performOptimization($outputPath);
+            $this->performOptimization($outputPath, $opmitizationOptions);
         }
     }
 
-    protected function performOptimization($path)
+    protected function shouldOptimize(): bool
     {
-        $optimizationOptions = json_decode("{}", true);
+        return ! is_null($this->manipulations->getFirstManipulationArgument('optimize'));
+    }
 
+    protected function performOptimization($path, array $optimizationOptions)
+    {
         $factory = new OptimizerFactory($optimizationOptions);
 
         $optimizer = $factory->get();

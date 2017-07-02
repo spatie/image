@@ -61,18 +61,6 @@ class ImageTest extends TestCase
         $this->assertImageType($targetFile, IMAGETYPE_JPEG);
     }
 
-    /** @test */
-    public function it_can_optimize_an_image()
-    {
-        $targetFile = $this->tempDir->path('optimized.jpg');
-
-        Image::load($this->getTestFile('test.jpg'))
-            ->optimize()
-            ->save($targetFile);
-
-        $this->assertFileExists($targetFile);
-    }
-
     protected function assertImageType(string $filePath, $expectedType)
     {
         $expectedType = image_type_to_mime_type($expectedType);

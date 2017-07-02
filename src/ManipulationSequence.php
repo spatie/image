@@ -122,6 +122,21 @@ class ManipulationSequence implements IteratorAggregate
     /*
     * Determine if the sequences contain a manipulation with the given name.
     */
+    public function getFirstManipulationArgument($searchManipulationName)
+    {
+        foreach ($this->groups as $group) {
+            foreach ($group as $name => $argument) {
+                if ($name === $searchManipulationName) {
+                    return $argument;
+                }
+            }
+            return null;
+        }
+    }
+
+    /*
+    * Determine if the sequences contain a manipulation with the given name.
+    */
     public function contains($searchManipulationName)
     {
         foreach ($this->groups as $group) {

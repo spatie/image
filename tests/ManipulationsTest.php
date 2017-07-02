@@ -137,16 +137,20 @@ class ManipulationsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_determine_that_it_has_a_manipulation_with_the_given_name()
+    public function it_can_get_the_arguments_of_a_manipulation()
     {
         $manipulations = new Manipulations();
 
-        $this->assertFalse($manipulations->contain('optimize'));
+        $this->assertNull($manipulations->getManipulationArgument('optimize'));
 
         $manipulations->optimize();
 
-        $this->assertTrue($manipulations->contain('optimize'));
+        $this->assertEquals("[]", $manipulations->getManipulationArgument('optimize'));
 
-        $this->assertFalse($manipulations->contain('other-manipulation'));
+        $manipulations = new Manipulations();
+
+        $manipulations->optimize(['hide_errors' => true]);
+
+        $this->assertEquals('{"hide_errors":true}', $manipulations->getManipulationArgument('optimize'));
     }
 }

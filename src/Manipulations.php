@@ -671,10 +671,12 @@ class Manipulations
     }
 
     /*
-     * Determine if the current manipultions contain one with the given name.
+     * Get the first manipultion with the given name.
+     *
+     * @return mixed
      */
-    public function contain(string $manipulationName): bool
+    public function getFirstManipulationArgument(string $manipulationName)
     {
-        return $this->manipulationSequence->contains($manipulationName);
+        return $this->manipulationSequence->getFirstManipulationArgument($manipulationName);
     }
 }
