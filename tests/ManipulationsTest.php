@@ -135,4 +135,18 @@ class ManipulationsTest extends TestCase
 
         $this->assertFalse($manipulations->isEmpty());
     }
+
+    /** @test */
+    public function it_can_determine_that_it_has_a_manipulation_with_the_given_name()
+    {
+        $manipulations = new Manipulations();
+
+        $this->assertFalse($manipulations->contain('optimize'));
+
+        $manipulations->optimize();
+
+        $this->assertTrue($manipulations->contain('optimize'));
+
+        $this->assertFalse($manipulations->contain('other-manipulation'));
+    }
 }

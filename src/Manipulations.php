@@ -552,6 +552,18 @@ class Manipulations
     }
 
     /**
+     * Shave off some kilobytes by optimize the image
+     *
+     * @param array $optimizationOptions
+     *
+     * return $this;
+     */
+    public function optimize(array $optimizationOptions = [])
+    {
+        $this->addManipulation('optimize', json_encode($optimizationOptions));
+    }
+
+    /**
      * @return $this
      */
     public function apply()
@@ -656,5 +668,13 @@ class Manipulations
     public function isEmpty(): bool
     {
         return $this->manipulationSequence->isEmpty();
+    }
+
+    /*
+     * Determine if the current manipultions contain one with the given name.
+     */
+    public function contain(string $manipulationName): bool
+    {
+        return $this->manipulationSequence->contains($manipulationName);
     }
 }

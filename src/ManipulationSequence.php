@@ -118,4 +118,19 @@ class ManipulationSequence implements IteratorAggregate
             return count($manipulationSet);
         }));
     }
+
+    /*
+    * Determine if the sequences contain a manipulation with the given name.
+    */
+    public function contains($searchManipulationName)
+    {
+        foreach ($this->groups as $group) {
+            foreach ($group as $name => $argument) {
+                if ($name === $searchManipulationName) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }

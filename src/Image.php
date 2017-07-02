@@ -17,9 +17,6 @@ class Image
 
     protected $imageDriver = 'gd';
 
-    protected $shouldOptimize = false;
-    protected $optimizationOptions = [];
-
     /**
      * @param string $pathToImage
      *
@@ -89,20 +86,6 @@ class Image
         return $this->manipulations->getManipulationSequence();
     }
 
-    /**
-     * @param array $optimizationOptions
-     *
-     * @return $this
-     */
-    public function optimize($optimizationOptions = [])
-    {
-        $this->optimizationOptions = $optimizationOptions;
-
-        $this->shouldOptimize = true;
-
-        return $this;
-    }
-
     public function save($outputPath = '')
     {
         if ($outputPath == '') {
@@ -116,14 +99,18 @@ class Image
             ->performManipulations($this->manipulations)
             ->save($outputPath);
 
-        if ($this->shouldOptimize) {
+        if ($this->manipulations->contain('optimize')) {
+
+
             $this->performOptimization($outputPath);
         }
     }
 
     protected function performOptimization($path)
     {
-        $factory = new OptimizerFactory($this->optimizationOptions);
+        $optimizationOptions = json_decode("{}", true);
+
+        $factory = new OptimizerFactory($optimizationOptions);
 
         $optimizer = $factory->get();
 

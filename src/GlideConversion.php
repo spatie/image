@@ -111,7 +111,9 @@ final class GlideConversion
         $glideManipulations = [];
 
         foreach ($manipulationGroup as $name => $argument) {
-            $glideManipulations[$this->convertToGlideParameter($name)] = $argument;
+            if ($name !== 'optimize') {
+                $glideManipulations[$this->convertToGlideParameter($name)] = $argument;
+            }
         }
 
         return $glideManipulations;
