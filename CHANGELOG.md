@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.3.0 - 2017-07-02
+
+- add `optimize` method
+
 ## 1.2.1 - 2017-06-29
 
 - add methods to determine emptyness to `Manipulations` and `ManipulationSequence`
