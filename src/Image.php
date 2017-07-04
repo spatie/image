@@ -5,6 +5,7 @@ namespace Spatie\Image;
 use BadMethodCallException;
 use ImageOptimizer\OptimizerFactory;
 use Spatie\Image\Exceptions\InvalidImageDriver;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Image
@@ -43,7 +44,7 @@ class Image
      */
     public function useImageDriver(string $imageDriver)
     {
-        if (! in_array($imageDriver, ['gd', 'imagick'])) {
+        if (!in_array($imageDriver, ['gd', 'imagick'])) {
             throw InvalidImageDriver::driver($imageDriver);
         }
 
@@ -72,7 +73,7 @@ class Image
 
     public function __call($name, $arguments)
     {
-        if (! method_exists($this->manipulations, $name)) {
+        if (!method_exists($this->manipulations, $name)) {
             throw new BadMethodCallException("Manipulation `{$name}` does not exist");
         }
 
@@ -100,26 +101,32 @@ class Image
             ->save($outputPath);
 
         if ($this->shouldOptimize()) {
-            $opmitizationOptions = $this->manipulations->getFirstManipulationArgument('optimize');
+            $optimizerChainConfiguration = $this->manipulations->getFirstManipulationArgument('optimize');
 
-            $opmitizationOptions = json_decode('{}', true);
+            $optimizerChainConfiguration = json_decode($optimizerChainConfiguration, true);
 
-            $this->performOptimization($outputPath, $opmitizationOptions);
+            $this->performOptimization($outputPath, $optimizerChainConfiguration);
         }
     }
 
     protected function shouldOptimize(): bool
     {
-        return ! is_null($this->manipulations->getFirstManipulationArgument('optimize'));
+        return !is_null($this->manipulations->getFirstManipulationArgument('optimize'));
     }
 
-    protected function performOptimization($path, array $optimizationOptions)
+    protected function performOptimization($path, array $optimizerChainConfiguration)
     {
-        $factory = new OptimizerFactory($optimizationOptions);
+        $optimizerChain = OptimizerChainFactory::create();
 
-        $optimizer = $factory->get();
+        if (count($optimizerChainConfiguration)) {
+            $optimizers = array_map(function (array $optimizerOptions, string $optimizerClassName) {
+                return (new $optimizerClassName)->setOptions($optimizerOptions);
+            }, $optimizerChainConfiguration, array_keys($optimizerChainConfiguration));
 
-        $optimizer->optimize($path);
+            $optimizerChain->setOptimizers($optimizers);
+        }
+
+        $optimizerChain->optimize($path);
     }
 
     protected function addFormatManipulation($outputPath)
