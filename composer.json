@@ -18,7 +18,7 @@
     "require": {
         "php": "^7.0",
         "league/glide": "^1.2",
-        "spatie/image-optimizer": "^0.0.4",
+        "spatie/image-optimizer": "^1.0",
         "spatie/temporary-directory": "^1.0.0",
         "symfony/process": "^3.0"
     },
