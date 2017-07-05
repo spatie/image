@@ -2,6 +2,8 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.3.2 - 2017-07-05
+- swap out underlying optimization package
 
 ## 1.3.1 - 2017-07-02
 
