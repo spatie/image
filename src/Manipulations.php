@@ -560,7 +560,7 @@ class Manipulations
      */
     public function optimize(array $optimizationOptions = [])
     {
-        $this->addManipulation('optimize', json_encode($optimizationOptions));
+        return $this->addManipulation('optimize', json_encode($optimizationOptions));
     }
 
     /**
