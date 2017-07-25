@@ -2,6 +2,9 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.3.4 - 2017-07-25
+- fix `optimize` docblock
+
 ## 1.3.3 - 2017-07-11
 - make `optimize` method fluent
 
