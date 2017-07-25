@@ -556,7 +556,7 @@ class Manipulations
      *
      * @param array $optimizationOptions
      *
-     * return $this;
+     * @return $this
      */
     public function optimize(array $optimizationOptions = [])
     {
