@@ -45,6 +45,8 @@ final class GlideConversion
 
             $glideServer = $this->createGlideServer($inputFile, $watermarkPath);
 
+            $glideServer->setGroupCacheInFolders(false);
+
             $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
