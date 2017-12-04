@@ -2,6 +2,9 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.3.5 - 2017-12-04
+- fix for problems when creating directories in the temporary directory
+
 ## 1.3.4 - 2017-07-25
 - fix `optimize` docblock
 
