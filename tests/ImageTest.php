@@ -61,6 +61,14 @@ class ImageTest extends TestCase
         $this->assertImageType($targetFile, IMAGETYPE_JPEG);
     }
 
+    /** @test */
+    public function it_can_get_the_width_and_height_of_an_image()
+    {
+        $this->assertEquals(340, Image::load($this->getTestJpg())->getWidth());
+
+        $this->assertEquals(280, Image::load($this->getTestJpg())->getHeight());
+    }
+
     protected function assertImageType(string $filePath, $expectedType)
     {
         $expectedType = image_type_to_mime_type($expectedType);

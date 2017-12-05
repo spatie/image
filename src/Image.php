@@ -5,6 +5,7 @@ namespace Spatie\Image;
 use BadMethodCallException;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Intervention\Image\ImageManagerStatic as InterventionImage;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Image
@@ -79,6 +80,16 @@ class Image
         $this->manipulations->$name(...$arguments);
 
         return $this;
+    }
+
+    public function getWidth(): int
+    {
+        return InterventionImage::make($this->pathToImage)->width();
+    }
+
+    public function getHeight(): int
+    {
+        return InterventionImage::make($this->pathToImage)->height();
     }
 
     public function getManipulationSequence(): ManipulationSequence
