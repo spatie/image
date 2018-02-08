@@ -20,10 +20,10 @@
         "league/glide": "^1.2",
         "spatie/image-optimizer": "^1.0",
         "spatie/temporary-directory": "^1.0.0",
-        "symfony/process": "^3.0"
+        "symfony/process": "^3.0|^4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0",
+        "phpunit/phpunit": "^6.0|^7.0",
         "symfony/var-dumper": "^3.2"
     },
     "autoload": {
