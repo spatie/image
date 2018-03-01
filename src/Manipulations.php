@@ -639,7 +639,7 @@ class Manipulations
         return $this;
     }
 
-    public function mergeManipulations(Manipulations $manipulations)
+    public function mergeManipulations(self $manipulations)
     {
         $this->manipulationSequence->merge($manipulations->manipulationSequence);
 
