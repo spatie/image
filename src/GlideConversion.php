@@ -131,6 +131,7 @@ final class GlideConversion
             'crop' => 'fit',
             'manualCrop' => 'crop',
             'orientation' => 'or',
+            'flip' => 'flip',
             'fit' => 'fit',
             'devicePixelRatio' => 'dpr',
             'brightness' => 'bri',
