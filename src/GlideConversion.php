@@ -103,7 +103,7 @@ final class GlideConversion
         copy($this->conversionResult, $outputFile);
         unlink($this->conversionResult);
 
-        if ($this->directoryIsEmpty($conversionResultDirectory)) {
+        if ($this->directoryIsEmpty($conversionResultDirectory) && is_writeable($conversionResultDirectory)) {
             rmdir($conversionResultDirectory);
         }
     }
