@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.4.2 - 2018-04-11
+
+- Use the correct driver for getting widths and height of images.
+
 ## 1.4.1 - 2018-02-08
 
 - Support symfony ^4.0

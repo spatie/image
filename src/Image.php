@@ -50,6 +50,10 @@ class Image
 
         $this->imageDriver = $imageDriver;
 
+        InterventionImage::configure([
+            'driver' => $this->imageDriver,
+        ]);
+
         return $this;
     }
 

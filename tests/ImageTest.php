@@ -4,6 +4,7 @@ namespace Spatie\Image\Test;
 
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
+use Intervention\Image\ImageManagerStatic as InterventionImage;
 
 class ImageTest extends TestCase
 {
@@ -67,6 +68,18 @@ class ImageTest extends TestCase
         $this->assertEquals(340, Image::load($this->getTestJpg())->getWidth());
 
         $this->assertEquals(280, Image::load($this->getTestJpg())->getHeight());
+    }
+
+    /** @test */
+    public function the_image_driver_is_set_on_the_intervention_static_manager()
+    {
+        $image = Image::load($this->getTestJpg());
+
+        $this->assertEquals('gd', InterventionImage::getManager()->config['driver'] ?? null);
+
+        $image->useImageDriver('imagick');
+
+        $this->assertEquals('imagick', InterventionImage::getManager()->config['driver'] ?? null);
     }
 
     protected function assertImageType(string $filePath, $expectedType)

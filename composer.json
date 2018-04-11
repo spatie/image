@@ -23,6 +23,7 @@
         "symfony/process": "^3.0|^4.0"
     },
     "require-dev": {
+        "larapack/dd": "^1.1",
         "phpunit/phpunit": "^6.0|^7.0",
         "symfony/var-dumper": "^3.2"
     },
