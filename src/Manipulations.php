@@ -23,8 +23,8 @@ class Manipulations
     const ORIENTATION_180 = 180;
     const ORIENTATION_270 = 270;
     
-    const FLIP_H = 'h';
-    const FLIP_V = 'v';
+    const FLIP_HORIZONTALLY = 'h';
+    const FLIP_VERTICALLY = 'v';
     const FLIP_BOTH = 'both';
 
     const FIT_CONTAIN = 'contain';
