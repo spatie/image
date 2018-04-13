@@ -22,6 +22,10 @@ class Manipulations
     const ORIENTATION_90 = 90;
     const ORIENTATION_180 = 180;
     const ORIENTATION_270 = 270;
+    
+    const FLIP_H = 'h';
+    const FLIP_V = 'v';
+    const FLIP_BOTH = 'both';
 
     const FIT_CONTAIN = 'contain';
     const FIT_MAX = 'max';
@@ -86,6 +90,26 @@ class Manipulations
         }
 
         return $this->addManipulation('orientation', $orientation);
+    }
+    
+    /**
+     * @param string $orientation
+     *
+     * @return $this
+     *
+     * @throws InvalidManipulation
+     */
+    public function flip(string $orientation)
+    {
+        if (! $this->validateManipulation($orientation, 'flip')) {
+            throw InvalidManipulation::invalidParameter(
+                'flip',
+                $orientation,
+                $this->getValidManipulationOptions('flip')
+            );
+        }
+
+        return $this->addManipulation('flip', $orientation);
     }
 
     /**
