@@ -98,7 +98,7 @@ final class GlideConversion
             return;
         }
 
-        $conversionResultDirectory = pathinfo($this->conversionResult, PATHINFO_DIRNAME);
+        $conversionResultDirectory = pathinfo($outputFile, PATHINFO_DIRNAME);
 
         copy($this->conversionResult, $outputFile);
         unlink($this->conversionResult);
