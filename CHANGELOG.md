@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.5.1 - 2018-04-18
+
+- Prevent error when trying to remove `/tmp`
+
 ## 1.5.0 - 2018-04-13
 
 - add `flip`
