@@ -22,7 +22,7 @@ class Manipulations
     const ORIENTATION_90 = 90;
     const ORIENTATION_180 = 180;
     const ORIENTATION_270 = 270;
-    
+
     const FLIP_HORIZONTALLY = 'h';
     const FLIP_VERTICALLY = 'v';
     const FLIP_BOTH = 'both';
@@ -91,7 +91,7 @@ class Manipulations
 
         return $this->addManipulation('orientation', $orientation);
     }
-    
+
     /**
      * @param string $orientation
      *
@@ -663,7 +663,7 @@ class Manipulations
         return $this;
     }
 
-    public function mergeManipulations(Manipulations $manipulations)
+    public function mergeManipulations(self $manipulations)
     {
         $this->manipulationSequence->merge($manipulations->manipulationSequence);
 
