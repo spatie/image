@@ -101,9 +101,10 @@ final class GlideConversion
         $conversionResultDirectory = pathinfo($this->conversionResult, PATHINFO_DIRNAME);
 
         copy($this->conversionResult, $outputFile);
+
         unlink($this->conversionResult);
 
-        if ($this->directoryIsEmpty($conversionResultDirectory)) {
+        if ($this->directoryIsEmpty($conversionResultDirectory) && $conversionResultDirectory !== '/tmp') {
             rmdir($conversionResultDirectory);
         }
     }

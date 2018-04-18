@@ -36,7 +36,7 @@ class ManipulationSequence implements IteratorAggregate
      *
      * @return $this
      */
-    public function merge(ManipulationSequence $sequence)
+    public function merge(self $sequence)
     {
         $sequenceArray = $sequence->toArray();
 

@@ -5,7 +5,6 @@ namespace Spatie\Image\Test\Manipulations;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\Image\Test\TestCase;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 class FlipTest extends TestCase
 {
