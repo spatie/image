@@ -202,7 +202,7 @@ class Manipulations
     public function height(int $height)
     {
         if ($height < 0) {
-            throw InvalidManipulation::invalidWidth($height);
+            throw InvalidManipulation::invalidHeight($height);
         }
 
         return $this->addManipulation('height', $height);
