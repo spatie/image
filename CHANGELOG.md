@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.5.3 - 2018-05-07
+
+- Throw CouldNotGenerateImage exception when the image could not be generated.
+
 ## 1.5.2 - 2018-05-05
 
 - fix exception message

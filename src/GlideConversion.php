@@ -2,10 +2,12 @@
 
 namespace Spatie\Image;
 
+use Throwable;
 use FilesystemIterator;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
+use Spatie\Image\Exceptions\CouldNotGenerateImage;
 
 /** @private */
 final class GlideConversion
@@ -47,10 +49,14 @@ final class GlideConversion
 
             $glideServer->setGroupCacheInFolders(false);
 
-            $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
-                    pathinfo($inputFile, PATHINFO_BASENAME),
-                    $this->prepareManipulations($manipulationGroup)
-                );
+            try {
+                $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
+                        pathinfo($inputFile, PATHINFO_BASENAME),
+                        $this->prepareManipulations($manipulationGroup)
+                    );
+            } catch (Throwable $error) {
+                throw CouldNotGenerateImage::fromError($error);
+            }
         }
 
         return $this;
