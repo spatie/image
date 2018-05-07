@@ -2,12 +2,12 @@
 
 namespace Spatie\Image;
 
+use Throwable;
 use FilesystemIterator;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
 use Spatie\Image\Exceptions\CouldNotGenerateImage;
-use Throwable;
 
 /** @private */
 final class GlideConversion
