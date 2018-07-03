@@ -28,7 +28,7 @@ class Image
         return new static($pathToImage);
     }
 
-    public function __construct(string $pathToImage)
+    private function __construct(string $pathToImage)
     {
         $this->pathToImage = $pathToImage;
 
