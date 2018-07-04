@@ -10,6 +10,8 @@
 Image manipulation doesn't have to be hard. Here are a few examples on how this package makes it very easy to manipulate images.
 
 ```php
+use Spatie\Image\Image;
+
 // modifying the image so it fits in a 100x100 rectangle without altering aspect ratio
 Image::load($pathToImage)
    ->width(100)
@@ -52,7 +54,7 @@ Head over to [the full documentation](https://docs.spatie.be/image).
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 ## Testing
 
