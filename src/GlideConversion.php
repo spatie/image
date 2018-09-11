@@ -7,7 +7,6 @@ use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
 
-/** @private */
 final class GlideConversion
 {
     /** @var string */
