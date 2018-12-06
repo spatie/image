@@ -126,6 +126,7 @@ class Image
     protected function shouldOptimize(): bool
     {
         $optimizations = $this->manipulations->getFirstManipulationArgument('optimize');
+        
         return ! is_null($optimizations) && $optimizations != '[]';
     }
 
