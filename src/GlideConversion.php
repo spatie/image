@@ -46,7 +46,9 @@ final class GlideConversion
 
             $glideServer->setGroupCacheInFolders(false);
 
-            $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
+            $temporaryDir = config('medialibrary.temporary_directory_path') ?? sys_get_temp_dir();
+
+            $this->conversionResult = $temporaryDir.DIRECTORY_SEPARATOR.$glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
                 );
@@ -78,7 +80,7 @@ final class GlideConversion
     {
         $config = [
             'source' => dirname($inputFile),
-            'cache' => sys_get_temp_dir(),
+            'cache' =>  config('medialibrary.temporary_directory_path') ?? sys_get_temp_dir(),
             'driver' => $this->imageDriver,
         ];
 
