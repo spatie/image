@@ -6,9 +6,11 @@ use FilesystemIterator;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
+use Spatie\Image\Exceptions\DefectiveConfiguration;
 
 final class GlideConversion
 {
+
     /** @var string */
     private $inputImage;
 
@@ -18,13 +20,45 @@ final class GlideConversion
     /** @var string */
     private $conversionResult = null;
 
-    public static function create(string $inputImage): self
+    /** @var string */
+    private $temporaryDirectory = null;
+
+    public static function create(string $inputImage, $config = []): self
     {
-        return new self($inputImage);
+        return new self($inputImage, $config);
     }
 
-    public function __construct(string $inputImage)
+    public function setTemporaryDirectory($config)
     {
+        $tempDir = $config["temp_dir"];
+
+        if (isset($tempDir)) {
+            if (!is_dir($tempDir)) {
+                mkdir($tempDir);
+            }
+            if (!self::isValidTempDirLocation($tempDir)) {
+                throw DefectiveConfiguration::invalidTemporaryDirectory($tempDir);
+            }
+            $this->temporaryDirectory = $tempDir;
+
+        } else {
+            $this->temporaryDirectory = sys_get_temp_dir();
+        }
+    }
+
+    private static function isValidTempDirLocation($dir): bool
+    {
+        return (isset($dir) && is_dir($dir) && is_writable($dir));
+    }
+
+    public function getTemporaryDirectory(): string
+    {
+        return $this->temporaryDirectory;
+    }
+
+    public function __construct(string $inputImage, $config)
+    {
+        $this->setTemporaryDirectory($config);
         $this->inputImage = $inputImage;
     }
 
@@ -46,9 +80,7 @@ final class GlideConversion
 
             $glideServer->setGroupCacheInFolders(false);
 
-            $temporaryDir = config('medialibrary.temporary_directory_path') ?? sys_get_temp_dir();
-
-            $this->conversionResult = $temporaryDir.DIRECTORY_SEPARATOR.$glideServer->makeImage(
+            $this->conversionResult = $this->temporaryDirectory . DIRECTORY_SEPARATOR . $glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
                 );
@@ -80,7 +112,7 @@ final class GlideConversion
     {
         $config = [
             'source' => dirname($inputFile),
-            'cache' =>  config('medialibrary.temporary_directory_path') ?? sys_get_temp_dir(),
+            'cache' => $this->temporaryDirectory,
             'driver' => $this->imageDriver,
         ];
 
@@ -155,7 +187,7 @@ final class GlideConversion
             'watermarkOpacity' => 'markalpha',
         ];
 
-        if (! isset($conversions[$manipulationName])) {
+        if (!isset($conversions[$manipulationName])) {
             throw CouldNotConvert::unknownManipulation($manipulationName);
         }
 
@@ -166,6 +198,7 @@ final class GlideConversion
     {
         $iterator = new FilesystemIterator($directory);
 
-        return ! $iterator->valid();
+        return !$iterator->valid();
     }
+
 }

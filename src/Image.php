@@ -18,6 +18,8 @@ class Image
 
     protected $imageDriver = 'gd';
 
+    protected static $configurations = [];
+
     /**
      * @param string $pathToImage
      *
@@ -28,10 +30,14 @@ class Image
         return new static($pathToImage);
     }
 
+    public static function setConfig($key, $val)
+    {
+        self::$configurations[$key] = $val;
+    }
+
     public function __construct(string $pathToImage)
     {
         $this->pathToImage = $pathToImage;
-
         $this->manipulations = new Manipulations();
     }
 
@@ -44,7 +50,7 @@ class Image
      */
     public function useImageDriver(string $imageDriver)
     {
-        if (! in_array($imageDriver, ['gd', 'imagick'])) {
+        if (!in_array($imageDriver, ['gd', 'imagick'])) {
             throw InvalidImageDriver::driver($imageDriver);
         }
 
@@ -77,7 +83,7 @@ class Image
 
     public function __call($name, $arguments)
     {
-        if (! method_exists($this->manipulations, $name)) {
+        if (!method_exists($this->manipulations, $name)) {
             throw new BadMethodCallException("Manipulation `{$name}` does not exist");
         }
 
@@ -101,6 +107,13 @@ class Image
         return $this->manipulations->getManipulationSequence();
     }
 
+    public function setTemporaryDirectory($tempPath): Image
+    {
+        self::setConfig("temp_dir", $tempPath);
+        return $this;
+    }
+
+
     public function save($outputPath = '')
     {
         if ($outputPath == '') {
@@ -109,7 +122,7 @@ class Image
 
         $this->addFormatManipulation($outputPath);
 
-        GlideConversion::create($this->pathToImage)
+        GlideConversion::create($this->pathToImage, self::$configurations)
             ->useImageDriver($this->imageDriver)
             ->performManipulations($this->manipulations)
             ->save($outputPath);
@@ -125,7 +138,7 @@ class Image
 
     protected function shouldOptimize(): bool
     {
-        return ! is_null($this->manipulations->getFirstManipulationArgument('optimize'));
+        return !is_null($this->manipulations->getFirstManipulationArgument('optimize'));
     }
 
     protected function performOptimization($path, array $optimizerChainConfiguration)
