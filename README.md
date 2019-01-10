@@ -48,6 +48,8 @@ You can install the package via composer:
 composer require spatie/image
 ```
 
+Please note that since version 1.5.3 this package requires exif extension to be enabled: http://php.net/manual/en/exif.installation.php
+
 ## Usage
 
 Head over to [the full documentation](https://docs.spatie.be/image).
