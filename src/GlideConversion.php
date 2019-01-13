@@ -10,7 +10,6 @@ use Spatie\Image\Exceptions\DefectiveConfiguration;
 
 final class GlideConversion
 {
-
     /** @var string */
     private $inputImage;
 
@@ -30,7 +29,6 @@ final class GlideConversion
 
     public function setTemporaryDirectory($tempDir)
     {
-
         if (isset($tempDir)) {
             if (! is_dir($tempDir)) {
                 try {
@@ -44,9 +42,7 @@ final class GlideConversion
                 throw DefectiveConfiguration::invalidTemporaryDirectory($tempDir);
             }
 
-
             $this->temporaryDirectory = $tempDir;
-
         }
 
         return $this;
@@ -61,7 +57,6 @@ final class GlideConversion
     {
         return isset($dir) && is_dir($dir) && is_writable($dir);
     }
-
 
     public function __construct(string $inputImage)
     {
@@ -206,5 +201,4 @@ final class GlideConversion
 
         return ! $iterator->valid();
     }
-
 }

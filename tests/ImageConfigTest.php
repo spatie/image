@@ -4,13 +4,10 @@ namespace Spatie\Image\Test;
 
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-
 use Spatie\Image\Exceptions\DefectiveConfiguration;
-
 
 class ImageConfigTest extends TestCase
 {
-
     /** @test */
     public function it_can_modify_an_image_while_setting_temporary_path_by_static_method()
     {
@@ -44,5 +41,4 @@ class ImageConfigTest extends TestCase
     {
         Image::setTemporaryDirectory(__DIR__.'/');
     }
-
 }
