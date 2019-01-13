@@ -2,11 +2,10 @@
 
 namespace Spatie\Image\Test;
 
-use Spatie\Image\Exceptions\DefectiveConfiguration;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
-use Intervention\Image\ImageManagerStatic as InterventionImage;
+
+use Spatie\Image\Exceptions\DefectiveConfiguration;
 
 
 class ImageConfigTest extends TestCase
@@ -16,7 +15,7 @@ class ImageConfigTest extends TestCase
     public function it_can_modify_an_image_while_setting_temporary_path_by_static_method()
     {
         $targetFile = $this->tempDir->path('conversion.jpg');
-        Image::setTemporaryDirectory(__DIR__ . "/temp_conf");
+        Image::setTemporaryDirectory(__DIR__.'/temp_conf');
         Image::load($this->getTestJpg())
             ->manipulate(function (Manipulations $manipulations) {
                 $manipulations
@@ -32,7 +31,7 @@ class ImageConfigTest extends TestCase
     {
         $this->expectException(DefectiveConfiguration::class);
         $targetFile = $this->tempDir->path('conversion.jpg');
-        Image::setTemporaryDirectory("/user/willmostprobablynotexistandcreatable");
+        Image::setTemporaryDirectory('/user/willmostprobablynotexistandcreatable');
         Image::load($this->getTestJpg())
             ->manipulate(function (Manipulations $manipulations) {
                 $manipulations
@@ -43,7 +42,7 @@ class ImageConfigTest extends TestCase
 
     protected function tearDown()
     {
-        Image::setTemporaryDirectory(__DIR__ . "/");
+        Image::setTemporaryDirectory(__DIR__.'/');
     }
 
 }

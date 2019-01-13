@@ -9,11 +9,11 @@ class DefectiveConfiguration extends Exception
 
     public static function getReason()
     {
-        if (!is_dir($dirPath)) {
+        if (! is_dir($dirPath)) {
             return 'is not a directory';
         }
 
-        if (!is_writable($dirPath)) {
+        if (! is_writable($dirPath)) {
             return 'is not writable';
         }
 

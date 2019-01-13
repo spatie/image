@@ -39,7 +39,7 @@ class Image
     {
         $this->pathToImage = $pathToImage;
         $this->manipulations = new Manipulations();
-        if(! isset(self::$temporaryDirectory)){
+        if (! isset(self::$temporaryDirectory)) {
             self::setTemporaryDirectory(sys_get_temp_dir());
         }
     }

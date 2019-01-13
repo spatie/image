@@ -59,7 +59,7 @@ final class GlideConversion
 
     private static function isValidTemporaryDirectoryLocation($dir): bool
     {
-        return (isset($dir) && is_dir($dir) && is_writable($dir));
+        return isset($dir) && is_dir($dir) && is_writable($dir);
     }
 
 
@@ -86,7 +86,7 @@ final class GlideConversion
 
             $glideServer->setGroupCacheInFolders(false);
 
-            $this->conversionResult = $this->temporaryDirectory . DIRECTORY_SEPARATOR . $glideServer->makeImage(
+            $this->conversionResult = $this->temporaryDirectory.DIRECTORY_SEPARATOR.$glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
                 );
@@ -204,7 +204,7 @@ final class GlideConversion
     {
         $iterator = new FilesystemIterator($directory);
 
-        return !$iterator->valid();
+        return ! $iterator->valid();
     }
 
 }
