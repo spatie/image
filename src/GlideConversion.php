@@ -28,27 +28,28 @@ final class GlideConversion
         return new self($inputImage, $config);
     }
 
-    public function setTemporaryDirectory($config)
+    public function setTemporaryDirectory($tempDir)
     {
-        $tempDir = $config["temp_dir"];
 
         if (isset($tempDir)) {
-            if (!is_dir($tempDir)) {
-                mkdir($tempDir);
+            if (! is_dir($tempDir)) {
+                try {
+                    mkdir($tempDir);
+                } catch (\Exception $e) {
+                    throw DefectiveConfiguration::invalidTemporaryDirectory($tempDir);
+                }
             }
-            if (!self::isValidTempDirLocation($tempDir)) {
+
+            if (! self::isValidTemporaryDirectoryLocation($tempDir)) {
                 throw DefectiveConfiguration::invalidTemporaryDirectory($tempDir);
             }
+
+
             $this->temporaryDirectory = $tempDir;
 
-        } else {
-            $this->temporaryDirectory = sys_get_temp_dir();
         }
-    }
 
-    private static function isValidTempDirLocation($dir): bool
-    {
-        return (isset($dir) && is_dir($dir) && is_writable($dir));
+        return $this;
     }
 
     public function getTemporaryDirectory(): string
@@ -56,9 +57,14 @@ final class GlideConversion
         return $this->temporaryDirectory;
     }
 
-    public function __construct(string $inputImage, $config)
+    private static function isValidTemporaryDirectoryLocation($dir): bool
     {
-        $this->setTemporaryDirectory($config);
+        return (isset($dir) && is_dir($dir) && is_writable($dir));
+    }
+
+
+    public function __construct(string $inputImage)
+    {
         $this->inputImage = $inputImage;
     }
 
@@ -187,7 +193,7 @@ final class GlideConversion
             'watermarkOpacity' => 'markalpha',
         ];
 
-        if (!isset($conversions[$manipulationName])) {
+        if (! isset($conversions[$manipulationName])) {
             throw CouldNotConvert::unknownManipulation($manipulationName);
         }
 

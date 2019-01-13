@@ -6,16 +6,23 @@ use Exception;
 
 class DefectiveConfiguration extends Exception
 {
-    public static function invalidTemporaryDirectory($dirPath)
+
+    public static function getReason()
     {
         if (!is_dir($dirPath)) {
-            $reason = "is not a directory";
-        } elseif (!is_writable($dirPath)) {
-            $reason = "the directory is not writable";
-        } else {
-            $reason = "seems to be corrupt";
+            return 'is not a directory';
         }
 
-        return new self("the temporary directory ${dirPath} is not valid as it ${reason} ");
+        if (!is_writable($dirPath)) {
+            return 'is not writable';
+        }
+
+        return 'it seems to be corrupt';
+    }
+
+    public static function invalidTemporaryDirectory($dirPath)
+    {
+        $reason = self::getReason($dirPath);
+        return new self("the temporary directory ${dirPath} is not valid as it {$reason} ");
     }
 }
