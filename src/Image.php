@@ -18,7 +18,7 @@ class Image
 
     protected $imageDriver = 'gd';
 
-    protected static $temporaryDirectory = null;
+    protected $temporaryDirectory = null;
 
     /**
      * @param string $pathToImage
@@ -30,17 +30,18 @@ class Image
         return new static($pathToImage);
     }
 
-    public static function setTemporaryDirectory($tempDir)
+    public function setTemporaryDirectory($tempDir)
     {
-        self::$temporaryDirectory = $tempDir;
+        $this->temporaryDirectory = $tempDir;
+        return $this;
     }
 
     public function __construct(string $pathToImage)
     {
         $this->pathToImage = $pathToImage;
         $this->manipulations = new Manipulations();
-        if (! isset(self::$temporaryDirectory)) {
-            self::setTemporaryDirectory(sys_get_temp_dir());
+        if (! isset($this->temporaryDirectory)) {
+            $this->setTemporaryDirectory(sys_get_temp_dir());
         }
     }
 
@@ -119,7 +120,7 @@ class Image
         $this->addFormatManipulation($outputPath);
 
         GlideConversion::create($this->pathToImage)
-            ->setTemporaryDirectory(self::$temporaryDirectory)
+            ->setTemporaryDirectory($this->temporaryDirectory)
             ->useImageDriver($this->imageDriver)
             ->performManipulations($this->manipulations)
             ->save($outputPath);

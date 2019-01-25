@@ -4,16 +4,17 @@ namespace Spatie\Image\Test;
 
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Spatie\Image\Exceptions\DefectiveConfiguration;
+use Spatie\Image\Exceptions\InvalidTemporaryDirectory;
 
 class ImageConfigTest extends TestCase
 {
     /** @test */
-    public function it_can_modify_an_image_while_setting_temporary_path_by_static_method()
+    public function it_can_modify_an_image_while_setting_temporary_path()
     {
         $targetFile = $this->tempDir->path('conversion.jpg');
-        Image::setTemporaryDirectory(__DIR__.'/temp_conf');
+
         Image::load($this->getTestJpg())
+            ->setTemporaryDirectory(__DIR__.'/temp_conf')
             ->manipulate(function (Manipulations $manipulations) {
                 $manipulations
                     ->blur(50);
@@ -26,10 +27,11 @@ class ImageConfigTest extends TestCase
     /** @test */
     public function it_will_throw_an_error_if_tempdir_corrupt()
     {
-        $this->expectException(DefectiveConfiguration::class);
+        $this->expectException(InvalidTemporaryDirectory::class);
         $targetFile = $this->tempDir->path('conversion.jpg');
-        Image::setTemporaryDirectory('/user/willmostprobablynotexistandcreatable');
+
         Image::load($this->getTestJpg())
+            ->setTemporaryDirectory('/user/willmostprobablynotexistandbecreatable')
             ->manipulate(function (Manipulations $manipulations) {
                 $manipulations
                     ->blur(50);
@@ -37,8 +39,4 @@ class ImageConfigTest extends TestCase
             ->save($targetFile);
     }
 
-    protected function tearDown()
-    {
-        Image::setTemporaryDirectory(__DIR__.'/');
-    }
 }

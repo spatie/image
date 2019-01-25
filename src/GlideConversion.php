@@ -6,7 +6,7 @@ use FilesystemIterator;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
-use Spatie\Image\Exceptions\DefectiveConfiguration;
+use Spatie\Image\Exceptions\InvalidTemporaryDirectory;
 
 final class GlideConversion
 {
@@ -30,16 +30,16 @@ final class GlideConversion
     public function setTemporaryDirectory($tempDir)
     {
         if (isset($tempDir)) {
-            if (! is_dir($tempDir)) {
+            if (!is_dir($tempDir)) {
                 try {
                     mkdir($tempDir);
                 } catch (\Exception $e) {
-                    throw DefectiveConfiguration::invalidTemporaryDirectory($tempDir);
+                    throw InvalidTemporaryDirectory::temporaryDirectoryNotCreatable($tempDir);
                 }
             }
 
-            if (! self::isValidTemporaryDirectoryLocation($tempDir)) {
-                throw DefectiveConfiguration::invalidTemporaryDirectory($tempDir);
+            if(! is_writable($tempDir)){
+                throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($tempdir);
             }
 
             $this->temporaryDirectory = $tempDir;
@@ -53,7 +53,7 @@ final class GlideConversion
         return $this->temporaryDirectory;
     }
 
-    private static function isValidTemporaryDirectoryLocation($dir): bool
+    private static function ensureValidTemporaryDirectory($dir): bool
     {
         return isset($dir) && is_dir($dir) && is_writable($dir);
     }
