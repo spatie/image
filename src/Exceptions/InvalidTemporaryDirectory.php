@@ -6,7 +6,6 @@ use Exception;
 
 class InvalidTemporaryDirectory extends Exception
 {
-
     public static function temporaryDirectoryNotCreatable($dirPath)
     {
         return new self("the temporary directory ${dirPath} does not exist and can not be created");
@@ -16,5 +15,4 @@ class InvalidTemporaryDirectory extends Exception
     {
         return new self("the temporary directory ${dirPath} does exist but is not writable");
     }
-
 }

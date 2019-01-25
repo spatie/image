@@ -33,6 +33,7 @@ class Image
     public function setTemporaryDirectory($tempDir)
     {
         $this->temporaryDirectory = $tempDir;
+
         return $this;
     }
 

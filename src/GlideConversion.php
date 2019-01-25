@@ -30,7 +30,7 @@ final class GlideConversion
     public function setTemporaryDirectory($tempDir)
     {
         if (isset($tempDir)) {
-            if (!is_dir($tempDir)) {
+            if (! is_dir($tempDir)) {
                 try {
                     mkdir($tempDir);
                 } catch (\Exception $e) {
@@ -38,7 +38,7 @@ final class GlideConversion
                 }
             }
 
-            if(! is_writable($tempDir)){
+            if (! is_writable($tempDir)){
                 throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($tempdir);
             }
 
