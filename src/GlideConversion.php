@@ -22,9 +22,9 @@ final class GlideConversion
     /** @var string */
     private $temporaryDirectory = null;
 
-    public static function create(string $inputImage, $config = []): self
+    public static function create(string $inputImage): self
     {
-        return new self($inputImage, $config);
+        return new self($inputImage);
     }
 
     public function setTemporaryDirectory($tempDir)
@@ -51,11 +51,6 @@ final class GlideConversion
     public function getTemporaryDirectory(): string
     {
         return $this->temporaryDirectory;
-    }
-
-    private static function ensureValidTemporaryDirectory($dir): bool
-    {
-        return isset($dir) && is_dir($dir) && is_writable($dir);
     }
 
     public function __construct(string $inputImage)
