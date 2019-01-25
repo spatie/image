@@ -38,7 +38,7 @@ final class GlideConversion
                 }
             }
 
-            if (! is_writable($tempDir)){
+            if (! is_writable($tempDir)) {
                 throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($tempdir);
             }
 

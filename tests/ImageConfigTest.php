@@ -20,7 +20,7 @@ class ImageConfigTest extends TestCase
                     ->blur(50);
             })
             ->save($targetFile);
-        
+
         $this->assertFileExists($targetFile);
     }
 
