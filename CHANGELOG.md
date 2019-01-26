@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.6.0 - 2019-01-27
+
+- add `setTemporaryDirectory`
+
 ## 1.5.3 - 2019-01-10
 
 - update lower deps
