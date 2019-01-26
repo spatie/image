@@ -43,11 +43,10 @@ final class GlideConversion
         }
 
         if (!is_writable($temporaryDirectory)) {
-            throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($tempdir);
+            throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($temporaryDirectory);
         }
 
         $this->temporaryDirectory = $temporaryDirectory;
-
 
         return $this;
     }
