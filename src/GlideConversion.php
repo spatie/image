@@ -2,6 +2,7 @@
 
 namespace Spatie\Image;
 
+use Exception;
 use FilesystemIterator;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
@@ -27,23 +28,26 @@ final class GlideConversion
         return new self($inputImage);
     }
 
-    public function setTemporaryDirectory($tempDir)
+    public function setTemporaryDirectory(string $temporaryDirectory)
     {
-        if (isset($tempDir)) {
-            if (! is_dir($tempDir)) {
-                try {
-                    mkdir($tempDir);
-                } catch (\Exception $e) {
-                    throw InvalidTemporaryDirectory::temporaryDirectoryNotCreatable($tempDir);
-                }
-            }
-
-            if (! is_writable($tempDir)) {
-                throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($tempdir);
-            }
-
-            $this->temporaryDirectory = $tempDir;
+        if (!isset($temporaryDirectory)) {
+            return $this;
         }
+
+        if (!is_dir($temporaryDirectory)) {
+            try {
+                mkdir($temporaryDirectory);
+            } catch (Exception $exception) {
+                throw InvalidTemporaryDirectory::temporaryDirectoryNotCreatable($temporaryDirectory);
+            }
+        }
+
+        if (!is_writable($temporaryDirectory)) {
+            throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($tempdir);
+        }
+
+        $this->temporaryDirectory = $temporaryDirectory;
+
 
         return $this;
     }
@@ -76,7 +80,7 @@ final class GlideConversion
 
             $glideServer->setGroupCacheInFolders(false);
 
-            $this->conversionResult = $this->temporaryDirectory.DIRECTORY_SEPARATOR.$glideServer->makeImage(
+            $this->conversionResult = $this->temporaryDirectory . DIRECTORY_SEPARATOR . $glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
                 );
@@ -183,7 +187,7 @@ final class GlideConversion
             'watermarkOpacity' => 'markalpha',
         ];
 
-        if (! isset($conversions[$manipulationName])) {
+        if (!isset($conversions[$manipulationName])) {
             throw CouldNotConvert::unknownManipulation($manipulationName);
         }
 
@@ -194,6 +198,6 @@ final class GlideConversion
     {
         $iterator = new FilesystemIterator($directory);
 
-        return ! $iterator->valid();
+        return !$iterator->valid();
     }
 }
