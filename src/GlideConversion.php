@@ -6,6 +6,7 @@ use FilesystemIterator;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 use Spatie\Image\Exceptions\CouldNotConvert;
+use Spatie\Image\Exceptions\InvalidTemporaryDirectory;
 
 final class GlideConversion
 {
@@ -18,9 +19,38 @@ final class GlideConversion
     /** @var string */
     private $conversionResult = null;
 
+    /** @var string */
+    private $temporaryDirectory = null;
+
     public static function create(string $inputImage): self
     {
         return new self($inputImage);
+    }
+
+    public function setTemporaryDirectory($tempDir)
+    {
+        if (isset($tempDir)) {
+            if (! is_dir($tempDir)) {
+                try {
+                    mkdir($tempDir);
+                } catch (\Exception $e) {
+                    throw InvalidTemporaryDirectory::temporaryDirectoryNotCreatable($tempDir);
+                }
+            }
+
+            if (! is_writable($tempDir)) {
+                throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($tempdir);
+            }
+
+            $this->temporaryDirectory = $tempDir;
+        }
+
+        return $this;
+    }
+
+    public function getTemporaryDirectory(): string
+    {
+        return $this->temporaryDirectory;
     }
 
     public function __construct(string $inputImage)
@@ -46,7 +76,7 @@ final class GlideConversion
 
             $glideServer->setGroupCacheInFolders(false);
 
-            $this->conversionResult = sys_get_temp_dir().DIRECTORY_SEPARATOR.$glideServer->makeImage(
+            $this->conversionResult = $this->temporaryDirectory.DIRECTORY_SEPARATOR.$glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
                 );
@@ -78,7 +108,7 @@ final class GlideConversion
     {
         $config = [
             'source' => dirname($inputFile),
-            'cache' => sys_get_temp_dir(),
+            'cache' => $this->temporaryDirectory,
             'driver' => $this->imageDriver,
         ];
 
