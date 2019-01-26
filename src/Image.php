@@ -18,6 +18,7 @@ class Image
 
     protected $imageDriver = 'gd';
 
+    /** @var string|null  */
     protected $temporaryDirectory = null;
 
     /**
@@ -40,10 +41,8 @@ class Image
     public function __construct(string $pathToImage)
     {
         $this->pathToImage = $pathToImage;
+
         $this->manipulations = new Manipulations();
-        if (! isset($this->temporaryDirectory)) {
-            $this->setTemporaryDirectory(sys_get_temp_dir());
-        }
     }
 
     /**
@@ -120,11 +119,15 @@ class Image
 
         $this->addFormatManipulation($outputPath);
 
-        GlideConversion::create($this->pathToImage)
-            ->setTemporaryDirectory($this->temporaryDirectory)
+        $glideConversion= GlideConversion::create($this->pathToImage)
             ->useImageDriver($this->imageDriver)
-            ->performManipulations($this->manipulations)
-            ->save($outputPath);
+            ->performManipulations($this->manipulations);
+
+        if (! is_null($this->temporaryDirectory)) {
+            $glideConversion->setTemporaryDirectory($this->temporaryDirectory);
+        }
+
+        $glideConversion->save($outputPath);
 
         if ($this->shouldOptimize()) {
             $optimizerChainConfiguration = $this->manipulations->getFirstManipulationArgument('optimize');

@@ -58,6 +58,8 @@ final class GlideConversion
 
     public function __construct(string $inputImage)
     {
+        $this->temporaryDirectory = sys_get_temp_dir();
+
         $this->inputImage = $inputImage;
     }
 
