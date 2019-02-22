@@ -17,7 +17,7 @@ before_script:
   - printf "\n" | pecl install imagick
 
 script:
-  - phpunit --coverage-text --coverage-clover=coverage.clover
+  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
 after_script:
   - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
