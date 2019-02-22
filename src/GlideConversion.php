@@ -30,11 +30,11 @@ final class GlideConversion
 
     public function setTemporaryDirectory(string $temporaryDirectory)
     {
-        if (!isset($temporaryDirectory)) {
+        if (! isset($temporaryDirectory)) {
             return $this;
         }
 
-        if (!is_dir($temporaryDirectory)) {
+        if (! is_dir($temporaryDirectory)) {
             try {
                 mkdir($temporaryDirectory);
             } catch (Exception $exception) {
@@ -42,7 +42,7 @@ final class GlideConversion
             }
         }
 
-        if (!is_writable($temporaryDirectory)) {
+        if (! is_writable($temporaryDirectory)) {
             throw InvalidTemporaryDirectory::temporaryDirectoryNotWritable($temporaryDirectory);
         }
 
@@ -81,7 +81,7 @@ final class GlideConversion
 
             $glideServer->setGroupCacheInFolders(false);
 
-            $this->conversionResult = $this->temporaryDirectory . DIRECTORY_SEPARATOR . $glideServer->makeImage(
+            $this->conversionResult = $this->temporaryDirectory.DIRECTORY_SEPARATOR.$glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
                 );
@@ -188,7 +188,7 @@ final class GlideConversion
             'watermarkOpacity' => 'markalpha',
         ];
 
-        if (!isset($conversions[$manipulationName])) {
+        if (! isset($conversions[$manipulationName])) {
             throw CouldNotConvert::unknownManipulation($manipulationName);
         }
 
@@ -199,6 +199,6 @@ final class GlideConversion
     {
         $iterator = new FilesystemIterator($directory);
 
-        return !$iterator->valid();
+        return ! $iterator->valid();
     }
 }
