@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.7.0 - 2019-02-22
+
+- add support for `webp`
+
 ## 1.6.0 - 2019-01-27
 
 - add `setTemporaryDirectory`
