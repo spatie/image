@@ -41,6 +41,7 @@ class Manipulations
     const FORMAT_PJPG = 'pjpg';
     const FORMAT_PNG = 'png';
     const FORMAT_GIF = 'gif';
+    const FORMAT_WEBP = 'webp';
 
     const FILTER_GREYSCALE = 'greyscale';
     const FILTER_SEPIA = 'sepia';
