@@ -18,7 +18,7 @@ class Image
 
     protected $imageDriver = 'gd';
 
-    /** @var string|null  */
+    /** @var string|null */
     protected $temporaryDirectory = null;
 
     /**
@@ -119,7 +119,7 @@ class Image
 
         $this->addFormatManipulation($outputPath);
 
-        $glideConversion= GlideConversion::create($this->pathToImage)
+        $glideConversion = GlideConversion::create($this->pathToImage)
             ->useImageDriver($this->imageDriver)
             ->performManipulations($this->manipulations);
 
