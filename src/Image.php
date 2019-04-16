@@ -119,13 +119,13 @@ class Image
 
         $this->addFormatManipulation($outputPath);
 
-        $glideConversion = GlideConversion::create($this->pathToImage)
-            ->useImageDriver($this->imageDriver)
-            ->performManipulations($this->manipulations);
+        $glideConversion = GlideConversion::create($this->pathToImage)->useImageDriver($this->imageDriver);
 
         if (! is_null($this->temporaryDirectory)) {
             $glideConversion->setTemporaryDirectory($this->temporaryDirectory);
         }
+        
+        $glideConversion->performManipulations($this->manipulations);
 
         $glideConversion->save($outputPath);
 
