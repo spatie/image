@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.7.1 - 2019-04-17
+
+- change GlideConversion sequence (#76)
+
 ## 1.7.0 - 2019-02-22
 
 - add support for `webp`
