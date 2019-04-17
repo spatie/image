@@ -124,7 +124,7 @@ class Image
         if (! is_null($this->temporaryDirectory)) {
             $glideConversion->setTemporaryDirectory($this->temporaryDirectory);
         }
-        
+
         $glideConversion->performManipulations($this->manipulations);
 
         $glideConversion->save($outputPath);
