@@ -50,6 +50,14 @@ class ImageTest extends TestCase
         $targetFile = $this->tempDir->path('conversion.jpg');
         Image::load($this->getTestJpg())->save($targetFile);
         $this->assertImageType($targetFile, IMAGETYPE_JPEG);
+
+        $targetFile = $this->tempDir->path('conversion.pjpg');
+        Image::load($this->getTestJpg())->save($targetFile);
+        $this->assertImageType($targetFile, IMAGETYPE_JPEG);
+
+        $targetFile = $this->tempDir->path('conversion.webp');
+        Image::load($this->getTestJpg())->save($targetFile);
+        $this->assertImageType($targetFile, IMAGETYPE_WEBP);
     }
 
     /** @test */
