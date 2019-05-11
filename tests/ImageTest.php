@@ -55,9 +55,11 @@ class ImageTest extends TestCase
         Image::load($this->getTestJpg())->save($targetFile);
         $this->assertImageType($targetFile, IMAGETYPE_JPEG);
 
-        $targetFile = $this->tempDir->path('conversion.webp');
-        Image::load($this->getTestJpg())->save($targetFile);
-        $this->assertImageType($targetFile, IMAGETYPE_WEBP);
+        if (function_exists('imagecreatefromwebp')) {
+            $targetFile = $this->tempDir->path('conversion.webp');
+            Image::load($this->getTestJpg())->save($targetFile);
+            $this->assertImageType($targetFile, IMAGETYPE_WEBP);
+        }
     }
 
     /** @test */
