@@ -131,8 +131,6 @@ class ManipulationSequence implements IteratorAggregate
                 }
             }
         }
-
-        return;
     }
 
     /*
