@@ -130,9 +130,9 @@ class ManipulationSequence implements IteratorAggregate
                     return $argument;
                 }
             }
-
-            return;
         }
+
+        return;
     }
 
     /*
