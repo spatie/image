@@ -29,6 +29,6 @@ class DuplicateImageTest extends TestCase
             ->save($output_file);
         }
 
-        $this->assertTrue(filesize($output_files[0]) !== filesize($output_files[1]));
+        $this->assertFalse(file_get_contents($output_files[0]) === file_get_contents($output_files[1]));
     }
 }
