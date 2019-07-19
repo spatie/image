@@ -114,12 +114,6 @@ class ImageTest extends TestCase
                 ->save($output_file);
         }
 
-        dump('-----------------------------------');
-        dump(file_get_contents($output_files[0]));
-        dump('-----------------------------------');
-        dump(file_get_contents($output_files[1]));
-        dump('-----------------------------------');
-
         $this->assertFalse(file_get_contents($output_files[0]) === file_get_contents($output_files[1]));
     }
 
