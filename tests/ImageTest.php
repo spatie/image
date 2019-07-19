@@ -92,6 +92,36 @@ class ImageTest extends TestCase
         $this->assertEquals('imagick', InterventionImage::getManager()->config['driver'] ?? null);
     }
 
+    /** @test */
+    public function it_can_modify_multiple_images_with_same_filename()
+    {
+        $images = [
+            $this->getTestFile('image.jpg'),
+            $this->getTestFile('image-2.jpg'),
+        ];
+
+        $output_files = [];
+        foreach ($images as $image) {
+            $file_name = pathinfo($image, PATHINFO_FILENAME);
+            $file_ext = pathinfo($image, PATHINFO_EXTENSION);
+            $hash = md5($image);
+            $output_file = $this->tempDir->path($file_name.'-'.$hash.'.'.$file_ext);
+            $output_files[] = $output_file;
+            Image::load($image)
+                ->sepia()
+                ->apply()
+                ->crop(Manipulations::CROP_CENTER, 100, 100)
+                ->save($output_file);
+        }
+
+        dd(
+            file_get_contents($output_files[0]) === file_get_contents($output_files[1]),
+            file_get_contents($output_files[0]),
+            file_get_contents($output_files[1])
+        );
+        $this->assertFalse(file_get_contents($output_files[0]) === file_get_contents($output_files[1]));
+    }
+
     protected function assertImageType(string $filePath, $expectedType)
     {
         $expectedType = image_type_to_mime_type($expectedType);
