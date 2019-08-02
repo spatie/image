@@ -99,13 +99,13 @@ class ImageTest extends TestCase
         $firstTargetFile = $this->tempDir->path('first.jpg');
         $secondTargetFile = $this->tempDir->path('second.jpg');
 
-        Image::load($this->getTestFile('image.jpg'))
+        Image::load($this->getTestFile('test.jpg'))
             ->sepia()
             ->apply()
             ->crop(Manipulations::CROP_CENTER, 100, 100)
             ->save($firstTargetFile);
 
-        Image::load($this->getTestFile('test-folder/image.jpg'))
+        Image::load($this->getTestFile('test-folder/test.jpg'))
             ->sepia()
             ->apply()
             ->crop(Manipulations::CROP_CENTER, 100, 100)
