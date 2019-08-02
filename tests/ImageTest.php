@@ -105,7 +105,7 @@ class ImageTest extends TestCase
             ->crop(Manipulations::CROP_CENTER, 100, 100)
             ->save($firstTargetFile);
 
-        Image::load($this->getTestFile('test-folder/test.jpg'))
+        Image::load($this->getTestFile('testdir/test.jpg'))
             ->sepia()
             ->apply()
             ->crop(Manipulations::CROP_CENTER, 100, 100)
