@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Test;
 
+use League\Glide\ServerFactory;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Intervention\Image\ImageManagerStatic as InterventionImage;
@@ -96,8 +97,8 @@ class ImageTest extends TestCase
     public function it_can_modify_multiple_images_with_same_filename()
     {
         $images = [
-            $this->getTestFile('image.jpg'),
-            $this->getTestFile('image-2.jpg'),
+            $this->getTestFile('08/image.jpg'),
+            $this->getTestFile('10/image.jpg'),
         ];
 
         $output_files = [];
@@ -107,6 +108,7 @@ class ImageTest extends TestCase
             $hash = md5($image);
             $output_file = $this->tempDir->path($file_name.'-'.$hash.'.'.$file_ext);
             $output_files[] = $output_file;
+
             Image::load($image)
                 ->sepia()
                 ->apply()
