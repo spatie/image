@@ -2,7 +2,6 @@
 
 namespace Spatie\Image\Test;
 
-use League\Glide\ServerFactory;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Intervention\Image\ImageManagerStatic as InterventionImage;

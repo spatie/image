@@ -86,7 +86,7 @@ final class GlideConversion
                     $this->prepareManipulations($manipulationGroup)
                 );
 
-            if($this->conversionResult){
+            if ($this->conversionResult) {
                 unlink($this->conversionResult);
             }
 
