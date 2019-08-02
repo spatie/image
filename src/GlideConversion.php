@@ -81,10 +81,16 @@ final class GlideConversion
 
             $glideServer->setGroupCacheInFolders(false);
 
-            $this->conversionResult = $this->temporaryDirectory.DIRECTORY_SEPARATOR.$glideServer->makeImage(
+            $manipulatedImage = $this->temporaryDirectory.DIRECTORY_SEPARATOR.$glideServer->makeImage(
                     pathinfo($inputFile, PATHINFO_BASENAME),
                     $this->prepareManipulations($manipulationGroup)
                 );
+
+            if ($this->conversionResult) {
+                unlink($this->conversionResult);
+            }
+
+            $this->conversionResult = $manipulatedImage;
         }
 
         return $this;

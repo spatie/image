@@ -92,6 +92,27 @@ class ImageTest extends TestCase
         $this->assertEquals('imagick', InterventionImage::getManager()->config['driver'] ?? null);
     }
 
+    /** @test */
+    public function it_can_modify_files_with_the_same_name_if_they_are_in_different_folders()
+    {
+        $firstTargetFile = $this->tempDir->path('first.jpg');
+        $secondTargetFile = $this->tempDir->path('second.jpg');
+
+        Image::load($this->getTestFile('test.jpg'))
+            ->sepia()
+            ->apply()
+            ->crop(Manipulations::CROP_CENTER, 100, 100)
+            ->save($firstTargetFile);
+
+        Image::load($this->getTestFile('testdir/test.jpg'))
+            ->sepia()
+            ->apply()
+            ->crop(Manipulations::CROP_CENTER, 100, 100)
+            ->save($secondTargetFile);
+
+        $this->assertFalse(file_get_contents($firstTargetFile) === file_get_contents($secondTargetFile));
+    }
+
     protected function assertImageType(string $filePath, $expectedType)
     {
         $expectedType = image_type_to_mime_type($expectedType);
