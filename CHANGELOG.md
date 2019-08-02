@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.7.3 - 2019-08-03
+
+- fix duplicated files (fixes #84)
+
 ## 1.7.2 - 2019-05-13
 
 - fixes `optimize()` when used with `apply()` (#78)
