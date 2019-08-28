@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.7.4 - 2019-08-28
+
+- do not export docs
+
 ## 1.7.3 - 2019-08-03
 
 - fix duplicated files (fixes #84)
