@@ -31,3 +31,4 @@ $image->manipulate(function(Manipulations $manipulations) {
 	   ->blur(20)
 	   ->brightness(-20);
 });
+```
