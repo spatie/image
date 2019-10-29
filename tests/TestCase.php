@@ -24,6 +24,11 @@ abstract class TestCase extends PHPUnitTestCase
         return $this->getTestFile('test.jpg');
     }
 
+    protected function getTestPng(): string
+    {
+        return $this->getTestFile('test.png');
+    }
+
     protected function getTestFile($fileName): string
     {
         return __DIR__."/testfiles/{$fileName}";

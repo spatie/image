@@ -81,6 +81,14 @@ class ImageTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_the_mime_of_an_image()
+    {
+        $this->assertEquals('image/jpeg', Image::load($this->getTestJpg())->getMime());
+        
+        $this->assertEquals('image/png', Image::load($this->getTestPng())->getMime());
+    }
+
+    /** @test */
     public function the_image_driver_is_set_on_the_intervention_static_manager()
     {
         $image = Image::load($this->getTestJpg());
