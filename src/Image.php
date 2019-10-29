@@ -105,7 +105,7 @@ class Image
     {
         return InterventionImage::make($this->pathToImage)->height();
     }
-    
+
     public function getMime(): string
     {
         return InterventionImage::make($this->pathToImage)->mime();

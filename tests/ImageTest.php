@@ -84,7 +84,7 @@ class ImageTest extends TestCase
     public function it_can_get_the_mime_of_an_image()
     {
         $this->assertEquals('image/jpeg', Image::load($this->getTestJpg())->getMime());
-        
+
         $this->assertEquals('image/png', Image::load($this->getTestPng())->getMime());
     }
 
