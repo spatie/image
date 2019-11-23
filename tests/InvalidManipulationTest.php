@@ -10,7 +10,7 @@ class InvalidManipulationTest extends TestCase
     /** @var \Spatie\Image\Manipulations */
     protected $manipulations;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->manipulations = new Manipulations();
     }
