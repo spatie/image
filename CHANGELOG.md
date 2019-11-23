@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.7.5 - 2019-11-23
+
+- allow symfony 5 components
+
 ## 1.7.4 - 2019-08-28
 
 - do not export docs
