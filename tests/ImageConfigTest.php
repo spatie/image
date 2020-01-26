@@ -2,9 +2,9 @@
 
 namespace Spatie\Image\Test;
 
+use Spatie\Image\Exceptions\InvalidTemporaryDirectory;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Spatie\Image\Exceptions\InvalidTemporaryDirectory;
 
 class ImageConfigTest extends TestCase
 {

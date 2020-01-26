@@ -2,8 +2,8 @@
 
 namespace Spatie\Image;
 
-use ReflectionClass;
 use League\Flysystem\FileNotFoundException;
+use ReflectionClass;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 class Manipulations
@@ -610,7 +610,7 @@ class Manipulations
         return new self($manipulations);
     }
 
-    public function toArray() : array
+    public function toArray(): array
     {
         return $this->manipulationSequence->toArray();
     }
@@ -622,7 +622,7 @@ class Manipulations
      *
      * @return bool
      */
-    private function hasMultipleConversions(array $manipulations) : bool
+    private function hasMultipleConversions(array $manipulations): bool
     {
         foreach ($manipulations as $manipulation) {
             if (isset($manipulation[0]) && is_array($manipulation[0])) {
