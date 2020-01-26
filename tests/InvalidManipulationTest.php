@@ -2,8 +2,8 @@
 
 namespace Spatie\Image\Test;
 
-use Spatie\Image\Manipulations;
 use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\Image\Manipulations;
 
 class InvalidManipulationTest extends TestCase
 {

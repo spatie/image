@@ -3,9 +3,9 @@
 namespace Spatie\Image;
 
 use BadMethodCallException;
+use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
-use Intervention\Image\ImageManagerStatic as InterventionImage;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Image

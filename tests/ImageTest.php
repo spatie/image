@@ -2,9 +2,9 @@
 
 namespace Spatie\Image\Test;
 
+use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Intervention\Image\ImageManagerStatic as InterventionImage;
 
 class ImageTest extends TestCase
 {
