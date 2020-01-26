@@ -18,6 +18,7 @@
     "require": {
         "php": "^7.0",
         "ext-exif": "*",
+        "ext-mbstring": "*",
         "league/glide": "^1.4",
         "spatie/image-optimizer": "^1.0",
         "spatie/temporary-directory": "^1.0.0",
@@ -43,5 +44,5 @@
     },
     "config": {
         "sort-packages": true
-  }
+    }
 }

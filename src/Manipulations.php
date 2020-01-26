@@ -686,7 +686,7 @@ class Manipulations
         $options = (new ReflectionClass(static::class))->getConstants();
 
         return array_filter($options, function ($value, $name) use ($manipulation) {
-            return strpos($name, strtoupper($manipulation)) === 0;
+            return strpos($name, mb_strtoupper($manipulation)) === 0;
         }, ARRAY_FILTER_USE_BOTH);
     }
 
