@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.7.6 - 2020-01-26
+
+- change uppercase function to mb_strtoupper instead of strtoupper (#99)
+
 ## 1.7.5 - 2019-11-23
 
 - allow symfony 5 components
