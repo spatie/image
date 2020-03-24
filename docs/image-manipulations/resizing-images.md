@@ -65,11 +65,11 @@ The image will be resized to completely cover the given dimensions respecting th
 
 ```php
 Image::load('example.jpg')
-    ->fit(Manipulations::FIT_STRETCH, 250, 250)
+    ->fit(Manipulations::FIT_STRETCH, 450, 150)
     ->save();
 ```
 
-![Crop top right to 250x250](../../images/example-fit-stretch.jpg)
+![Fit stretch to 450x150](../../images/example-fit-stretch.jpg)
 
 ## Crop
 
