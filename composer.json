@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.0",
+        "php": "^7.0|^8.0",
         "ext-exif": "*",
         "ext-mbstring": "*",
         "league/glide": "^1.4",
@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "larapack/dd": "^1.1",
-        "phpunit/phpunit": "^6.0|^7.0",
+        "phpunit/phpunit": "^6.0|^7.0|^9.0",
         "symfony/var-dumper": "^3.2|^5.0"
     },
     "autoload": {
