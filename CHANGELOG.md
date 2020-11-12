@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.8.1 - 2020-11-12
+
+- revert changes from 1.8.0
+
 ## 1.8.0 - 2020-11-12
 
 - allow usage of a custom `OptimizerChain` (#108)
