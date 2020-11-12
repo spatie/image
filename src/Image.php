@@ -163,11 +163,11 @@ class Image
             $existingOptimizers = $optimizerChain->getOptimizers();
 
             $optimizers = array_map(function (array $optimizerOptions, string $optimizerClassName) use ($existingOptimizers) {
-                $optimizer = array_filter($existingOptimizers, function ($optimizer) use ($optimizerClassName) {
+                $optimizer = array_values(array_filter($existingOptimizers, function ($optimizer) use ($optimizerClassName) {
                     return get_class($optimizer) === $optimizerClassName;
-                });
+                }));
 
-                $optimizer = count($optimizer) > 0 && $optimizer[0] instanceof BaseOptimizer ? $optimizer[0] : new $optimizerClassName;
+                $optimizer = isset($optimizer[0]) && $optimizer[0] instanceof BaseOptimizer ? $optimizer[0] : new $optimizerClassName;
 
                 return $optimizer->setOptions($optimizerOptions)->setBinaryPath($optimizer->binaryPath);
             }, $optimizerChainConfiguration, array_keys($optimizerChainConfiguration));

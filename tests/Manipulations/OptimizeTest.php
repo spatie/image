@@ -6,6 +6,7 @@ use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
+use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
 class OptimizeTest extends TestCase
 {
@@ -55,9 +56,14 @@ class OptimizeTest extends TestCase
 
         Image::load($this->getTestFile('test.jpg'))
             ->setOptimizeChain(OptimizerChainFactory::create())
-            ->optimize([Jpegoptim::class => [
-                '--all-progressive',
-            ]])
+            ->optimize([
+                Pngquant::class => [
+                    '--force',
+                ],
+                Jpegoptim::class => [
+                    '--all-progressive',
+                ],
+            ])
             ->save($targetFile);
 
         $this->assertFileExists($targetFile);
