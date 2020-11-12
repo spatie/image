@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.8.0 - 2020-11-12
+
+- allow usage of a custom `OptimizerChain` (#108)
+
 ## 1.7.7 - 2020-11-12
 
 - add support for PHP 8
