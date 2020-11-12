@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.7.7 - 2020-11-12
+
+- add support for PHP 8
+
 ## 1.7.6 - 2020-01-26
 
 - change uppercase function to mb_strtoupper instead of strtoupper (#99)
