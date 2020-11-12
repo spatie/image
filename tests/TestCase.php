@@ -10,7 +10,7 @@ abstract class TestCase extends PHPUnitTestCase
     /** @var \Spatie\TemporaryDirectory\TemporaryDirectory */
     protected $tempDir;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->tempDir = (new TemporaryDirectory(__DIR__))
             ->name('temp')
