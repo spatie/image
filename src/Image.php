@@ -5,7 +5,9 @@ namespace Spatie\Image;
 use BadMethodCallException;
 use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Spatie\Image\Exceptions\InvalidImageDriver;
+use Spatie\ImageOptimizer\OptimizerChain;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Spatie\ImageOptimizer\Optimizers\BaseOptimizer;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Image
@@ -21,6 +23,9 @@ class Image
     /** @var string|null */
     protected $temporaryDirectory = null;
 
+    /** @var OptimizerChain */
+    protected $optimizerChain;
+
     /**
      * @param string $pathToImage
      *
@@ -34,6 +39,13 @@ class Image
     public function setTemporaryDirectory($tempDir)
     {
         $this->temporaryDirectory = $tempDir;
+
+        return $this;
+    }
+
+    public function setOptimizeChain(OptimizerChain $optimizerChain)
+    {
+        $this->optimizerChain = $optimizerChain;
 
         return $this;
     }
@@ -145,11 +157,19 @@ class Image
 
     protected function performOptimization($path, array $optimizerChainConfiguration)
     {
-        $optimizerChain = OptimizerChainFactory::create();
+        $optimizerChain = $this->optimizerChain ?? OptimizerChainFactory::create();
 
         if (count($optimizerChainConfiguration)) {
-            $optimizers = array_map(function (array $optimizerOptions, string $optimizerClassName) {
-                return (new $optimizerClassName)->setOptions($optimizerOptions);
+            $existingOptimizers = $optimizerChain->getOptimizers();
+
+            $optimizers = array_map(function (array $optimizerOptions, string $optimizerClassName) use ($existingOptimizers) {
+                $optimizer = array_values(array_filter($existingOptimizers, function ($optimizer) use ($optimizerClassName) {
+                    return get_class($optimizer) === $optimizerClassName;
+                }));
+
+                $optimizer = isset($optimizer[0]) && $optimizer[0] instanceof BaseOptimizer ? $optimizer[0] : new $optimizerClassName;
+
+                return $optimizer->setOptions($optimizerOptions)->setBinaryPath($optimizer->binaryPath);
             }, $optimizerChainConfiguration, array_keys($optimizerChainConfiguration));
 
             $optimizerChain->setOptimizers($optimizers);

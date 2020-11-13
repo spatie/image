@@ -4,7 +4,9 @@ namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
+use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
 class OptimizeTest extends TestCase
 {
@@ -42,6 +44,26 @@ class OptimizeTest extends TestCase
             ->optimize([Jpegoptim::class => [
                 '--all-progressive',
             ]])
+            ->save($targetFile);
+
+        $this->assertFileExists($targetFile);
+    }
+
+    /** @test */
+    public function it_can_optimize_an_image_using_a_provided_optimizer_chain()
+    {
+        $targetFile = $this->tempDir->path('optimized.jpg');
+
+        Image::load($this->getTestFile('test.jpg'))
+            ->setOptimizeChain(OptimizerChainFactory::create())
+            ->optimize([
+                Pngquant::class => [
+                    '--force',
+                ],
+                Jpegoptim::class => [
+                    '--all-progressive',
+                ],
+            ])
             ->save($targetFile);
 
         $this->assertFileExists($targetFile);

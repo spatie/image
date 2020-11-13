@@ -37,3 +37,18 @@ Image::load('example.jpg')
     ]])
     ->save();
 ```
+
+If you need more control over the optimizer chain, you can still pass your own instance of `OptimizerChain`. It can be especially useful if you need to set a custom timeout or a custom binary path. You may not have enough privileges to install the necessary binaries on your server but you can still upload some [precompiled binaries](https://github.com/imagemin?q=bin&type=&language=).
+
+```php
+$optimizer = new OptimizerChain();
+$optimizer->setTimeout(10);
+$optimizer->addOptimizer(new Jpegoptim([
+    '--all-progressive',
+])->setBinaryPath('/home/user/bin/jpegoptim'));
+
+Image::load('example.jpg')
+    ->setOptimizeChain($optimizer)
+    ->optimize()
+    ->save();
+```
