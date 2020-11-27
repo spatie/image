@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.10.0 - 2020-12-27
+
+- adds zoom option to focalCrop (#112)
+
 ## 1.9.0 - 2020-11-13
 
 - allow usage of a custom `OptimizerChain` #110
