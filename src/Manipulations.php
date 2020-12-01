@@ -145,13 +145,19 @@ class Manipulations
      * @param int $focalY Crop center Y in percent
      *
      * @return $this
+     *
+     * @throws InvalidManipulation
      */
-    public function focalCrop(int $width, int $height, int $focalX, int $focalY)
+    public function focalCrop(int $width, int $height, int $focalX, int $focalY, float $zoom = 1)
     {
+        if ($zoom < 1 || $zoom > 100) {
+            throw InvalidManipulation::valueNotInRange('zoom', $zoom, 1, 100);
+        }
+
         $this->width($width);
         $this->height($height);
 
-        return $this->addManipulation('crop', "crop-{$focalX}-{$focalY}");
+        return $this->addManipulation('crop', "crop-{$focalX}-{$focalY}-{$zoom}");
     }
 
     /**
