@@ -2,7 +2,7 @@
 
 All notable changes to `image` will be documented in this file
 
-## 1.10.0 - 2020-12-27
+## 1.10.1 - 2020-12-27
 
 - adds zoom option to focalCrop (#112)
 
