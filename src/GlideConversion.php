@@ -144,7 +144,7 @@ final class GlideConversion
 
         unlink($this->conversionResult);
 
-        if ($this->directoryIsEmpty($conversionResultDirectory) && $conversionResultDirectory !== '/tmp') {
+        if ($this->directoryIsEmpty($conversionResultDirectory) && $conversionResultDirectory !== sys_get_temp_dir()) {
             rmdir($conversionResultDirectory);
         }
     }
