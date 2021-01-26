@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.10.2 - 2020-01-26
+
+- change condition to delete $conversionResultDirectory (#118)
+
 ## 1.10.1 - 2020-12-27
 
 - adds zoom option to focalCrop (#112)
