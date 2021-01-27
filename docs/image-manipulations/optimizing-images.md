@@ -43,9 +43,9 @@ If you need more control over the optimizer chain, you can still pass your own i
 ```php
 $optimizer = new OptimizerChain();
 $optimizer->setTimeout(10);
-$optimizer->addOptimizer(new Jpegoptim([
+$optimizer->addOptimizer((new Jpegoptim([
     '--all-progressive',
-])->setBinaryPath('/home/user/bin/jpegoptim'));
+]))->setBinaryPath('/home/user/bin'));
 
 Image::load('example.jpg')
     ->setOptimizeChain($optimizer)
