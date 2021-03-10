@@ -18,10 +18,10 @@ final class GlideConversion
     private $imageDriver = 'gd';
 
     /** @var string */
-    private $conversionResult = null;
+    private $conversionResult;
 
     /** @var string */
-    private $temporaryDirectory = null;
+    private $temporaryDirectory;
 
     public static function create(string $inputImage): self
     {
