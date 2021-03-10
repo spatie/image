@@ -30,10 +30,6 @@ final class GlideConversion
 
     public function setTemporaryDirectory(string $temporaryDirectory)
     {
-        if (! isset($temporaryDirectory)) {
-            return $this;
-        }
-
         if (! is_dir($temporaryDirectory)) {
             try {
                 mkdir($temporaryDirectory);
