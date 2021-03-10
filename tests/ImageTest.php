@@ -75,9 +75,9 @@ class ImageTest extends TestCase
     /** @test */
     public function it_can_get_the_width_and_height_of_an_image()
     {
-        $this->assertEquals(340, Image::load($this->getTestJpg())->getWidth());
+        $this->assertSame(340, Image::load($this->getTestJpg())->getWidth());
 
-        $this->assertEquals(280, Image::load($this->getTestJpg())->getHeight());
+        $this->assertSame(280, Image::load($this->getTestJpg())->getHeight());
     }
 
     /** @test */
@@ -85,11 +85,11 @@ class ImageTest extends TestCase
     {
         $image = Image::load($this->getTestJpg());
 
-        $this->assertEquals('gd', InterventionImage::getManager()->config['driver'] ?? null);
+        $this->assertSame('gd', InterventionImage::getManager()->config['driver'] ?? null);
 
         $image->useImageDriver('imagick');
 
-        $this->assertEquals('imagick', InterventionImage::getManager()->config['driver'] ?? null);
+        $this->assertSame('imagick', InterventionImage::getManager()->config['driver'] ?? null);
     }
 
     /** @test */
