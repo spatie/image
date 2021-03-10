@@ -2,7 +2,7 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
-use League\Glide\Filesystem\FileNotFoundException;
+use League\Flysystem\FileNotFoundException;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
