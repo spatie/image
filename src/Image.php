@@ -23,7 +23,7 @@ class Image
     /** @var string|null */
     protected $temporaryDirectory = null;
 
-    /** @var OptimizerChain */
+    /** @var OptimizerChain|null */
     protected $optimizerChain;
 
     /**
@@ -80,7 +80,7 @@ class Image
     }
 
     /**
-     * @param callable|$manipulations
+     * @param callable|Manipulations $manipulations
      *
      * @return $this
      */

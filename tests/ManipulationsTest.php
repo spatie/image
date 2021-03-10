@@ -19,7 +19,7 @@ class ManipulationsTest extends TestCase
 
         $unserializedManipulations = unserialize(serialize($manipulations));
 
-        $this->assertEquals(
+        $this->assertSame(
             $manipulations->getManipulationSequence()->toArray(),
             $unserializedManipulations->getManipulationSequence()->toArray()
         );
@@ -31,16 +31,16 @@ class ManipulationsTest extends TestCase
         $sequenceArray = [
             [
                 'filter' => 'greyscale',
-                'width' => 50,
+                'width' => '50',
             ],
             [
-                'height' => 100,
+                'height' => '100',
             ],
         ];
 
         $manipulations = (new Manipulations($sequenceArray));
 
-        $this->assertEquals($sequenceArray, $manipulations->getManipulationSequence()->toArray());
+        $this->assertSame($sequenceArray, $manipulations->getManipulationSequence()->toArray());
     }
 
     /** @test */
@@ -49,13 +49,13 @@ class ManipulationsTest extends TestCase
         $sequenceArray = [
             [
                 'filter' => 'greyscale',
-                'width' => 50,
+                'width' => '50',
             ],
         ];
 
         $manipulations = (new Manipulations($sequenceArray));
 
-        $this->assertEquals($sequenceArray, $manipulations->getManipulationSequence()->toArray());
+        $this->assertSame($sequenceArray, $manipulations->getManipulationSequence()->toArray());
     }
 
     /** @test */
@@ -71,7 +71,7 @@ class ManipulationsTest extends TestCase
             ->apply()
             ->manualCrop(20, 10, 10, 10);
 
-        $this->assertEquals($sequenceArray, $manipulations->toArray());
+        $this->assertSame($sequenceArray, $manipulations->toArray());
     }
 
     /** @test */
@@ -84,7 +84,7 @@ class ManipulationsTest extends TestCase
 
         $manipulations = Manipulations::create($sequenceArray);
 
-        $this->assertEquals($sequenceArray, $manipulations->toArray());
+        $this->assertSame($sequenceArray, $manipulations->toArray());
     }
 
     /** @test */
@@ -99,7 +99,7 @@ class ManipulationsTest extends TestCase
 
         $manipulations = Manipulations::create($sequence);
 
-        $this->assertEquals($sequence, $manipulations->toArray());
+        $this->assertSame($sequence, $manipulations->toArray());
     }
 
     /** @test */
@@ -116,11 +116,11 @@ class ManipulationsTest extends TestCase
 
         $mergedManipulations = $manipulations1->mergeManipulations($manipulations2);
 
-        $this->assertEquals([[
-            'width' => 20,
-            'pixelate' => 10,
-            'height' => 10,
-            'blur' => 10,
+        $this->assertSame([[
+            'width' => '20',
+            'pixelate' => '10',
+            'height' => '10',
+            'blur' => '10',
         ]], $mergedManipulations->getManipulationSequence()->toArray());
     }
 
@@ -145,12 +145,12 @@ class ManipulationsTest extends TestCase
 
         $manipulations->optimize();
 
-        $this->assertEquals('[]', $manipulations->getManipulationArgument('optimize'));
+        $this->assertSame('[]', $manipulations->getManipulationArgument('optimize'));
 
         $manipulations = new Manipulations();
 
         $manipulations->optimize(['hide_errors' => true]);
 
-        $this->assertEquals('{"hide_errors":true}', $manipulations->getManipulationArgument('optimize'));
+        $this->assertSame('{"hide_errors":true}', $manipulations->getManipulationArgument('optimize'));
     }
 }

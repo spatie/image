@@ -11,7 +11,7 @@ class ManipulationSequenceTest extends TestCase
     {
         $manipulationSequence = new ManipulationSequence();
 
-        $this->assertEquals([], $manipulationSequence->toArray());
+        $this->assertSame([], $manipulationSequence->toArray());
     }
 
     /** @test */
@@ -19,11 +19,11 @@ class ManipulationSequenceTest extends TestCase
     {
         $manipulationSequence = new ManipulationSequence();
 
-        $manipulationSequence->addManipulation('height', 100);
+        $manipulationSequence->addManipulation('height', '100');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
-                'height' => 100,
+                'height' => '100',
             ],
         ], $manipulationSequence->toArray());
     }
@@ -34,13 +34,13 @@ class ManipulationSequenceTest extends TestCase
         $manipulationSequence = new ManipulationSequence();
 
         $manipulationSequence
-            ->addManipulation('height', 100)
-            ->addManipulation('width', 200);
+            ->addManipulation('height', '100')
+            ->addManipulation('width', '200');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
-                'height' => 100,
-                'width' => 200,
+                'height' => '100',
+                'width' => '200',
             ],
         ], $manipulationSequence->toArray());
     }
@@ -51,14 +51,14 @@ class ManipulationSequenceTest extends TestCase
         $manipulationSequence = new ManipulationSequence();
 
         $manipulationSequence
-            ->addManipulation('height', 100)
-            ->addManipulation('width', 200)
-            ->addManipulation('height', 300);
+            ->addManipulation('height', '100')
+            ->addManipulation('width', '200')
+            ->addManipulation('height', '300');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
-                'height' => 300,
-                'width' => 200,
+                'height' => '300',
+                'width' => '200',
             ],
         ], $manipulationSequence->toArray());
     }
@@ -69,18 +69,18 @@ class ManipulationSequenceTest extends TestCase
         $manipulationSequence = new ManipulationSequence();
 
         $manipulationSequence
-            ->addManipulation('height', 100)
-            ->addManipulation('width', 200)
+            ->addManipulation('height', '100')
+            ->addManipulation('width', '200')
             ->startNewGroup()
-            ->addManipulation('height', 300);
+            ->addManipulation('height', '300');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
-                'height' => 100,
-                'width' => 200,
+                'height' => '100',
+                'width' => '200',
             ],
             [
-                'height' => 300,
+                'height' => '300',
             ],
         ], $manipulationSequence->toArray());
     }
@@ -91,13 +91,13 @@ class ManipulationSequenceTest extends TestCase
         $manipulationSequence = new ManipulationSequence();
 
         $manipulationSequence
-            ->addManipulation('height', 100)
-            ->addManipulation('width', 200)
+            ->addManipulation('height', '100')
+            ->addManipulation('width', '200')
             ->removeManipulation('height');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
-                'width' => 200,
+                'width' => '200',
             ],
         ], $manipulationSequence->toArray());
     }
@@ -107,11 +107,11 @@ class ManipulationSequenceTest extends TestCase
     {
         $manipulationSequence = new ManipulationSequence();
 
-        $manipulationSequence->addManipulation('height', 100);
+        $manipulationSequence->addManipulation('height', '100');
 
         foreach ($manipulationSequence as $manipulationSet) {
-            $this->assertEquals([
-                'height' => 100,
+            $this->assertSame([
+                'height' => '100',
             ], $manipulationSet);
         }
     }
@@ -122,14 +122,14 @@ class ManipulationSequenceTest extends TestCase
         $manipulationSequence = new ManipulationSequence();
 
         $manipulationSequence
-            ->addManipulation('height', 100)
+            ->addManipulation('height', '100')
             ->startNewGroup()
-            ->addManipulation('width', 200)
+            ->addManipulation('width', '200')
             ->removeManipulation('height');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
-                'width' => 200,
+                'width' => '200',
             ],
         ], $manipulationSequence->toArray());
     }
@@ -137,15 +137,15 @@ class ManipulationSequenceTest extends TestCase
     /** @test */
     public function it_can_merge_two_sequences_containing_the_same_manipulation()
     {
-        $manipulationSequence1 = (new ManipulationSequence())->addManipulation('height', 100);
+        $manipulationSequence1 = (new ManipulationSequence())->addManipulation('height', '100');
 
-        $manipulationSequence2 = (new ManipulationSequence())->addManipulation('height', 200);
+        $manipulationSequence2 = (new ManipulationSequence())->addManipulation('height', '200');
 
         $manipulationSequence1->merge($manipulationSequence2);
 
-        $this->assertEquals([
+        $this->assertSame([
             [
-                'height' => 200,
+                'height' => '200',
             ],
         ], $manipulationSequence1->toArray());
     }
@@ -154,19 +154,19 @@ class ManipulationSequenceTest extends TestCase
     public function it_can_merge_two_sequences_containing_multiple_manipulations()
     {
         $manipulationSequence1 = (new ManipulationSequence())
-            ->addManipulation('width', 50)
-            ->addManipulation('height', 100);
+            ->addManipulation('width', '50')
+            ->addManipulation('height', '100');
 
         $manipulationSequence2 = (new ManipulationSequence())
-            ->addManipulation('height', 200)
+            ->addManipulation('height', '200')
             ->addManipulation('pixelate', '');
 
         $manipulationSequence1->merge($manipulationSequence2);
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'width' => '50',
-                'height' => 200,
+                'height' => '200',
                 'pixelate' => '',
             ],
         ], $manipulationSequence1->toArray());
@@ -176,33 +176,33 @@ class ManipulationSequenceTest extends TestCase
     public function it_can_merge_two_sequences_containing_multiple_groups()
     {
         $manipulationSequence1 = (new ManipulationSequence())
-            ->addManipulation('width', 50)
-            ->addManipulation('height', 100)
+            ->addManipulation('width', '50')
+            ->addManipulation('height', '100')
             ->startNewGroup()
-            ->addManipulation('width', 50)
-            ->addManipulation('height', 100);
+            ->addManipulation('width', '50')
+            ->addManipulation('height', '100');
 
         $manipulationSequence2 = (new ManipulationSequence())
-            ->addManipulation('height', 200)
+            ->addManipulation('height', '200')
             ->addManipulation('pixelate', '')
             ->startNewGroup()
-            ->addManipulation('brightness', 200)
+            ->addManipulation('brightness', '200')
             ->addManipulation('format', 'png');
 
         $manipulationSequence1->merge($manipulationSequence2);
 
-        $this->assertEquals([
+        $this->assertSame([
             [
-                'width' => 50,
-                'height' => 100,
+                'width' => '50',
+                'height' => '100',
             ],
             [
                 'width' => '50',
-                'height' => 200,
+                'height' => '200',
                 'pixelate' => '',
             ],
             [
-                'brightness' => 200,
+                'brightness' => '200',
                 'format' => 'png',
             ],
         ], $manipulationSequence1->toArray());
@@ -212,15 +212,15 @@ class ManipulationSequenceTest extends TestCase
     public function it_is_serializable()
     {
         $sequence = (new ManipulationSequence())
-            ->addManipulation('width', 50)
-            ->addManipulation('height', 100)
+            ->addManipulation('width', '50')
+            ->addManipulation('height', '100')
             ->startNewGroup()
-            ->addManipulation('width', 50)
-            ->addManipulation('height', 100);
+            ->addManipulation('width', '50')
+            ->addManipulation('height', '100');
 
         $unserializedSequence = unserialize(serialize($sequence));
 
-        $this->assertEquals($sequence->toArray(), $unserializedSequence->toArray());
+        $this->assertSame($sequence->toArray(), $unserializedSequence->toArray());
     }
 
     /** @test */
@@ -229,16 +229,16 @@ class ManipulationSequenceTest extends TestCase
         $sequenceArray = [
             [
                 'greyscale' => '',
-                'width' => 50,
+                'width' => '50',
             ],
             [
-                'height' => 100,
+                'height' => '100',
             ],
         ];
 
         $sequence = (new ManipulationSequence($sequenceArray));
 
-        $this->assertEquals($sequenceArray, $sequence->toArray());
+        $this->assertSame($sequenceArray, $sequence->toArray());
     }
 
     /** @test */
@@ -246,8 +246,8 @@ class ManipulationSequenceTest extends TestCase
     {
         $sequenceArray = [
             [
-                'width' => 100,
-                'height' => 100,
+                'width' => '100',
+                'height' => '100',
             ],
         ];
 
@@ -259,7 +259,7 @@ class ManipulationSequenceTest extends TestCase
         $this->assertCount(1, $mergedSequence);
 
         foreach ($mergedSequence as $sequence) {
-            $this->assertEquals($sequenceArray[0], $sequence);
+            $this->assertSame($sequenceArray[0], $sequence);
         }
     }
 
@@ -270,7 +270,7 @@ class ManipulationSequenceTest extends TestCase
 
         $this->assertTrue($sequence->isEmpty());
 
-        $sequence->addManipulation('width', 50);
+        $sequence->addManipulation('width', '50');
 
         $this->assertFalse($sequence->isEmpty());
     }

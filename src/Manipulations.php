@@ -143,6 +143,7 @@ class Manipulations
      * @param int $height
      * @param int $focalX Crop center X in percent
      * @param int $focalY Crop center Y in percent
+     * @param float $zoom
      *
      * @return $this
      *
@@ -196,7 +197,7 @@ class Manipulations
             throw InvalidManipulation::invalidWidth($width);
         }
 
-        return $this->addManipulation('width', $width);
+        return $this->addManipulation('width', (string)$width);
     }
 
     /**
@@ -212,7 +213,7 @@ class Manipulations
             throw InvalidManipulation::invalidHeight($height);
         }
 
-        return $this->addManipulation('height', $height);
+        return $this->addManipulation('height', (string)$height);
     }
 
     /**
@@ -253,7 +254,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('ratio', $ratio, 1, 8);
         }
 
-        return $this->addManipulation('devicePixelRatio', $ratio);
+        return $this->addManipulation('devicePixelRatio', (string)$ratio);
     }
 
     /**
@@ -269,7 +270,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('brightness', $brightness, -100, 100);
         }
 
-        return $this->addManipulation('brightness', $brightness);
+        return $this->addManipulation('brightness', (string)$brightness);
     }
 
     /**
@@ -285,7 +286,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('gamma', $gamma, 0.01, 9.00);
         }
 
-        return $this->addManipulation('gamma', $gamma);
+        return $this->addManipulation('gamma', (string)$gamma);
     }
 
     /**
@@ -301,7 +302,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('contrast', $contrast, -100, 100);
         }
 
-        return $this->addManipulation('contrast', $contrast);
+        return $this->addManipulation('contrast', (string)$contrast);
     }
 
     /**
@@ -317,7 +318,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('sharpen', $sharpen, 0, 100);
         }
 
-        return $this->addManipulation('sharpen', $sharpen);
+        return $this->addManipulation('sharpen', (string)$sharpen);
     }
 
     /**
@@ -333,7 +334,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('blur', $blur, 0, 100);
         }
 
-        return $this->addManipulation('blur', $blur);
+        return $this->addManipulation('blur', (string)$blur);
     }
 
     /**
@@ -349,7 +350,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('pixelate', $pixelate, 0, 1000);
         }
 
-        return $this->addManipulation('pixelate', $pixelate);
+        return $this->addManipulation('pixelate', (string)$pixelate);
     }
 
     /**
@@ -417,7 +418,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('quality', $quality, 0, 100);
         }
 
-        return $this->addManipulation('quality', $quality);
+        return $this->addManipulation('quality', (string)$quality);
     }
 
     /**
@@ -488,7 +489,7 @@ class Manipulations
     {
         $width = ($unit == static::UNIT_PERCENT ? $width.'w' : $width);
 
-        return $this->addManipulation('watermarkWidth', $width);
+        return $this->addManipulation('watermarkWidth', (string)$width);
     }
 
     /**
@@ -501,7 +502,7 @@ class Manipulations
     {
         $height = ($unit == static::UNIT_PERCENT ? $height.'h' : $height);
 
-        return $this->addManipulation('watermarkHeight', $height);
+        return $this->addManipulation('watermarkHeight', (string)$height);
     }
 
     /**
@@ -538,8 +539,8 @@ class Manipulations
         $xPadding = ($unit == static::UNIT_PERCENT ? $xPadding.'w' : $xPadding);
         $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
 
-        $this->addManipulation('watermarkPaddingX', $xPadding);
-        $this->addManipulation('watermarkPaddingY', $yPadding);
+        $this->addManipulation('watermarkPaddingX', (string)$xPadding);
+        $this->addManipulation('watermarkPaddingY', (string)$yPadding);
 
         return $this;
     }
@@ -579,7 +580,7 @@ class Manipulations
             throw InvalidManipulation::valueNotInRange('opacity', $opacity, 0, 100);
         }
 
-        return $this->addManipulation('watermarkOpacity', $opacity);
+        return $this->addManipulation('watermarkOpacity', (string)$opacity);
     }
 
     /**
