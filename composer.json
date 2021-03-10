@@ -19,6 +19,7 @@
         "php": "^7.2|^8.0",
         "ext-exif": "*",
         "ext-mbstring": "*",
+        "ext-json": "*",
         "league/glide": "^2.0",
         "spatie/image-optimizer": "^1.1",
         "spatie/temporary-directory": "^1.0",
