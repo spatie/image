@@ -22,7 +22,7 @@
         "ext-json": "*",
         "league/glide": "^1.6",
         "spatie/image-optimizer": "^1.1",
-        "spatie/temporary-directory": "^1.0",
+        "spatie/temporary-directory": "^1.0|^2.0",
         "symfony/process": "^3.0|^4.0|^5.0"
     },
     "require-dev": {
