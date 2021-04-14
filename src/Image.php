@@ -9,62 +9,47 @@ use Spatie\ImageOptimizer\OptimizerChain;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\BaseOptimizer;
 
-/** @mixin \Spatie\Image\Manipulations */
+/** @mixin Manipulations */
 class Image
 {
-    /** @var string */
-    protected $pathToImage;
+    protected Manipulations $manipulations;
 
-    /** @var \Spatie\Image\Manipulations */
-    protected $manipulations;
+    protected string $imageDriver = 'gd';
 
-    protected $imageDriver = 'gd';
+    protected ?string $temporaryDirectory = null;
 
-    /** @var string|null */
-    protected $temporaryDirectory = null;
+    protected ?OptimizerChain $optimizerChain = null;
 
-    /** @var OptimizerChain|null */
-    protected $optimizerChain;
+    public function __construct(protected string $pathToImage)
+    {
+        $this->manipulations = new Manipulations();
+    }
 
-    /**
-     * @param string $pathToImage
-     *
-     * @return static
-     */
-    public static function load(string $pathToImage)
+    public static function load(string $pathToImage): static
     {
         return new static($pathToImage);
     }
 
-    public function setTemporaryDirectory($tempDir)
+    public function setTemporaryDirectory($tempDir): static
     {
         $this->temporaryDirectory = $tempDir;
 
         return $this;
     }
 
-    public function setOptimizeChain(OptimizerChain $optimizerChain)
+    public function setOptimizeChain(OptimizerChain $optimizerChain): static
     {
         $this->optimizerChain = $optimizerChain;
 
         return $this;
     }
 
-    public function __construct(string $pathToImage)
-    {
-        $this->pathToImage = $pathToImage;
-
-        $this->manipulations = new Manipulations();
-    }
-
     /**
      * @param string $imageDriver
-     *
      * @return $this
-     *
      * @throws InvalidImageDriver
      */
-    public function useImageDriver(string $imageDriver)
+    public function useImageDriver(string $imageDriver): static
     {
         if (! in_array($imageDriver, ['gd', 'imagick'])) {
             throw InvalidImageDriver::driver($imageDriver);
@@ -79,12 +64,7 @@ class Image
         return $this;
     }
 
-    /**
-     * @param callable|Manipulations $manipulations
-     *
-     * @return $this
-     */
-    public function manipulate($manipulations)
+    public function manipulate(callable | Manipulations $manipulations): static
     {
         if (is_callable($manipulations)) {
             $manipulations($this->manipulations);
@@ -97,7 +77,7 @@ class Image
         return $this;
     }
 
-    public function __call($name, $arguments)
+    public function __call($name, $arguments): static
     {
         if (! method_exists($this->manipulations, $name)) {
             throw new BadMethodCallException("Manipulation `{$name}` does not exist");
@@ -123,7 +103,7 @@ class Image
         return $this->manipulations->getManipulationSequence();
     }
 
-    public function save($outputPath = '')
+    public function save($outputPath = ''): void
     {
         if ($outputPath == '') {
             $outputPath = $this->pathToImage;
@@ -155,7 +135,7 @@ class Image
         return ! is_null($this->manipulations->getFirstManipulationArgument('optimize'));
     }
 
-    protected function performOptimization($path, array $optimizerChainConfiguration)
+    protected function performOptimization($path, array $optimizerChainConfiguration): void
     {
         $optimizerChain = $this->optimizerChain ?? OptimizerChainFactory::create();
 
@@ -164,7 +144,7 @@ class Image
 
             $optimizers = array_map(function (array $optimizerOptions, string $optimizerClassName) use ($existingOptimizers) {
                 $optimizer = array_values(array_filter($existingOptimizers, function ($optimizer) use ($optimizerClassName) {
-                    return get_class($optimizer) === $optimizerClassName;
+                    return $optimizer::class === $optimizerClassName;
                 }));
 
                 $optimizer = isset($optimizer[0]) && $optimizer[0] instanceof BaseOptimizer ? $optimizer[0] : new $optimizerClassName();
@@ -178,7 +158,7 @@ class Image
         $optimizerChain->optimize($path);
     }
 
-    protected function addFormatManipulation($outputPath)
+    protected function addFormatManipulation($outputPath): void
     {
         if ($this->manipulations->hasManipulation('format')) {
             return;
