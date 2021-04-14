@@ -11,17 +11,16 @@ use Spatie\Image\Exceptions\InvalidTemporaryDirectory;
 
 final class GlideConversion
 {
-    /** @var string */
-    private $inputImage;
+    private string $imageDriver = 'gd';
 
-    /** @var string */
-    private $imageDriver = 'gd';
+    private string $conversionResult;
 
-    /** @var string */
-    private $conversionResult;
+    private string $temporaryDirectory;
 
-    /** @var string */
-    private $temporaryDirectory;
+    public function __construct(private string $inputImage)
+    {
+        $this->temporaryDirectory = sys_get_temp_dir();
+    }
 
     public static function create(string $inputImage): self
     {
@@ -33,7 +32,7 @@ final class GlideConversion
         if (! is_dir($temporaryDirectory)) {
             try {
                 mkdir($temporaryDirectory);
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 throw InvalidTemporaryDirectory::temporaryDirectoryNotCreatable($temporaryDirectory);
             }
         }
@@ -50,13 +49,6 @@ final class GlideConversion
     public function getTemporaryDirectory(): string
     {
         return $this->temporaryDirectory;
-    }
-
-    public function __construct(string $inputImage)
-    {
-        $this->temporaryDirectory = sys_get_temp_dir();
-
-        $this->inputImage = $inputImage;
     }
 
     public function useImageDriver(string $imageDriver): self
