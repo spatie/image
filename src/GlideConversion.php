@@ -13,7 +13,8 @@ final class GlideConversion
 {
     private string $imageDriver = 'gd';
 
-    private string $conversionResult;
+    /** @var string */
+    private $conversionResult;
 
     private string $temporaryDirectory;
 
@@ -27,7 +28,7 @@ final class GlideConversion
         return new self($inputImage);
     }
 
-    public function setTemporaryDirectory(string $temporaryDirectory)
+    public function setTemporaryDirectory(string $temporaryDirectory): GlideConversion
     {
         if (! is_dir($temporaryDirectory)) {
             try {
@@ -58,7 +59,7 @@ final class GlideConversion
         return $this;
     }
 
-    public function performManipulations(Manipulations $manipulations)
+    public function performManipulations(Manipulations $manipulations): GlideConversion
     {
         foreach ($manipulations->getManipulationSequence() as $manipulationGroup) {
             $inputFile = $this->conversionResult ?? $this->inputImage;
@@ -85,12 +86,8 @@ final class GlideConversion
     }
 
     /**
-     * Removes the watermark path from the manipulationGroup and returns it. This way it can be injected into the Glide
-     * server as the `watermarks` path.
-     *
-     * @param $manipulationGroup
-     *
-     * @return null|string
+     * Removes the watermark path from the manipulationGroup and returns it.
+     * This way it can be injected into the Glide server as the `watermarks` path.
      */
     private function extractWatermarkPath(&$manipulationGroup)
     {
