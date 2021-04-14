@@ -13,8 +13,7 @@ final class GlideConversion
 {
     private string $imageDriver = 'gd';
 
-    /** @var string */
-    private $conversionResult;
+    private ?string $conversionResult = null;
 
     private string $temporaryDirectory;
 
