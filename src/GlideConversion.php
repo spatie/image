@@ -11,29 +11,28 @@ use Spatie\Image\Exceptions\InvalidTemporaryDirectory;
 
 final class GlideConversion
 {
-    /** @var string */
-    private $inputImage;
+    private string $imageDriver = 'gd';
 
-    /** @var string */
-    private $imageDriver = 'gd';
+    private ?string $conversionResult = null;
 
-    /** @var string */
-    private $conversionResult;
+    private string $temporaryDirectory;
 
-    /** @var string */
-    private $temporaryDirectory;
+    public function __construct(private string $inputImage)
+    {
+        $this->temporaryDirectory = sys_get_temp_dir();
+    }
 
     public static function create(string $inputImage): self
     {
         return new self($inputImage);
     }
 
-    public function setTemporaryDirectory(string $temporaryDirectory)
+    public function setTemporaryDirectory(string $temporaryDirectory): self
     {
         if (! is_dir($temporaryDirectory)) {
             try {
                 mkdir($temporaryDirectory);
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 throw InvalidTemporaryDirectory::temporaryDirectoryNotCreatable($temporaryDirectory);
             }
         }
@@ -52,13 +51,6 @@ final class GlideConversion
         return $this->temporaryDirectory;
     }
 
-    public function __construct(string $inputImage)
-    {
-        $this->temporaryDirectory = sys_get_temp_dir();
-
-        $this->inputImage = $inputImage;
-    }
-
     public function useImageDriver(string $imageDriver): self
     {
         $this->imageDriver = $imageDriver;
@@ -66,7 +58,7 @@ final class GlideConversion
         return $this;
     }
 
-    public function performManipulations(Manipulations $manipulations)
+    public function performManipulations(Manipulations $manipulations): GlideConversion
     {
         foreach ($manipulations->getManipulationSequence() as $manipulationGroup) {
             $inputFile = $this->conversionResult ?? $this->inputImage;
@@ -93,12 +85,8 @@ final class GlideConversion
     }
 
     /**
-     * Removes the watermark path from the manipulationGroup and returns it. This way it can be injected into the Glide
-     * server as the `watermarks` path.
-     *
-     * @param $manipulationGroup
-     *
-     * @return null|string
+     * Removes the watermark path from the manipulationGroup and returns it.
+     * This way it can be injected into the Glide server as the `watermarks` path.
      */
     private function extractWatermarkPath(&$manipulationGroup)
     {
@@ -126,9 +114,9 @@ final class GlideConversion
         return ServerFactory::create($config);
     }
 
-    public function save(string $outputFile)
+    public function save(string $outputFile): void
     {
-        if ($this->conversionResult == '') {
+        if ($this->conversionResult === '' || $this->conversionResult === null) {
             copy($this->inputImage, $outputFile);
 
             return;

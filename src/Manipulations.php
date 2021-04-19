@@ -2,65 +2,64 @@
 
 namespace Spatie\Image;
 
-use League\Flysystem\FileNotFoundException;
+use League\Glide\Filesystem\FileNotFoundException;
 use ReflectionClass;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 class Manipulations
 {
-    const CROP_TOP_LEFT = 'crop-top-left';
-    const CROP_TOP = 'crop-top';
-    const CROP_TOP_RIGHT = 'crop-top-right';
-    const CROP_LEFT = 'crop-left';
-    const CROP_CENTER = 'crop-center';
-    const CROP_RIGHT = 'crop-right';
-    const CROP_BOTTOM_LEFT = 'crop-bottom-left';
-    const CROP_BOTTOM = 'crop-bottom';
-    const CROP_BOTTOM_RIGHT = 'crop-bottom-right';
+    public const CROP_TOP_LEFT = 'crop-top-left';
+    public const CROP_TOP = 'crop-top';
+    public const CROP_TOP_RIGHT = 'crop-top-right';
+    public const CROP_LEFT = 'crop-left';
+    public const CROP_CENTER = 'crop-center';
+    public const CROP_RIGHT = 'crop-right';
+    public const CROP_BOTTOM_LEFT = 'crop-bottom-left';
+    public const CROP_BOTTOM = 'crop-bottom';
+    public const CROP_BOTTOM_RIGHT = 'crop-bottom-right';
 
-    const ORIENTATION_AUTO = 'auto';
-    const ORIENTATION_90 = 90;
-    const ORIENTATION_180 = 180;
-    const ORIENTATION_270 = 270;
+    public const ORIENTATION_AUTO = 'auto';
+    public const ORIENTATION_90 = 90;
+    public const ORIENTATION_180 = 180;
+    public const ORIENTATION_270 = 270;
 
-    const FLIP_HORIZONTALLY = 'h';
-    const FLIP_VERTICALLY = 'v';
-    const FLIP_BOTH = 'both';
+    public const FLIP_HORIZONTALLY = 'h';
+    public const FLIP_VERTICALLY = 'v';
+    public const FLIP_BOTH = 'both';
 
-    const FIT_CONTAIN = 'contain';
-    const FIT_MAX = 'max';
-    const FIT_FILL = 'fill';
-    const FIT_STRETCH = 'stretch';
-    const FIT_CROP = 'crop';
+    public const FIT_CONTAIN = 'contain';
+    public const FIT_MAX = 'max';
+    public const FIT_FILL = 'fill';
+    public const FIT_STRETCH = 'stretch';
+    public const FIT_CROP = 'crop';
 
-    const BORDER_OVERLAY = 'overlay';
-    const BORDER_SHRINK = 'shrink';
-    const BORDER_EXPAND = 'expand';
+    public const BORDER_OVERLAY = 'overlay';
+    public const BORDER_SHRINK = 'shrink';
+    public const BORDER_EXPAND = 'expand';
 
-    const FORMAT_JPG = 'jpg';
-    const FORMAT_PJPG = 'pjpg';
-    const FORMAT_PNG = 'png';
-    const FORMAT_GIF = 'gif';
-    const FORMAT_WEBP = 'webp';
+    public const FORMAT_JPG = 'jpg';
+    public const FORMAT_PJPG = 'pjpg';
+    public const FORMAT_PNG = 'png';
+    public const FORMAT_GIF = 'gif';
+    public const FORMAT_WEBP = 'webp';
 
-    const FILTER_GREYSCALE = 'greyscale';
-    const FILTER_SEPIA = 'sepia';
+    public const FILTER_GREYSCALE = 'greyscale';
+    public const FILTER_SEPIA = 'sepia';
 
-    const UNIT_PIXELS = 'px';
-    const UNIT_PERCENT = '%';
+    public const UNIT_PIXELS = 'px';
+    public const UNIT_PERCENT = '%';
 
-    const POSITION_TOP_LEFT = 'top-left';
-    const POSITION_TOP = 'top';
-    const POSITION_TOP_RIGHT = 'top-right';
-    const POSITION_LEFT = 'left';
-    const POSITION_CENTER = 'center';
-    const POSITION_RIGHT = 'right';
-    const POSITION_BOTTOM_LEFT = 'bottom-left';
-    const POSITION_BOTTOM = 'bottom';
-    const POSITION_BOTTOM_RIGHT = 'bottom-right';
+    public const POSITION_TOP_LEFT = 'top-left';
+    public const POSITION_TOP = 'top';
+    public const POSITION_TOP_RIGHT = 'top-right';
+    public const POSITION_LEFT = 'left';
+    public const POSITION_CENTER = 'center';
+    public const POSITION_RIGHT = 'right';
+    public const POSITION_BOTTOM_LEFT = 'bottom-left';
+    public const POSITION_BOTTOM = 'bottom';
+    public const POSITION_BOTTOM_RIGHT = 'bottom-right';
 
-    /** @var \Spatie\Image\ManipulationSequence */
-    protected $manipulationSequence;
+    protected ManipulationSequence $manipulationSequence;
 
     public function __construct(array $manipulations = [])
     {
@@ -73,14 +72,15 @@ class Manipulations
         }
     }
 
+    public static function create(array $manipulations = []): Manipulations
+    {
+        return new self($manipulations);
+    }
+
     /**
-     * @param string $orientation
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function orientation(string $orientation)
+    public function orientation(string $orientation): static
     {
         if (! $this->validateManipulation($orientation, 'orientation')) {
             throw InvalidManipulation::invalidParameter(
@@ -94,13 +94,9 @@ class Manipulations
     }
 
     /**
-     * @param string $orientation
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function flip(string $orientation)
+    public function flip(string $orientation): static
     {
         if (! $this->validateManipulation($orientation, 'flip')) {
             throw InvalidManipulation::invalidParameter(
@@ -114,15 +110,9 @@ class Manipulations
     }
 
     /**
-     * @param string $cropMethod
-     * @param int $width
-     * @param int $height
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function crop(string $cropMethod, int $width, int $height)
+    public function crop(string $cropMethod, int $width, int $height): static
     {
         if (! $this->validateManipulation($cropMethod, 'crop')) {
             throw InvalidManipulation::invalidParameter(
@@ -139,17 +129,12 @@ class Manipulations
     }
 
     /**
-     * @param int $width
-     * @param int $height
      * @param int $focalX Crop center X in percent
      * @param int $focalY Crop center Y in percent
-     * @param float $zoom
-     *
-     * @return $this
      *
      * @throws InvalidManipulation
      */
-    public function focalCrop(int $width, int $height, int $focalX, int $focalY, float $zoom = 1)
+    public function focalCrop(int $width, int $height, int $focalX, int $focalY, float $zoom = 1): static
     {
         if ($zoom < 1 || $zoom > 100) {
             throw InvalidManipulation::valueNotInRange('zoom', $zoom, 1, 100);
@@ -162,16 +147,9 @@ class Manipulations
     }
 
     /**
-     * @param int $width
-     * @param int $height
-     * @param int $x
-     * @param int $y
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function manualCrop(int $width, int $height, int $x, int $y)
+    public function manualCrop(int $width, int $height, int $x, int $y): static
     {
         if ($width < 0) {
             throw InvalidManipulation::invalidWidth($width);
@@ -185,13 +163,9 @@ class Manipulations
     }
 
     /**
-     * @param int $width
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function width(int $width)
+    public function width(int $width): static
     {
         if ($width < 0) {
             throw InvalidManipulation::invalidWidth($width);
@@ -201,13 +175,9 @@ class Manipulations
     }
 
     /**
-     * @param int $height
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function height(int $height)
+    public function height(int $height): static
     {
         if ($height < 0) {
             throw InvalidManipulation::invalidHeight($height);
@@ -217,15 +187,9 @@ class Manipulations
     }
 
     /**
-     * @param string $fitMethod
-     * @param int $width
-     * @param int $height
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function fit(string $fitMethod, int $width, int $height)
+    public function fit(string $fitMethod, int $width, int $height): static
     {
         if (! $this->validateManipulation($fitMethod, 'fit')) {
             throw InvalidManipulation::invalidParameter(
@@ -244,11 +208,9 @@ class Manipulations
     /**
      * @param int $ratio A value between 1 and 8
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function devicePixelRatio(int $ratio)
+    public function devicePixelRatio(int $ratio): static
     {
         if ($ratio < 1 || $ratio > 8) {
             throw InvalidManipulation::valueNotInRange('ratio', $ratio, 1, 8);
@@ -260,11 +222,9 @@ class Manipulations
     /**
      * @param int $brightness A value between -100 and 100
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function brightness(int $brightness)
+    public function brightness(int $brightness): static
     {
         if ($brightness < -100 || $brightness > 100) {
             throw InvalidManipulation::valueNotInRange('brightness', $brightness, -100, 100);
@@ -276,11 +236,9 @@ class Manipulations
     /**
      * @param float $gamma A value between 0.01 and 9.99
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function gamma(float $gamma)
+    public function gamma(float $gamma): static
     {
         if ($gamma < 0.01 || $gamma > 9.99) {
             throw InvalidManipulation::valueNotInRange('gamma', $gamma, 0.01, 9.00);
@@ -292,11 +250,9 @@ class Manipulations
     /**
      * @param int $contrast A value between -100 and 100
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function contrast(int $contrast)
+    public function contrast(int $contrast): static
     {
         if ($contrast < -100 || $contrast > 100) {
             throw InvalidManipulation::valueNotInRange('contrast', $contrast, -100, 100);
@@ -308,11 +264,9 @@ class Manipulations
     /**
      * @param int $sharpen A value between 0 and 100
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function sharpen(int $sharpen)
+    public function sharpen(int $sharpen): static
     {
         if ($sharpen < 0 || $sharpen > 100) {
             throw InvalidManipulation::valueNotInRange('sharpen', $sharpen, 0, 100);
@@ -324,11 +278,9 @@ class Manipulations
     /**
      * @param int $blur A value between 0 and 100
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function blur(int $blur)
+    public function blur(int $blur): static
     {
         if ($blur < 0 || $blur > 100) {
             throw InvalidManipulation::valueNotInRange('blur', $blur, 0, 100);
@@ -340,11 +292,9 @@ class Manipulations
     /**
      * @param int $pixelate A value between 0 and 1000
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function pixelate(int $pixelate)
+    public function pixelate(int $pixelate): static
     {
         if ($pixelate < 0 || $pixelate > 1000) {
             throw InvalidManipulation::valueNotInRange('pixelate', $pixelate, 0, 1000);
@@ -354,41 +304,30 @@ class Manipulations
     }
 
     /**
-     * @return $this
+     * @throws InvalidManipulation
      */
-    public function greyscale()
+    public function greyscale(): static
     {
         return $this->filter('greyscale');
     }
 
     /**
-     * @return $this
+     * @throws InvalidManipulation
      */
-    public function sepia()
+    public function sepia(): static
     {
         return $this->filter('sepia');
     }
 
-    /**
-     * @param string $colorName
-     *
-     * @return $this
-     */
-    public function background(string $colorName)
+    public function background(string $colorName): static
     {
         return $this->addManipulation('background', $colorName);
     }
 
     /**
-     * @param int $width
-     * @param string $color
-     * @param string $borderType
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function border(int $width, string $color, string $borderType = 'overlay')
+    public function border(int $width, string $color, string $borderType = 'overlay'): static
     {
         if ($width < 0) {
             throw InvalidManipulation::invalidWidth($width);
@@ -406,13 +345,9 @@ class Manipulations
     }
 
     /**
-     * @param int $quality
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function quality(int $quality)
+    public function quality(int $quality): static
     {
         if ($quality < 0 || $quality > 100) {
             throw InvalidManipulation::valueNotInRange('quality', $quality, 0, 100);
@@ -422,13 +357,9 @@ class Manipulations
     }
 
     /**
-     * @param string $format
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function format(string $format)
+    public function format(string $format): static
     {
         if (! $this->validateManipulation($format, 'format')) {
             throw InvalidManipulation::invalidParameter(
@@ -442,13 +373,9 @@ class Manipulations
     }
 
     /**
-     * @param string $filterName
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    protected function filter(string $filterName)
+    protected function filter(string $filterName): static
     {
         if (! $this->validateManipulation($filterName, 'filter')) {
             throw InvalidManipulation::invalidParameter(
@@ -462,13 +389,9 @@ class Manipulations
     }
 
     /**
-     * @param string $filePath
-     *
-     * @return $this
-     *
      * @throws FileNotFoundException
      */
-    public function watermark(string $filePath)
+    public function watermark(string $filePath): static
     {
         if (! file_exists($filePath)) {
             throw new FileNotFoundException($filePath);
@@ -482,12 +405,10 @@ class Manipulations
     /**
      * @param int    $width The width of the watermark in pixels (default) or percent.
      * @param string $unit  The unit of the `$width` parameter. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
-     *
-     * @return $this
      */
-    public function watermarkWidth(int $width, string $unit = 'px')
+    public function watermarkWidth(int $width, string $unit = 'px'): static
     {
-        $width = ($unit == static::UNIT_PERCENT ? $width.'w' : $width);
+        $width = ($unit === static::UNIT_PERCENT ? $width.'w' : $width);
 
         return $this->addManipulation('watermarkWidth', (string)$width);
     }
@@ -495,12 +416,10 @@ class Manipulations
     /**
      * @param int    $height The height of the watermark in pixels (default) or percent.
      * @param string $unit   The unit of the `$height` parameter. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
-     *
-     * @return $this
      */
-    public function watermarkHeight(int $height, string $unit = 'px')
+    public function watermarkHeight(int $height, string $unit = 'px'): static
     {
-        $height = ($unit == static::UNIT_PERCENT ? $height.'h' : $height);
+        $height = ($unit === static::UNIT_PERCENT ? $height.'h' : $height);
 
         return $this->addManipulation('watermarkHeight', (string)$height);
     }
@@ -508,11 +427,9 @@ class Manipulations
     /**
      * @param string $fitMethod How is the watermark fitted into the watermarkWidth and watermarkHeight properties.
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function watermarkFit(string $fitMethod)
+    public function watermarkFit(string $fitMethod): static
     {
         if (! $this->validateManipulation($fitMethod, 'fit')) {
             throw InvalidManipulation::invalidParameter(
@@ -529,15 +446,13 @@ class Manipulations
      * @param int $xPadding         How far is the watermark placed from the left and right edges of the image.
      * @param int|null $yPadding    How far is the watermark placed from the top and bottom edges of the image.
      * @param string $unit          Unit of the padding values. Use `Manipulations::UNIT_PERCENT` or `Manipulations::UNIT_PIXELS`.
-     *
-     * @return $this
      */
-    public function watermarkPadding(int $xPadding, int $yPadding = null, string $unit = 'px')
+    public function watermarkPadding(int $xPadding, int $yPadding = null, string $unit = 'px'): static
     {
         $yPadding = $yPadding ?? $xPadding;
 
-        $xPadding = ($unit == static::UNIT_PERCENT ? $xPadding.'w' : $xPadding);
-        $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
+        $xPadding = ($unit === static::UNIT_PERCENT ? $xPadding.'w' : $xPadding);
+        $yPadding = ($unit === static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
 
         $this->addManipulation('watermarkPaddingX', (string)$xPadding);
         $this->addManipulation('watermarkPaddingY', (string)$yPadding);
@@ -546,13 +461,9 @@ class Manipulations
     }
 
     /**
-     * @param string $position
-     *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function watermarkPosition(string $position)
+    public function watermarkPosition(string $position): static
     {
         if (! $this->validateManipulation($position, 'position')) {
             throw InvalidManipulation::invalidParameter(
@@ -570,11 +481,9 @@ class Manipulations
      *
      * @param int $opacity A value between 0 and 100.
      *
-     * @return $this
-     *
      * @throws InvalidManipulation
      */
-    public function watermarkOpacity(int $opacity)
+    public function watermarkOpacity(int $opacity): static
     {
         if ($opacity < 0 || $opacity > 100) {
             throw InvalidManipulation::valueNotInRange('opacity', $opacity, 0, 100);
@@ -585,36 +494,17 @@ class Manipulations
 
     /**
      * Shave off some kilobytes by optimizing the image.
-     *
-     * @param array $optimizationOptions
-     *
-     * @return $this
      */
-    public function optimize(array $optimizationOptions = [])
+    public function optimize(array $optimizationOptions = []): static
     {
         return $this->addManipulation('optimize', json_encode($optimizationOptions));
     }
 
-    /**
-     * @return $this
-     */
-    public function apply()
+    public function apply(): static
     {
         $this->manipulationSequence->startNewGroup();
 
         return $this;
-    }
-
-    /**
-     * Create new manipulations class.
-     *
-     * @param array $manipulations
-     *
-     * @return self
-     */
-    public static function create(array $manipulations = [])
-    {
-        return new self($manipulations);
     }
 
     public function toArray(): array
@@ -624,10 +514,6 @@ class Manipulations
 
     /**
      * Checks if the given manipulations has arrays inside or not.
-     *
-     * @param  array $manipulations
-     *
-     * @return bool
      */
     private function hasMultipleConversions(array $manipulations): bool
     {
@@ -640,7 +526,7 @@ class Manipulations
         return false;
     }
 
-    public function removeManipulation(string $name)
+    public function removeManipulation(string $name): void
     {
         $this->manipulationSequence->removeManipulation($name);
     }
@@ -650,11 +536,6 @@ class Manipulations
         return ! is_null($this->getManipulationArgument($manipulationName));
     }
 
-    /**
-     * @param string $manipulationName
-     *
-     * @return string|null
-     */
     public function getManipulationArgument(string $manipulationName)
     {
         foreach ($this->manipulationSequence->getGroups() as $manipulationSet) {
@@ -664,14 +545,14 @@ class Manipulations
         }
     }
 
-    protected function addManipulation(string $manipulationName, string $manipulationArgument)
+    protected function addManipulation(string $manipulationName, string $manipulationArgument): static
     {
         $this->manipulationSequence->addManipulation($manipulationName, $manipulationArgument);
 
         return $this;
     }
 
-    public function mergeManipulations(self $manipulations)
+    public function mergeManipulations(self $manipulations): static
     {
         $this->manipulationSequence->merge($manipulations->manipulationSequence);
 
@@ -693,7 +574,7 @@ class Manipulations
         $options = (new ReflectionClass(static::class))->getConstants();
 
         return array_filter($options, function ($value, $name) use ($manipulation) {
-            return strpos($name, mb_strtoupper($manipulation)) === 0;
+            return str_starts_with($name, mb_strtoupper($manipulation));
         }, ARRAY_FILTER_USE_BOTH);
     }
 
@@ -703,7 +584,7 @@ class Manipulations
     }
 
     /*
-     * Get the first manipultion with the given name.
+     * Get the first manipulation with the given name.
      *
      * @return mixed
      */

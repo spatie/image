@@ -7,8 +7,7 @@ use IteratorAggregate;
 
 class ManipulationSequence implements IteratorAggregate
 {
-    /** @var array */
-    protected $groups = [];
+    protected array $groups = [];
 
     public function __construct(array $sequenceArray = [])
     {
@@ -16,13 +15,7 @@ class ManipulationSequence implements IteratorAggregate
         $this->mergeArray($sequenceArray);
     }
 
-    /**
-     * @param string $operation
-     * @param string $argument
-     *
-     * @return $this
-     */
-    public function addManipulation(string $operation, string $argument)
+    public function addManipulation(string $operation, string $argument): static
     {
         $lastIndex = count($this->groups) - 1;
 
@@ -31,12 +24,7 @@ class ManipulationSequence implements IteratorAggregate
         return $this;
     }
 
-    /**
-     * @param \Spatie\Image\ManipulationSequence $sequence
-     *
-     * @return $this
-     */
-    public function merge(self $sequence)
+    public function merge(self $sequence): static
     {
         $sequenceArray = $sequence->toArray();
 
@@ -45,7 +33,7 @@ class ManipulationSequence implements IteratorAggregate
         return $this;
     }
 
-    public function mergeArray(array $sequenceArray)
+    public function mergeArray(array $sequenceArray): void
     {
         foreach ($sequenceArray as $group) {
             foreach ($group as $name => $argument) {
@@ -58,10 +46,7 @@ class ManipulationSequence implements IteratorAggregate
         }
     }
 
-    /**
-     * @return $this
-     */
-    public function startNewGroup()
+    public function startNewGroup(): static
     {
         $this->groups[] = [];
 
@@ -83,12 +68,7 @@ class ManipulationSequence implements IteratorAggregate
         return new ArrayIterator($this->toArray());
     }
 
-    /**
-     * @param string $manipulationName
-     *
-     * @return $this
-     */
-    public function removeManipulation(string $manipulationName)
+    public function removeManipulation(string $manipulationName): static
     {
         foreach ($this->groups as &$group) {
             if (array_key_exists($manipulationName, $group)) {
@@ -136,7 +116,7 @@ class ManipulationSequence implements IteratorAggregate
     /*
     * Determine if the sequences contain a manipulation with the given name.
     */
-    public function contains($searchManipulationName)
+    public function contains($searchManipulationName): bool
     {
         foreach ($this->groups as $group) {
             foreach ($group as $name => $argument) {
@@ -147,5 +127,7 @@ class ManipulationSequence implements IteratorAggregate
 
             return false;
         }
+
+        return false;
     }
 }
