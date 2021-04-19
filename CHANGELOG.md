@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 2.0.1 - 2021-07-15
+- Drop support for PHP 7
+- Make codebase more strict with type hinting
+
 ## 2.0.0 - 2021-07-15
 - Bump league/glide to v2 [#134](https://github.com/spatie/image/pull/134)
 
