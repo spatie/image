@@ -9,7 +9,7 @@ use Spatie\ImageOptimizer\OptimizerChain;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\BaseOptimizer;
 
-/** @mixin Manipulations */
+/** @mixin \Spatie\Image\Manipulations */
 class Image
 {
     protected Manipulations $manipulations;
@@ -103,9 +103,9 @@ class Image
         return $this->manipulations->getManipulationSequence();
     }
 
-    public function save($outputPath = ''): void
+    public function save(string $outputPath = ''): void
     {
-        if ($outputPath == '') {
+        if ($outputPath === '') {
             $outputPath = $this->pathToImage;
         }
 
