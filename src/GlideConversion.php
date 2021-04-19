@@ -6,6 +6,7 @@ use Exception;
 use FilesystemIterator;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
+use Spatie\Image\Exceptions\ConversionResultNotFound;
 use Spatie\Image\Exceptions\CouldNotConvert;
 use Spatie\Image\Exceptions\InvalidTemporaryDirectory;
 
@@ -120,6 +121,10 @@ final class GlideConversion
             copy($this->inputImage, $outputFile);
 
             return;
+        }
+
+        if ($this->conversionResult === null) {
+            throw ConversionResultNotFound::notInitialised();
         }
 
         $conversionResultDirectory = pathinfo($this->conversionResult, PATHINFO_DIRNAME);
