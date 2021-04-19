@@ -8,56 +8,56 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 class Manipulations
 {
-    const CROP_TOP_LEFT = 'crop-top-left';
-    const CROP_TOP = 'crop-top';
-    const CROP_TOP_RIGHT = 'crop-top-right';
-    const CROP_LEFT = 'crop-left';
-    const CROP_CENTER = 'crop-center';
-    const CROP_RIGHT = 'crop-right';
-    const CROP_BOTTOM_LEFT = 'crop-bottom-left';
-    const CROP_BOTTOM = 'crop-bottom';
-    const CROP_BOTTOM_RIGHT = 'crop-bottom-right';
+    public const CROP_TOP_LEFT = 'crop-top-left';
+    public const CROP_TOP = 'crop-top';
+    public const CROP_TOP_RIGHT = 'crop-top-right';
+    public const CROP_LEFT = 'crop-left';
+    public const CROP_CENTER = 'crop-center';
+    public const CROP_RIGHT = 'crop-right';
+    public const CROP_BOTTOM_LEFT = 'crop-bottom-left';
+    public const CROP_BOTTOM = 'crop-bottom';
+    public const CROP_BOTTOM_RIGHT = 'crop-bottom-right';
 
-    const ORIENTATION_AUTO = 'auto';
-    const ORIENTATION_90 = 90;
-    const ORIENTATION_180 = 180;
-    const ORIENTATION_270 = 270;
+    public const ORIENTATION_AUTO = 'auto';
+    public const ORIENTATION_90 = 90;
+    public const ORIENTATION_180 = 180;
+    public const ORIENTATION_270 = 270;
 
-    const FLIP_HORIZONTALLY = 'h';
-    const FLIP_VERTICALLY = 'v';
-    const FLIP_BOTH = 'both';
+    public const FLIP_HORIZONTALLY = 'h';
+    public const FLIP_VERTICALLY = 'v';
+    public const FLIP_BOTH = 'both';
 
-    const FIT_CONTAIN = 'contain';
-    const FIT_MAX = 'max';
-    const FIT_FILL = 'fill';
-    const FIT_STRETCH = 'stretch';
-    const FIT_CROP = 'crop';
+    public const FIT_CONTAIN = 'contain';
+    public const FIT_MAX = 'max';
+    public const FIT_FILL = 'fill';
+    public const FIT_STRETCH = 'stretch';
+    public const FIT_CROP = 'crop';
 
-    const BORDER_OVERLAY = 'overlay';
-    const BORDER_SHRINK = 'shrink';
-    const BORDER_EXPAND = 'expand';
+    public const BORDER_OVERLAY = 'overlay';
+    public const BORDER_SHRINK = 'shrink';
+    public const BORDER_EXPAND = 'expand';
 
-    const FORMAT_JPG = 'jpg';
-    const FORMAT_PJPG = 'pjpg';
-    const FORMAT_PNG = 'png';
-    const FORMAT_GIF = 'gif';
-    const FORMAT_WEBP = 'webp';
+    public const FORMAT_JPG = 'jpg';
+    public const FORMAT_PJPG = 'pjpg';
+    public const FORMAT_PNG = 'png';
+    public const FORMAT_GIF = 'gif';
+    public const FORMAT_WEBP = 'webp';
 
-    const FILTER_GREYSCALE = 'greyscale';
-    const FILTER_SEPIA = 'sepia';
+    public const FILTER_GREYSCALE = 'greyscale';
+    public const FILTER_SEPIA = 'sepia';
 
-    const UNIT_PIXELS = 'px';
-    const UNIT_PERCENT = '%';
+    public const UNIT_PIXELS = 'px';
+    public const UNIT_PERCENT = '%';
 
-    const POSITION_TOP_LEFT = 'top-left';
-    const POSITION_TOP = 'top';
-    const POSITION_TOP_RIGHT = 'top-right';
-    const POSITION_LEFT = 'left';
-    const POSITION_CENTER = 'center';
-    const POSITION_RIGHT = 'right';
-    const POSITION_BOTTOM_LEFT = 'bottom-left';
-    const POSITION_BOTTOM = 'bottom';
-    const POSITION_BOTTOM_RIGHT = 'bottom-right';
+    public const POSITION_TOP_LEFT = 'top-left';
+    public const POSITION_TOP = 'top';
+    public const POSITION_TOP_RIGHT = 'top-right';
+    public const POSITION_LEFT = 'left';
+    public const POSITION_CENTER = 'center';
+    public const POSITION_RIGHT = 'right';
+    public const POSITION_BOTTOM_LEFT = 'bottom-left';
+    public const POSITION_BOTTOM = 'bottom';
+    public const POSITION_BOTTOM_RIGHT = 'bottom-right';
 
     protected ManipulationSequence $manipulationSequence;
 
