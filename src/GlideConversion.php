@@ -27,7 +27,7 @@ final class GlideConversion
         return new self($inputImage);
     }
 
-    public function setTemporaryDirectory(string $temporaryDirectory): GlideConversion
+    public function setTemporaryDirectory(string $temporaryDirectory): self
     {
         if (! is_dir($temporaryDirectory)) {
             try {
