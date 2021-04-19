@@ -408,7 +408,7 @@ class Manipulations
      */
     public function watermarkWidth(int $width, string $unit = 'px'): static
     {
-        $width = ($unit == static::UNIT_PERCENT ? $width.'w' : $width);
+        $width = ($unit === static::UNIT_PERCENT ? $width.'w' : $width);
 
         return $this->addManipulation('watermarkWidth', (string)$width);
     }
@@ -419,7 +419,7 @@ class Manipulations
      */
     public function watermarkHeight(int $height, string $unit = 'px'): static
     {
-        $height = ($unit == static::UNIT_PERCENT ? $height.'h' : $height);
+        $height = ($unit === static::UNIT_PERCENT ? $height.'h' : $height);
 
         return $this->addManipulation('watermarkHeight', (string)$height);
     }
@@ -451,8 +451,8 @@ class Manipulations
     {
         $yPadding = $yPadding ?? $xPadding;
 
-        $xPadding = ($unit == static::UNIT_PERCENT ? $xPadding.'w' : $xPadding);
-        $yPadding = ($unit == static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
+        $xPadding = ($unit === static::UNIT_PERCENT ? $xPadding.'w' : $xPadding);
+        $yPadding = ($unit === static::UNIT_PERCENT ? $yPadding.'h' : $yPadding);
 
         $this->addManipulation('watermarkPaddingX', (string)$xPadding);
         $this->addManipulation('watermarkPaddingY', (string)$yPadding);
