@@ -110,7 +110,7 @@ class ImageTest extends TestCase
             ->crop(Manipulations::CROP_CENTER, 100, 100)
             ->save($secondTargetFile);
 
-        $this->assertFalse(file_get_contents($firstTargetFile) === file_get_contents($secondTargetFile));
+        $this->assertNotSame(file_get_contents($firstTargetFile), file_get_contents($secondTargetFile));
     }
 
     protected function assertImageType(string $filePath, $expectedType)
@@ -119,6 +119,6 @@ class ImageTest extends TestCase
 
         $type = image_type_to_mime_type(exif_imagetype($filePath));
 
-        $this->assertTrue($expectedType === $type, "The file `{$filePath}` isn't an `{$expectedType}`, but an `{$type}`");
+        $this->assertSame($expectedType, $type, "The file `{$filePath}` isn't an `{$expectedType}`, but an `{$type}`");
     }
 }
