@@ -2,7 +2,7 @@
 
 All notable changes to `image` will be documented in this file
 
-## 2.0.1 - 2021-07-15
+## 2.1.0 - 2021-07-15
 - Drop support for PHP 7
 - Make codebase more strict with type hinting
 
