@@ -42,7 +42,7 @@ Image::load('example.jpg')
 
 ### Converting a transparent PNG to JPG
 
-The image is converted to PNG simply by saving it with the correct file extension.
+The image is converted to JPG simply by saving it with the correct file extension.
 
 ```php
 Image::load('github-logo.png')
