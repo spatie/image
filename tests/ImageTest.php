@@ -60,6 +60,20 @@ class ImageTest extends TestCase
             Image::load($this->getTestJpg())->save($targetFile);
             $this->assertImageType($targetFile, IMAGETYPE_WEBP);
         }
+
+        //test avif format with gd driver
+        if (function_exists('imagecreatefromavif')) {
+            $targetFile= $this->tempDir->path('conversion.avif');
+            Image::load($this->getTestJpg())->save($targetFile);
+            $this->assertImageType($targetFile, IMAGETYPE_AVIF);
+        }
+        //test avif format with imagik
+        if (!empty(\Imagick::queryFormats("AVIF*"))){
+            $targetFile= $this->tempDir->path('conversion.avif');
+            Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
+            $image = new \Imagick($targetFile);
+            $this->assertSame("AVIF", $image->getImageFormat());
+        }
     }
 
     /** @test */

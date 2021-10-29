@@ -171,7 +171,7 @@ class Image
             return;
         }
 
-        $supportedFormats = ['jpg', 'pjpg', 'png', 'gif', 'webp'];
+        $supportedFormats = ['jpg', 'pjpg', 'png', 'gif', 'webp', 'avif'];
 
         if (in_array($outputExtension, $supportedFormats)) {
             $this->manipulations->format($outputExtension);
