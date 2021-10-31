@@ -2,10 +2,10 @@
 
 namespace Spatie\Image\Test;
 
+use Imagick;
 use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Imagick;
 
 class ImageTest extends TestCase
 {
@@ -68,9 +68,9 @@ class ImageTest extends TestCase
             Image::load($this->getTestJpg())->save($targetFile);
             $this->assertImageType($targetFile, IMAGETYPE_AVIF);
         }
-        
+
         //test avif format with imagick
-        if (!empty(Imagick::queryFormats('AVIF*'))){
+        if (! empty(Imagick::queryFormats('AVIF*'))) {
             $targetFile = $this->tempDir->path('conversion.avif');
             Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
             $image = new Imagick($targetFile);
