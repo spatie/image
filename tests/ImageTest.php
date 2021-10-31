@@ -5,6 +5,7 @@ namespace Spatie\Image\Test;
 use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
+use Imagick;
 
 class ImageTest extends TestCase
 {
@@ -63,16 +64,17 @@ class ImageTest extends TestCase
 
         //test avif format with gd driver
         if (function_exists('imagecreatefromavif')) {
-            $targetFile= $this->tempDir->path('conversion.avif');
+            $targetFile = $this->tempDir->path('conversion.avif');
             Image::load($this->getTestJpg())->save($targetFile);
             $this->assertImageType($targetFile, IMAGETYPE_AVIF);
         }
-        //test avif format with imagik
-        if (!empty(\Imagick::queryFormats("AVIF*"))){
-            $targetFile= $this->tempDir->path('conversion.avif');
+        
+        //test avif format with imagick
+        if (!empty(Imagick::queryFormats('AVIF*'))){
+            $targetFile = $this->tempDir->path('conversion.avif');
             Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
-            $image = new \Imagick($targetFile);
-            $this->assertSame("AVIF", $image->getImageFormat());
+            $image = new Imagick($targetFile);
+            $this->assertSame('AVIF', $image->getImageFormat());
         }
     }
 
