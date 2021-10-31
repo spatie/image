@@ -42,6 +42,7 @@ class Manipulations
     public const FORMAT_PNG = 'png';
     public const FORMAT_GIF = 'gif';
     public const FORMAT_WEBP = 'webp';
+    public const FORMAT_AVIF = 'avif';
 
     public const FILTER_GREYSCALE = 'greyscale';
     public const FILTER_SEPIA = 'sepia';
