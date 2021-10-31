@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 2.2.0 - 2021-10-31
+
+- add avif support (#148)
+
 ## 2.1.0 - 2021-07-15
 - Drop support for PHP 7
 - Make codebase more strict with type hinting
