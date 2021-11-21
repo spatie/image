@@ -148,41 +148,36 @@ final class GlideConversion
 
     private function convertToGlideParameter(string $manipulationName): string
     {
-        $conversions = [
-            'width' => 'w',
-            'height' => 'h',
-            'blur' => 'blur',
-            'pixelate' => 'pixel',
-            'crop' => 'fit',
-            'manualCrop' => 'crop',
-            'orientation' => 'or',
-            'flip' => 'flip',
-            'fit' => 'fit',
-            'devicePixelRatio' => 'dpr',
-            'brightness' => 'bri',
-            'contrast' => 'con',
-            'gamma' => 'gam',
-            'sharpen' => 'sharp',
-            'filter' => 'filt',
-            'background' => 'bg',
-            'border' => 'border',
-            'quality' => 'q',
-            'format' => 'fm',
-            'watermark' => 'mark',
-            'watermarkWidth' => 'markw',
-            'watermarkHeight' => 'markh',
-            'watermarkFit' => 'markfit',
-            'watermarkPaddingX' => 'markx',
-            'watermarkPaddingY' => 'marky',
-            'watermarkPosition' => 'markpos',
-            'watermarkOpacity' => 'markalpha',
-        ];
-
-        if (! isset($conversions[$manipulationName])) {
-            throw CouldNotConvert::unknownManipulation($manipulationName);
-        }
-
-        return $conversions[$manipulationName];
+        return match ($manipulationName) {
+                'width'             => 'w',
+                'height'            => 'h',
+                'blur'              => 'blur',
+                'pixelate'          => 'pixel',
+                'crop'              => 'fit',
+                'manualCrop'        => 'crop',
+                'orientation'       => 'or',
+                'flip'              => 'flip',
+                'fit'               => 'fit',
+                'devicePixelRatio'  => 'dpr',
+                'brightness'        => 'bri',
+                'contrast'          => 'con',
+                'gamma'             => 'gam',
+                'sharpen'           => 'sharp',
+                'filter'            => 'filt',
+                'background'        => 'bg',
+                'border'            => 'border',
+                'quality'           => 'q',
+                'format'            => 'fm',
+                'watermark'         => 'mark',
+                'watermarkWidth'    => 'markw',
+                'watermarkHeight'   => 'markh',
+                'watermarkFit'      => 'markfit',
+                'watermarkPaddingX' => 'markx',
+                'watermarkPaddingY' => 'marky',
+                'watermarkPosition' => 'markpos',
+                'watermarkOpacity'  => 'markalpha',
+                default             => throw CouldNotConvert::unknownManipulation($manipulationName)
+            };
     }
 
     private function directoryIsEmpty(string $directory): bool
