@@ -25,41 +25,43 @@ Image::load('example.jpg')
 
 ## Fit
 
-The `fit` method fits the image within the given `$width` and `$height` dimensions (pixels) using a certain `$cropMethod`.
+The `fit` method fits the image within the given `$width` and `$height` dimensions (pixels) using a certain `$fitMethod`.
 
 ```php
-$image->fit(string $cropMethod, int $width, int $height);
+$image->fit(string $fitMethod, int $width, int $height);
 ```
 
-The following `$cropMethod`s are available through constants of the `Manipulations` class:
+The following `$fitMethod`s are available through constants of the `Manipulations` class:
 
-#### `Manipulations::FIT_CONTAIN` 
+#### `Manipulations::FIT_CONTAIN` (Default)
 
-This is the default fitting method. The image will be resized to be contained within the given dimensions respecting the original aspect ratio.
+Resizes the image to fit within the width and height boundaries without cropping, distorting or altering the aspect ratio.
 
 #### `Manipulations::FIT_MAX`
 
-The image will be resized to be contained within the given dimensions respecting the original aspect ratio and without increasing the size above the original image size.
+Resizes the image to fit within the width and height boundaries without cropping, distorting or altering the aspect ratio, and will also not increase the size of the image if it is smaller than the output size.
 
 #### `Manipulations::FIT_FILL`
 
-Like `FIT_CONTAIN` the image will be resized to be contained within the given dimensions respecting the original aspect ratio. The remaining canvas will be filled with a background color.
+Resizes the image to fit within the width and height boundaries without cropping or distorting the image, and the remaining space is filled with the background color. The resulting image will match the constraining dimensions.
 
 ```php
+# Example of how to set background colour to fill remaining pixels
+
 $image
     ->fit(Manipulations::FIT_FILL, 497, 290)
     ->background('007698');
 ```
 
-![Blue background on fitted JPG](../../images/example-background.png)
+![Blue background on fit filled JPG](../../images/example-background.png)
 
 #### `Manipulations::FIT_STRETCH`
 
-The image will be stretched out to the exact dimensions given.
+Stretches the image to fit the constraining dimensions exactly. The resulting image will fill the dimensions, and will not maintain the aspect ratio of the input image.
 
 #### `Manipulations::FIT_CROP`
 
-The image will be resized to completely cover the given dimensions respecting the orginal aspect ratio. Some parts of the image may be cropped out.
+Resizes the image to fill the width and height boundaries and crops any excess image data. The resulting image will match the width and height constraints without distorting the image.
 
 ### Example usage
 
@@ -79,7 +81,7 @@ By calling the `crop` method part of the image will be cropped to the given `$wi
 $image->crop(string $cropMethod, int $width, int $height);
 ```
 
-The following `$cropMethod`s are available through constants of the `Manipulations` class:  
+The following `$cropMethod`s are available through constants of the `Manipulations` class:
 `CROP_TOP_LEFT`, `CROP_TOP`, `CROP_TOP_RIGHT`, `CROP_LEFT`, `CROP_CENTER`, `CROP_RIGHT`, `CROP_BOTTOM_LEFT`, `CROP_BOTTOM`, `CROP_BOTTOM_RIGHT`.
 
 ### Example usage
@@ -103,7 +105,7 @@ $image->focalCrop(int $width, int $height, int $focalX, int $focalY, float $zoom
 
 ## Manual crop
 
-The `manualCrop` method crops a specific area of the image by specifying the `$startX` and `$startY` positions and the crop's `$width` and `$height` in pixels. 
+The `manualCrop` method crops a specific area of the image by specifying the `$startX` and `$startY` positions and the crop's `$width` and `$height` in pixels.
 
 ```php
 $image->manualCrop(int $width, int $height, int $x, int $y);
