@@ -58,7 +58,7 @@ Please note that since version 1.5.3 this package requires exif extension to be 
 
 ## Usage
 
-Head over to [the full documentation](https://docs.spatie.be/image).
+Head over to [the full documentation](https://spatie.be/docs/image).
 
 ## Changelog
 
