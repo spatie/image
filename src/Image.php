@@ -171,7 +171,18 @@ class Image
             return;
         }
 
-        $supportedFormats = ['jpg', 'pjpg', 'png', 'gif', 'webp', 'avif'];
+        $supportedFormats = [
+            Manipulations::FORMAT_JPG,
+            Manipulations::FORMAT_PJPG,
+            Manipulations::FORMAT_PNG,
+            Manipulations::FORMAT_GIF,
+            Manipulations::FORMAT_WEBP,
+            Manipulations::FORMAT_AVIF,
+        ];
+        //gd driver doesn't support TIFF
+        if ($this->imageDriver === 'imagick') {
+            $supportedFormats[] = Manipulations::FORMAT_TIFF;
+        }
 
         if (in_array($outputExtension, $supportedFormats)) {
             $this->manipulations->format($outputExtension);
