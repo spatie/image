@@ -76,6 +76,14 @@ class ImageTest extends TestCase
             $image = new Imagick($targetFile);
             $this->assertSame('AVIF', $image->getImageFormat());
         }
+
+        //test tiff format with imagick
+        if (!empty(Imagick::queryFormats('TIFF*'))) {
+            $targetFile = $this->tempDir->path('conversion.tiff');
+            Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
+            $image = new Imagick($targetFile);
+            $this->assertSame('TIFF', $image->getImageFormat());
+        }
     }
 
     /** @test */
