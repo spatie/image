@@ -2,6 +2,20 @@
 
 All notable changes to `image` will be documented in this file
 
+## 1.11.0 - 2022-02-21
+
+## What's Changed
+
+- Fix docs link by @pascalbaljet in https://github.com/spatie/image/pull/154
+- Update .gitattributes by @PaolaRuby in https://github.com/spatie/image/pull/158
+- Add TIFF support by @Synchro in https://github.com/spatie/image/pull/159
+
+## New Contributors
+
+- @PaolaRuby made their first contribution in https://github.com/spatie/image/pull/158
+
+**Full Changelog**: https://github.com/spatie/image/compare/2.2.1...1.11.0
+
 ## 2.2.1 - 2021-12-17
 
 ## What's Changed
