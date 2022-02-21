@@ -78,7 +78,7 @@ class ImageTest extends TestCase
         }
 
         //test tiff format with imagick
-        if (!empty(Imagick::queryFormats('TIFF*'))) {
+        if (! empty(Imagick::queryFormats('TIFF*'))) {
             $targetFile = $this->tempDir->path('conversion.tiff');
             Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
             $image = new Imagick($targetFile);
