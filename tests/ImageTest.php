@@ -76,6 +76,14 @@ class ImageTest extends TestCase
             $image = new Imagick($targetFile);
             $this->assertSame('AVIF', $image->getImageFormat());
         }
+
+        //test tiff format with imagick
+        if (! empty(Imagick::queryFormats('TIFF*'))) {
+            $targetFile = $this->tempDir->path('conversion.tiff');
+            Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
+            $image = new Imagick($targetFile);
+            $this->assertSame('TIFF', $image->getImageFormat());
+        }
     }
 
     /** @test */
@@ -100,6 +108,8 @@ class ImageTest extends TestCase
     public function the_image_driver_is_set_on_the_intervention_static_manager()
     {
         $image = Image::load($this->getTestJpg());
+
+        $image->useImageDriver('gd');
 
         $this->assertSame('gd', InterventionImage::getManager()->config['driver'] ?? null);
 

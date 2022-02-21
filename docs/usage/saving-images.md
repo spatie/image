@@ -21,7 +21,7 @@ Image::load('example.jpg')
 
 ## Saving in a different image format
 
-To save your image as a different image format call the `format` method and pass in the desired format. Currently the following formats are supported: `FORMAT_JPG`, `FORMAT_PJPG`, `FORMAT_PNG`, `FORMAT_GIF` and `FORMAT_WEBP`.
+To save your image as a different image format call the `format` method and pass in the desired format. Currently the following formats are supported: `FORMAT_JPG`, `FORMAT_PJPG`, `FORMAT_PNG`, `FORMAT_GIF`, `FORMAT_WEBP` and `FORMAT_TIFF`.
 
 ```php
 Image::load('example.jpg')
