@@ -109,6 +109,8 @@ class ImageTest extends TestCase
     {
         $image = Image::load($this->getTestJpg());
 
+        $image->useImageDriver('gd');
+
         $this->assertSame('gd', InterventionImage::getManager()->config['driver'] ?? null);
 
         $image->useImageDriver('imagick');
