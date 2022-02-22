@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 2.2.2 - 2022-02-22
+
+- add TIFF support
+
 ## 1.11.0 - 2022-02-21
 
 ## What's Changed
