@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 2.2.3 - 2022-05-21
+
+## What's Changed
+
+- Fix permission issue with temporary directory by @sebastianpopp in https://github.com/spatie/image/pull/163
+
+## New Contributors
+
+- @sebastianpopp made their first contribution in https://github.com/spatie/image/pull/163
+
+**Full Changelog**: https://github.com/spatie/image/compare/2.2.2...2.2.3
+
 ## 2.2.2 - 2022-02-22
 
 - add TIFF support
