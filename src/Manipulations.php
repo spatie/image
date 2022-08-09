@@ -19,6 +19,7 @@ class Manipulations
     public const CROP_BOTTOM_RIGHT = 'crop-bottom-right';
 
     public const ORIENTATION_AUTO = 'auto';
+    public const ORIENTATION_0 = 0;
     public const ORIENTATION_90 = 90;
     public const ORIENTATION_180 = 180;
     public const ORIENTATION_270 = 270;
