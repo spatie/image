@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 2.2.4 - 2022-08-09
+
+### What's Changed
+
+- Add zero orientation support ignoring EXIF by @danielcastrobalbi in https://github.com/spatie/image/pull/171
+
+### New Contributors
+
+- @danielcastrobalbi made their first contribution in https://github.com/spatie/image/pull/171
+
+**Full Changelog**: https://github.com/spatie/image/compare/2.2.3...2.2.4
+
 ## 2.2.3 - 2022-05-21
 
 ## What's Changed
