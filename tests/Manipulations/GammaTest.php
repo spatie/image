@@ -11,11 +11,9 @@ it('can adjust the gamma', function () {
 
     Image::load($this->getTestJpg())->gamma(9.5)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid gamma', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->gamma(101);
-});
+})->throws(InvalidManipulation::class);

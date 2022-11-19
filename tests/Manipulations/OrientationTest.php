@@ -12,11 +12,9 @@ it('can set the orientation', function () {
 
     Image::load($this->getTestJpg())->orientation(Manipulations::ORIENTATION_90)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid orientation', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->orientation('blabla');
-});
+})->throws(InvalidManipulation::class);

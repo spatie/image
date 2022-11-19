@@ -11,23 +11,17 @@ it('can crop', function () {
 
     Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100, 500)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid crop method', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->crop('blabla', 10, 10);
-});
+})->throws(InvalidManipulation::class);
 
 it('will throw an exception when passing a negative width', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, -10, 10);
-});
+})->throws(InvalidManipulation::class);
 
 it('will throw an exception when passing a negative height', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 10, -10);
-});
+})->throws(InvalidManipulation::class);

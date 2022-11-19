@@ -11,11 +11,9 @@ it('can pixelate', function () {
 
     Image::load($this->getTestJpg())->pixelate(50)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid pixelate value', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->pixelate(1001);
-});
+})->throws(InvalidManipulation::class);

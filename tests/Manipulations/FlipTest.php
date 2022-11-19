@@ -11,5 +11,5 @@ it('can flip an image', function () {
 
     Image::load($this->getTestJpg())->flip(Manipulations::FLIP_HORIZONTALLY)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });

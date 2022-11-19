@@ -11,11 +11,9 @@ it('can add a border to an image', function () {
 
     Image::load($this->getTestJpg())->border(10, 'black', Manipulations::BORDER_OVERLAY)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing a wrong border type', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->border(10, 'black', 'blabla');
-});
+})->throws(InvalidManipulation::class);

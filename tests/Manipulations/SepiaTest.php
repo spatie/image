@@ -10,5 +10,5 @@ it('can make an image sepia', function () {
 
     Image::load($this->getTestJpg())->sepia()->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });

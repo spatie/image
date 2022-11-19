@@ -10,5 +10,5 @@ it('can make an image greyscale', function () {
 
     Image::load($this->getTestJpg())->greyscale()->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });

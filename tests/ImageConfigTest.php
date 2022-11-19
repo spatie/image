@@ -17,11 +17,10 @@ it('can modify an image while setting temporary path', function () {
         })
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an error if tempdir corrupt', function () {
-    $this->expectException(InvalidTemporaryDirectory::class);
     $targetFile = $this->tempDir->path('conversion.jpg');
 
     Image::load($this->getTestJpg())
@@ -31,4 +30,4 @@ it('will throw an error if tempdir corrupt', function () {
             ->blur(50);
         })
         ->save($targetFile);
-});
+})->throws(InvalidTemporaryDirectory::class);

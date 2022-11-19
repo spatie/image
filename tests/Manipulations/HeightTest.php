@@ -11,11 +11,9 @@ it('can set the height', function () {
 
     Image::load($this->getTestJpg())->height(100)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid height', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->height(-10);
-});
+})->throws(InvalidManipulation::class);

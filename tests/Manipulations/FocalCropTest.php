@@ -11,7 +11,7 @@ it('can focal crop', function () {
 
     Image::load($this->getTestJpg())->focalCrop(100, 500, 100, 100)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can focal crop with zoom', function () {
@@ -19,17 +19,13 @@ it('can focal crop with zoom', function () {
 
     Image::load($this->getTestJpg())->focalCrop(100, 500, 100, 100, 2)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid width', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->focalCrop(-100, 500, 100, 100);
-});
+})->throws(InvalidManipulation::class);
 
 it('will throw an exception when passing an zoom value not in range', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->focalCrop(100, 500, 100, 100, 900);
-});
+})->throws(InvalidManipulation::class);

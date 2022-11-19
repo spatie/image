@@ -7,7 +7,7 @@ use Spatie\Image\ManipulationSequence;
 it('can hold an empty sequence', function () {
     $manipulationSequence = new ManipulationSequence();
 
-    $this->assertSame([], $manipulationSequence->toArray());
+    expect($manipulationSequence->toArray())->toBe([]);
 });
 
 it('can hold a manipulation', function () {
@@ -192,7 +192,7 @@ it('is serializable', function () {
 
     $unserializedSequence = unserialize(serialize($sequence));
 
-    $this->assertSame($sequence->toArray(), $unserializedSequence->toArray());
+    expect($unserializedSequence->toArray())->toBe($sequence->toArray());
 });
 
 it('can be constructed with a sequence array', function () {
@@ -208,7 +208,7 @@ it('can be constructed with a sequence array', function () {
 
     $sequence = (new ManipulationSequence($sequenceArray));
 
-    $this->assertSame($sequenceArray, $sequence->toArray());
+    expect($sequence->toArray())->toBe($sequenceArray);
 });
 
 it('does not return empty groups when iterating a merged sequence', function () {
@@ -224,19 +224,16 @@ it('does not return empty groups when iterating a merged sequence', function () 
 
     $mergedSequence = $sequence1->merge($sequence2);
 
-    $this->assertCount(1, $mergedSequence);
-
-    foreach ($mergedSequence as $sequence) {
-        $this->assertSame($sequenceArray[0], $sequence);
-    }
+    expect($mergedSequence)->toHaveCount(1)
+        ->and(expect($mergedSequence)->each->toBe($sequenceArray[0]));
 });
 
 it('can determine that the sequence is empty', function () {
     $sequence = new ManipulationSequence();
 
-    $this->assertTrue($sequence->isEmpty());
+    expect($sequence->isEmpty())->toBeTrue();
 
     $sequence->addManipulation('width', '50');
 
-    $this->assertFalse($sequence->isEmpty());
+    expect($sequence->isEmpty())->toBeFalse();
 });

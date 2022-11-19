@@ -10,11 +10,9 @@ it('can adjust the brightness', function () {
 
     Image::load($this->getTestJpg())->brightness(-75)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid brightness', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->brightness(-101);
-});
+})->throws(InvalidManipulation::class);

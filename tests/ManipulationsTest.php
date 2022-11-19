@@ -32,7 +32,7 @@ it('can be constructed with a sequence array', function () {
 
     $manipulations = (new Manipulations($sequenceArray));
 
-    $this->assertSame($sequenceArray, $manipulations->getManipulationSequence()->toArray());
+    expect($manipulations->getManipulationSequence()->toArray())->toBe($sequenceArray);
 });
 
 it('can be constructed with a single sequence', function () {
@@ -45,7 +45,7 @@ it('can be constructed with a single sequence', function () {
 
     $manipulations = (new Manipulations($sequenceArray));
 
-    $this->assertSame($sequenceArray, $manipulations->getManipulationSequence()->toArray());
+    expect($manipulations->getManipulationSequence()->toArray())->toBe($sequenceArray);
 });
 
 it('can return an array of manipulations', function () {
@@ -59,7 +59,7 @@ it('can return an array of manipulations', function () {
         ->apply()
         ->manualCrop(20, 10, 10, 10);
 
-    $this->assertSame($sequenceArray, $manipulations->toArray());
+    expect($manipulations->toArray())->toBe($sequenceArray);
 });
 
 it('can create from sequence array', function () {
@@ -70,7 +70,7 @@ it('can create from sequence array', function () {
 
     $manipulations = Manipulations::create($sequenceArray);
 
-    $this->assertSame($sequenceArray, $manipulations->toArray());
+    expect($manipulations->toArray())->toBe($sequenceArray);
 });
 
 it('can create from single sequence', function () {
@@ -83,7 +83,7 @@ it('can create from single sequence', function () {
 
     $manipulations = Manipulations::create($sequence);
 
-    $this->assertSame($sequence, $manipulations->toArray());
+    expect($manipulations->toArray())->toBe($sequence);
 });
 
 it('can merge itself with another instance', function () {
@@ -109,25 +109,25 @@ it('can merge itself with another instance', function () {
 it('can determine that it is empty', function () {
     $manipulations = new Manipulations();
 
-    $this->assertTrue($manipulations->isEmpty());
+    expect($manipulations->isEmpty())->toBeTrue();
 
     $manipulations->width(100);
 
-    $this->assertFalse($manipulations->isEmpty());
+    expect($manipulations->isEmpty())->toBeFalse();
 });
 
 it('can get the arguments of a manipulation', function () {
     $manipulations = new Manipulations();
 
-    $this->assertNull($manipulations->getManipulationArgument('optimize'));
+    expect($manipulations->getManipulationArgument('optimize'))->toBeNull();
 
     $manipulations->optimize();
 
-    $this->assertSame('[]', $manipulations->getManipulationArgument('optimize'));
+    expect($manipulations->getManipulationArgument('optimize'))->toBe('[]');
 
     $manipulations = new Manipulations();
 
     $manipulations->optimize(['hide_errors' => true]);
 
-    $this->assertSame('{"hide_errors":true}', $manipulations->getManipulationArgument('optimize'));
+    expect($manipulations->getManipulationArgument('optimize'))->toBe('{"hide_errors":true}');
 });

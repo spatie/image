@@ -10,11 +10,9 @@ it('can adjust the contrast', function () {
 
     Image::load($this->getTestJpg())->contrast(100)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid contrast', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->contrast(101);
-});
+})->throws(InvalidManipulation::class);

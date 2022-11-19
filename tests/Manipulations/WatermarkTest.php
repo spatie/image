@@ -15,18 +15,16 @@ it('can add a watermark', function () {
         ->watermark($this->getTestFile('watermark.png'))
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('throws an exception when the watermark is not found', function () {
-    $this->expectException(FileNotFoundException::class);
-
     $targetFile = $this->tempDir->path('conversion.jpg');
 
     Image::load($this->getTestJpg())
         ->watermark($this->getTestFile('not-a-file.png'))
         ->save($targetFile);
-});
+})->throws(FileNotFoundException::class);
 
 it('can set the width of the watermark in px', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
@@ -36,7 +34,7 @@ it('can set the width of the watermark in px', function () {
         ->watermarkWidth(100)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can set the width of the watermark in percent', function () {
@@ -47,7 +45,7 @@ it('can set the width of the watermark in percent', function () {
         ->watermarkWidth(50, Manipulations::UNIT_PERCENT)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can set the height of the watermark in px', function () {
@@ -58,7 +56,7 @@ it('can set the height of the watermark in px', function () {
         ->watermarkHeight(100)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can set the height of the watermark in percent', function () {
@@ -69,7 +67,7 @@ it('can set the height of the watermark in percent', function () {
         ->watermarkHeight(50, Manipulations::UNIT_PERCENT)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can fit the watermark within dimensions', function () {
@@ -82,12 +80,10 @@ it('can fit the watermark within dimensions', function () {
         ->watermarkFit(Manipulations::FIT_CROP)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('throws an exception when using invalid fit method', function () {
-    $this->expectException(InvalidManipulation::class);
-
     $targetFile = $this->tempDir->path('conversion.jpg');
 
     Image::load($this->getTestJpg())
@@ -95,8 +91,8 @@ it('throws an exception when using invalid fit method', function () {
         ->watermarkFit('not-a-real-fit-method')
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
-});
+    expect($targetFile)->toBeFile();
+})->throws(InvalidManipulation::class);
 
 it('can add padding to the watermark', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
@@ -106,7 +102,7 @@ it('can add padding to the watermark', function () {
         ->watermarkPadding(50, 50, Manipulations::UNIT_PERCENT)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can set the watermarks position', function () {
@@ -117,12 +113,10 @@ it('can set the watermarks position', function () {
         ->watermarkPosition(Manipulations::POSITION_CENTER)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('throws an exception when using an invalid position', function () {
-    $this->expectException(InvalidManipulation::class);
-
     $targetFile = $this->tempDir->path('conversion.jpg');
 
     Image::load($this->getTestJpg())
@@ -130,8 +124,8 @@ it('throws an exception when using an invalid position', function () {
         ->watermarkPosition('in-a-galaxy-far-far-away')
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
-});
+    expect($targetFile)->toBeFile();
+})->throws(InvalidManipulation::class);
 
 it('can set the opacity of a watermark', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
@@ -142,12 +136,10 @@ it('can set the opacity of a watermark', function () {
         ->watermarkOpacity(50)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('throws an exception when watermark opacity is out of range', function () {
-    $this->expectException(InvalidManipulation::class);
-
     $targetFile = $this->tempDir->path('conversion.jpg');
 
     Image::load($this->getTestJpg())
@@ -156,5 +148,5 @@ it('throws an exception when watermark opacity is out of range', function () {
         ->watermarkOpacity(500)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
-});
+    expect($targetFile)->toBeFile();
+})->throws(InvalidManipulation::class);

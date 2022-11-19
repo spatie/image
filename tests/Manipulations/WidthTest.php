@@ -11,11 +11,9 @@ it('can set the width', function () {
 
     Image::load($this->getTestJpg())->width(100)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid width', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->width(-10);
-});
+})->throws(InvalidManipulation::class);

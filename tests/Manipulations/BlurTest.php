@@ -10,11 +10,9 @@ it('can blur', function () {
 
     Image::load($this->getTestJpg())->blur(5)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid blur value', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->blur(1000);
-});
+})->throws(InvalidManipulation::class);

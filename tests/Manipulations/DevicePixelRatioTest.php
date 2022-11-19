@@ -10,11 +10,9 @@ it('can set the device pixel ratio', function () {
 
     Image::load($this->getTestJpg())->devicePixelRatio(2)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid device pixel ratio', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->devicePixelRatio(9);
-});
+})->throws(InvalidManipulation::class);

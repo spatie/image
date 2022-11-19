@@ -11,11 +11,9 @@ it('can fit an image', function () {
 
     Image::load($this->getTestJpg())->fit(Manipulations::FIT_CONTAIN, 500, 300)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid fit', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->fit('blabla', 500, 300);
-});
+})->throws(InvalidManipulation::class);

@@ -17,7 +17,7 @@ it('can modify an image using manipulations', function () {
         })
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can modify an image using a direct manipulation call', function () {
@@ -28,7 +28,7 @@ it('can modify an image using a direct manipulation call', function () {
         ->width(500)
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will create a file in the format according to its extension', function () {
@@ -66,7 +66,7 @@ it('will create a file in the format according to its extension', function () {
         $targetFile = $this->tempDir->path('conversion.avif');
         Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
         $image = new Imagick($targetFile);
-        $this->assertSame('AVIF', $image->getImageFormat());
+        expect($image->getImageFormat())->toBe('AVIF');
     }
 
     //test tiff format with imagick
@@ -74,7 +74,7 @@ it('will create a file in the format according to its extension', function () {
         $targetFile = $this->tempDir->path('conversion.tiff');
         Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
         $image = new Imagick($targetFile);
-        $this->assertSame('TIFF', $image->getImageFormat());
+        expect($image->getImageFormat())->toBe('TIFF');
     }
 });
 
@@ -87,9 +87,9 @@ it('will not force the format according to the output extension when a format ma
 });
 
 it('can get the width and height of an image', function () {
-    $this->assertSame(340, Image::load($this->getTestJpg())->getWidth());
+    expect(Image::load($this->getTestJpg())->getWidth())->toBe(340);
 
-    $this->assertSame(280, Image::load($this->getTestJpg())->getHeight());
+    expect(Image::load($this->getTestJpg())->getHeight())->toBe(280);
 });
 
 it('the image driver is set on the intervention static manager', function () {
@@ -97,11 +97,11 @@ it('the image driver is set on the intervention static manager', function () {
 
     $image->useImageDriver('gd');
 
-    $this->assertSame('gd', InterventionImage::getManager()->config['driver'] ?? null);
+    expect(InterventionImage::getManager()->config['driver'] ?? null)->toBe('gd');
 
     $image->useImageDriver('imagick');
 
-    $this->assertSame('imagick', InterventionImage::getManager()->config['driver'] ?? null);
+    expect(InterventionImage::getManager()->config['driver'] ?? null)->toBe('imagick');
 });
 
 it('can modify files with the same name if they are in different folders', function () {
@@ -120,5 +120,5 @@ it('can modify files with the same name if they are in different folders', funct
         ->crop(Manipulations::CROP_CENTER, 100, 100)
         ->save($secondTargetFile);
 
-    $this->assertNotSame(file_get_contents($firstTargetFile), file_get_contents($secondTargetFile));
+    expect(file_get_contents($secondTargetFile))->not->toBe(file_get_contents($firstTargetFile));
 });

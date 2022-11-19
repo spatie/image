@@ -15,7 +15,7 @@ it('can optimize an image', function () {
         ->optimize()
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can optimize an image when using apply', function () {
@@ -26,7 +26,7 @@ it('can optimize an image when using apply', function () {
         ->optimize()
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can optimize an image with the given optimization options', function () {
@@ -38,7 +38,7 @@ it('can optimize an image with the given optimization options', function () {
         ]])
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('can optimize an image using a provided optimizer chain', function () {
@@ -56,5 +56,5 @@ it('can optimize an image using a provided optimizer chain', function () {
         ])
         ->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });

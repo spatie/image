@@ -11,11 +11,9 @@ it('can manual crop', function () {
 
     Image::load($this->getTestJpg())->manualCrop(100, 500, 30, 30)->save($targetFile);
 
-    $this->assertFileExists($targetFile);
+    expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid width', function () {
-    $this->expectException(InvalidManipulation::class);
-
     Image::load($this->getTestJpg())->manualCrop(-100, 500, 100, 100);
-});
+})->throws(InvalidManipulation::class);
