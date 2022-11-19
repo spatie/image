@@ -3,7 +3,6 @@
 namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Image;
-use Spatie\Image\Test\TestCase;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
 use Spatie\ImageOptimizer\Optimizers\Pngquant;

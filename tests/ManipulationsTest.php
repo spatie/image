@@ -2,7 +2,6 @@
 
 namespace Spatie\Image\Test;
 
-use PHPUnit\Framework\TestCase;
 use Spatie\Image\Manipulations;
 
 it('can be serialized', function () {

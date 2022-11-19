@@ -6,7 +6,6 @@ use League\Glide\Filesystem\FileNotFoundException;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Spatie\Image\Test\TestCase;
 
 it('can add a watermark', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');

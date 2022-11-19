@@ -3,7 +3,6 @@
 namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Image;
-use Spatie\Image\Test\TestCase;
 
 it('can make an image greyscale', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');

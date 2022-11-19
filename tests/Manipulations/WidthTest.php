@@ -4,7 +4,6 @@ namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
-use Spatie\Image\Test\TestCase;
 
 it('can set the width', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');

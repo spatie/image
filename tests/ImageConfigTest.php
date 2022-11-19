@@ -12,8 +12,8 @@ it('can modify an image while setting temporary path', function () {
     Image::load(getTestJpg())
         ->setTemporaryDirectory(__DIR__.'/temp_conf')
         ->manipulate(function (Manipulations $manipulations) {
-        $manipulations
-            ->blur(50);
+            $manipulations
+                ->blur(50);
         })
         ->save($targetFile);
 
@@ -26,8 +26,8 @@ it('will throw an error if tempdir corrupt', function () {
     Image::load(getTestJpg())
         ->setTemporaryDirectory('/user/willmostprobablynotexistandbecreatable')
         ->manipulate(function (Manipulations $manipulations) {
-        $manipulations
-            ->blur(50);
+            $manipulations
+                ->blur(50);
         })
         ->save($targetFile);
 })->throws(InvalidTemporaryDirectory::class);

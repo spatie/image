@@ -12,8 +12,8 @@ it('can modify an image using manipulations', function () {
 
     Image::load(getTestJpg())
         ->manipulate(function (Manipulations $manipulations) {
-        $manipulations
-            ->blur(50);
+            $manipulations
+                ->blur(50);
         })
         ->save($targetFile);
 
