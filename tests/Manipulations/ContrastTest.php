@@ -8,11 +8,11 @@ use Spatie\Image\Image;
 it('can adjust the contrast', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->contrast(100)->save($targetFile);
+    Image::load(getTestJpg())->contrast(100)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid contrast', function () {
-    Image::load($this->getTestJpg())->contrast(101);
+    Image::load(getTestJpg())->contrast(101);
 })->throws(InvalidManipulation::class);

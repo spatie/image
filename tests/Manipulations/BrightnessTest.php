@@ -8,11 +8,11 @@ use Spatie\Image\Image;
 it('can adjust the brightness', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->brightness(-75)->save($targetFile);
+    Image::load(getTestJpg())->brightness(-75)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid brightness', function () {
-    Image::load($this->getTestJpg())->brightness(-101);
+    Image::load(getTestJpg())->brightness(-101);
 })->throws(InvalidManipulation::class);

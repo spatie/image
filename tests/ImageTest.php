@@ -10,7 +10,7 @@ use Spatie\Image\Manipulations;
 it('can modify an image using manipulations', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
+    Image::load(getTestJpg())
         ->manipulate(function (Manipulations $manipulations) {
         $manipulations
             ->blur(50);
@@ -23,7 +23,7 @@ it('can modify an image using manipulations', function () {
 it('can modify an image using a direct manipulation call', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
+    Image::load(getTestJpg())
         ->width(5)
         ->width(500)
         ->save($targetFile);
@@ -33,38 +33,38 @@ it('can modify an image using a direct manipulation call', function () {
 
 it('will create a file in the format according to its extension', function () {
     $targetFile = $this->tempDir->path('conversion.png');
-    Image::load($this->getTestJpg())->save($targetFile);
+    Image::load(getTestJpg())->save($targetFile);
     assertImageType($targetFile, IMAGETYPE_PNG);
 
     $targetFile = $this->tempDir->path('conversion.gif');
-    Image::load($this->getTestJpg())->save($targetFile);
+    Image::load(getTestJpg())->save($targetFile);
     assertImageType($targetFile, IMAGETYPE_GIF);
 
     $targetFile = $this->tempDir->path('conversion.jpg');
-    Image::load($this->getTestJpg())->save($targetFile);
+    Image::load(getTestJpg())->save($targetFile);
     assertImageType($targetFile, IMAGETYPE_JPEG);
 
     $targetFile = $this->tempDir->path('conversion.pjpg');
-    Image::load($this->getTestJpg())->save($targetFile);
+    Image::load(getTestJpg())->save($targetFile);
     assertImageType($targetFile, IMAGETYPE_JPEG);
 
     if (function_exists('imagecreatefromwebp')) {
         $targetFile = $this->tempDir->path('conversion.webp');
-        Image::load($this->getTestJpg())->save($targetFile);
+        Image::load(getTestJpg())->save($targetFile);
         assertImageType($targetFile, IMAGETYPE_WEBP);
     }
 
     //test avif format with gd driver
     if (function_exists('imagecreatefromavif')) {
         $targetFile = $this->tempDir->path('conversion.avif');
-        Image::load($this->getTestJpg())->save($targetFile);
+        Image::load(getTestJpg())->save($targetFile);
         assertImageType($targetFile, IMAGETYPE_AVIF);
     }
 
     //test avif format with imagick
     if (! empty(Imagick::queryFormats('AVIF*'))) {
         $targetFile = $this->tempDir->path('conversion.avif');
-        Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
+        Image::load(getTestJpg())->useImageDriver('imagick')->save($targetFile);
         $image = new Imagick($targetFile);
         expect($image->getImageFormat())->toBe('AVIF');
     }
@@ -72,7 +72,7 @@ it('will create a file in the format according to its extension', function () {
     //test tiff format with imagick
     if (! empty(Imagick::queryFormats('TIFF*'))) {
         $targetFile = $this->tempDir->path('conversion.tiff');
-        Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
+        Image::load(getTestJpg())->useImageDriver('imagick')->save($targetFile);
         $image = new Imagick($targetFile);
         expect($image->getImageFormat())->toBe('TIFF');
     }
@@ -81,19 +81,19 @@ it('will create a file in the format according to its extension', function () {
 it('will not force the format according to the output extension when a format manipulation was already set', function () {
     $targetFile = $this->tempDir->path('conversion.gif');
 
-    Image::load($this->getTestJpg())->format('jpg')->save($targetFile);
+    Image::load(getTestJpg())->format('jpg')->save($targetFile);
 
     assertImageType($targetFile, IMAGETYPE_JPEG);
 });
 
 it('can get the width and height of an image', function () {
-    expect(Image::load($this->getTestJpg())->getWidth())->toBe(340);
+    expect(Image::load(getTestJpg())->getWidth())->toBe(340);
 
-    expect(Image::load($this->getTestJpg())->getHeight())->toBe(280);
+    expect(Image::load(getTestJpg())->getHeight())->toBe(280);
 });
 
 it('the image driver is set on the intervention static manager', function () {
-    $image = Image::load($this->getTestJpg());
+    $image = Image::load(getTestJpg());
 
     $image->useImageDriver('gd');
 
@@ -108,13 +108,13 @@ it('can modify files with the same name if they are in different folders', funct
     $firstTargetFile = $this->tempDir->path('first.jpg');
     $secondTargetFile = $this->tempDir->path('second.jpg');
 
-    Image::load($this->getTestFile('test.jpg'))
+    Image::load(getTestFile('test.jpg'))
         ->sepia()
         ->apply()
         ->crop(Manipulations::CROP_CENTER, 100, 100)
         ->save($firstTargetFile);
 
-    Image::load($this->getTestFile('testdir/test.jpg'))
+    Image::load(getTestFile('testdir/test.jpg'))
         ->sepia()
         ->apply()
         ->crop(Manipulations::CROP_CENTER, 100, 100)

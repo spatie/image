@@ -6,20 +6,17 @@
 |--------------------------------------------------------------------------
 */
 
-use Spatie\Image\Test\TestCase;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
-uses(TestCase::class)->in('.');
-
-//uses()
-//    ->beforeEach(function () {
-//        $this->tempDir = (new TemporaryDirectory(__DIR__))
-//            ->name('temp')
-//            ->force()
-//            ->create()
-//            ->empty();
-//    })
-//    ->in('.');
+uses()
+    ->beforeEach(function () {
+        $this->tempDir = (new TemporaryDirectory(__DIR__))
+            ->name('temp')
+            ->force()
+            ->create()
+            ->empty();
+    })
+    ->in('.');
 
 /*
 |--------------------------------------------------------------------------
@@ -33,15 +30,15 @@ uses(TestCase::class)->in('.');
 |--------------------------------------------------------------------------
 */
 
-//function getTestJpg(): string
-//{
-//    return getTestFile('test.jpg');
-//}
-//
-//function getTestFile($fileName): string
-//{
-//    return __DIR__."/testfiles/{$fileName}";
-//}
+function getTestJpg(): string
+{
+    return getTestFile('test.jpg');
+}
+
+function getTestFile($fileName): string
+{
+    return __DIR__."/testfiles/{$fileName}";
+}
 
 function assertImageType(string $filePath, $expectedType)
 {

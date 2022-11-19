@@ -9,11 +9,11 @@ use Spatie\Image\Manipulations;
 it('can add a border to an image', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->border(10, 'black', Manipulations::BORDER_OVERLAY)->save($targetFile);
+    Image::load(getTestJpg())->border(10, 'black', Manipulations::BORDER_OVERLAY)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing a wrong border type', function () {
-    Image::load($this->getTestJpg())->border(10, 'black', 'blabla');
+    Image::load(getTestJpg())->border(10, 'black', 'blabla');
 })->throws(InvalidManipulation::class);

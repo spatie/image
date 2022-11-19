@@ -9,7 +9,7 @@ use Spatie\Image\Test\TestCase;
 it('can flip an image', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->flip(Manipulations::FLIP_HORIZONTALLY)->save($targetFile);
+    Image::load(getTestJpg())->flip(Manipulations::FLIP_HORIZONTALLY)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });

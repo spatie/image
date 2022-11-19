@@ -8,7 +8,7 @@ use Spatie\Image\Test\TestCase;
 it('can make an image greyscale', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->greyscale()->save($targetFile);
+    Image::load(getTestJpg())->greyscale()->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });

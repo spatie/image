@@ -9,11 +9,11 @@ use Spatie\Image\Test\TestCase;
 it('can set the width', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->width(100)->save($targetFile);
+    Image::load(getTestJpg())->width(100)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid width', function () {
-    Image::load($this->getTestJpg())->width(-10);
+    Image::load(getTestJpg())->width(-10);
 })->throws(InvalidManipulation::class);

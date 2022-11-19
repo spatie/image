@@ -8,11 +8,11 @@ use Spatie\Image\Image;
 it('can set the device pixel ratio', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->devicePixelRatio(2)->save($targetFile);
+    Image::load(getTestJpg())->devicePixelRatio(2)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid device pixel ratio', function () {
-    Image::load($this->getTestJpg())->devicePixelRatio(9);
+    Image::load(getTestJpg())->devicePixelRatio(9);
 })->throws(InvalidManipulation::class);

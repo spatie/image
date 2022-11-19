@@ -9,11 +9,11 @@ use Spatie\Image\Test\TestCase;
 it('can manual crop', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->manualCrop(100, 500, 30, 30)->save($targetFile);
+    Image::load(getTestJpg())->manualCrop(100, 500, 30, 30)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid width', function () {
-    Image::load($this->getTestJpg())->manualCrop(-100, 500, 100, 100);
+    Image::load(getTestJpg())->manualCrop(-100, 500, 100, 100);
 })->throws(InvalidManipulation::class);

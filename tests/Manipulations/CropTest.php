@@ -9,19 +9,19 @@ use Spatie\Image\Manipulations;
 it('can crop', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100, 500)->save($targetFile);
+    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100, 500)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid crop method', function () {
-    Image::load($this->getTestJpg())->crop('blabla', 10, 10);
+    Image::load(getTestJpg())->crop('blabla', 10, 10);
 })->throws(InvalidManipulation::class);
 
 it('will throw an exception when passing a negative width', function () {
-    Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, -10, 10);
+    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, -10, 10);
 })->throws(InvalidManipulation::class);
 
 it('will throw an exception when passing a negative height', function () {
-    Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 10, -10);
+    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, 10, -10);
 })->throws(InvalidManipulation::class);

@@ -11,8 +11,8 @@ use Spatie\Image\Test\TestCase;
 it('can add a watermark', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->save($targetFile);
 
     expect($targetFile)->toBeFile();
@@ -21,16 +21,16 @@ it('can add a watermark', function () {
 it('throws an exception when the watermark is not found', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('not-a-file.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('not-a-file.png'))
         ->save($targetFile);
 })->throws(FileNotFoundException::class);
 
 it('can set the width of the watermark in px', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkWidth(100)
         ->save($targetFile);
 
@@ -40,8 +40,8 @@ it('can set the width of the watermark in px', function () {
 it('can set the width of the watermark in percent', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkWidth(50, Manipulations::UNIT_PERCENT)
         ->save($targetFile);
 
@@ -51,8 +51,8 @@ it('can set the width of the watermark in percent', function () {
 it('can set the height of the watermark in px', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkHeight(100)
         ->save($targetFile);
 
@@ -62,8 +62,8 @@ it('can set the height of the watermark in px', function () {
 it('can set the height of the watermark in percent', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkHeight(50, Manipulations::UNIT_PERCENT)
         ->save($targetFile);
 
@@ -73,8 +73,8 @@ it('can set the height of the watermark in percent', function () {
 it('can fit the watermark within dimensions', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkHeight(200)
         ->watermarkWidth(50)
         ->watermarkFit(Manipulations::FIT_CROP)
@@ -86,8 +86,8 @@ it('can fit the watermark within dimensions', function () {
 it('throws an exception when using invalid fit method', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkFit('not-a-real-fit-method')
         ->save($targetFile);
 
@@ -97,8 +97,8 @@ it('throws an exception when using invalid fit method', function () {
 it('can add padding to the watermark', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkPadding(50, 50, Manipulations::UNIT_PERCENT)
         ->save($targetFile);
 
@@ -108,8 +108,8 @@ it('can add padding to the watermark', function () {
 it('can set the watermarks position', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkPosition(Manipulations::POSITION_CENTER)
         ->save($targetFile);
 
@@ -119,8 +119,8 @@ it('can set the watermarks position', function () {
 it('throws an exception when using an invalid position', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
-        ->watermark($this->getTestFile('watermark.png'))
+    Image::load(getTestJpg())
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkPosition('in-a-galaxy-far-far-away')
         ->save($targetFile);
 
@@ -130,9 +130,9 @@ it('throws an exception when using an invalid position', function () {
 it('can set the opacity of a watermark', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
+    Image::load(getTestJpg())
         ->useImageDriver('imagick')
-        ->watermark($this->getTestFile('watermark.png'))
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkOpacity(50)
         ->save($targetFile);
 
@@ -142,9 +142,9 @@ it('can set the opacity of a watermark', function () {
 it('throws an exception when watermark opacity is out of range', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())
+    Image::load(getTestJpg())
         ->useImageDriver('imagick')
-        ->watermark($this->getTestFile('watermark.png'))
+        ->watermark(getTestFile('watermark.png'))
         ->watermarkOpacity(500)
         ->save($targetFile);
 

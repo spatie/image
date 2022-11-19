@@ -9,11 +9,11 @@ use Spatie\Image\Test\TestCase;
 it('can pixelate', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
 
-    Image::load($this->getTestJpg())->pixelate(50)->save($targetFile);
+    Image::load(getTestJpg())->pixelate(50)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });
 
 it('will throw an exception when passing an invalid pixelate value', function () {
-    Image::load($this->getTestJpg())->pixelate(1001);
+    Image::load(getTestJpg())->pixelate(1001);
 })->throws(InvalidManipulation::class);

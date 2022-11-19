@@ -11,7 +11,7 @@ use Spatie\ImageOptimizer\Optimizers\Pngquant;
 it('can optimize an image', function () {
     $targetFile = $this->tempDir->path('optimized.jpg');
 
-    Image::load($this->getTestFile('test.jpg'))
+    Image::load(getTestFile('test.jpg'))
         ->optimize()
         ->save($targetFile);
 
@@ -21,7 +21,7 @@ it('can optimize an image', function () {
 it('can optimize an image when using apply', function () {
     $targetFile = $this->tempDir->path('optimized.jpg');
 
-    Image::load($this->getTestFile('test.jpg'))
+    Image::load(getTestFile('test.jpg'))
         ->apply()
         ->optimize()
         ->save($targetFile);
@@ -32,7 +32,7 @@ it('can optimize an image when using apply', function () {
 it('can optimize an image with the given optimization options', function () {
     $targetFile = $this->tempDir->path('optimized.jpg');
 
-    Image::load($this->getTestFile('test.jpg'))
+    Image::load(getTestFile('test.jpg'))
         ->optimize([Jpegoptim::class => [
         '--all-progressive',
         ]])
@@ -44,7 +44,7 @@ it('can optimize an image with the given optimization options', function () {
 it('can optimize an image using a provided optimizer chain', function () {
     $targetFile = $this->tempDir->path('optimized.jpg');
 
-    Image::load($this->getTestFile('test.jpg'))
+    Image::load(getTestFile('test.jpg'))
         ->setOptimizeChain(OptimizerChainFactory::create())
         ->optimize([
         Pngquant::class => [
