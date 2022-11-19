@@ -4,25 +4,15 @@ namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
-use Spatie\Image\Test\TestCase;
 
-class ManualCropTest extends TestCase
-{
-    /** @test */
-    public function it_can_manual_crop()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can manual crop', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())->manualCrop(100, 500, 30, 30)->save($targetFile);
+    Image::load(getTestJpg())->manualCrop(100, 500, 30, 30)->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    expect($targetFile)->toBeFile();
+});
 
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_an_invalid_width()
-    {
-        $this->expectException(InvalidManipulation::class);
-
-        Image::load($this->getTestJpg())->manualCrop(-100, 500, 100, 100);
-    }
-}
+it('will throw an exception when passing an invalid width', function () {
+    Image::load(getTestJpg())->manualCrop(-100, 500, 100, 100);
+})->throws(InvalidManipulation::class);

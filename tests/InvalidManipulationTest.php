@@ -5,21 +5,10 @@ namespace Spatie\Image\Test;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Manipulations;
 
-class InvalidManipulationTest extends TestCase
-{
-    /** @var \Spatie\Image\Manipulations */
-    protected $manipulations;
+beforeEach(function () {
+    $this->manipulations = new Manipulations();
+});
 
-    public function setUp(): void
-    {
-        $this->manipulations = new Manipulations();
-    }
-
-    /** @test */
-    public function an_exception_will_be_throw_when_passing_a_negative_number_to_width()
-    {
-        $this->expectException(InvalidManipulation::class);
-
-        $this->manipulations->width(-50);
-    }
-}
+it('an exception will be throw when passing a negative number to width', function () {
+    $this->manipulations->width(-50);
+})->throws(InvalidManipulation::class);

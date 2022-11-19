@@ -4,25 +4,15 @@ namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
-use Spatie\Image\Test\TestCase;
 
-class BlurTest extends TestCase
-{
-    /** @test */
-    public function it_can_blur()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can blur', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())->blur(5)->save($targetFile);
+    Image::load(getTestJpg())->blur(5)->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    expect($targetFile)->toBeFile();
+});
 
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_an_invalid_blur_value()
-    {
-        $this->expectException(InvalidManipulation::class);
-
-        Image::load($this->getTestJpg())->blur(1000);
-    }
-}
+it('will throw an exception when passing an invalid blur value', function () {
+    Image::load(getTestJpg())->blur(1000);
+})->throws(InvalidManipulation::class);

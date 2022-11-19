@@ -5,41 +5,23 @@ namespace Spatie\Image\Test\Manipulations;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Spatie\Image\Test\TestCase;
 
-class CropTest extends TestCase
-{
-    /** @test */
-    public function it_can_crop()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can crop', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100, 500)->save($targetFile);
+    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100, 500)->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    expect($targetFile)->toBeFile();
+});
 
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_an_invalid_crop_method()
-    {
-        $this->expectException(InvalidManipulation::class);
+it('will throw an exception when passing an invalid crop method', function () {
+    Image::load(getTestJpg())->crop('blabla', 10, 10);
+})->throws(InvalidManipulation::class);
 
-        Image::load($this->getTestJpg())->crop('blabla', 10, 10);
-    }
+it('will throw an exception when passing a negative width', function () {
+    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, -10, 10);
+})->throws(InvalidManipulation::class);
 
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_a_negative_width()
-    {
-        $this->expectException(InvalidManipulation::class);
-
-        Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, -10, 10);
-    }
-
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_a_negative_height()
-    {
-        $this->expectException(InvalidManipulation::class);
-
-        Image::load($this->getTestJpg())->crop(Manipulations::CROP_BOTTOM, 10, -10);
-    }
-}
+it('will throw an exception when passing a negative height', function () {
+    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, 10, -10);
+})->throws(InvalidManipulation::class);

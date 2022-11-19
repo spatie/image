@@ -5,25 +5,15 @@ namespace Spatie\Image\Test\Manipulations;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Spatie\Image\Test\TestCase;
 
-class BorderTest extends TestCase
-{
-    /** @test */
-    public function it_can_add_a_border_to_an_image()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can add a border to an image', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())->border(10, 'black', Manipulations::BORDER_OVERLAY)->save($targetFile);
+    Image::load(getTestJpg())->border(10, 'black', Manipulations::BORDER_OVERLAY)->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    expect($targetFile)->toBeFile();
+});
 
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_a_wrong_border_type()
-    {
-        $this->expectException(InvalidManipulation::class);
-
-        Image::load($this->getTestJpg())->border(10, 'black', 'blabla');
-    }
-}
+it('will throw an exception when passing a wrong border type', function () {
+    Image::load(getTestJpg())->border(10, 'black', 'blabla');
+})->throws(InvalidManipulation::class);

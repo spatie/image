@@ -26,6 +26,7 @@
         "symfony/process": "^3.0|^4.0|^5.0|^6.0"
     },
     "require-dev": {
+        "pestphp/pest": "^1.22",
         "phpunit/phpunit": "^9.5",
         "symfony/var-dumper": "^4.0|^5.0|^6.0",
         "vimeo/psalm": "^4.6"
@@ -42,9 +43,12 @@
     },
     "scripts": {
         "psalm": "vendor/bin/psalm",
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/pest"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
