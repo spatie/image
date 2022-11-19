@@ -6,23 +6,16 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
 
-class HeightTest extends TestCase
-{
-    /** @test */
-    public function it_can_set_the_height()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can set the height', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())->height(100)->save($targetFile);
+    Image::load($this->getTestJpg())->height(100)->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    $this->assertFileExists($targetFile);
+});
 
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_an_invalid_height()
-    {
-        $this->expectException(InvalidManipulation::class);
+it('will throw an exception when passing an invalid height', function () {
+    $this->expectException(InvalidManipulation::class);
 
-        Image::load($this->getTestJpg())->height(-10);
-    }
-}
+    Image::load($this->getTestJpg())->height(-10);
+});

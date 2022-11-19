@@ -42,3 +42,12 @@ uses(TestCase::class)->in('.');
 //{
 //    return __DIR__."/testfiles/{$fileName}";
 //}
+
+function assertImageType(string $filePath, $expectedType)
+{
+    $expectedType = image_type_to_mime_type($expectedType);
+
+    $type = image_type_to_mime_type(exif_imagetype($filePath));
+
+    expect($type)->toBe($expectedType);
+}

@@ -6,23 +6,16 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
 
-class WidthTest extends TestCase
-{
-    /** @test */
-    public function it_can_set_the_width()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can set the width', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())->width(100)->save($targetFile);
+    Image::load($this->getTestJpg())->width(100)->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    $this->assertFileExists($targetFile);
+});
 
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_an_invalid_width()
-    {
-        $this->expectException(InvalidManipulation::class);
+it('will throw an exception when passing an invalid width', function () {
+    $this->expectException(InvalidManipulation::class);
 
-        Image::load($this->getTestJpg())->width(-10);
-    }
-}
+    Image::load($this->getTestJpg())->width(-10);
+});

@@ -4,274 +4,239 @@ namespace Spatie\Image\Test;
 
 use Spatie\Image\ManipulationSequence;
 
-class ManipulationSequenceTest extends TestCase
-{
-    /** @test */
-    public function it_can_hold_an_empty_sequence()
-    {
-        $manipulationSequence = new ManipulationSequence();
+it('can hold an empty sequence', function () {
+    $manipulationSequence = new ManipulationSequence();
 
-        $this->assertSame([], $manipulationSequence->toArray());
+    $this->assertSame([], $manipulationSequence->toArray());
+});
+
+it('can hold a manipulation', function () {
+    $manipulationSequence = new ManipulationSequence();
+
+    $manipulationSequence->addManipulation('height', '100');
+
+    expect($manipulationSequence->toArray())->toBe([
+        [
+            'height' => '100',
+        ],
+    ]);
+});
+
+it('can hold multiple manipulations', function () {
+    $manipulationSequence = new ManipulationSequence();
+
+    $manipulationSequence
+        ->addManipulation('height', '100')
+        ->addManipulation('width', '200');
+
+    expect($manipulationSequence->toArray())->toBe([
+        [
+            'height' => '100',
+            'width' => '200',
+        ],
+    ]);
+});
+
+it('will replace a manipulation if its applied multiple times', function () {
+    $manipulationSequence = new ManipulationSequence();
+
+    $manipulationSequence
+        ->addManipulation('height', '100')
+        ->addManipulation('width', '200')
+        ->addManipulation('height', '300');
+
+    expect($manipulationSequence->toArray())->toBe([
+        [
+            'height' => '300',
+            'width' => '200',
+        ],
+    ]);
+});
+
+it('can start a new group', function () {
+    $manipulationSequence = new ManipulationSequence();
+
+    $manipulationSequence
+        ->addManipulation('height', '100')
+        ->addManipulation('width', '200')
+        ->startNewGroup()
+        ->addManipulation('height', '300');
+
+    expect($manipulationSequence->toArray())->toBe([
+        [
+            'height' => '100',
+            'width' => '200',
+        ],
+        [
+            'height' => '300',
+        ],
+    ]);
+});
+
+it('can remove a manipulation', function () {
+    $manipulationSequence = new ManipulationSequence();
+
+    $manipulationSequence
+        ->addManipulation('height', '100')
+        ->addManipulation('width', '200')
+        ->removeManipulation('height');
+
+    expect($manipulationSequence->toArray())->toBe([
+        [
+            'width' => '200',
+        ],
+    ]);
+});
+
+it('can be iterated over', function () {
+    $manipulationSequence = new ManipulationSequence();
+
+    $manipulationSequence->addManipulation('height', '100');
+
+    expect($manipulationSequence)->each->toBe([
+        'height' => '100',
+    ]);
+});
+
+it('will remove empty groups', function () {
+    $manipulationSequence = new ManipulationSequence();
+
+    $manipulationSequence
+        ->addManipulation('height', '100')
+        ->startNewGroup()
+        ->addManipulation('width', '200')
+        ->removeManipulation('height');
+
+    expect($manipulationSequence->toArray())->toBe([
+        [
+            'width' => '200',
+        ],
+    ]);
+});
+
+it('can merge two sequences containing the same manipulation', function () {
+    $manipulationSequence1 = (new ManipulationSequence())->addManipulation('height', '100');
+
+    $manipulationSequence2 = (new ManipulationSequence())->addManipulation('height', '200');
+
+    $manipulationSequence1->merge($manipulationSequence2);
+
+    expect($manipulationSequence1->toArray())->toBe([
+        [
+            'height' => '200',
+        ],
+    ]);
+});
+
+it('can merge two sequences containing multiple manipulations', function () {
+    $manipulationSequence1 = (new ManipulationSequence())
+        ->addManipulation('width', '50')
+        ->addManipulation('height', '100');
+
+    $manipulationSequence2 = (new ManipulationSequence())
+        ->addManipulation('height', '200')
+        ->addManipulation('pixelate', '');
+
+    $manipulationSequence1->merge($manipulationSequence2);
+
+    expect($manipulationSequence1->toArray())->toBe([
+        [
+            'width' => '50',
+            'height' => '200',
+            'pixelate' => '',
+        ],
+    ]);
+});
+
+it('can merge two sequences containing multiple groups', function () {
+    $manipulationSequence1 = (new ManipulationSequence())
+        ->addManipulation('width', '50')
+        ->addManipulation('height', '100')
+        ->startNewGroup()
+        ->addManipulation('width', '50')
+        ->addManipulation('height', '100');
+
+    $manipulationSequence2 = (new ManipulationSequence())
+        ->addManipulation('height', '200')
+        ->addManipulation('pixelate', '')
+        ->startNewGroup()
+        ->addManipulation('brightness', '200')
+        ->addManipulation('format', 'png');
+
+    $manipulationSequence1->merge($manipulationSequence2);
+
+    expect($manipulationSequence1->toArray())->toBe([
+        [
+            'width' => '50',
+            'height' => '100',
+        ],
+        [
+            'width' => '50',
+            'height' => '200',
+            'pixelate' => '',
+        ],
+        [
+            'brightness' => '200',
+            'format' => 'png',
+        ],
+    ]);
+});
+
+it('is serializable', function () {
+    $sequence = (new ManipulationSequence())
+        ->addManipulation('width', '50')
+        ->addManipulation('height', '100')
+        ->startNewGroup()
+        ->addManipulation('width', '50')
+        ->addManipulation('height', '100');
+
+    $unserializedSequence = unserialize(serialize($sequence));
+
+    $this->assertSame($sequence->toArray(), $unserializedSequence->toArray());
+});
+
+it('can be constructed with a sequence array', function () {
+    $sequenceArray = [
+        [
+        'greyscale' => '',
+        'width' => '50',
+        ],
+        [
+        'height' => '100',
+        ],
+    ];
+
+    $sequence = (new ManipulationSequence($sequenceArray));
+
+    $this->assertSame($sequenceArray, $sequence->toArray());
+});
+
+it('does not return empty groups when iterating a merged sequence', function () {
+    $sequenceArray = [
+        [
+        'width' => '100',
+        'height' => '100',
+        ],
+    ];
+
+    $sequence1 = new ManipulationSequence();
+    $sequence2 = new ManipulationSequence($sequenceArray);
+
+    $mergedSequence = $sequence1->merge($sequence2);
+
+    $this->assertCount(1, $mergedSequence);
+
+    foreach ($mergedSequence as $sequence) {
+        $this->assertSame($sequenceArray[0], $sequence);
     }
+});
 
-    /** @test */
-    public function it_can_hold_a_manipulation()
-    {
-        $manipulationSequence = new ManipulationSequence();
+it('can determine that the sequence is empty', function () {
+    $sequence = new ManipulationSequence();
 
-        $manipulationSequence->addManipulation('height', '100');
+    $this->assertTrue($sequence->isEmpty());
 
-        $this->assertSame([
-            [
-                'height' => '100',
-            ],
-        ], $manipulationSequence->toArray());
-    }
+    $sequence->addManipulation('width', '50');
 
-    /** @test */
-    public function it_can_hold_multiple_manipulations()
-    {
-        $manipulationSequence = new ManipulationSequence();
-
-        $manipulationSequence
-            ->addManipulation('height', '100')
-            ->addManipulation('width', '200');
-
-        $this->assertSame([
-            [
-                'height' => '100',
-                'width' => '200',
-            ],
-        ], $manipulationSequence->toArray());
-    }
-
-    /** @test */
-    public function it_will_replace_a_manipulation_if_its_applied_multiple_times()
-    {
-        $manipulationSequence = new ManipulationSequence();
-
-        $manipulationSequence
-            ->addManipulation('height', '100')
-            ->addManipulation('width', '200')
-            ->addManipulation('height', '300');
-
-        $this->assertSame([
-            [
-                'height' => '300',
-                'width' => '200',
-            ],
-        ], $manipulationSequence->toArray());
-    }
-
-    /** @test */
-    public function it_can_start_a_new_group()
-    {
-        $manipulationSequence = new ManipulationSequence();
-
-        $manipulationSequence
-            ->addManipulation('height', '100')
-            ->addManipulation('width', '200')
-            ->startNewGroup()
-            ->addManipulation('height', '300');
-
-        $this->assertSame([
-            [
-                'height' => '100',
-                'width' => '200',
-            ],
-            [
-                'height' => '300',
-            ],
-        ], $manipulationSequence->toArray());
-    }
-
-    /** @test */
-    public function it_can_remove_a_manipulation()
-    {
-        $manipulationSequence = new ManipulationSequence();
-
-        $manipulationSequence
-            ->addManipulation('height', '100')
-            ->addManipulation('width', '200')
-            ->removeManipulation('height');
-
-        $this->assertSame([
-            [
-                'width' => '200',
-            ],
-        ], $manipulationSequence->toArray());
-    }
-
-    /** @test */
-    public function it_can_be_iterated_over()
-    {
-        $manipulationSequence = new ManipulationSequence();
-
-        $manipulationSequence->addManipulation('height', '100');
-
-        foreach ($manipulationSequence as $manipulationSet) {
-            $this->assertSame([
-                'height' => '100',
-            ], $manipulationSet);
-        }
-    }
-
-    /** @test */
-    public function it_will_remove_empty_groups()
-    {
-        $manipulationSequence = new ManipulationSequence();
-
-        $manipulationSequence
-            ->addManipulation('height', '100')
-            ->startNewGroup()
-            ->addManipulation('width', '200')
-            ->removeManipulation('height');
-
-        $this->assertSame([
-            [
-                'width' => '200',
-            ],
-        ], $manipulationSequence->toArray());
-    }
-
-    /** @test */
-    public function it_can_merge_two_sequences_containing_the_same_manipulation()
-    {
-        $manipulationSequence1 = (new ManipulationSequence())->addManipulation('height', '100');
-
-        $manipulationSequence2 = (new ManipulationSequence())->addManipulation('height', '200');
-
-        $manipulationSequence1->merge($manipulationSequence2);
-
-        $this->assertSame([
-            [
-                'height' => '200',
-            ],
-        ], $manipulationSequence1->toArray());
-    }
-
-    /** @test */
-    public function it_can_merge_two_sequences_containing_multiple_manipulations()
-    {
-        $manipulationSequence1 = (new ManipulationSequence())
-            ->addManipulation('width', '50')
-            ->addManipulation('height', '100');
-
-        $manipulationSequence2 = (new ManipulationSequence())
-            ->addManipulation('height', '200')
-            ->addManipulation('pixelate', '');
-
-        $manipulationSequence1->merge($manipulationSequence2);
-
-        $this->assertSame([
-            [
-                'width' => '50',
-                'height' => '200',
-                'pixelate' => '',
-            ],
-        ], $manipulationSequence1->toArray());
-    }
-
-    /** @test */
-    public function it_can_merge_two_sequences_containing_multiple_groups()
-    {
-        $manipulationSequence1 = (new ManipulationSequence())
-            ->addManipulation('width', '50')
-            ->addManipulation('height', '100')
-            ->startNewGroup()
-            ->addManipulation('width', '50')
-            ->addManipulation('height', '100');
-
-        $manipulationSequence2 = (new ManipulationSequence())
-            ->addManipulation('height', '200')
-            ->addManipulation('pixelate', '')
-            ->startNewGroup()
-            ->addManipulation('brightness', '200')
-            ->addManipulation('format', 'png');
-
-        $manipulationSequence1->merge($manipulationSequence2);
-
-        $this->assertSame([
-            [
-                'width' => '50',
-                'height' => '100',
-            ],
-            [
-                'width' => '50',
-                'height' => '200',
-                'pixelate' => '',
-            ],
-            [
-                'brightness' => '200',
-                'format' => 'png',
-            ],
-        ], $manipulationSequence1->toArray());
-    }
-
-    /** @test */
-    public function it_is_serializable()
-    {
-        $sequence = (new ManipulationSequence())
-            ->addManipulation('width', '50')
-            ->addManipulation('height', '100')
-            ->startNewGroup()
-            ->addManipulation('width', '50')
-            ->addManipulation('height', '100');
-
-        $unserializedSequence = unserialize(serialize($sequence));
-
-        $this->assertSame($sequence->toArray(), $unserializedSequence->toArray());
-    }
-
-    /** @test */
-    public function it_can_be_constructed_with_a_sequence_array()
-    {
-        $sequenceArray = [
-            [
-                'greyscale' => '',
-                'width' => '50',
-            ],
-            [
-                'height' => '100',
-            ],
-        ];
-
-        $sequence = (new ManipulationSequence($sequenceArray));
-
-        $this->assertSame($sequenceArray, $sequence->toArray());
-    }
-
-    /** @test */
-    public function it_does_not_return_empty_groups_when_iterating_a_merged_sequence()
-    {
-        $sequenceArray = [
-            [
-                'width' => '100',
-                'height' => '100',
-            ],
-        ];
-
-        $sequence1 = new ManipulationSequence();
-        $sequence2 = new ManipulationSequence($sequenceArray);
-
-        $mergedSequence = $sequence1->merge($sequence2);
-
-        $this->assertCount(1, $mergedSequence);
-
-        foreach ($mergedSequence as $sequence) {
-            $this->assertSame($sequenceArray[0], $sequence);
-        }
-    }
-
-    /** @test */
-    public function it_can_determine_that_the_sequence_is_empty()
-    {
-        $sequence = new ManipulationSequence();
-
-        $this->assertTrue($sequence->isEmpty());
-
-        $sequence->addManipulation('width', '50');
-
-        $this->assertFalse($sequence->isEmpty());
-    }
-}
+    $this->assertFalse($sequence->isEmpty());
+});

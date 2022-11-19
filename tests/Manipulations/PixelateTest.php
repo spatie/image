@@ -6,23 +6,16 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Test\TestCase;
 
-class PixelateTest extends TestCase
-{
-    /** @test */
-    public function it_can_pixelate()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can pixelate', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())->pixelate(50)->save($targetFile);
+    Image::load($this->getTestJpg())->pixelate(50)->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    $this->assertFileExists($targetFile);
+});
 
-    /** @test */
-    public function it_will_throw_an_exception_when_passing_an_invalid_pixelate_value()
-    {
-        $this->expectException(InvalidManipulation::class);
+it('will throw an exception when passing an invalid pixelate value', function () {
+    $this->expectException(InvalidManipulation::class);
 
-        Image::load($this->getTestJpg())->pixelate(1001);
-    }
-}
+    Image::load($this->getTestJpg())->pixelate(1001);
+});

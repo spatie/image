@@ -5,12 +5,20 @@ namespace Spatie\Image\Test;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
+beforeEach(function () {
+    $this->tempDir = (new TemporaryDirectory(__DIR__))
+        ->name('temp')
+        ->force()
+        ->create()
+        ->empty();
+});
+
 abstract class TestCase extends PHPUnitTestCase
 {
     /** @var \Spatie\TemporaryDirectory\TemporaryDirectory */
     protected $tempDir;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->tempDir = (new TemporaryDirectory(__DIR__))
             ->name('temp')

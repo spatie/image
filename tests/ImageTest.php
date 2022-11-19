@@ -7,144 +7,118 @@ use Intervention\Image\ImageManagerStatic as InterventionImage;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 
-class ImageTest extends TestCase
-{
-    /** @test */
-    public function it_can_modify_an_image_using_manipulations()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can modify an image using manipulations', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())
-            ->manipulate(function (Manipulations $manipulations) {
-                $manipulations
-                    ->blur(50);
-            })
-            ->save($targetFile);
+    Image::load($this->getTestJpg())
+        ->manipulate(function (Manipulations $manipulations) {
+        $manipulations
+            ->blur(50);
+        })
+        ->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    $this->assertFileExists($targetFile);
+});
 
-    /** @test */
-    public function it_can_modify_an_image_using_a_direct_manipulation_call()
-    {
-        $targetFile = $this->tempDir->path('conversion.jpg');
+it('can modify an image using a direct manipulation call', function () {
+    $targetFile = $this->tempDir->path('conversion.jpg');
 
-        Image::load($this->getTestJpg())
-            ->width(5)
-            ->width(500)
-            ->save($targetFile);
+    Image::load($this->getTestJpg())
+        ->width(5)
+        ->width(500)
+        ->save($targetFile);
 
-        $this->assertFileExists($targetFile);
-    }
+    $this->assertFileExists($targetFile);
+});
 
-    /** @test */
-    public function it_will_create_a_file_in_the_format_according_to_its_extension()
-    {
-        $targetFile = $this->tempDir->path('conversion.png');
+it('will create a file in the format according to its extension', function () {
+    $targetFile = $this->tempDir->path('conversion.png');
+    Image::load($this->getTestJpg())->save($targetFile);
+    assertImageType($targetFile, IMAGETYPE_PNG);
+
+    $targetFile = $this->tempDir->path('conversion.gif');
+    Image::load($this->getTestJpg())->save($targetFile);
+    assertImageType($targetFile, IMAGETYPE_GIF);
+
+    $targetFile = $this->tempDir->path('conversion.jpg');
+    Image::load($this->getTestJpg())->save($targetFile);
+    assertImageType($targetFile, IMAGETYPE_JPEG);
+
+    $targetFile = $this->tempDir->path('conversion.pjpg');
+    Image::load($this->getTestJpg())->save($targetFile);
+    assertImageType($targetFile, IMAGETYPE_JPEG);
+
+    if (function_exists('imagecreatefromwebp')) {
+        $targetFile = $this->tempDir->path('conversion.webp');
         Image::load($this->getTestJpg())->save($targetFile);
-        $this->assertImageType($targetFile, IMAGETYPE_PNG);
+        assertImageType($targetFile, IMAGETYPE_WEBP);
+    }
 
-        $targetFile = $this->tempDir->path('conversion.gif');
+    //test avif format with gd driver
+    if (function_exists('imagecreatefromavif')) {
+        $targetFile = $this->tempDir->path('conversion.avif');
         Image::load($this->getTestJpg())->save($targetFile);
-        $this->assertImageType($targetFile, IMAGETYPE_GIF);
-
-        $targetFile = $this->tempDir->path('conversion.jpg');
-        Image::load($this->getTestJpg())->save($targetFile);
-        $this->assertImageType($targetFile, IMAGETYPE_JPEG);
-
-        $targetFile = $this->tempDir->path('conversion.pjpg');
-        Image::load($this->getTestJpg())->save($targetFile);
-        $this->assertImageType($targetFile, IMAGETYPE_JPEG);
-
-        if (function_exists('imagecreatefromwebp')) {
-            $targetFile = $this->tempDir->path('conversion.webp');
-            Image::load($this->getTestJpg())->save($targetFile);
-            $this->assertImageType($targetFile, IMAGETYPE_WEBP);
-        }
-
-        //test avif format with gd driver
-        if (function_exists('imagecreatefromavif')) {
-            $targetFile = $this->tempDir->path('conversion.avif');
-            Image::load($this->getTestJpg())->save($targetFile);
-            $this->assertImageType($targetFile, IMAGETYPE_AVIF);
-        }
-
-        //test avif format with imagick
-        if (! empty(Imagick::queryFormats('AVIF*'))) {
-            $targetFile = $this->tempDir->path('conversion.avif');
-            Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
-            $image = new Imagick($targetFile);
-            $this->assertSame('AVIF', $image->getImageFormat());
-        }
-
-        //test tiff format with imagick
-        if (! empty(Imagick::queryFormats('TIFF*'))) {
-            $targetFile = $this->tempDir->path('conversion.tiff');
-            Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
-            $image = new Imagick($targetFile);
-            $this->assertSame('TIFF', $image->getImageFormat());
-        }
+        assertImageType($targetFile, IMAGETYPE_AVIF);
     }
 
-    /** @test */
-    public function it_will_not_force_the_format_according_to_the_output_extension_when_a_format_manipulation_was_already_set()
-    {
-        $targetFile = $this->tempDir->path('conversion.gif');
-
-        Image::load($this->getTestJpg())->format('jpg')->save($targetFile);
-
-        $this->assertImageType($targetFile, IMAGETYPE_JPEG);
+    //test avif format with imagick
+    if (! empty(Imagick::queryFormats('AVIF*'))) {
+        $targetFile = $this->tempDir->path('conversion.avif');
+        Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
+        $image = new Imagick($targetFile);
+        $this->assertSame('AVIF', $image->getImageFormat());
     }
 
-    /** @test */
-    public function it_can_get_the_width_and_height_of_an_image()
-    {
-        $this->assertSame(340, Image::load($this->getTestJpg())->getWidth());
-
-        $this->assertSame(280, Image::load($this->getTestJpg())->getHeight());
+    //test tiff format with imagick
+    if (! empty(Imagick::queryFormats('TIFF*'))) {
+        $targetFile = $this->tempDir->path('conversion.tiff');
+        Image::load($this->getTestJpg())->useImageDriver('imagick')->save($targetFile);
+        $image = new Imagick($targetFile);
+        $this->assertSame('TIFF', $image->getImageFormat());
     }
+});
 
-    /** @test */
-    public function the_image_driver_is_set_on_the_intervention_static_manager()
-    {
-        $image = Image::load($this->getTestJpg());
+it('will not force the format according to the output extension when a format manipulation was already set', function () {
+    $targetFile = $this->tempDir->path('conversion.gif');
 
-        $image->useImageDriver('gd');
+    Image::load($this->getTestJpg())->format('jpg')->save($targetFile);
 
-        $this->assertSame('gd', InterventionImage::getManager()->config['driver'] ?? null);
+    assertImageType($targetFile, IMAGETYPE_JPEG);
+});
 
-        $image->useImageDriver('imagick');
+it('can get the width and height of an image', function () {
+    $this->assertSame(340, Image::load($this->getTestJpg())->getWidth());
 
-        $this->assertSame('imagick', InterventionImage::getManager()->config['driver'] ?? null);
-    }
+    $this->assertSame(280, Image::load($this->getTestJpg())->getHeight());
+});
 
-    /** @test */
-    public function it_can_modify_files_with_the_same_name_if_they_are_in_different_folders()
-    {
-        $firstTargetFile = $this->tempDir->path('first.jpg');
-        $secondTargetFile = $this->tempDir->path('second.jpg');
+it('the image driver is set on the intervention static manager', function () {
+    $image = Image::load($this->getTestJpg());
 
-        Image::load($this->getTestFile('test.jpg'))
-            ->sepia()
-            ->apply()
-            ->crop(Manipulations::CROP_CENTER, 100, 100)
-            ->save($firstTargetFile);
+    $image->useImageDriver('gd');
 
-        Image::load($this->getTestFile('testdir/test.jpg'))
-            ->sepia()
-            ->apply()
-            ->crop(Manipulations::CROP_CENTER, 100, 100)
-            ->save($secondTargetFile);
+    $this->assertSame('gd', InterventionImage::getManager()->config['driver'] ?? null);
 
-        $this->assertNotSame(file_get_contents($firstTargetFile), file_get_contents($secondTargetFile));
-    }
+    $image->useImageDriver('imagick');
 
-    protected function assertImageType(string $filePath, $expectedType)
-    {
-        $expectedType = image_type_to_mime_type($expectedType);
+    $this->assertSame('imagick', InterventionImage::getManager()->config['driver'] ?? null);
+});
 
-        $type = image_type_to_mime_type(exif_imagetype($filePath));
+it('can modify files with the same name if they are in different folders', function () {
+    $firstTargetFile = $this->tempDir->path('first.jpg');
+    $secondTargetFile = $this->tempDir->path('second.jpg');
 
-        $this->assertSame($expectedType, $type, "The file `{$filePath}` isn't an `{$expectedType}`, but an `{$type}`");
-    }
-}
+    Image::load($this->getTestFile('test.jpg'))
+        ->sepia()
+        ->apply()
+        ->crop(Manipulations::CROP_CENTER, 100, 100)
+        ->save($firstTargetFile);
+
+    Image::load($this->getTestFile('testdir/test.jpg'))
+        ->sepia()
+        ->apply()
+        ->crop(Manipulations::CROP_CENTER, 100, 100)
+        ->save($secondTargetFile);
+
+    $this->assertNotSame(file_get_contents($firstTargetFile), file_get_contents($secondTargetFile));
+});
