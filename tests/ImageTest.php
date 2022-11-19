@@ -54,19 +54,22 @@ it('will create a file in the format according to its extension', function () {
         assertImageType($targetFile, IMAGETYPE_WEBP);
     }
 
-    //test avif format with gd driver
-    if (function_exists('imagecreatefromavif')) {
-        $targetFile = $this->tempDir->path('conversion.avif');
-        Image::load(getTestJpg())->save($targetFile);
-        assertImageType($targetFile, IMAGETYPE_AVIF);
-    }
+    // only test avif format againts PHP 8.0
+    if (PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 0) {
+        //test avif format with gd driver
+        if (function_exists('imagecreatefromavif')) {
+            $targetFile = $this->tempDir->path('conversion.avif');
+            Image::load(getTestJpg())->save($targetFile);
+            assertImageType($targetFile, IMAGETYPE_AVIF);
+        }
 
-    //test avif format with imagick
-    if (! empty(Imagick::queryFormats('AVIF*'))) {
-        $targetFile = $this->tempDir->path('conversion.avif');
-        Image::load(getTestJpg())->useImageDriver('imagick')->save($targetFile);
-        $image = new Imagick($targetFile);
-        expect($image->getImageFormat())->toBe('AVIF');
+        //test avif format with imagick
+        if (! empty(Imagick::queryFormats('AVIF*'))) {
+            $targetFile = $this->tempDir->path('conversion.avif');
+            Image::load(getTestJpg())->useImageDriver('imagick')->save($targetFile);
+            $image = new Imagick($targetFile);
+            expect($image->getImageFormat())->toBe('AVIF');
+        }
     }
 
     //test tiff format with imagick
