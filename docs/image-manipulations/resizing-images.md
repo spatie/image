@@ -55,6 +55,11 @@ $image
 
 ![Blue background on fit filled JPG](../../images/example-background.png)
 
+#### `Manipulations::FIT_FILL_MAX`
+
+Resizes the image to fit within the width and height boundaries without cropping but upscaling the image if it’s smaller. The finished image will have remaining space on either width or height (except if the aspect ratio of the new image is the same as the old image). The remaining space will be filled with the background color. The resulting image will match the constraining dimensions.
+
+
 #### `Manipulations::FIT_STRETCH`
 
 Stretches the image to fit the constraining dimensions exactly. The resulting image will fill the dimensions, and will not maintain the aspect ratio of the input image.
