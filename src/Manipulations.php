@@ -31,6 +31,7 @@ class Manipulations
     public const FIT_CONTAIN = 'contain';
     public const FIT_MAX = 'max';
     public const FIT_FILL = 'fill';
+    public const FIT_FILL_MAX = 'fill-max';
     public const FIT_STRETCH = 'stretch';
     public const FIT_CROP = 'crop';
 
