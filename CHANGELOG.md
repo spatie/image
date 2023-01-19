@@ -2,6 +2,24 @@
 
 All notable changes to `image` will be documented in this file
 
+## 2.2.5 - 2023-01-19
+
+### What's Changed
+
+- Refactor tests to pest by @AyoobMH in https://github.com/spatie/image/pull/176
+- Add Dependabot Automation by @patinthehat in https://github.com/spatie/image/pull/177
+- Add PHP 8.2 Support by @patinthehat in https://github.com/spatie/image/pull/180
+- Update Dependabot Automation by @patinthehat in https://github.com/spatie/image/pull/181
+- Add fill-max fit mode by @Tofandel in https://github.com/spatie/image/pull/183
+
+### New Contributors
+
+- @AyoobMH made their first contribution in https://github.com/spatie/image/pull/176
+- @patinthehat made their first contribution in https://github.com/spatie/image/pull/177
+- @Tofandel made their first contribution in https://github.com/spatie/image/pull/183
+
+**Full Changelog**: https://github.com/spatie/image/compare/2.2.4...2.2.5
+
 ## 2.2.4 - 2022-08-09
 
 ### What's Changed
