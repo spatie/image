@@ -57,3 +57,21 @@ it('can optimize an image using a provided optimizer chain', function () {
 
     expect($targetFile)->toBeFile();
 });
+
+it('can optimize an image specifying a desired timeout', function () {
+    $targetFile = $this->tempDir->path('optimized.jpg');
+
+    Image::load(getTestFile('test.jpg'))
+        ->setOptimizeChain(OptimizerChainFactory::create())
+        ->optimize([
+            'timeout' => 120,
+            'optimizers' => [
+                Jpegoptim::class => [
+                    '--all-progressive',
+                ],
+            ],
+        ])
+        ->save($targetFile);
+
+    expect($targetFile)->toBeFile();
+});

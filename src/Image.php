@@ -140,8 +140,10 @@ class Image
         $optimizerChain = $this->optimizerChain ?? OptimizerChainFactory::create();
 
         if (count($optimizerChainConfiguration)) {
+            $optimizersOptions = isset($optimizerChainConfiguration['optimizers'])
+                ? $optimizerChainConfiguration['optimizers']
+                : $optimizerChainConfiguration;
             $existingOptimizers = $optimizerChain->getOptimizers();
-
             $optimizers = array_map(function (array $optimizerOptions, string $optimizerClassName) use ($existingOptimizers) {
                 $optimizer = array_values(array_filter($existingOptimizers, function ($optimizer) use ($optimizerClassName) {
                     return $optimizer::class === $optimizerClassName;
@@ -150,9 +152,13 @@ class Image
                 $optimizer = isset($optimizer[0]) && $optimizer[0] instanceof BaseOptimizer ? $optimizer[0] : new $optimizerClassName();
 
                 return $optimizer->setOptions($optimizerOptions)->setBinaryPath($optimizer->binaryPath);
-            }, $optimizerChainConfiguration, array_keys($optimizerChainConfiguration));
+            }, $optimizersOptions, array_keys($optimizersOptions));
 
             $optimizerChain->setOptimizers($optimizers);
+
+            if (isset($optimizerChainConfiguration['timeout'])) {
+                $optimizerChain->setTimeout($optimizerChainConfiguration['timeout']);
+            }
         }
 
         $optimizerChain->optimize($path);
