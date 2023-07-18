@@ -2,6 +2,21 @@
 
 All notable changes to `image` will be documented in this file
 
+## 2.2.6 - 2023-05-06
+
+### What's Changed
+
+- Bump dependabot/fetch-metadata from 1.3.5 to 1.3.6 by @dependabot in https://github.com/spatie/image/pull/185
+- Bump dependabot/fetch-metadata from 1.3.6 to 1.4.0 by @dependabot in https://github.com/spatie/image/pull/188
+- Fit with only width or height by @gdebrauwer in https://github.com/spatie/image/pull/190
+
+### New Contributors
+
+- @dependabot made their first contribution in https://github.com/spatie/image/pull/185
+- @gdebrauwer made their first contribution in https://github.com/spatie/image/pull/190
+
+**Full Changelog**: https://github.com/spatie/image/compare/2.2.5...2.2.6
+
 ## 2.2.5 - 2023-01-19
 
 ### What's Changed
