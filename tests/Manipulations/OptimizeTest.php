@@ -32,6 +32,22 @@ it('can optimize an image with the given optimization options', function () {
     $targetFile = $this->tempDir->path('optimized.jpg');
 
     Image::load(getTestFile('test.jpg'))
+        ->optimize([
+            'optimizers' => [
+                Jpegoptim::class => [
+                    '--all-progressive',
+                ],
+            ],
+        ])
+        ->save($targetFile);
+
+    expect($targetFile)->toBeFile();
+});
+
+it('can optimize an image with options format backward compatibility', function () {
+    $targetFile = $this->tempDir->path('optimized.jpg');
+
+    Image::load(getTestFile('test.jpg'))
         ->optimize([Jpegoptim::class => [
         '--all-progressive',
         ]])
@@ -46,12 +62,14 @@ it('can optimize an image using a provided optimizer chain', function () {
     Image::load(getTestFile('test.jpg'))
         ->setOptimizeChain(OptimizerChainFactory::create())
         ->optimize([
-        Pngquant::class => [
-            '--force',
-        ],
-        Jpegoptim::class => [
-            '--all-progressive',
-        ],
+            'optimizers' => [
+                Pngquant::class => [
+                    '--force',
+                ],
+                Jpegoptim::class => [
+                    '--all-progressive',
+                ],
+            ],
         ])
         ->save($targetFile);
 
