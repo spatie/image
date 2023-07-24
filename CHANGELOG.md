@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 2.2.7 - 2023-07-24
+
+- bump requirements
+
 ## 2.2.6 - 2023-05-06
 
 ### What's Changed
