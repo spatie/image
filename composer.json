@@ -21,7 +21,7 @@
         "ext-mbstring": "*",
         "ext-json": "*",
         "league/glide": "^2.2.2",
-        "spatie/image-optimizer": "^1.1",
+        "spatie/image-optimizer": "^1.7",
         "spatie/temporary-directory": "^1.0|^2.0",
         "symfony/process": "^3.0|^4.0|^5.0|^6.0"
     },
