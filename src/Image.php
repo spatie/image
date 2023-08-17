@@ -9,7 +9,50 @@ use Spatie\ImageOptimizer\OptimizerChain;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\BaseOptimizer;
 
-/** @mixin \Spatie\Image\Manipulations */
+/**
+ * @method static Image orientation(string $orientation)
+ * @method static Image flip(string $orientation)
+ * @method static Image crop(string $cropMethod, int $width, int $height)
+ * @method static Image focalCrop(int $width, int $height, int $focalX, int $focalY, float $zoom = 1)
+ * @method static Image manualCrop(int $width, int $height, int $x, int $y)
+ * @method static Image width(int $width)
+ * @method static Image height(int $height)
+ * @method static Image fit(string $fitMethod, ?int $width = null, ?int $height = null)
+ * @method static Image devicePixelRatio(int $ratio)
+ * @method static Image brightness(int $brightness)
+ * @method static Image gamma(float $gamma)
+ * @method static Image contrast(int $contrast)
+ * @method static Image sharpen(int $sharpen)
+ * @method static Image blur(int $blur)
+ * @method static Image pixelate(int $pixelate)
+ * @method static Image greyscale()
+ * @method static Image sepia()
+ * @method static Image background(string $colorName)
+ * @method static Image border(int $width, string $color, string $borderType = 'overlay')
+ * @method static Image quality(int $quality)
+ * @method static Image format(string $format)
+ * @method static Image filter(string $filterName)
+ * @method static Image watermark(string $filePath)
+ * @method static Image watermarkWidth(int $width, string $unit = 'px')
+ * @method static Image watermarkHeight(int $height, string $unit = 'px')
+ * @method static Image watermarkFit(string $fitMethod)
+ * @method static Image watermarkPadding(int $xPadding, int $yPadding = null, string $unit = 'px')
+ * @method static Image watermarkPosition(string $position)
+ * @method static Image watermarkOpacity(int $opacity)
+ * @method static Image optimize(array $optimizationOptions = [])
+ * @method static Image apply()
+ * @method static Image addManipulation(string $manipulationName, string $manipulationArgument)
+ * @method static Image mergeManipulations(self $manipulations)
+ * @method static Image optimize(array $optimizationOptions = [])
+ * @method static Image removeManipulation(string $name)
+ * @method static bool hasMultipleConversions(array $manipulations)
+ * @method static bool hasManipulation(string $manipulationName)
+ * @method static mixed getManipulationArgument(string $manipulationName)
+ * @method static ManipulationSequence getManipulationSequence()
+ * @method static bool validateManipulation(string $value, string $constantNamePrefix)
+ * @method static array getValidManipulationOptions(string $manipulation)
+ * @method static mixed getFirstManipulationArgument(string $manipulationName)
+ */
 class Image
 {
     protected Manipulations $manipulations;
