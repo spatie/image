@@ -539,9 +539,11 @@ class Manipulations
         return false;
     }
 
-    public function removeManipulation(string $name): void
+    public function removeManipulation(string $name): static
     {
         $this->manipulationSequence->removeManipulation($name);
+
+        return $this;
     }
 
     public function hasManipulation(string $manipulationName): bool
