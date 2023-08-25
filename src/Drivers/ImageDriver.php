@@ -2,8 +2,6 @@
 
 namespace Spatie\Image\Drivers;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-
 interface ImageDriver
 {
     public function load(string $path): self;
