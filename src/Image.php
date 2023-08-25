@@ -4,7 +4,7 @@ namespace Spatie\Image;
 
 use BadMethodCallException;
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Drivers\Imagick\ImagickImage;
+use Spatie\Image\Drivers\ImagickImage;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 
 /** @mixin ImageDriver */
@@ -34,8 +34,8 @@ class Image
         }
 
         $this->imageDriver = match ($imageDriverName) {
-            'gd' => new Drivers\Gd\GdImage(),
-            'imagick' => new Drivers\Imagick\ImagickImage(),
+            'gd' => new Drivers\GdImage(),
+            'imagick' => new Drivers\ImagickImage(),
         };
 
         return $this;

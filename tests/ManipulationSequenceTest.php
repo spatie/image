@@ -4,7 +4,7 @@ namespace Spatie\Image\Test;
 
 use Spatie\Image\ManipulationSequence;
 
-beforeEach(fn () => true)->skip();
+beforeEach(fn () => true)->todo();
 
 it('can hold an empty sequence', function () {
     $manipulationSequence = new ManipulationSequence();

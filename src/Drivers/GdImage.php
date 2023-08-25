@@ -1,8 +1,6 @@
 <?php
 
-namespace Spatie\Image\Drivers\Gd;
-
-use Spatie\Image\Drivers\ImageDriver;
+namespace Spatie\Image\Drivers;
 
 class GdImage implements ImageDriver
 {

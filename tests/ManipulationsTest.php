@@ -4,7 +4,7 @@ namespace Spatie\Image\Test;
 
 use Spatie\Image\Manipulations;
 
-beforeEach(fn () => true)->skip();
+beforeEach(fn () => true)->todo();
 
 it('can be serialized', function () {
     $manipulations = (new Manipulations())

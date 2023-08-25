@@ -1,9 +1,8 @@
 <?php
 
-namespace Spatie\Image\Drivers\Imagick;
+namespace Spatie\Image\Drivers;
 
 use Imagick;
-use Spatie\Image\Drivers\ImageDriver;
 
 class ImagickImage implements ImageDriver
 {
