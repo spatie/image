@@ -6,9 +6,9 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 
 it('can adjust the brightness', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+    $targetFile = $this->tempDir->path('imagick/conversion.jpg');
 
-    Image::load(getTestJpg())->brightness(-75)->save($targetFile);
+    Image::load(getTestJpg())->brightness(-50)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });

@@ -4,7 +4,7 @@ namespace Spatie\Image\Drivers;
 
 interface ImageDriver
 {
-    public static function load(string $path): self;
+    public function load(string $path): self;
 
     public function getWidth(): int;
 

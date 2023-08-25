@@ -2,14 +2,18 @@
 
 namespace Spatie\Image\Drivers\Imagick;
 
+use Imagick;
 use Spatie\Image\Drivers\ImageDriver;
 
 class ImagickImage implements ImageDriver
 {
+    private Imagick $image;
 
-    public static function load(string $path): ImageDriver
+    public function load(string $path): ImageDriver
     {
-        // TODO: Implement load() method.
+        $this->image = new Imagick($path);
+
+        return $this;
     }
 
     public function getWidth(): int
@@ -24,6 +28,14 @@ class ImagickImage implements ImageDriver
 
     public function brightness(int $brightness): ImageDriver
     {
-        // TODO: Implement brightness() method.
+        $this->image->modulateImage(100 + $brightness, 100, 100);
+        return $this;
+    }
+
+    public function save(string $path): ImageDriver
+    {
+        $this->image->writeImage($path);
+
+        return $this;
     }
 }

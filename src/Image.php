@@ -17,9 +17,9 @@ class Image
         $this->imageDriver = new ImagickImage();
     }
 
-    public static function load(string $pathToImage): static
+    public static function load(string $pathToImage): ImageDriver
     {
-        return new static($pathToImage);
+        return (new self($pathToImage))->imageDriver->load($pathToImage);
     }
 
     /**

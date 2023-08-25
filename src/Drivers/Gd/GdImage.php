@@ -6,8 +6,7 @@ use Spatie\Image\Drivers\ImageDriver;
 
 class GdImage implements ImageDriver
 {
-
-    public static function load(string $path): ImageDriver
+    public function load(string $path): ImageDriver
     {
         // TODO: Implement load() method.
     }
