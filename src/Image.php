@@ -3,8 +3,10 @@
 namespace Spatie\Image;
 
 use BadMethodCallException;
+use Spatie\Image\Drivers\GdImageDriver;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Drivers\ImagickImageDriver;
+use Spatie\Image\Exceptions\ImageMethodDoesNotExist;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 
 /** @mixin ImageDriver */
@@ -22,11 +24,6 @@ class Image
         return (new self($pathToImage))->imageDriver->load($pathToImage);
     }
 
-    /**
-     * @return $this
-     *
-     * @throws InvalidImageDriver
-     */
     public static function useImageDriver(string $imageDriverName): ImageDriver
     {
         if (! in_array($imageDriverName, ['gd', 'imagick'])) {
@@ -34,18 +31,18 @@ class Image
         }
 
         return match ($imageDriverName) {
-            'gd' => new Drivers\GdImageDriver(),
-            'imagick' => new Drivers\ImagickImageDriver(),
+            'gd' => new GdImageDriver(),
+            'imagick' => new ImagickImageDriver(),
         };
     }
 
-    public function __call(string $name, array $arguments): static
+    public function __call(string $methodName, array $arguments): static
     {
-        if (! method_exists($this->imageDriver, $name)) {
-            throw new BadMethodCallException("Manipulation `{$name}` does not exist");
+        if (! method_exists($this->imageDriver, $methodName)) {
+            throw ImageMethodDoesNotExist::make($methodName);
         }
 
-        $this->imageDriver->$name(...$arguments);
+        $this->imageDriver->$methodName(...$arguments);
 
         return $this;
     }
