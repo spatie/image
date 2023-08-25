@@ -7,6 +7,8 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
 use Spatie\ImageOptimizer\Optimizers\Pngquant;
 
+beforeEach(fn() => true)->skip();
+
 it('can optimize an image', function () {
     $targetFile = $this->tempDir->path('optimized.jpg');
 

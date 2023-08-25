@@ -4,6 +4,7 @@ namespace Spatie\Image;
 
 use BadMethodCallException;
 use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Drivers\Imagick\ImagickImage;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 
 /** @mixin ImageDriver */
@@ -13,6 +14,7 @@ class Image
 
     public function __construct(protected string $pathToImage)
     {
+        $this->imageDriver = new ImagickImage();
     }
 
     public static function load(string $pathToImage): static
