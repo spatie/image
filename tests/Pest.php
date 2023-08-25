@@ -22,7 +22,7 @@ function getTestFile($fileName): string
     return getTestSupportPath('testFiles/' . $fileName);
 }
 
-function getTestSupportPath($suffix  = ''): string
+function getTestSupportPath($suffix = ''): string
 {
     return __DIR__."/TestSupport/{$suffix}";
 }
