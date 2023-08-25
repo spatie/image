@@ -2,7 +2,6 @@
 
 namespace Spatie\Image;
 
-use BadMethodCallException;
 use Spatie\Image\Drivers\GdImageDriver;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Drivers\ImagickImageDriver;
