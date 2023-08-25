@@ -23,8 +23,8 @@ class Image
     }
 
     /**
-     * @param string $imageDriverName
      * @return $this
+     *
      * @throws InvalidImageDriver
      */
     public function useImageDriver(string $imageDriverName): static

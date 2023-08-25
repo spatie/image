@@ -19,7 +19,7 @@ function getTestJpg(): string
 
 function getTestFile($fileName): string
 {
-    return getTestSupportPath('testFiles/' . $fileName);
+    return getTestSupportPath('testFiles/'.$fileName);
 }
 
 function getTestSupportPath($suffix = ''): string
