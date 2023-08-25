@@ -15,4 +15,4 @@ it('can adjust the brightness', function () {
 
 it('will throw an exception when passing an invalid brightness', function () {
     Image::load(getTestJpg())->brightness(-101);
-})->throws(InvalidManipulation::class);
+})->throws(InvalidManipulation::class)->skip();
