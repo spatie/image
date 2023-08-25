@@ -40,9 +40,8 @@ function assertImageType(string $filePath, $expectedType): void
     expect($type)->toBe($expectedType);
 }
 
-function gdImage(): GdImageDriver
-{
-    return Image::useImageDriver('gd');
-}
-
+dataset('drivers', [
+    'imagick' => [Image::useImageDriver('imagick')],
+    'gd' => [Image::useImageDriver('gd')],
+]);
 

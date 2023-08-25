@@ -14,15 +14,11 @@ it('can adjust the brightness', function (ImageDriver $driver) {
     expect($targetFile)->toBeFile();
 })->with('drivers');
 
-
 it('will throw an exception when passing an invalid brightness', function (ImageDriver $driver) {
     $driver->load(getTestJpg())->brightness(-101);
 })->with('drivers')->throws(InvalidManipulation::class);
 
-dataset('drivers', [
-    'imagick' => [Image::useImageDriver('imagick')],
-    'gd' => [Image::useImageDriver('gd')],
-]);
+
 
 
 

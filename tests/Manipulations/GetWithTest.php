@@ -8,9 +8,3 @@ it('can get the width of an image', function (ImageDriver $driver) {
 
     expect($image->getWidth())->toBe(340);
 })->with('drivers');
-
-
-dataset('drivers', [
-    'imagick' => [Image::useImageDriver('imagick')],
-    'gd' => [Image::useImageDriver('gd')],
-]);

@@ -8,8 +8,3 @@ it('can get the height of an image', function (ImageDriver $driver) {
 
     expect($image->getHeight())->toBe(280);
 })->with('drivers');
-
-dataset('drivers', [
-    'imagick' => [Image::useImageDriver('imagick')],
-    'gd' => [Image::useImageDriver('gd')],
-]);
