@@ -6,7 +6,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 
-beforeEach(fn() => true)->skip();
+beforeEach(fn () => true)->skip();
 
 it('can add a border to an image', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');

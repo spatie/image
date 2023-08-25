@@ -5,7 +5,7 @@ namespace Spatie\Image\Test\Manipulations;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 
-beforeEach(fn() => true)->skip();
+beforeEach(fn () => true)->skip();
 
 it('can set the device pixel ratio', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');

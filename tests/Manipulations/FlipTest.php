@@ -5,7 +5,7 @@ namespace Spatie\Image\Test\Manipulations;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 
-beforeEach(fn() => true)->skip();
+beforeEach(fn () => true)->skip();
 
 it('can flip an image', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');

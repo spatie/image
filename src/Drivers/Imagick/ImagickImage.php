@@ -29,6 +29,7 @@ class ImagickImage implements ImageDriver
     public function brightness(int $brightness): ImageDriver
     {
         $this->image->modulateImage(100 + $brightness, 100, 100);
+
         return $this;
     }
 

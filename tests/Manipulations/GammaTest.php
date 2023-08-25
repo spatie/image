@@ -5,7 +5,7 @@ namespace Spatie\Image\Test\Manipulations;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 
-beforeEach(fn() => true)->skip();
+beforeEach(fn () => true)->skip();
 
 it('can adjust the gamma', function () {
     $targetFile = $this->tempDir->path('conversion.jpg');
