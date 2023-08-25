@@ -4,7 +4,7 @@ use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 uses()
     ->beforeEach(function () {
-        $this->tempDir = (new TemporaryDirectory(__DIR__))
+        $this->tempDir = (new TemporaryDirectory(getTestPath()))
             ->name('temp')
             ->force()
             ->create()
@@ -19,7 +19,12 @@ function getTestJpg(): string
 
 function getTestFile($fileName): string
 {
-    return __DIR__."/testfiles/{$fileName}";
+    return getTestPath($fileName);
+}
+
+function getTestPath($suffix  = ''): string
+{
+    return __DIR__."/TestSupport/testFiles/{$suffix}";
 }
 
 function assertImageType(string $filePath, $expectedType): void

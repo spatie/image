@@ -1,7 +1,7 @@
 build
 composer.lock
 vendor
-tests/temp
+tests/TestSupport/temp
 .phpunit.result.cache
 .php-cs-fixer.cache
 .idea
