@@ -10,4 +10,9 @@ class CouldNotLoadImage extends Exception
     {
         return new static("Could not load image at path `{$path}`");
     }
+
+    public static function fileDoesNotExist(string $path): static
+    {
+        return new static("File does not exist at path `{$path}`");
+    }
 }

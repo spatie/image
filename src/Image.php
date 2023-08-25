@@ -5,6 +5,7 @@ namespace Spatie\Image;
 use Spatie\Image\Drivers\GdImageDriver;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Drivers\ImagickImageDriver;
+use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\ImageMethodDoesNotExist;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 
@@ -20,6 +21,10 @@ class Image
 
     public static function load(string $pathToImage): ImageDriver
     {
+        if (! file_exists($pathToImage)) {
+            throw CouldNotLoadImage::fileDoesNotExist($pathToImage);
+        }
+
         return (new self($pathToImage))->imageDriver->load($pathToImage);
     }
 
