@@ -34,7 +34,7 @@ class Image
         }
 
         $this->imageDriver = match ($imageDriverName) {
-            'gd' => new Drivers\GdImage(),
+            'gd' => new Drivers\GdImageDriver(),
             'imagick' => new Drivers\ImagickImage(),
         };
 
