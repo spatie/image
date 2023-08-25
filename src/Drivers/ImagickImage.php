@@ -3,6 +3,7 @@
 namespace Spatie\Image\Drivers;
 
 use Imagick;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 class ImagickImage implements ImageDriver
 {
@@ -27,6 +28,10 @@ class ImagickImage implements ImageDriver
 
     public function brightness(int $brightness): ImageDriver
     {
+        if ($brightness < -100 || $brightness > 100) {
+            throw InvalidManipulation::valueNotInRange('brightness', $brightness, -100, 100);
+        }
+
         $this->image->modulateImage(100 + $brightness, 100, 100);
 
         return $this;
