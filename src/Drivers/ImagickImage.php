@@ -6,7 +6,7 @@ use Imagick;
 
 class ImagickImage implements ImageDriver
 {
-    private Imagick $image;
+    protected Imagick $image;
 
     public function load(string $path): ImageDriver
     {
