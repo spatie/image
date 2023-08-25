@@ -53,6 +53,7 @@ class GdImageDriver implements ImageDriver
 
     public function save(string $path): ImageDriver
     {
+        // TODO: make this work with other formats.
         imagepng($this->image, $path);
 
         return $this;
