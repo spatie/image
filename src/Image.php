@@ -4,7 +4,7 @@ namespace Spatie\Image;
 
 use BadMethodCallException;
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Drivers\ImagickImage;
+use Spatie\Image\Drivers\ImagickImageDriver;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 
 /** @mixin ImageDriver */
@@ -14,7 +14,7 @@ class Image
 
     public function __construct(protected string $pathToImage)
     {
-        $this->imageDriver = new ImagickImage();
+        $this->imageDriver = new ImagickImageDriver();
     }
 
     public static function load(string $pathToImage): ImageDriver
@@ -27,18 +27,16 @@ class Image
      *
      * @throws InvalidImageDriver
      */
-    public function useImageDriver(string $imageDriverName): static
+    public static function useImageDriver(string $imageDriverName): ImageDriver
     {
         if (! in_array($imageDriverName, ['gd', 'imagick'])) {
             throw InvalidImageDriver::driver($imageDriverName);
         }
 
-        $this->imageDriver = match ($imageDriverName) {
-            'gd' => new Drivers\GdImage(),
-            'imagick' => new Drivers\ImagickImage(),
+        return match ($imageDriverName) {
+            'gd' => new Drivers\GdImageDriver(),
+            'imagick' => new Drivers\ImagickImageDriver(),
         };
-
-        return $this;
     }
 
     public function __call(string $name, array $arguments): static

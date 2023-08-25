@@ -5,7 +5,7 @@ namespace Spatie\Image\Drivers;
 use Imagick;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
-class ImagickImage implements ImageDriver
+class ImagickImageDriver implements ImageDriver
 {
     protected Imagick $image;
 
