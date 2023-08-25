@@ -1,0 +1,16 @@
+<?php
+
+use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Image;
+
+it('can get the width of an image', function (ImageDriver $driver) {
+    $image = $driver->load(getTestJpg());
+
+    expect($image->getWidth())->toBe(340);
+})->with('drivers');
+
+
+dataset('drivers', [
+    'imagick' => [Image::useImageDriver('imagick')],
+    'gd' => [Image::useImageDriver('gd')],
+]);

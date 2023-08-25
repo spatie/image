@@ -31,12 +31,12 @@ class GdImageDriver implements ImageDriver
 
     public function getWidth(): int
     {
-        // TODO: Implement getWidth() method.
+        return imagesx($this->image);
     }
 
     public function getHeight(): int
     {
-        // TODO: Implement getHeight() method.
+        return imagesy($this->image);
     }
 
     public function brightness(int $brightness): ImageDriver
