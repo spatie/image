@@ -16,8 +16,6 @@ interface ImageDriver
 
     /**
      * @param  int  $brightness A value between -100 and 100
-     *
-     * @throws InvalidManipulation
      */
     public function brightness(int $brightness): self;
 }

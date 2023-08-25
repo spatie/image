@@ -18,12 +18,12 @@ class ImagickImageDriver implements ImageDriver
 
     public function getWidth(): int
     {
-        // TODO: Implement getWidth() method.
+        return $this->image->getImageWidth();
     }
 
     public function getHeight(): int
     {
-        // TODO: Implement getHeight() method.
+        return $this->image->getImageHeight();
     }
 
     public function brightness(int $brightness): ImageDriver
