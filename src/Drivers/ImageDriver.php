@@ -15,7 +15,7 @@ interface ImageDriver
     public function getHeight(): int;
 
     /**
-     * @param int $brightness A value between -100 and 100
+     * @param  int  $brightness A value between -100 and 100
      *
      * @throws InvalidManipulation
      */
