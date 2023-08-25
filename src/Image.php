@@ -27,18 +27,16 @@ class Image
      *
      * @throws InvalidImageDriver
      */
-    public function useImageDriver(string $imageDriverName): static
+    public static function useImageDriver(string $imageDriverName): ImageDriver
     {
         if (! in_array($imageDriverName, ['gd', 'imagick'])) {
             throw InvalidImageDriver::driver($imageDriverName);
         }
 
-        $this->imageDriver = match ($imageDriverName) {
+        return match ($imageDriverName) {
             'gd' => new Drivers\GdImageDriver(),
             'imagick' => new Drivers\ImagickImageDriver(),
         };
-
-        return $this;
     }
 
     public function __call(string $name, array $arguments): static

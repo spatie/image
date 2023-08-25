@@ -4,6 +4,7 @@ namespace Spatie\Image\Drivers;
 
 use GdImage;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 class GdImageDriver implements ImageDriver
 {
@@ -22,6 +23,8 @@ class GdImageDriver implements ImageDriver
         }
 
         $this->image = $image;
+
+        return $this;
     }
 
     public function getWidth(): int
@@ -36,6 +39,22 @@ class GdImageDriver implements ImageDriver
 
     public function brightness(int $brightness): ImageDriver
     {
-        // TODO: Implement brightness() method.
+        if ($brightness < -100 || $brightness > 100) {
+            throw InvalidManipulation::valueNotInRange('brightness', $brightness, -100, 100);
+        }
+
+        // Convert value between -100 and 100 to -255 and 255
+        $brightness = round($brightness * 2.55);
+
+        imagefilter($this->image, IMG_FILTER_BRIGHTNESS, $brightness);
+
+        return $this;
+    }
+
+    public function save(string $path): ImageDriver
+    {
+        imagepng($this->image, $path);
+
+        return $this;
     }
 }
