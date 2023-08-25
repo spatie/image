@@ -11,13 +11,13 @@ class GdImageDriver implements ImageDriver
 
     public function load(string $path): ImageDriver
     {
-        $handle = fopen($path, "r");
+        $handle = fopen($path, 'r');
         $contents = fread($handle, filesize($path));
         fclose($handle);
 
         $image = imagecreatefromstring($contents);
 
-        if (!$image) {
+        if (! $image) {
             throw new CouldNotLoadImage("Could not load image from path `{$path}`");
         }
 
