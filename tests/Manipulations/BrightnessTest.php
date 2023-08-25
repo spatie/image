@@ -4,7 +4,6 @@ namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
 
 it('can adjust the brightness', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path('imagick/conversion.jpg');
@@ -17,8 +16,3 @@ it('can adjust the brightness', function (ImageDriver $driver) {
 it('will throw an exception when passing an invalid brightness', function (ImageDriver $driver) {
     $driver->load(getTestJpg())->brightness(-101);
 })->with('drivers')->throws(InvalidManipulation::class);
-
-
-
-
-

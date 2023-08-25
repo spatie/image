@@ -1,6 +1,5 @@
 <?php
 
-use Spatie\Image\Drivers\GdImageDriver;
 use Spatie\Image\Image;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
@@ -14,8 +13,6 @@ uses()
     })
     ->in('.');
 
-
-
 function getTestJpg(): string
 {
     return getTestFile('test.jpg');
@@ -23,12 +20,12 @@ function getTestJpg(): string
 
 function getTestFile($fileName): string
 {
-    return getTestSupportPath('testFiles/' . $fileName);
+    return getTestSupportPath('testFiles/'.$fileName);
 }
 
 function getTestSupportPath($suffix = ''): string
 {
-    return __DIR__ . "/TestSupport/{$suffix}";
+    return __DIR__."/TestSupport/{$suffix}";
 }
 
 function assertImageType(string $filePath, $expectedType): void
@@ -44,4 +41,3 @@ dataset('drivers', [
     'imagick' => [Image::useImageDriver('imagick')],
     'gd' => [Image::useImageDriver('gd')],
 ]);
-
