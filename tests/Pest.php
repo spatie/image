@@ -1,11 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Test Case
-|--------------------------------------------------------------------------
-*/
-
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 uses()
@@ -18,18 +12,6 @@ uses()
     })
     ->in('.');
 
-/*
-|--------------------------------------------------------------------------
-| Expectations
-|--------------------------------------------------------------------------
-*/
-
-/*
-|--------------------------------------------------------------------------
-| Functions
-|--------------------------------------------------------------------------
-*/
-
 function getTestJpg(): string
 {
     return getTestFile('test.jpg');
@@ -40,7 +22,7 @@ function getTestFile($fileName): string
     return __DIR__."/testfiles/{$fileName}";
 }
 
-function assertImageType(string $filePath, $expectedType)
+function assertImageType(string $filePath, $expectedType): void
 {
     $expectedType = image_type_to_mime_type($expectedType);
 
