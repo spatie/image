@@ -4,6 +4,9 @@ namespace Spatie\Image\Drivers;
 
 use Imagick;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
+use Spatie\Image\Enums\Constraint;
+use Spatie\Image\Enums\Fit;
+use Spatie\Image\Size;
 
 class ImagickImageDriver implements ImageDriver
 {
@@ -46,6 +49,23 @@ class ImagickImageDriver implements ImageDriver
         return $this;
     }
 
+    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): ImageDriver
+    {
+        $desiredWidth ??= $this->getWidth();
+        $desiredHeight ??= $this->getHeight();
+
+        $size = $this->getSize();
+
+        if ($fit === Fit::Contain) {
+            $resize = $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]);
+        }
+
+
+        $this->image->scaleImage($resize->width, $resize->height);
+
+        return $this;
+    }
+
     public function save(string $path): ImageDriver
     {
         $this->image->writeImage($path);
@@ -56,5 +76,10 @@ class ImagickImageDriver implements ImageDriver
     public function driverName(): string
     {
         return 'imagick';
+    }
+
+    public function getSize(): Size
+    {
+        return new Size($this->getWidth(), $this->getHeight());
     }
 }

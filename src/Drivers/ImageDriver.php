@@ -2,6 +2,8 @@
 
 namespace Spatie\Image\Drivers;
 
+use Spatie\Image\Size;
+
 interface ImageDriver
 {
     public function driverName(): string;
@@ -23,4 +25,6 @@ interface ImageDriver
      * @param  int  $amount A value between 0 and 100
      */
     public function blur(int $blur): self;
+
+    public function getSize(): Size;
 }

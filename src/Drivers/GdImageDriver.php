@@ -5,6 +5,7 @@ namespace Spatie\Image\Drivers;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
+use Spatie\Image\Size;
 
 class GdImageDriver implements ImageDriver
 {
@@ -75,5 +76,10 @@ class GdImageDriver implements ImageDriver
     public function driverName(): string
     {
         return 'gd';
+    }
+
+    public function getSize(): Size
+    {
+        return new Size($this->getWidth(), $this->getHeight());
     }
 }
