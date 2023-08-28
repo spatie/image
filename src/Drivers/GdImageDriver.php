@@ -60,4 +60,9 @@ class GdImageDriver implements ImageDriver
 
         return $this;
     }
+
+    public function driverName(): string
+    {
+        return 'gd';
+    }
 }

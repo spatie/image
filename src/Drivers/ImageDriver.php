@@ -4,6 +4,8 @@ namespace Spatie\Image\Drivers;
 
 interface ImageDriver
 {
+    public function driverName(): string;
+
     public function load(string $path): self;
 
     public function save(string $path): self;

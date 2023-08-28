@@ -43,4 +43,9 @@ class ImagickImageDriver implements ImageDriver
 
         return $this;
     }
+
+    public function driverName(): string
+    {
+        return 'imagick';
+    }
 }
