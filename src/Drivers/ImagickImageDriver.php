@@ -3,10 +3,8 @@
 namespace Spatie\Image\Drivers;
 
 use Imagick;
-use Spatie\Image\Actions\CalculateFitAction;
 use Spatie\Image\Actions\CalculateFitSizeAction;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
-use Spatie\Image\Enums\Constraint;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Size;
 
