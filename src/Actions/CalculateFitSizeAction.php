@@ -20,10 +20,8 @@ class CalculateFitSizeAction
 
         $size = new Size($originalWidth, $originalHeight);
 
-        if ($fit === Fit::Contain) {
-            return $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]);
-        }
-
-        throw new Exception('Not implemented');
+        return match($fit) {
+            Fit::Contain => $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]),
+        };
     }
 }
