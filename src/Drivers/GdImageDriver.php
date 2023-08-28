@@ -5,7 +5,6 @@ namespace Spatie\Image\Drivers;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 class GdImageDriver implements ImageDriver
 {
