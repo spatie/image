@@ -4,4 +4,4 @@ vendor
 .phpunit.result.cache
 .php-cs-fixer.cache
 .idea
-TestSupport/temp
+tests/TestSupport/temp/
