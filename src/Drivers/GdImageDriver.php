@@ -59,7 +59,7 @@ class GdImageDriver implements ImageDriver
             throw InvalidManipulation::valueNotInRange('blur', $blur, 0, 100);
         }
 
-        for ($i=0; $i < $blur; $i++) {
+        for ($i = 0; $i < $blur; $i++) {
             imagefilter($this->image, IMG_FILTER_GAUSSIAN_BLUR);
         }
 

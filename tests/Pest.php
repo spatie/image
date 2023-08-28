@@ -21,18 +21,17 @@ function getTestJpg(): string
 
 function getTestFile($fileName): string
 {
-    return getTestSupportPath('testFiles/' . $fileName);
+    return getTestSupportPath('testFiles/'.$fileName);
 }
 
 function getTempPath($suffix = ''): string
 {
-    return getTestSupportPath('temp/' . $suffix);
+    return getTestSupportPath('temp/'.$suffix);
 }
-
 
 function getTestSupportPath($suffix = ''): string
 {
-    return __DIR__ . "/TestSupport/{$suffix}";
+    return __DIR__."/TestSupport/{$suffix}";
 }
 
 function assertImageType(string $filePath, $expectedType): void
