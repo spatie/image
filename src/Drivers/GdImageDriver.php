@@ -3,7 +3,9 @@
 namespace Spatie\Image\Drivers;
 
 use GdImage;
+use Spatie\Image\Actions\CalculateFitSizeAction;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
+use Spatie\Image\Enums\Fit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Size;
 
@@ -81,5 +83,57 @@ class GdImageDriver implements ImageDriver
     public function getSize(): Size
     {
         return new Size($this->getWidth(), $this->getHeight());
+    }
+
+    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): ImageDriver
+    {
+        $resize = (new CalculateFitSizeAction())->execute(
+            $this->getWidth(),
+            $this->getHeight(),
+            $fit,
+            $desiredWidth,
+            $desiredHeight,
+        );
+
+        $this->modify($this->getWidth(), $this->getHeight(), $resize->width, $resize->height);
+
+        return $this;
+    }
+
+    protected function modify($originalWidth, $originalHeight, $desiredWidth, $desiredHeight)
+    {
+        // create new image
+        $modified = imagecreatetruecolor(intval($desiredWidth), intval($desiredHeight));
+
+        // preserve transparency
+        $transIndex = imagecolortransparent($this->image);
+
+        if ($transIndex != -1) {
+            $rgba = imagecolorsforindex($modified, $transIndex);
+            $transColor = imagecolorallocatealpha($modified, $rgba['red'], $rgba['green'], $rgba['blue'], 127);
+            imagefill($modified, 0, 0, $transColor);
+            imagecolortransparent($modified, $transColor);
+        } else {
+            imagealphablending($modified, false);
+            imagesavealpha($modified, true);
+        }
+
+        // copy content from resource
+        $result = imagecopyresampled(
+            $modified,
+            $this->image,
+            0,
+            0,
+            0,
+            0,
+            intval($desiredWidth),
+            intval($desiredHeight),
+            $originalWidth,
+            $originalHeight
+        );
+
+        $this->image = $modified;
+
+        return $result;
     }
 }

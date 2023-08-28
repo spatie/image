@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Drivers;
 
+use Spatie\Image\Enums\Fit;
 use Spatie\Image\Size;
 
 interface ImageDriver
@@ -27,4 +28,6 @@ interface ImageDriver
     public function blur(int $blur): self;
 
     public function getSize(): Size;
+
+    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self;
 }
