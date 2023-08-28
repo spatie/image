@@ -4,7 +4,6 @@ namespace Spatie\Image\Drivers;
 
 use Imagick;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 class ImagickImageDriver implements ImageDriver
 {
