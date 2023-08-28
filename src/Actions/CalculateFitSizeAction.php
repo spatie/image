@@ -1,0 +1,29 @@
+<?php
+
+namespace Spatie\Image\Actions;
+
+use Spatie\Image\Enums\Constraint;
+use Spatie\Image\Enums\Fit;
+use Spatie\Image\Size;
+
+class CalculateFitSizeAction
+{
+    public function execute(
+        int $originalWidth,
+        int $originalHeight,
+        Fit $fit,
+        int $desiredWidth = null,
+        int $desiredHeight = null,
+    ): Size {
+        $desiredWidth ??= $originalWidth;
+        $desiredHeight ??= $originalHeight;
+
+        $size = new Size($originalWidth, $originalHeight);
+
+        if ($fit === Fit::Contain) {
+            return $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]);
+        }
+
+        throw new Exception('Not implemented');
+    }
+}

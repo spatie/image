@@ -11,7 +11,7 @@ it('can fit an image in the given dimensions', function () {
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/fit.jpg");
 
-    $driver->load(getTestJpg())->fit(Fit::Contain, 10, 60)->save($targetFile);
+    $driver->load(getTestJpg())->fit(Fit::Contain, 100, 60)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 });

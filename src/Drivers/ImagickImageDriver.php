@@ -3,6 +3,8 @@
 namespace Spatie\Image\Drivers;
 
 use Imagick;
+use Spatie\Image\Actions\CalculateFitAction;
+use Spatie\Image\Actions\CalculateFitSizeAction;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Enums\Constraint;
 use Spatie\Image\Enums\Fit;
@@ -51,14 +53,13 @@ class ImagickImageDriver implements ImageDriver
 
     public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): ImageDriver
     {
-        $desiredWidth ??= $this->getWidth();
-        $desiredHeight ??= $this->getHeight();
-
-        $size = $this->getSize();
-
-        if ($fit === Fit::Contain) {
-            $resize = $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]);
-        }
+        $resize = (new CalculateFitSizeAction())->execute(
+            $this->getWidth(),
+            $this->getHeight(),
+            $fit,
+            $desiredWidth,
+            $desiredHeight,
+        );
 
         $this->image->scaleImage($resize->width, $resize->height);
 
