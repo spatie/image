@@ -2,9 +2,7 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
-use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\Fit;
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 
 it('can fit an image in the given dimensions', function () {

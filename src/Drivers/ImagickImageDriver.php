@@ -60,7 +60,6 @@ class ImagickImageDriver implements ImageDriver
             $resize = $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]);
         }
 
-
         $this->image->scaleImage($resize->width, $resize->height);
 
         return $this;
