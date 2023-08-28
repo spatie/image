@@ -20,7 +20,7 @@ interface ImageDriver
     public function brightness(int $brightness): self;
 
     /**
-     * @param int $amount A value between 0 and 100
+     * @param  int  $amount A value between 0 and 100
      */
     public function blur(int $blur): self;
 }

@@ -58,7 +58,7 @@ class GdImageDriver implements ImageDriver
     {
         $this->ensureNumberBetween($blur, 0, 100, 'blur');
 
-        for ($i=0; $i < $blur; $i++) {
+        for ($i = 0; $i < $blur; $i++) {
             imagefilter($this->image, IMG_FILTER_GAUSSIAN_BLUR);
         }
 
