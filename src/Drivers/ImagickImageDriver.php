@@ -3,10 +3,13 @@
 namespace Spatie\Image\Drivers;
 
 use Imagick;
+use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 class ImagickImageDriver implements ImageDriver
 {
+    use ValidatesArguments;
+
     protected Imagick $image;
 
     public function load(string $path): ImageDriver
@@ -28,9 +31,7 @@ class ImagickImageDriver implements ImageDriver
 
     public function brightness(int $brightness): ImageDriver
     {
-        if ($brightness < -100 || $brightness > 100) {
-            throw InvalidManipulation::valueNotInRange('brightness', $brightness, -100, 100);
-        }
+        $this->ensureNumberBetween($brightness, -100, 100, 'brightness');
 
         $this->image->modulateImage(100 + $brightness, 100, 100);
 
@@ -39,9 +40,7 @@ class ImagickImageDriver implements ImageDriver
 
     public function blur(int $blur): ImageDriver
     {
-        if ($blur < 0 || $blur > 100) {
-            throw InvalidManipulation::valueNotInRange('blur', $blur, 0, 100);
-        }
+        $this->ensureNumberBetween($blur, 0, 100, 'blur');
 
         $this->image->blurImage(1 * $blur, 0.5 * $blur);
 

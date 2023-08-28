@@ -3,11 +3,14 @@
 namespace Spatie\Image\Drivers;
 
 use GdImage;
+use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 class GdImageDriver implements ImageDriver
 {
+    use ValidatesArguments;
+
     private GdImage $image;
 
     public function load(string $path): ImageDriver
@@ -41,11 +44,9 @@ class GdImageDriver implements ImageDriver
 
     public function brightness(int $brightness): ImageDriver
     {
-        if ($brightness < -100 || $brightness > 100) {
-            throw InvalidManipulation::valueNotInRange('brightness', $brightness, -100, 100);
-        }
+        $this->ensureNumberBetween($brightness, -100, 100, 'brightness');
 
-        // Convert value between -100 and 100 to -255 and 255
+        // TODO: Convert value between -100 and 100 to -255 and 255
         $brightness = round($brightness * 2.55);
 
         imagefilter($this->image, IMG_FILTER_BRIGHTNESS, $brightness);
@@ -55,9 +56,7 @@ class GdImageDriver implements ImageDriver
 
     public function blur(int $blur): ImageDriver
     {
-        if ($blur < 0 || $blur > 100) {
-            throw InvalidManipulation::valueNotInRange('blur', $blur, 0, 100);
-        }
+        $this->ensureNumberBetween($blur, 0, 100, 'blur');
 
         for ($i=0; $i < $blur; $i++) {
             imagefilter($this->image, IMG_FILTER_GAUSSIAN_BLUR);

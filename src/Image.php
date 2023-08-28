@@ -8,6 +8,7 @@ use Spatie\Image\Drivers\ImagickImageDriver;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\ImageMethodDoesNotExist;
 use Spatie\Image\Exceptions\InvalidImageDriver;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 /** @mixin ImageDriver */
 class Image
@@ -50,4 +51,6 @@ class Image
 
         return $this;
     }
+
+
 }
