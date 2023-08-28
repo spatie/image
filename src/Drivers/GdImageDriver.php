@@ -53,6 +53,19 @@ class GdImageDriver implements ImageDriver
         return $this;
     }
 
+    public function blur(int $blur): ImageDriver
+    {
+        if ($blur < 0 || $blur > 100) {
+            throw InvalidManipulation::valueNotInRange('blur', $blur, 0, 100);
+        }
+
+        for ($i=0; $i < $blur; $i++) {
+            imagefilter($this->image, IMG_FILTER_GAUSSIAN_BLUR);
+        }
+
+        return $this;
+    }
+
     public function save(string $path): ImageDriver
     {
         // TODO: make this work with other formats.

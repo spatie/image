@@ -37,6 +37,17 @@ class ImagickImageDriver implements ImageDriver
         return $this;
     }
 
+    public function blur(int $blur): ImageDriver
+    {
+        if ($blur < 0 || $blur > 100) {
+            throw InvalidManipulation::valueNotInRange('blur', $blur, 0, 100);
+        }
+
+        $this->image->blurImage(1 * $blur, 0.5 * $blur);
+
+        return $this;
+    }
+
     public function save(string $path): ImageDriver
     {
         $this->image->writeImage($path);
