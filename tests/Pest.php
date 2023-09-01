@@ -21,6 +21,11 @@ function getTestJpg(): string
     return getTestFile('test.jpg');
 }
 
+function getTestPhoto(): string
+{
+    return getTestFile('test-photo.jpg');
+}
+
 function getTestFile($fileName): string
 {
     return getTestSupportPath('testFiles/'.$fileName);

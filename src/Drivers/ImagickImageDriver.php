@@ -89,4 +89,13 @@ class ImagickImageDriver implements ImageDriver
 
         return $this;
     }
+
+    public function contrast(float $level): ImageDriver
+    {
+        $this->ensureNumberBetween($level, -100, 100, 'contrast');
+
+        $this->image->brightnessContrastImage(1, $level);
+
+        return $this;
+    }
 }

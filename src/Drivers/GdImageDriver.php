@@ -145,4 +145,15 @@ class GdImageDriver implements ImageDriver
 
         return $this;
     }
+
+    public function contrast(float $level): ImageDriver
+    {
+        $this->ensureNumberBetween($level, -100, 100, 'contrast');
+
+        ray($level, ($level * -1));
+
+        imagefilter($this->image, IMG_FILTER_CONTRAST, ($level * -1));
+
+        return $this;
+    }
 }
