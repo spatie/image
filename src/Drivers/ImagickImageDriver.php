@@ -80,4 +80,13 @@ class ImagickImageDriver implements ImageDriver
     {
         return new Size($this->getWidth(), $this->getHeight());
     }
+
+    public function gamma(float $gamma): ImageDriver
+    {
+        $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
+
+        $this->image->gammaImage($gamma);
+
+        return $this;
+    }
 }

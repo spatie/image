@@ -136,4 +136,13 @@ class GdImageDriver implements ImageDriver
 
         return $result;
     }
+
+    public function gamma(float $gamma): ImageDriver
+    {
+        $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
+
+        imagegammacorrect($this->image, 1, $gamma);
+
+        return $this;
+    }
 }
