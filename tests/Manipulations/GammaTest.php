@@ -3,7 +3,6 @@
 namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 it('can apply gamma to an image', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/gamma.jpg");
