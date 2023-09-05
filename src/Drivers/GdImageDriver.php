@@ -108,16 +108,14 @@ class GdImageDriver implements ImageDriver
 
     public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): ImageDriver
     {
-        $resize = (new CalculateFitSizeAction())->execute(
+        $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
             $this->getHeight(),
-            $fit,
             $desiredWidth,
-            $desiredHeight,
+            $desiredHeight
         );
 
-        $this->modify($this->getWidth(), $this->getHeight(), $resize->width, $resize->height);
-
+        $this->modify($this->getWidth(), $this->getHeight(), $calculatedSize->width, $calculatedSize->height);
 
         if ($fit->shouldResizeCanvas()) {
             $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);

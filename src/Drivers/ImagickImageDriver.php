@@ -76,15 +76,14 @@ class ImagickImageDriver implements ImageDriver
 
     public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self
     {
-        $resize = (new CalculateFitSizeAction())->execute(
+        $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
             $this->getHeight(),
-            $fit,
             $desiredWidth,
-            $desiredHeight,
+            $desiredHeight
         );
 
-        $this->image->scaleImage($resize->width, $resize->height);
+        $this->image->scaleImage($calculatedSize->width, $calculatedSize->height);
 
         if ($fit->shouldResizeCanvas()) {
            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
