@@ -55,7 +55,7 @@ class Size
             return $this;
         }
 
-        if (in_array(Constraint::Upsize, $constraints)) {
+        if (in_array(Constraint::DoNotUpsize, $constraints)) {
             $maximumWidth = $this->width;
             $maximumHeight = $this->height;
 
@@ -67,7 +67,7 @@ class Size
         if (in_array(Constraint::PreserveAspectRatio, $constraints)) {
             $calculatedHeight = max(1, intval(round($this->width / (new Size($originalWidth, $originalHeight))->aspectRatio())));
 
-            if (in_array(Constraint::Upsize, $constraints)) {
+            if (in_array(Constraint::DoNotUpsize, $constraints)) {
                 $this->height = $calculatedHeight > $maximumHeight
                     ? $maximumHeight
                     : $calculatedHeight;
@@ -88,7 +88,7 @@ class Size
             return $this;
         }
 
-        if (in_array(Constraint::Upsize, $constraints)) {
+        if (in_array(Constraint::DoNotUpsize, $constraints)) {
             // TODO: is this correct?
             $maximumHeight = $this->height;
             $maximumWidth = $this->width;
@@ -103,7 +103,7 @@ class Size
         if (in_array(Constraint::PreserveAspectRatio, $constraints)) {
             $calculatedWidth = max(1, intval(round($this->height * (new Size($originalWidth, $originalHeight))->aspectRatio())));
 
-            if (in_array(Constraint::Upsize, $constraints)) {
+            if (in_array(Constraint::DoNotUpsize, $constraints)) {
                 $this->width = $calculatedWidth > $maximumWidth
                     ? $maximumWidth
                     : $calculatedWidth;

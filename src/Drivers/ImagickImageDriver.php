@@ -86,7 +86,7 @@ class ImagickImageDriver implements ImageDriver
 
         $this->image->scaleImage($resize->width, $resize->height);
 
-        if ($fit === Fit::Fill) {
+        if ($fit->shouldResizeCanvas()) {
            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
         }
 

@@ -10,4 +10,9 @@ enum Fit: string
     case Stretch = 'stretch';
     case Crop = 'crop';
     case FitStretch = 'fitStretch';
+
+    public function shouldResizeCanvas(): bool
+    {
+        return in_array($this, [self::Max, self::Fill]);
+    }
 }

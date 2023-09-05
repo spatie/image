@@ -119,7 +119,7 @@ class GdImageDriver implements ImageDriver
         $this->modify($this->getWidth(), $this->getHeight(), $resize->width, $resize->height);
 
 
-        if ($fit === Fit::Fill) {
+        if ($fit->shouldResizeCanvas()) {
             $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
         }
 
