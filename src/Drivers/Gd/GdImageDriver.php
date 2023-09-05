@@ -3,14 +3,13 @@
 namespace Spatie\Image\Drivers\Gd;
 
 use GdImage;
-use Intervention\Image\Gd\Color;
-use Intervention\Image\Image;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
+use Spatie\Image\Point;
 use Spatie\Image\Size;
 
 class GdImageDriver implements ImageDriver
@@ -125,10 +124,17 @@ class GdImageDriver implements ImageDriver
         return $this;
     }
 
-    protected function modify($originalWidth, $originalHeight, $desiredWidth, $desiredHeight)
+    protected function modify(
+        int $originalWidth,
+        int $originalHeight,
+        int $desiredWidth,
+        int $desiredHeight,
+        int $sourceX = 0,
+        int $sourceY = 0,
+    ): self
     {
         // create new image
-        $modified = imagecreatetruecolor(intval($desiredWidth), intval($desiredHeight));
+        $modified = imagecreatetruecolor($desiredWidth, $desiredHeight);
 
         // preserve transparency
         $transIndex = imagecolortransparent($this->image);
@@ -144,22 +150,22 @@ class GdImageDriver implements ImageDriver
         }
 
         // copy content from resource
-        $result = imagecopyresampled(
+        imagecopyresampled(
             $modified,
             $this->image,
             0,
             0,
             0,
             0,
-            intval($desiredWidth),
-            intval($desiredHeight),
+            $desiredWidth,
+            $desiredHeight,
             $originalWidth,
             $originalHeight
         );
 
         $this->image = $modified;
 
-        return $result;
+        return $this;
     }
 
     public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed
@@ -258,6 +264,30 @@ class GdImageDriver implements ImageDriver
         $this->ensureNumberBetween($level, -100, 100, 'contrast');
 
         imagefilter($this->image, IMG_FILTER_CONTRAST, ($level * -1));
+
+        return $this;
+    }
+
+    public function manualCrop(int $width, int $height, int $x = null, int $y = null): ImageDriver
+    {
+        $cropped = new Size($width, $height);
+        $position = new Point($x ?? 0, $y ?? 0);
+
+        if (is_null($x) && is_null($y)) {
+            $position = $this
+                ->getSize()
+                ->align(AlignPosition::Center)
+                ->relativePosition($cropped->align(AlignPosition::Center));
+        }
+
+        $this->modify(
+            $position->x,
+            $position->y,
+            $cropped->width,
+            $cropped->height,
+            $position->x,
+            $position->y,
+        );
 
         return $this;
     }

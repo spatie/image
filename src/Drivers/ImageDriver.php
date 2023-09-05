@@ -44,4 +44,6 @@ interface ImageDriver
         bool $relative = false,
         string $backgroundColor = '#000000'
     ): self;
+
+    public function manualCrop(int $width, int $height, int $x = 0, int $y = 0): self;
 }

@@ -4,12 +4,12 @@ namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickDraw;
-use Intervention\Image\Imagick\Color;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Point;
 use Spatie\Image\Size;
 
 class ImagickImageDriver implements ImageDriver
@@ -211,4 +211,24 @@ class ImagickImageDriver implements ImageDriver
 
         return $this;
     }
+
+    public function manualCrop(int $width, int $height, int $x = null, int $y = null): ImageDriver
+    {
+        $cropped = new Size($width, $height);
+        $position = new Point($x ?? 0, $y ?? 0);
+
+        if (is_null($x) && is_null($y)) {
+            $position = $this
+                ->getSize()
+                ->align(AlignPosition::Center)
+                ->relativePosition($cropped->align(AlignPosition::Center));
+        }
+
+        $this->image->cropImage($cropped->width, $cropped->height, $position->x, $position->y);
+        $this->image->setImagePage(0,0,0,0);
+
+        return $this;
+    }
+
+
 }
