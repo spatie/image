@@ -6,7 +6,7 @@ use ImagickPixel;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Exceptions\InvalidColor;
 
-abstract class BaseColor
+abstract class Color
 {
     abstract public function initFromInteger(int $value);
 

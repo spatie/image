@@ -3,10 +3,10 @@
 namespace Spatie\Image\Drivers\Gd;
 
 use ImagickPixel;
-use Spatie\Image\Drivers\BaseColor;
+use Spatie\Image\Drivers\Color;
 use Spatie\Image\Exceptions\InvalidColor;
 
-class GdColor extends BaseColor
+class GdColor extends Color
 {
     public int $red;
 
@@ -116,7 +116,7 @@ class GdColor extends BaseColor
         );
     }
 
-    public function differs(BaseColor $color, int $tolerance = 0): bool
+    public function differs(Color $color, int $tolerance = 0): bool
     {
         $color_tolerance = round($tolerance * 2.55);
         $alpha_tolerance = round($tolerance * 1.27);

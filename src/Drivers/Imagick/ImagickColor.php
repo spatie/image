@@ -4,9 +4,9 @@ namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickPixel;
-use Spatie\Image\Drivers\BaseColor;
+use Spatie\Image\Drivers\Color;
 
-class ImagickColor extends BaseColor
+class ImagickColor extends Color
 {
     public ImagickPixel $pixel;
 
@@ -112,7 +112,7 @@ class ImagickColor extends BaseColor
         );
     }
 
-    public function differs(BaseColor $color, int $tolerance = 0): bool
+    public function differs(Color $color, int $tolerance = 0): bool
     {
         $color_tolerance = round($tolerance * 2.55);
         $alpha_tolerance = round($tolerance);
