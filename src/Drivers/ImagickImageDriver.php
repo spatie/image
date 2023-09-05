@@ -149,7 +149,7 @@ class ImagickImageDriver implements ImageDriver
         // make image area transparent to keep transparency
         // even if background-color is set
         $rect = new ImagickDraw;
-        $fill = $canvas->pickColor(0, 0, ColorFormat::HEX);
+        $fill = $canvas->pickColor(0, 0, ColorFormat::Hex);
         $fill = $fill == '#ff0000' ? '#00ff00' : '#ff0000';
         $rect->setFillColor($fill);
         $rect->rectangle($destinationX, $destinationY, $destinationX + $sourceWidth - 1, $destinationY + $sourceHeight - 1);

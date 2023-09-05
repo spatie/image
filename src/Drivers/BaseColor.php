@@ -56,11 +56,11 @@ abstract class BaseColor
     public function format(ColorFormat $colorFormat): mixed
     {
         return match ($colorFormat) {
-            ColorFormat::RGBA => $this->getRgba(),
-            ColorFormat::HEX => $this->getHex('#'),
-            ColorFormat::INT => $this->getInt(),
-            ColorFormat::ARRAY => $this->getArray(),
-            ColorFormat::OBJECT => $this,
+            ColorFormat::Rgba => $this->getRgba(),
+            ColorFormat::Hex => $this->getHex('#'),
+            ColorFormat::Int => $this->getInt(),
+            ColorFormat::Array => $this->getArray(),
+            ColorFormat::Object => $this,
         };
     }
 

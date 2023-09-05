@@ -4,9 +4,9 @@ namespace Spatie\Image\Drivers;
 
 enum ColorFormat: string
 {
-    case RGBA = 'rgba';
-    case HEX = 'hex';
-    case INT = 'int';
-    case OBJECT = 'object';
-    case ARRAY = 'array';
+    case Rgba = 'rgba';
+    case Hex = 'hex';
+    case Int = 'int';
+    case Object = 'object';
+    case Array = 'array';
 }
