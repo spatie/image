@@ -225,10 +225,8 @@ class ImagickImageDriver implements ImageDriver
         }
 
         $this->image->cropImage($cropped->width, $cropped->height, $position->x, $position->y);
-        $this->image->setImagePage(0,0,0,0);
+        $this->image->setImagePage(0, 0, 0, 0);
 
         return $this;
     }
-
-
 }

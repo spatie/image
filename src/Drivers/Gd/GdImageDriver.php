@@ -131,8 +131,7 @@ class GdImageDriver implements ImageDriver
         int $desiredHeight,
         int $sourceX = 0,
         int $sourceY = 0,
-    ): self
-    {
+    ): self {
         // create new image
         $modified = imagecreatetruecolor($desiredWidth, $desiredHeight);
 
