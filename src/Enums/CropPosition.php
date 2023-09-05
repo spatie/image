@@ -4,14 +4,14 @@ namespace Spatie\Image\Enums;
 
 enum CropPosition: string
 {
-    case CropTopLeft = 'cropTopLeft';
-    case CropTop = 'cropTop';
-    case CropTopRight = 'cropTopRight';
-    case CropLeft = 'cropLeft';
-    case CropCenter = 'cropCenter';
-    case CropRight = 'cropRight';
-    case CropBottomLeft = 'cropBottomLeft';
-    case CropBottom = 'cropBottom';
-    case CropBottomRight = 'cropBottomRight';
+    case TopLeft = 'topLeft';
+    case Top = 'top';
+    case TopRight = 'topRight';
+    case Left = 'left';
+    case Center = 'center';
+    case Right = 'right';
+    case BottomLeft = 'bottomLeft';
+    case Bottom = 'bottom';
+    case BottomRight = 'bottomRight';
 
 }
