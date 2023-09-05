@@ -3,7 +3,6 @@
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
-
 it('can blur an image', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/blur.jpg");
 

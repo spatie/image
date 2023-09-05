@@ -1,7 +1,6 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Drivers\ImagickImageDriver;
 use Spatie\Image\Enums\Fit;
 
 it('can contain an image in the given dimensions', function (

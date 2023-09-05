@@ -51,9 +51,7 @@ abstract class BaseColor
     /**
      * Formats current color instance into given format
      *
-     * @param string $type
-     *
-     * @return mixed
+     * @param  string  $type
      */
     public function format(ColorFormat $colorFormat): mixed
     {
@@ -81,9 +79,9 @@ abstract class BaseColor
 
         if (preg_match($hexPattern, $colorValue, $matches)) {
             $result = [];
-            $result[0] = strlen($matches[1]) == '1' ? hexdec($matches[1] . $matches[1]) : hexdec($matches[1]);
-            $result[1] = strlen($matches[2]) == '1' ? hexdec($matches[2] . $matches[2]) : hexdec($matches[2]);
-            $result[2] = strlen($matches[3]) == '1' ? hexdec($matches[3] . $matches[3]) : hexdec($matches[3]);
+            $result[0] = strlen($matches[1]) == '1' ? hexdec($matches[1].$matches[1]) : hexdec($matches[1]);
+            $result[1] = strlen($matches[2]) == '1' ? hexdec($matches[2].$matches[2]) : hexdec($matches[2]);
+            $result[2] = strlen($matches[3]) == '1' ? hexdec($matches[3].$matches[3]) : hexdec($matches[3]);
             $result[3] = 1;
         } elseif (preg_match($rgbPattern, $colorValue, $matches)) {
             $result = [];

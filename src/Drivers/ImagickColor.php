@@ -97,7 +97,7 @@ class ImagickColor extends BaseColor
             $this->getRedValue(),
             $this->getGreenValue(),
             $this->getBlueValue(),
-            $this->getAlphaValue()
+            $this->getAlphaValue(),
         ];
     }
 
@@ -120,15 +120,14 @@ class ImagickColor extends BaseColor
             'r' => abs($color->getRedValue() - $this->getRedValue()),
             'g' => abs($color->getGreenValue() - $this->getGreenValue()),
             'b' => abs($color->getBlueValue() - $this->getBlueValue()),
-            'a' => abs($color->getAlphaValue() - $this->getAlphaValue())
+            'a' => abs($color->getAlphaValue() - $this->getAlphaValue()),
         ];
 
-        return (
+        return
             $delta['r'] > $color_tolerance ||
             $delta['g'] > $color_tolerance ||
             $delta['b'] > $color_tolerance ||
-            $delta['a'] > $alpha_tolerance
-        );
+            $delta['a'] > $alpha_tolerance;
     }
 
     public function getRedValue(): int
@@ -167,6 +166,6 @@ class ImagickColor extends BaseColor
 
     private function rgb2alpha(int $value): float
     {
-        return round($value/255, 2);
+        return round($value / 255, 2);
     }
 }

@@ -108,7 +108,7 @@ it('can init from an rgba value', function (array $inputValues, array $expectedV
     [[181, 55, 23, 0.5], [181, 55, 23, 0.5]],
 ]);
 
-test('it can get an int', function (array|null $input, int $expected) {
+test('it can get an int', function (?array $input, int $expected) {
     $color = new ImagickColor($input);
     expect($color->getInt())->toEqual($expected);
 })->with([
@@ -121,7 +121,7 @@ test('it can get an int', function (array|null $input, int $expected) {
     [[0, 0, 0, 0], 0],
 ]);
 
-it('can get the hex value', function (array|null $input, string $expectedHex) {
+it('can get the hex value', function (?array $input, string $expectedHex) {
     $color = new ImagickColor($input);
     expect($color->getHex())->toEqual($expectedHex);
 })->with([
@@ -134,7 +134,7 @@ it('can get the hex value', function (array|null $input, string $expectedHex) {
     [[0, 0, 0, 0], '000000'],
 ]);
 
-it('can get the array value', function (array|null $input, array $expected) {
+it('can get the array value', function (?array $input, array $expected) {
     $color = new ImagickColor($input);
     expect($color->getArray())->toEqual($expected);
 })->with([
@@ -147,7 +147,7 @@ it('can get the array value', function (array|null $input, array $expected) {
     [[0, 0, 0, 1], [0, 0, 0, 1]],
 ]);
 
-it('can get the rgba value', function (array|null $input, string $expected) {
+it('can get the rgba value', function (?array $input, string $expected) {
     $rgbaString = (new ImagickColor($input))->getRgba();
     expect($rgbaString)->toEqual($expected);
 })->with([

@@ -12,8 +12,7 @@ class Size
         public $width,
         public $height,
         public $pivot = new Point()
-    )
-    {
+    ) {
     }
 
     public function aspectRatio(): float
@@ -39,7 +38,7 @@ class Size
             ->resizeWidth($desiredWidth, $desiredHeight, $constraints)
             ->resizeHeight($desiredWidth, $desiredHeight, $constraints);
 
-        $result =  $dominantHeightSize->fitsInto(new Size($desiredWidth, $desiredHeight))
+        $result = $dominantHeightSize->fitsInto(new Size($desiredWidth, $desiredHeight))
             ? $dominantHeightSize
             : $dominantWidthSize;
 

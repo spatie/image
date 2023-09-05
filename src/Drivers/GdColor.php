@@ -2,15 +2,17 @@
 
 namespace Spatie\Image\Drivers;
 
-
 use ImagickPixel;
 use Spatie\Image\Exceptions\InvalidColor;
 
 class GdColor extends BaseColor
 {
     public int $red;
+
     public int $green;
+
     public int $blue;
+
     public float $alpha;
 
     public function initFromInteger(int $value): self
@@ -93,14 +95,13 @@ class GdColor extends BaseColor
         return sprintf('%s%02x%02x%02x', $prefix, $this->red, $this->green, $this->blue);
     }
 
-
     public function getArray(): array
     {
         return [
             $this->red,
             $this->green,
             $this->blue,
-            round(1 - $this->alpha / 127, 2)
+            round(1 - $this->alpha / 127, 2),
         ];
     }
 
@@ -123,15 +124,14 @@ class GdColor extends BaseColor
             'r' => abs($color->red - $this->red),
             'g' => abs($color->green - $this->green),
             'b' => abs($color->blue - $this->blue),
-            'a' => abs($color->alpha - $this->alpha)
+            'a' => abs($color->alpha - $this->alpha),
         ];
 
-        return (
+        return
             $delta['r'] > $color_tolerance ||
             $delta['g'] > $color_tolerance ||
             $delta['b'] > $color_tolerance ||
-            $delta['a'] > $alpha_tolerance
-        );
+            $delta['a'] > $alpha_tolerance;
     }
 
     private function alpha2gd(float $input): int
@@ -142,6 +142,6 @@ class GdColor extends BaseColor
         $newMin = 127;
         $newMax = 0;
 
-        return ceil(((($input- $oldMin) * ($newMax - $newMin)) / ($oldMax - $oldMin)) + $newMin);
+        return ceil(((($input - $oldMin) * ($newMax - $newMin)) / ($oldMax - $oldMin)) + $newMin);
     }
 }
