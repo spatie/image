@@ -1,13 +1,15 @@
 <?php
 
-namespace Spatie\Image\Drivers;
+namespace Spatie\Image\Drivers\Gd;
 
 use GdImage;
 use Intervention\Image\Gd\Color;
 use Intervention\Image\Image;
 use Spatie\Image\Actions\CalculateFitSizeAction;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
+use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
+use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Size;

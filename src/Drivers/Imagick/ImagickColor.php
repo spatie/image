@@ -1,9 +1,10 @@
 <?php
 
-namespace Spatie\Image\Drivers;
+namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickPixel;
+use Spatie\Image\Drivers\BaseColor;
 
 class ImagickColor extends BaseColor
 {

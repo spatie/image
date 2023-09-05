@@ -1,13 +1,15 @@
 <?php
 
-namespace Spatie\Image\Drivers;
+namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickDraw;
 use Intervention\Image\Imagick\Color;
 use Spatie\Image\Actions\CalculateFitSizeAction;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
+use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
+use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Size;
 

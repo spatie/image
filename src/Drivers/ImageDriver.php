@@ -3,6 +3,7 @@
 namespace Spatie\Image\Drivers;
 
 use Spatie\Image\Enums\AlignPosition;
+use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Size;
 

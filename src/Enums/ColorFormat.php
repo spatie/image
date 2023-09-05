@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Image\Drivers;
+namespace Spatie\Image\Enums;
 
 enum ColorFormat: string
 {

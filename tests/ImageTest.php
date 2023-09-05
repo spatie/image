@@ -1,7 +1,7 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Drivers\ImagickImageDriver;
+use Spatie\Image\Drivers\Imagick\ImagickImageDriver;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Image;
 

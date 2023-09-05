@@ -1,6 +1,6 @@
 <?php
 
-use Spatie\Image\Drivers\ImagickColor;
+use Spatie\Image\Drivers\Imagick\ImagickColor;
 use Spatie\Image\Exceptions\InvalidColor;
 
 it('can create an imagick color', function () {

@@ -3,6 +3,7 @@
 namespace Spatie\Image\Drivers;
 
 use ImagickPixel;
+use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Exceptions\InvalidColor;
 
 abstract class BaseColor

@@ -1,6 +1,6 @@
 <?php
 
-use Spatie\Image\Drivers\GdColor;
+use Spatie\Image\Drivers\Gd\GdColor;
 use Spatie\Image\Exceptions\InvalidColor;
 
 it('can create a new gd color object', function () {

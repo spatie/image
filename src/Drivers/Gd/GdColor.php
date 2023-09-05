@@ -1,8 +1,9 @@
 <?php
 
-namespace Spatie\Image\Drivers;
+namespace Spatie\Image\Drivers\Gd;
 
 use ImagickPixel;
+use Spatie\Image\Drivers\BaseColor;
 use Spatie\Image\Exceptions\InvalidColor;
 
 class GdColor extends BaseColor
