@@ -118,7 +118,6 @@ class GdImageDriver implements ImageDriver
 
         $this->modify($this->getWidth(), $this->getHeight(), $resize->width, $resize->height);
 
-
         if ($fit->shouldResizeCanvas()) {
             $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
         }
@@ -167,7 +166,7 @@ class GdImageDriver implements ImageDriver
     {
         $color = imagecolorat($this->image, $x, $y);
 
-        if ( ! imageistruecolor($this->image)) {
+        if (! imageistruecolor($this->image)) {
             $color = imagecolorsforindex($this->image, $color);
             $color['alpha'] = round(1 - $color['alpha'] / 127, 2);
         }
@@ -183,8 +182,7 @@ class GdImageDriver implements ImageDriver
         AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): ImageDriver
-    {
+    ): ImageDriver {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
