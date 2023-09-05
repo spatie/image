@@ -245,4 +245,22 @@ class GdImageDriver implements ImageDriver
 
         return $this;
     }
+
+    public function gamma(float $gamma): ImageDriver
+    {
+        $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
+
+        imagegammacorrect($this->image, 1, $gamma);
+
+        return $this;
+    }
+
+    public function contrast(float $level): ImageDriver
+    {
+        $this->ensureNumberBetween($level, -100, 100, 'contrast');
+
+        imagefilter($this->image, IMG_FILTER_CONTRAST, ($level * -1));
+
+        return $this;
+    }
 }
