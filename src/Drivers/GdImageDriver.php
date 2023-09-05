@@ -5,7 +5,6 @@ namespace Spatie\Image\Drivers;
 use GdImage;
 use Intervention\Image\Gd\Color;
 use Intervention\Image\Image;
-use Spatie\Image\Actions\CalculateFitSizeAction;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\Fit;
@@ -165,7 +164,7 @@ class GdImageDriver implements ImageDriver
     {
         $color = imagecolorat($this->image, $x, $y);
 
-        if ( ! imageistruecolor($this->image)) {
+        if (! imageistruecolor($this->image)) {
             $color = imagecolorsforindex($this->image, $color);
             $color['alpha'] = round(1 - $color['alpha'] / 127, 2);
         }
@@ -181,8 +180,7 @@ class GdImageDriver implements ImageDriver
         AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): ImageDriver
-    {
+    ): ImageDriver {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();

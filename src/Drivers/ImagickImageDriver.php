@@ -5,7 +5,6 @@ namespace Spatie\Image\Drivers;
 use Imagick;
 use ImagickDraw;
 use Intervention\Image\Imagick\Color;
-use Spatie\Image\Actions\CalculateFitSizeAction;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\Fit;
