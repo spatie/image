@@ -13,6 +13,6 @@ class InvalidColor extends Exception
 
     public static function cannotConvertImagickColorToGd(): self
     {
-        return new self("GD colors cannot init from ImagickPixel objects.");
+        return new self('GD colors cannot init from ImagickPixel objects.');
     }
 }
