@@ -1,9 +1,8 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
-
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\InvalidManipulation;
+
 
 it('can adjust the brightness', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/brightness.jpg");

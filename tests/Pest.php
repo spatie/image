@@ -8,7 +8,7 @@ uses()
         (new TemporaryDirectory(getTempPath()))->delete();
     })
     ->beforeEach(function () {
-        ray()->newScreen($this->getName());
+        ray()->newScreen($this->name());
 
         $this
             ->tempDir = (new TemporaryDirectory(getTestSupportPath()))

@@ -22,6 +22,7 @@ class CalculateFitSizeAction
 
         return match ($fit) {
             Fit::Contain => $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]),
+            Fit::Fill => $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio, Constraint::Upsize]),
         };
     }
 }

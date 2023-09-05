@@ -27,7 +27,8 @@
         "ext-gd": "*"
     },
     "require-dev": {
-        "pestphp/pest": "^1.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-drift": "^2.4",
         "spatie/ray": "^1.37",
         "symfony/var-dumper": "^4.0|^5.0|^6.0"
     },

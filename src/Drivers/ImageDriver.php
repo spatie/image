@@ -2,11 +2,14 @@
 
 namespace Spatie\Image\Drivers;
 
+use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Size;
 
 interface ImageDriver
 {
+    public function new(int $width, int $height, string $backgroundColor = null): self;
+
     public function driverName(): string;
 
     public function load(string $path): self;
@@ -30,4 +33,14 @@ interface ImageDriver
     public function getSize(): Size;
 
     public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self;
+
+    public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed;
+
+    public function resizeCanvas(
+        int $width = null,
+        int $height = null,
+        AlignPosition $position = null,
+        bool $relative = false,
+        string $backgroundColor = '#000000'
+    ): self;
 }

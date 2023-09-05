@@ -3,8 +3,11 @@
 namespace Spatie\Image\Drivers;
 
 use GdImage;
+use Intervention\Image\Gd\Color;
+use Intervention\Image\Image;
 use Spatie\Image\Actions\CalculateFitSizeAction;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
+use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Size;
@@ -14,6 +17,24 @@ class GdImageDriver implements ImageDriver
     use ValidatesArguments;
 
     private GdImage $image;
+
+    public function new(int $width, int $height, string $backgroundColor = null): self
+    {
+        $image = imagecreatetruecolor($width, $height);
+
+        $backgroundColor = new GdColor($backgroundColor);
+
+        imagefill($image, 0, 0, $backgroundColor->getInt());
+
+        return (new self)->setImage($image);
+    }
+
+    protected function setImage(GdImage $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
 
     public function load(string $path): ImageDriver
     {
@@ -97,6 +118,11 @@ class GdImageDriver implements ImageDriver
 
         $this->modify($this->getWidth(), $this->getHeight(), $resize->width, $resize->height);
 
+
+        if ($fit === Fit::Fill) {
+            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
+        }
+
         return $this;
     }
 
@@ -135,5 +161,88 @@ class GdImageDriver implements ImageDriver
         $this->image = $modified;
 
         return $result;
+    }
+
+    public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed
+    {
+        $color = imagecolorat($this->image, $x, $y);
+
+        if ( ! imageistruecolor($this->image)) {
+            $color = imagecolorsforindex($this->image, $color);
+            $color['alpha'] = round(1 - $color['alpha'] / 127, 2);
+        }
+
+        $color = new GdColor($color);
+
+        return $color->format($colorFormat);
+    }
+
+    public function resizeCanvas(
+        int $width = null,
+        int $height = null,
+        AlignPosition $position = null,
+        bool $relative = false,
+        string $backgroundColor = '#ffffff'
+    ): ImageDriver
+    {
+        $position ??= AlignPosition::Center;
+
+        $originalWidth = $this->getWidth();
+        $originalHeight = $this->getHeight();
+
+        $width ??= $originalWidth;
+        $height ??= $originalHeight;
+
+        if ($relative) {
+            $width = $originalWidth + $width;
+            $height = $originalHeight + $height;
+        }
+
+        // check for negative width/height
+        $width = ($width <= 0) ? $width + $originalWidth : $width;
+        $height = ($height <= 0) ? $height + $originalHeight : $height;
+
+        // create new canvas
+        $canvas = $this->new($width, $height, $backgroundColor);
+
+        // set copy position
+        $canvasSize = $canvas->getSize()->align($position);
+        $imageSize = $this->getSize()->align($position);
+        $canvasPosition = $imageSize->relativePosition($canvasSize);
+        $imagePosition = $canvasSize->relativePosition($imageSize);
+
+        if ($width <= $originalWidth) {
+            $destinationX = 0;
+            $sourceX = $canvasPosition->x;
+            $sourceWidth = $canvasSize->width;
+        } else {
+            $destinationX = $imagePosition->x;
+            $sourceX = 0;
+            $sourceWidth = $originalWidth;
+        }
+
+        if ($height <= $originalHeight) {
+            $destinationY = 0;
+            $sourceY = $canvasPosition->y;
+            $sourceHeight = $canvasSize->height;
+        } else {
+            $destinationY = $imagePosition->y;
+            $sourceY = 0;
+            $sourceHeight = $originalHeight;
+        }
+
+        // make image area transparent to keep transparency
+        // even if background-color is set
+        $transparent = imagecolorallocatealpha($canvas->image, 255, 255, 255, 127);
+        imagealphablending($canvas->image, false); // do not blend / just overwrite
+        imagefilledrectangle($canvas->image, $destinationX, $destinationY, $destinationX + $sourceWidth - 1, $destinationY + $sourceHeight - 1, $transparent);
+
+        // copy image into new canvas
+        imagecopy($canvas->image, $this->image, $destinationX, $destinationY, $sourceX, $sourceY, $sourceWidth, $sourceHeight);
+
+        // set new core to canvas
+        $this->image = $canvas->image;
+
+        return $this;
     }
 }

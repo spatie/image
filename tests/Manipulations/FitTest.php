@@ -1,16 +1,47 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
-
 use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Drivers\ImagickImageDriver;
 use Spatie\Image\Enums\Fit;
 
-it('can fit an image in the given dimensions', function (ImageDriver $driver) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit.jpg");
+it('can contain an image in the given dimensions', function (
+    ImageDriver $driver,
+    array $fitDimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-contain.jpg");
 
-    $driver->load(getTestJpg())->fit(Fit::Contain, 100, 60)->save($targetFile);
+    $driver->load(getTestJpg())->fit(Fit::Contain, ...$fitDimensions)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 
-    // TODO: add assertions around the dimensions of the image
-})->with('drivers');
+    $savedImage = $driver->load($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+
+})->with('drivers')->with([
+    [[100, 60], 73, 60],
+    [[60, 100], 60, 50],
+    [[200, 200], 200, 165],
+]);
+
+it('can fill an image in the given dimensions', function (
+    ImageDriver $driver,
+    array $fitDimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-fill.jpg");
+
+    $driver->load(getTestJpg())->fit(Fit::Fill, ...$fitDimensions)->save($targetFile);
+
+    $savedImage = $driver->load($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+})->with('drivers')->with([
+    [[500, 500], 500, 500],
+    [[250, 300], 250, 300],
+    [[100, 100], 100, 100],
+
+]);
