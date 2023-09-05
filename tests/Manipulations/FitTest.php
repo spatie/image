@@ -62,3 +62,23 @@ it('can fill and stretch an image in the given dimensions', function (
     [[250, 300], 250, 300],
     [[500, 500], 500, 500],
 ]);
+
+it('can stretch an image to the given dimensions', function (
+    ImageDriver $driver,
+    array $fitDimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-stretch.jpg");
+
+    $driver->load(getTestJpg())->fit(Fit::Stretch, ...$fitDimensions)->save($targetFile);
+
+    $savedImage = $driver->load($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+})->with('drivers')->with([
+    [[100, 100], 100, 100],
+    [[250, 300], 250, 300],
+    [[500, 500], 500, 500],
+    [[100, 500], 100, 500],
+]);
