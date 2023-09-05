@@ -23,12 +23,13 @@ enum Fit: string
 
         $size = new Size($originalWidth, $originalHeight);
 
-        return match ($this) {
-            Fit::Contain => $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]),
-            Fit::Fill => $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio, Constraint::DoNotUpsize]),
-            Fit::Max => $size->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]),
-            Fit::Stretch => $size->resize($desiredWidth, $desiredHeight),
+        $constraints = match ($this) {
+            Fit::Contain, Fit::Max => [Constraint::PreserveAspectRatio],
+            Fit::Fill => [Constraint::PreserveAspectRatio, Constraint::DoNotUpsize],
+            Fit::Stretch => [],
         };
+
+        return $size->resize($desiredWidth, $desiredHeight, $constraints);
     }
 
     public function shouldResizeCanvas(): bool
