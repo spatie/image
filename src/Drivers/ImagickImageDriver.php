@@ -38,7 +38,6 @@ class ImagickImageDriver implements ImageDriver
         return $this;
     }
 
-
     public function load(string $path): self
     {
         $this->image = new Imagick($path);
@@ -86,7 +85,7 @@ class ImagickImageDriver implements ImageDriver
         $this->image->scaleImage($calculatedSize->width, $calculatedSize->height);
 
         if ($fit->shouldResizeCanvas()) {
-           $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
+            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
         }
 
         return $this;
@@ -98,8 +97,7 @@ class ImagickImageDriver implements ImageDriver
         AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): self
-    {
+    ): self {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -163,7 +161,7 @@ class ImagickImageDriver implements ImageDriver
         // copy image into new canvas
         $this->image->cropImage($sourceWidth, $sourceHeight, $sourceX, $sourceY);
         $canvas->image->compositeImage($this->image, Imagick::COMPOSITE_DEFAULT, $destinationX, $destinationY);
-        $canvas->image->setImagePage(0,0,0,0);
+        $canvas->image->setImagePage(0, 0, 0, 0);
 
         // set new core to canvas
         $this->image = $canvas->image;
