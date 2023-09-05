@@ -149,18 +149,17 @@ class GdImageDriver implements ImageDriver
             imagesavealpha($modified, true);
         }
 
-        // copy content from resource
         imagecopyresampled(
             $modified,
             $this->image,
             0,
             0,
-            0,
-            0,
+            $sourceX,
+            $sourceY,
             $desiredWidth,
             $desiredHeight,
-            $originalWidth,
-            $originalHeight
+            $desiredWidth,
+            $desiredHeight,
         );
 
         $this->image = $modified;

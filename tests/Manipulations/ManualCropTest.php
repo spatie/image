@@ -5,12 +5,11 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Image;
 
 it('can contain an image in the given dimensions', function (
+    ImageDriver $driver,
     array $dimensions,
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $driver = Image::useImageDriver('gd');
-
     $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.jpg");
 
     $driver->load(getTestJpg())->manualCrop(...$dimensions)->save($targetFile);
@@ -20,6 +19,6 @@ it('can contain an image in the given dimensions', function (
     $savedImage = $driver->load($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
-})->with([
-    [[1, 2,3,4], 0, 0],
+})->with('drivers')->with([
+    [[100, 50, 0, 50], 100, 50],
 ]);
