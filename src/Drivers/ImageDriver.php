@@ -4,6 +4,7 @@ namespace Spatie\Image\Drivers;
 
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
+use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Size;
 
@@ -46,4 +47,6 @@ interface ImageDriver
     ): self;
 
     public function manualCrop(int $width, int $height, int $x = 0, int $y = 0): self;
+
+    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): self;
 }

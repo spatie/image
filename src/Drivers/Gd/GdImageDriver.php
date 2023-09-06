@@ -3,10 +3,13 @@
 namespace Spatie\Image\Drivers\Gd;
 
 use GdImage;
+use Intervention\Image\Image;
+use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
+use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Point;
@@ -14,9 +17,10 @@ use Spatie\Image\Size;
 
 class GdImageDriver implements ImageDriver
 {
+    use CalculatesCropOffsets;
     use ValidatesArguments;
 
-    private GdImage $image;
+    protected GdImage $image;
 
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
@@ -36,7 +40,7 @@ class GdImageDriver implements ImageDriver
         return $this;
     }
 
-    public function load(string $path): ImageDriver
+    public function load(string $path): self
     {
         $handle = fopen($path, 'r');
 
@@ -65,7 +69,7 @@ class GdImageDriver implements ImageDriver
         return imagesy($this->image);
     }
 
-    public function brightness(int $brightness): ImageDriver
+    public function brightness(int $brightness): self
     {
         $this->ensureNumberBetween($brightness, -100, 100, 'brightness');
 
@@ -77,7 +81,7 @@ class GdImageDriver implements ImageDriver
         return $this;
     }
 
-    public function blur(int $blur): ImageDriver
+    public function blur(int $blur): self
     {
         $this->ensureNumberBetween($blur, 0, 100, 'blur');
 
@@ -88,7 +92,7 @@ class GdImageDriver implements ImageDriver
         return $this;
     }
 
-    public function save(string $path): ImageDriver
+    public function save(string $path): self
     {
         // TODO: make this work with other formats.
         imagepng($this->image, $path);
@@ -106,7 +110,7 @@ class GdImageDriver implements ImageDriver
         return new Size($this->getWidth(), $this->getHeight());
     }
 
-    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): ImageDriver
+    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self
     {
         $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
@@ -186,7 +190,7 @@ class GdImageDriver implements ImageDriver
         AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): ImageDriver {
+    ): self {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -248,7 +252,7 @@ class GdImageDriver implements ImageDriver
         return $this;
     }
 
-    public function gamma(float $gamma): ImageDriver
+    public function gamma(float $gamma): self
     {
         $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
 
@@ -257,7 +261,7 @@ class GdImageDriver implements ImageDriver
         return $this;
     }
 
-    public function contrast(float $level): ImageDriver
+    public function contrast(float $level): self
     {
         $this->ensureNumberBetween($level, -100, 100, 'contrast');
 
@@ -266,7 +270,7 @@ class GdImageDriver implements ImageDriver
         return $this;
     }
 
-    public function manualCrop(int $width, int $height, int $x = null, int $y = null): ImageDriver
+    public function manualCrop(int $width, int $height, int $x = null, int $y = null): self
     {
         $cropped = new Size($width, $height);
         $position = new Point($x ?? 0, $y ?? 0);
@@ -288,5 +292,21 @@ class GdImageDriver implements ImageDriver
         );
 
         return $this;
+    }
+
+    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): self
+    {
+        $width = min($width, $this->getWidth());
+        $height = min($height, $this->getHeight());
+
+        [$offsetX, $offsetY] = $this->calculateCropOffsets($width, $height, $position);
+
+        $maxWidth = $this->getWidth() - $offsetX;
+        $maxHeight = $this->getHeight() - $offsetY;
+        $width = min($width, $maxWidth);
+        $height = min($height, $maxHeight);
+
+
+        return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 }

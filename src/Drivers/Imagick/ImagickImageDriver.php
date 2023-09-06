@@ -4,16 +4,21 @@ namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickDraw;
+use Intervention\Image\Image;
+use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
+use Spatie\Image\Enums\Constraint;
+use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
 
 class ImagickImageDriver implements ImageDriver
 {
+    use CalculatesCropOffsets;
     use ValidatesArguments;
 
     protected Imagick $image;
@@ -212,7 +217,7 @@ class ImagickImageDriver implements ImageDriver
         return $this;
     }
 
-    public function manualCrop(int $width, int $height, int $x = null, int $y = null): ImageDriver
+    public function manualCrop(int $width, int $height, int $x = null, int $y = null): self
     {
         $cropped = new Size($width, $height);
         $position = new Point($x ?? 0, $y ?? 0);
@@ -229,4 +234,13 @@ class ImagickImageDriver implements ImageDriver
 
         return $this;
     }
+
+    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): self
+    {
+        [$offsetX, $offsetY] = $this->calculateCropOffsets($width, $height, $position);
+
+        return $this->manualCrop($width, $height, $offsetX, $offsetY);
+    }
+
+
 }
