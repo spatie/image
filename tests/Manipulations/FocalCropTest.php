@@ -2,7 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 
-it('can perform a crop centered around given coordinates', function(
+it('can perform a crop centered around given coordinates', function (
     ImageDriver $driver,
     array $focalCropArguments,
     int $expectedWidth,
@@ -18,5 +18,5 @@ it('can perform a crop centered around given coordinates', function(
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
 })->with('drivers')->with([
-    [[100, 100, 60, 60], 100, 100]
+    [[100, 100, 60, 60], 100, 100],
 ]);

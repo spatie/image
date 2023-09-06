@@ -12,7 +12,7 @@ trait CalculatesFocalCropCoordinates
 
         if ($cropCenterX > 0) {
             $maxCropCenterX = $this->getWidth() - $width;
-            $cropCenterX = (int)$cropCenterX - ($width / 2);
+            $cropCenterX = (int) $cropCenterX - ($width / 2);
             $cropCenterX = min($maxCropCenterX, $cropCenterX);
             $cropCenterX = max(0, $cropCenterX);
         }
