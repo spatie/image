@@ -2,9 +2,9 @@
 
 namespace Spatie\Image;
 
-use Spatie\Image\Drivers\Gd\GdImageDriver;
+use Spatie\Image\Drivers\Gd\GdDriver;
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Drivers\Imagick\ImagickImageDriver;
+use Spatie\Image\Drivers\Imagick\ImagickDriver;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\ImageMethodDoesNotExist;
 use Spatie\Image\Exceptions\InvalidImageDriver;
@@ -16,7 +16,7 @@ class Image
 
     public function __construct(protected string $pathToImage)
     {
-        $this->imageDriver = new ImagickImageDriver();
+        $this->imageDriver = new ImagickDriver();
     }
 
     public static function load(string $pathToImage): ImageDriver
@@ -35,8 +35,8 @@ class Image
         }
 
         return match ($imageDriverName) {
-            'gd' => new GdImageDriver(),
-            'imagick' => new ImagickImageDriver(),
+            'gd' => new GdDriver(),
+            'imagick' => new ImagickDriver(),
         };
     }
 

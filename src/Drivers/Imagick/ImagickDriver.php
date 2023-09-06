@@ -4,8 +4,8 @@ namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickDraw;
-use Intervention\Image\Image;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
+use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
@@ -15,9 +15,10 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
 
-class ImagickImageDriver implements ImageDriver
+class ImagickDriver implements ImageDriver
 {
     use CalculatesCropOffsets;
+    use CalculatesFocalCropCoordinates;
     use ValidatesArguments;
 
     protected Imagick $image;
@@ -239,5 +240,19 @@ class ImagickImageDriver implements ImageDriver
         [$offsetX, $offsetY] = $this->calculateCropOffsets($width, $height, $position);
 
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
+    }
+
+    public function focalCrop(int $width, int $height, $cropCenterX = null, $cropCenterY = null): self
+    {
+        [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
+            $width,
+            $height,
+            $cropCenterX,
+            $cropCenterY
+        );
+
+        $this->manualCrop($width, $height, $cropCenterX, $cropCenterY);
+
+        return $this;
     }
 }

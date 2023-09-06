@@ -1,17 +1,16 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Enums\CropPosition;
 
-it('can crop an image relative to a position', function(
+it('can perform a crop centered around given coordinates', function(
     ImageDriver $driver,
-    array $cropArguments,
+    array $focalCropArguments,
     int $expectedWidth,
     int $expectedHeight,
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.jpg");
 
-    $driver->load(getTestJpg())->crop(... $cropArguments)->save($targetFile);
+    $driver->load(getTestJpg())->focalCrop(...$focalCropArguments)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 
@@ -19,5 +18,5 @@ it('can crop an image relative to a position', function(
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
 })->with('drivers')->with([
-    [[50, 100, CropPosition::TopLeft], 50, 100],
+    [[100, 100, 60, 60], 100, 100]
 ]);
