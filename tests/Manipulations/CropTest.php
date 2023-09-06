@@ -2,9 +2,8 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\CropPosition;
-use Spatie\Image\Image;
 
-it('can crop an image relative to a position', function(
+it('can crop an image relative to a position', function (
     ImageDriver $driver,
     array $cropArguments,
     int $expectedWidth,
@@ -12,7 +11,7 @@ it('can crop an image relative to a position', function(
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.jpg");
 
-    $driver->load(getTestJpg())->crop(... $cropArguments)->save($targetFile);
+    $driver->load(getTestJpg())->crop(...$cropArguments)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 
