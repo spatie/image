@@ -10,7 +10,6 @@ use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
-use Spatie\Image\Enums\Constraint;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Point;
@@ -241,6 +240,4 @@ class ImagickImageDriver implements ImageDriver
 
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
-
-
 }
