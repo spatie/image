@@ -306,7 +306,6 @@ class GdImageDriver implements ImageDriver
         $width = min($width, $maxWidth);
         $height = min($height, $maxHeight);
 
-
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 }

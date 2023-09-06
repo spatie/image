@@ -20,7 +20,7 @@ enum CropPosition: string
             self::TopLeft => [0, 0],
             self::Top => [50, 0],
             self::TopRight => [100, 0],
-            self::Left => [0,50],
+            self::Left => [0, 50],
             self::Center => [50, 50],
             self::Right => [100, 50],
             self::BottomLeft => [0, 100],

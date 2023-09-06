@@ -3,7 +3,7 @@
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Image;
 
-it('can crop an image relative to a position', function() {
+it('can crop an image relative to a position', function () {
     $driver = Image::useImageDriver('gd');
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.jpg");
