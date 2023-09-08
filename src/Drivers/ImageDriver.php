@@ -42,6 +42,8 @@ interface ImageDriver
 
     public function sepia(): self;
 
+    public function sharpen(float $amount): self;
+
     public function getSize(): Size;
 
     public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self;

@@ -299,4 +299,13 @@ class ImagickDriver implements ImageDriver
             ->brightness(-10)
             ->contrast(10);
     }
+
+    public function sharpen(float $amount): self
+    {
+        $this->ensureNumberBetween($amount, 0, 100, 'sharpen');
+
+        $this->image->unsharpMaskImage(1, 1, $amount / 6.25, 0);
+
+        return $this;
+    }
 }

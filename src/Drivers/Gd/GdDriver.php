@@ -373,4 +373,23 @@ class GdDriver implements ImageDriver
             ->colorize(38, 25, 10)
             ->contrast(5);
     }
+
+    public function sharpen(float $amount): self
+    {
+        $this->ensureNumberBetween($amount, 0, 100, 'sharpen');
+
+        $min = $amount >= 10 ? $amount * -0.01 : 0;
+        $max = $amount * -0.025;
+        $abs = ((4 * $min + 4 * $max) * -1) + 1;
+
+        $matrix = [
+            [$min, $max, $min],
+            [$max, $abs, $max],
+            [$min, $max, $min]
+        ];
+
+        imageconvolution($this->image, $matrix, 1, 0);
+
+        return $this;
+    }
 }
