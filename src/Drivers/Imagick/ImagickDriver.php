@@ -206,7 +206,7 @@ class ImagickDriver implements ImageDriver
         return new Size($this->getWidth(), $this->getHeight());
     }
 
-    public function gamma(float $gamma): ImageDriver
+    public function gamma(float $gamma): self
     {
         $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
 
@@ -215,7 +215,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function contrast(float $level): ImageDriver
+    public function contrast(float $level): self
     {
         $this->ensureNumberBetween($level, -100, 100, 'contrast');
 

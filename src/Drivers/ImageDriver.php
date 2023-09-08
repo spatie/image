@@ -27,6 +27,10 @@ interface ImageDriver
      */
     public function brightness(int $brightness): self;
 
+    public function gamma(float $gamma): self;
+
+    public function contrast(float $level): self;
+
     /**
      * @param  int  $amount A value between 0 and 100
      */
