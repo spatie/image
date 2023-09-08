@@ -36,7 +36,7 @@ interface ImageDriver
      */
     public function blur(int $blur): self;
 
-    public function  colorize(int $red, int $green, int $blue): self;
+    public function colorize(int $red, int $green, int $blue): self;
 
     public function sepia(): self;
 

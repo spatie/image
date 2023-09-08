@@ -4,7 +4,6 @@ namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickDraw;
-use ImagickPixel;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
