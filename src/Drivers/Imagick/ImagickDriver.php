@@ -12,6 +12,7 @@ use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
 
@@ -184,6 +185,12 @@ class ImagickDriver implements ImageDriver
 
     public function save(string $path): ImageDriver
     {
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        if (!in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
+            throw UnsupportedImageFormat::make($extension);
+        }
+
         $this->image->writeImage($path);
 
         return $this;
