@@ -4,6 +4,7 @@ namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickDraw;
+use ImagickPixel;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
@@ -224,6 +225,25 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
+    public function colorize(int $red, int $green, int $blue): ImageDriver
+    {
+        $this->ensureNumberBetween($red, -100, 100, 'red');
+        $this->ensureNumberBetween($green, -100, 100, 'green');
+        $this->ensureNumberBetween($blue, -100, 100, 'blue');
+
+        $quantumRange = $this->image->getQuantumRange();
+
+        $red = Helpers::normalizeColorizeLevel($red);
+        $green = Helpers::normalizeColorizeLevel($green);
+        $blue = Helpers::normalizeColorizeLevel($blue);
+
+        $this->image->levelImage(0, $red, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_RED);
+        $this->image->levelImage(0, $green, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_GREEN);
+        $this->image->levelImage(0, $blue, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_BLUE);
+
+        return $this;
+    }
+
     public function manualCrop(int $width, int $height, int $x = null, int $y = null): self
     {
         $cropped = new Size($width, $height);
@@ -261,5 +281,10 @@ class ImagickDriver implements ImageDriver
         $this->manualCrop($width, $height, $cropCenterX, $cropCenterY);
 
         return $this;
+    }
+
+    public function sepia(): ImageDriver
+    {
+        // TODO: Implement sepia() method.
     }
 }

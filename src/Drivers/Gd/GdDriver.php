@@ -289,6 +289,21 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
+    public function colorize(int $red, int $green, int $blue): ImageDriver
+    {
+        $this->ensureNumberBetween($red, -100, 100, 'red');
+        $this->ensureNumberBetween($green, -100, 100, 'green');
+        $this->ensureNumberBetween($blue, -100, 100, 'blue');
+
+        $red = round($red * 2.55);
+        $green = round($green * 2.55);
+        $blue = round($blue * 2.55);
+
+        imagefilter($this->image, IMG_FILTER_COLORIZE, $red, $green, $blue);
+
+        return $this;
+    }
+
     public function manualCrop(int $width, int $height, int $x = null, int $y = null): self
     {
         $cropped = new Size($width, $height);
@@ -340,5 +355,10 @@ class GdDriver implements ImageDriver
         $this->manualCrop($width, $height, $cropCenterX, $cropCenterY);
 
         return $this;
+    }
+
+    public function sepia(): ImageDriver
+    {
+        // TODO: Implement sepia() method.
     }
 }

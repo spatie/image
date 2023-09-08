@@ -36,6 +36,10 @@ interface ImageDriver
      */
     public function blur(int $blur): self;
 
+    public function  colorize(int $red, int $green, int $blue): self;
+
+    public function sepia(): self;
+
     public function getSize(): Size;
 
     public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self;
