@@ -32,7 +32,7 @@ interface ImageDriver
     public function contrast(float $level): self;
 
     /**
-     * @param  int  $amount A value between 0 and 100
+     * @param  int  $blur A value between 0 and 100.
      */
     public function blur(int $blur): self;
 
