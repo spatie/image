@@ -246,6 +246,7 @@ class ImagickDriver implements ImageDriver
     public function greyscale(): self
     {
         $this->image->modulateImage(100, 0, 100);
+
         return $this;
     }
 

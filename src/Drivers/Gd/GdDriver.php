@@ -307,6 +307,7 @@ class GdDriver implements ImageDriver
     public function greyscale(): self
     {
         imagefilter($this->image, IMG_FILTER_GRAYSCALE);
+
         return $this;
     }
 
