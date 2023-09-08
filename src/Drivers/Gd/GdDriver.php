@@ -12,6 +12,7 @@ use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
+use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
 
@@ -95,8 +96,25 @@ class GdDriver implements ImageDriver
 
     public function save(string $path): self
     {
-        // TODO: make this work with other formats.
-        imagepng($this->image, $path);
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        switch (strtolower($extension)) {
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($this->image, $path);
+                break;
+            case 'png':
+                imagepng($this->image, $path);
+                break;
+            case 'gif':
+                imagegif($this->image, $path);
+                break;
+            case 'webp':
+                imagewebp($this->image, $path);
+                break;
+            default:
+                throw UnsupportedImageFormat::make($extension);
+        }
 
         return $this;
     }
