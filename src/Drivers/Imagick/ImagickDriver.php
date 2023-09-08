@@ -187,7 +187,7 @@ class ImagickDriver implements ImageDriver
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
-        if (!in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
+        if (! in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
             throw UnsupportedImageFormat::make($extension);
         }
 
