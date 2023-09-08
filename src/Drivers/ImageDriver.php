@@ -38,6 +38,8 @@ interface ImageDriver
 
     public function colorize(int $red, int $green, int $blue): self;
 
+    public function greyscale(): self;
+
     public function sepia(): self;
 
     public function getSize(): Size;

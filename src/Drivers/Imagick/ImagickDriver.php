@@ -224,7 +224,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function colorize(int $red, int $green, int $blue): ImageDriver
+    public function colorize(int $red, int $green, int $blue): self
     {
         $this->ensureNumberBetween($red, -100, 100, 'red');
         $this->ensureNumberBetween($green, -100, 100, 'green');
@@ -240,6 +240,12 @@ class ImagickDriver implements ImageDriver
         $this->image->levelImage(0, $green, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_GREEN);
         $this->image->levelImage(0, $blue, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_BLUE);
 
+        return $this;
+    }
+
+    public function greyscale(): self
+    {
+        $this->image->modulateImage(100, 0, 100);
         return $this;
     }
 
@@ -284,6 +290,12 @@ class ImagickDriver implements ImageDriver
 
     public function sepia(): ImageDriver
     {
-        // TODO: Implement sepia() method.
+        return $this
+            ->greyscale()
+            ->brightness(-40)
+            ->contrast(20)
+            ->colorize(50, 35, 20)
+            ->brightness(-10)
+            ->contrast(10);
     }
 }

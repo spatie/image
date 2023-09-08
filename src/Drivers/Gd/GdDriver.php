@@ -289,7 +289,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function colorize(int $red, int $green, int $blue): ImageDriver
+    public function colorize(int $red, int $green, int $blue): self
     {
         $this->ensureNumberBetween($red, -100, 100, 'red');
         $this->ensureNumberBetween($green, -100, 100, 'green');
@@ -301,6 +301,12 @@ class GdDriver implements ImageDriver
 
         imagefilter($this->image, IMG_FILTER_COLORIZE, $red, $green, $blue);
 
+        return $this;
+    }
+
+    public function greyscale(): self
+    {
+        imagefilter($this->image, IMG_FILTER_GRAYSCALE);
         return $this;
     }
 
@@ -359,6 +365,11 @@ class GdDriver implements ImageDriver
 
     public function sepia(): ImageDriver
     {
-        // TODO: Implement sepia() method.
+        return $this
+            ->greyscale()
+            ->brightness(0)
+            ->contrast(5)
+            ->colorize(38, 25, 10)
+            ->contrast(5);
     }
 }
