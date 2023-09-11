@@ -2,7 +2,6 @@
 
 namespace Spatie\Image\Drivers\Gd;
 
-use Exception;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;

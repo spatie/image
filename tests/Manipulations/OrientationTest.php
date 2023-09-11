@@ -2,6 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\Orientation;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can rotate an image', function (ImageDriver $driver, ?Orientation $orientation) {

@@ -3,6 +3,7 @@
 namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Drivers\ImageDriver;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can apply gamma to an image', function (ImageDriver $driver) {
