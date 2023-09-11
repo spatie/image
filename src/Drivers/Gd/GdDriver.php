@@ -12,6 +12,7 @@ use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
@@ -490,5 +491,18 @@ class GdDriver implements ImageDriver
     public function exif(): array
     {
         return $this->exif;
+    }
+
+    public function flip(FlipDirection $flip): self
+    {
+        $direction = match ($flip) {
+            FlipDirection::HORIZONTALLY=> IMG_FLIP_HORIZONTAL,
+            FlipDirection::VERTICALLY => IMG_FLIP_VERTICAL,
+            FlipDirection::BOTH => IMG_FLIP_BOTH,
+        };
+
+        imageflip($this->image, $direction);
+
+        return $this;
     }
 }

@@ -6,6 +6,7 @@ use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Size;
 
@@ -75,4 +76,6 @@ interface ImageDriver
     public function orientation(Orientation $orientation): self;
 
     public function exif(): array;
+
+    public function flip(FlipDirection $flip): self;
 }

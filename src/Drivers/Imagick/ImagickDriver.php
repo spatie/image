@@ -14,6 +14,7 @@ use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
@@ -364,5 +365,24 @@ class ImagickDriver implements ImageDriver
     public function exif(): array
     {
         return $this->exif;
+    }
+
+    public function flip(FlipDirection $flip): self
+    {
+        switch ($flip)
+        {
+            case FlipDirection::VERTICALLY:
+                $this->image->flipImage();
+                break;
+            case FlipDirection::HORIZONTALLY:
+                $this->image->flopImage();
+                break;
+            case FlipDirection::BOTH:
+                $this->image->flipImage();
+                $this->image->flopImage();
+                break;
+        }
+
+        return $this;
     }
 }
