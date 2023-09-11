@@ -52,6 +52,11 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
+    public function image(): Imagick
+    {
+        return $this->image;
+    }
+
     public function getWidth(): int
     {
         return $this->image->getImageWidth();
@@ -323,6 +328,11 @@ class ImagickDriver implements ImageDriver
 
     public function background(string $color): self
     {
+        $new = $this->new($this->getWidth(), $this->getHeight(), $color);
+
+        $new->image()->compositeImage($this->image, Imagick::COMPOSITE_DEFAULT, 0, 0);
+        $this->image = $new->image();
+
         return $this;
     }
 }

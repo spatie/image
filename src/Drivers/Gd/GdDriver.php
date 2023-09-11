@@ -61,6 +61,11 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
+    public function image(): GdImage
+    {
+        return $this->image;
+    }
+
     public function getWidth(): int
     {
         return imagesx($this->image);
@@ -427,6 +432,20 @@ class GdDriver implements ImageDriver
 
     public function background(string $color): self
     {
+        $width = $this->getWidth();
+        $height = $this->getHeight();
+
+        $newImage = $this->new($width, $height, $color);
+
+        $backgroundSize = $newImage->getSize()->align(AlignPosition::TopLeft);
+        $overlaySize = $this->getSize()->align(AlignPosition::TopLeft);
+        $target = $backgroundSize->relativePosition($overlaySize);
+
+        imagealphablending($newImage->image(), true);
+        imagecopy($newImage->image(), $this->image, $target->x, $target->y, 0, 0, $overlaySize->width, $overlaySize->height);
+
+        $this->image = $newImage->image();
+
         return $this;
     }
 }
