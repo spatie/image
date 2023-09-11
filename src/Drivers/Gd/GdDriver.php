@@ -441,10 +441,17 @@ class GdDriver implements ImageDriver
         $overlaySize = $this->getSize()->align(AlignPosition::TopLeft);
         $target = $backgroundSize->relativePosition($overlaySize);
 
-        imagealphablending($newImage->image(), true);
-        imagecopy($newImage->image(), $this->image, $target->x, $target->y, 0, 0, $overlaySize->width, $overlaySize->height);
+        $this->overlay($newImage, $this, $target->x, $target->y);
 
-        $this->image = $newImage->image();
+        return $this;
+    }
+
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, $x, $y): self
+    {
+        imagealphablending($bottomImage->image(), true);
+        imagecopy($bottomImage->image(), $this->image, $x, $y, 0, 0, $bottomImage->getWidth(), $bottomImage->getHeight());
+
+        $this->image = $bottomImage->image();
 
         return $this;
     }

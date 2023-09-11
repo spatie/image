@@ -65,4 +65,6 @@ interface ImageDriver
     public function base64(string $imageFormat): string;
 
     public function background(string $color): self;
+
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, $x, $y): self;
 }

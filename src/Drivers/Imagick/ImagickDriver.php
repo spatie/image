@@ -328,10 +328,17 @@ class ImagickDriver implements ImageDriver
 
     public function background(string $color): self
     {
-        $new = $this->new($this->getWidth(), $this->getHeight(), $color);
+        $background = $this->new($this->getWidth(), $this->getHeight(), $color);
 
-        $new->image()->compositeImage($this->image, Imagick::COMPOSITE_DEFAULT, 0, 0);
-        $this->image = $new->image();
+        $this->overlay($background, $this, 0, 0);
+
+        return $this;
+    }
+
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, $x, $y): self
+    {
+        $bottomImage->image()->compositeImage($this->image, Imagick::COMPOSITE_DEFAULT, $x, $y);
+        $this->image = $bottomImage->image();
 
         return $this;
     }
