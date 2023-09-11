@@ -5,12 +5,15 @@ namespace Spatie\Image\Drivers\Gd;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
+use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Enums\FlipDirection;
+use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
@@ -20,9 +23,12 @@ class GdDriver implements ImageDriver
 {
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
+    use GetsOrientationFromExif;
     use ValidatesArguments;
 
     protected GdImage $image;
+
+    protected array $exif;
 
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
@@ -44,6 +50,8 @@ class GdDriver implements ImageDriver
 
     public function load(string $path): self
     {
+        $this->setExif($path);
+
         $handle = fopen($path, 'r');
 
         $contents = fread($handle, filesize($path));
@@ -452,6 +460,48 @@ class GdDriver implements ImageDriver
         imagecopy($bottomImage->image(), $this->image, $x, $y, 0, 0, $bottomImage->getWidth(), $bottomImage->getHeight());
 
         $this->image = $bottomImage->image();
+
+        return $this;
+    }
+
+    public function orientation(Orientation $orientation = null): self
+    {
+        if (is_null($orientation)) {
+            $orientation = $this->getOrientationFromExif($this->exif);
+        }
+
+        $this->image = imagerotate($this->image, $orientation->degrees() * -1, 0);
+
+        return $this;
+    }
+
+    public function setExif(string $path): void
+    {
+        $result = exif_read_data($path);
+
+        if (! is_array($result)) {
+            $this->exif = [];
+
+            return;
+        }
+
+        $this->exif = $result;
+    }
+
+    public function exif(): array
+    {
+        return $this->exif;
+    }
+
+    public function flip(FlipDirection $flip): self
+    {
+        $direction = match ($flip) {
+            FlipDirection::HORIZONTALLY => IMG_FLIP_HORIZONTAL,
+            FlipDirection::VERTICALLY => IMG_FLIP_VERTICAL,
+            FlipDirection::BOTH => IMG_FLIP_BOTH,
+        };
+
+        imageflip($this->image, $direction);
 
         return $this;
     }
