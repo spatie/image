@@ -505,4 +505,13 @@ class GdDriver implements ImageDriver
 
         return $this;
     }
+
+    public function pixelate(int $pixelate = 50): self
+    {
+        $this->ensureNumberBetween($pixelate, 0, 1000, 'pixelate');
+
+        imagefilter($this->image, IMG_FILTER_PIXELATE, $pixelate, true);
+
+        return $this;
+    }
 }

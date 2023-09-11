@@ -78,4 +78,6 @@ interface ImageDriver
     public function exif(): array;
 
     public function flip(FlipDirection $flip): self;
+
+    public function pixelate(int $pixelate): self;
 }
