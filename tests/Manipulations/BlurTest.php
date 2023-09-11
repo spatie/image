@@ -2,6 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\InvalidManipulation;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can blur an image', function (ImageDriver $driver) {
