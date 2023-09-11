@@ -370,13 +370,13 @@ class ImagickDriver implements ImageDriver
     public function flip(FlipDirection $flip): self
     {
         switch ($flip) {
-            case FlipDirection::VERTICALLY:
+            case FlipDirection::Vertical:
                 $this->image->flipImage();
                 break;
-            case FlipDirection::HORIZONTALLY:
+            case FlipDirection::Horizontal:
                 $this->image->flopImage();
                 break;
-            case FlipDirection::BOTH:
+            case FlipDirection::Both:
                 $this->image->flipImage();
                 $this->image->flopImage();
                 break;

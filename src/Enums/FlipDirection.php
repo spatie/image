@@ -2,9 +2,9 @@
 
 namespace Spatie\Image\Enums;
 
-enum FlipDirection
+enum FlipDirection: string
 {
-    case HORIZONTALLY;
-    case VERTICALLY;
-    case BOTH;
+    case Horizontal = 'horizontal';
+    case Vertical = 'vertical';
+    case Both = 'both';
 }
