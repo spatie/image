@@ -496,7 +496,7 @@ class GdDriver implements ImageDriver
     public function flip(FlipDirection $flip): self
     {
         $direction = match ($flip) {
-            FlipDirection::HORIZONTALLY=> IMG_FLIP_HORIZONTAL,
+            FlipDirection::HORIZONTALLY => IMG_FLIP_HORIZONTAL,
             FlipDirection::VERTICALLY => IMG_FLIP_VERTICAL,
             FlipDirection::BOTH => IMG_FLIP_BOTH,
         };
