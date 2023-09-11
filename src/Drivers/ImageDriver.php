@@ -68,11 +68,6 @@ interface ImageDriver
 
     /**
      * Accepts two images and aligns the top image at the given position.
-     * @param ImageDriver $bottomImage
-     * @param ImageDriver $topImage
-     * @param int $x
-     * @param int $y
-     * @return self
      */
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): self;
 }
