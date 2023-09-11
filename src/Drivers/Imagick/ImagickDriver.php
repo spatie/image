@@ -4,14 +4,17 @@ namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickDraw;
+use ImagickPixel;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
+use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
@@ -21,8 +24,11 @@ class ImagickDriver implements ImageDriver
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use ValidatesArguments;
+    use GetsOrientationFromExif;
 
     protected Imagick $image;
+
+    protected array $exif = [];
 
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
@@ -48,6 +54,7 @@ class ImagickDriver implements ImageDriver
     public function load(string $path): self
     {
         $this->image = new Imagick($path);
+        $this->exif = $this->image->getImageProperties('exif:*');
 
         return $this;
     }
@@ -339,6 +346,17 @@ class ImagickDriver implements ImageDriver
     {
         $bottomImage->image()->compositeImage($this->image, Imagick::COMPOSITE_DEFAULT, $x, $y);
         $this->image = $bottomImage->image();
+
+        return $this;
+    }
+
+    public function orientation(Orientation $orientation = null): self
+    {
+        if (is_null($orientation)) {
+            $orientation = $this->getOrientationFromExif($this->exif);
+        }
+
+        $this->image->rotateImage(new ImagickPixel('none'), $orientation->degrees());
 
         return $this;
     }

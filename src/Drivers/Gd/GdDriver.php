@@ -5,12 +5,14 @@ namespace Spatie\Image\Drivers\Gd;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
+use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
+use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
@@ -21,8 +23,11 @@ class GdDriver implements ImageDriver
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use ValidatesArguments;
+    use GetsOrientationFromExif;
 
     protected GdImage $image;
+
+    protected array $exif;
 
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
@@ -44,6 +49,8 @@ class GdDriver implements ImageDriver
 
     public function load(string $path): self
     {
+        $this->setExif($path);
+
         $handle = fopen($path, 'r');
 
         $contents = fread($handle, filesize($path));
@@ -454,5 +461,28 @@ class GdDriver implements ImageDriver
         $this->image = $bottomImage->image();
 
         return $this;
+    }
+
+    public function orientation(Orientation $orientation = null): self
+    {
+        if (is_null($orientation)) {
+            $orientation = $this->getOrientationFromExif($this->exif);
+        }
+
+        $this->image = imagerotate($this->image, $orientation->degrees() * -1, 0);
+
+        return $this;
+    }
+
+    public function setExif(string $path): void
+    {
+        $result = exif_read_data($path);
+
+        if (!is_array($result)) {
+            $this->exif = [];
+            return;
+        }
+
+        $this->exif = $result;
     }
 }
