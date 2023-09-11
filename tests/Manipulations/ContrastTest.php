@@ -4,6 +4,7 @@ namespace Spatie\Image\Test\Manipulations;
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\InvalidManipulation;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can change the contrast of an image', function (ImageDriver $driver) {

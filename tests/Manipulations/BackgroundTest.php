@@ -1,6 +1,7 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('sets the background on a png with a transparent background', function (ImageDriver $driver) {

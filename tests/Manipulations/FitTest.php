@@ -2,6 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\Fit;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can contain an image in the given dimensions', function (
