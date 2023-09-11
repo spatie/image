@@ -126,7 +126,7 @@ class GdDriver implements ImageDriver
 
     public function base64(string $imageFormat = 'jpeg', bool $prefixWithFormat = true): string
     {
-        ob_start ();
+        ob_start();
 
         switch (strtolower($imageFormat)) {
             case 'jpg':
@@ -146,11 +146,11 @@ class GdDriver implements ImageDriver
                 throw UnsupportedImageFormat::make($imageFormat);
         }
 
-        $image_data = ob_get_contents ();
-        ob_end_clean ();
+        $image_data = ob_get_contents();
+        ob_end_clean();
 
         if ($prefixWithFormat) {
-            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image_data);
+            return 'data:image/'.$imageFormat.';base64,'.base64_encode($image_data);
         }
 
         return base64_encode($image_data);

@@ -207,7 +207,7 @@ class ImagickDriver implements ImageDriver
         $image->setFormat($imageFormat);
 
         if ($prefixWithFormat) {
-            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image->getImageBlob());
+            return 'data:image/'.$imageFormat.';base64,'.base64_encode($image->getImageBlob());
         }
 
         return base64_encode($image->getImageBlob());

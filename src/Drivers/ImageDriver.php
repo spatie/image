@@ -63,6 +63,6 @@ interface ImageDriver
     public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): self;
 
     public function base64(string $imageFormat): string;
-    
+
     public function background(string $color): self;
 }
