@@ -369,11 +369,17 @@ class GdDriver implements ImageDriver
                 ->relativePosition($cropped->align(AlignPosition::Center));
         }
 
+        $maxCroppedWidth = $this->getWidth() - $x;
+        $maxCroppedHeight = $this->getHeight() - $y;
+
+        $width = min($cropped->width, $maxCroppedWidth);
+        $height = min($cropped->height, $maxCroppedHeight);
+
         $this->modify(
             $position->x,
             $position->y,
-            $cropped->width,
-            $cropped->height,
+            $width,
+            $height,
             $position->x,
             $position->y,
         );

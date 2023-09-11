@@ -16,10 +16,15 @@ it('can contain an image in the given dimensions', function (
     expect($targetFile)->toBeFile();
 
     $savedImage = $driver->load($targetFile);
+
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
 
     assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
+    [[100, 50], 100, 50],
     [[100, 50, 0, 50], 100, 50],
+    [[100, 50, 200, 200], 100, 50],
+    [[1000, 50, 200, 200], 140, 50],
+    [[100, 1000, 200, 200], 100, 80],
 ]);
