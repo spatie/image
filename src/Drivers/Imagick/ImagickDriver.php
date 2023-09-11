@@ -196,6 +196,18 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
+    public function base64(string $imageFormat = 'jpeg', bool $prefixWithFormat = true): string
+    {
+        $image = clone $this->image;
+        $image->setFormat($imageFormat);
+
+        if ($prefixWithFormat) {
+            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image->getImageBlob());
+        }
+
+        return base64_encode($image->getImageBlob());
+    }
+
     public function driverName(): string
     {
         return 'imagick';
@@ -306,6 +318,11 @@ class ImagickDriver implements ImageDriver
 
         $this->image->unsharpMaskImage(1, 1, $amount / 6.25, 0);
 
+        return $this;
+    }
+
+    public function background(string $color): self
+    {
         return $this;
     }
 }

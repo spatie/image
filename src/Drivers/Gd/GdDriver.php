@@ -119,6 +119,38 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
+    public function base64(string $imageFormat = 'jpeg', bool $prefixWithFormat = true): string
+    {
+        ob_start ();
+
+        switch (strtolower($imageFormat)) {
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($this->image);
+                break;
+            case 'png':
+                imagepng($this->image);
+                break;
+            case 'gif':
+                imagegif($this->image);
+                break;
+            case 'webp':
+                imagewebp($this->image);
+                break;
+            default:
+                throw UnsupportedImageFormat::make($imageFormat);
+        }
+
+        $image_data = ob_get_contents ();
+        ob_end_clean ();
+
+        if ($prefixWithFormat) {
+            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image_data);
+        }
+
+        return base64_encode($image_data);
+    }
+
     public function driverName(): string
     {
         return 'gd';
@@ -390,6 +422,11 @@ class GdDriver implements ImageDriver
 
         imageconvolution($this->image, $matrix, 1, 0);
 
+        return $this;
+    }
+
+    public function background(string $color): self
+    {
         return $this;
     }
 }
