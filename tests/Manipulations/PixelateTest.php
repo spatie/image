@@ -1,6 +1,7 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can blur an image', function (ImageDriver $driver) {

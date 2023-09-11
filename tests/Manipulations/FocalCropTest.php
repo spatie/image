@@ -1,6 +1,7 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can perform a crop centered around given coordinates', function (
