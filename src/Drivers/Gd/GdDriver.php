@@ -22,8 +22,8 @@ class GdDriver implements ImageDriver
 {
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
-    use ValidatesArguments;
     use GetsOrientationFromExif;
+    use ValidatesArguments;
 
     protected GdImage $image;
 
@@ -478,8 +478,9 @@ class GdDriver implements ImageDriver
     {
         $result = exif_read_data($path);
 
-        if (!is_array($result)) {
+        if (! is_array($result)) {
             $this->exif = [];
+
             return;
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\Orientation;
 

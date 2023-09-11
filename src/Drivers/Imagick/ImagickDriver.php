@@ -23,8 +23,8 @@ class ImagickDriver implements ImageDriver
 {
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
-    use ValidatesArguments;
     use GetsOrientationFromExif;
+    use ValidatesArguments;
 
     protected Imagick $image;
 
