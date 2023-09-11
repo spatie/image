@@ -32,13 +32,14 @@ it('can fill an image in the given dimensions', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-fill.jpg");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-fill.png");
 
     $driver->load(getTestJpg())->fit(Fit::Fill, ...$fitDimensions)->save($targetFile);
 
     $savedImage = $driver->load($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
     [[500, 500], 500, 500],
     [[250, 300], 250, 300],
@@ -51,13 +52,14 @@ it('can fill and stretch an image in the given dimensions', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-max.jpg");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-max.png");
 
     $driver->load(getTestJpg())->fit(Fit::Max, ...$fitDimensions)->save($targetFile);
 
     $savedImage = $driver->load($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
     [[100, 100], 100, 100],
     [[250, 300], 250, 300],
@@ -70,13 +72,14 @@ it('can stretch an image to the given dimensions', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-stretch.jpg");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-stretch.png");
 
     $driver->load(getTestJpg())->fit(Fit::Stretch, ...$fitDimensions)->save($targetFile);
 
     $savedImage = $driver->load($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
     [[100, 100], 100, 100],
     [[250, 300], 250, 300],

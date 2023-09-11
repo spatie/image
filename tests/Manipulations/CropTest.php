@@ -2,6 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\CropPosition;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can crop an image relative to a position', function (
     ImageDriver $driver,
@@ -9,7 +10,7 @@ it('can crop an image relative to a position', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.jpg");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.png");
 
     $driver->load(getTestJpg())->crop(...$cropArguments)->save($targetFile);
 
@@ -18,6 +19,7 @@ it('can crop an image relative to a position', function (
     $savedImage = $driver->load($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
     [[50, 100, CropPosition::TopLeft], 50, 100],
 ]);
