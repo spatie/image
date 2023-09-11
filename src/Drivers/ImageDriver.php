@@ -66,5 +66,5 @@ interface ImageDriver
 
     public function background(string $color): self;
 
-    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, $x, $y): self;
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): self;
 }
