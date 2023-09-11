@@ -2,21 +2,18 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\Orientation;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can blur an image', function (ImageDriver $driver) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-90.jpg");
-    $driver->load(getTestFile('portrait.jpg'))->orientation(Orientation::ROTATE_90)->save($targetFile);
-    expect($targetFile)->toBeFile();
+it('can rotate an image', function (ImageDriver $driver, ?Orientation $orientation) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-{$orientation?->name}}.png");
 
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-180.jpg");
-    $driver->load(getTestFile('portrait.jpg'))->orientation(Orientation::ROTATE_180)->save($targetFile);
-    expect($targetFile)->toBeFile();
+    $driver->load(getTestFile('portrait.jpg'))->orientation($orientation)->save($targetFile);
 
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-270.jpg");
-    $driver->load(getTestFile('portrait.jpg'))->orientation(Orientation::ROTATE_270)->save($targetFile);
-    expect($targetFile)->toBeFile();
-
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-auto.jpg");
-    $driver->load(getTestFile('portrait.jpg'))->orientation()->save($targetFile);
-    expect($targetFile)->toBeFile();
-})->with('drivers');
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    null,
+    Orientation::Rotate0,
+    Orientation::Rotate90,
+    Orientation::Rotate180,
+    Orientation::Rotate270,
+]);

@@ -73,7 +73,7 @@ interface ImageDriver
      */
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): self;
 
-    public function orientation(Orientation $orientation): self;
+    public function orientation(Orientation $orientation = null): self;
 
     public function exif(): array;
 

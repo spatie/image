@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Drivers\Gd;
 
+use Exception;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
@@ -28,7 +29,7 @@ class GdDriver implements ImageDriver
 
     protected GdImage $image;
 
-    protected array $exif;
+    protected array $exif = [];
 
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
@@ -477,6 +478,7 @@ class GdDriver implements ImageDriver
 
     public function setExif(string $path): void
     {
+        /*
         $result = exif_read_data($path);
 
         if (! is_array($result)) {
@@ -486,6 +488,7 @@ class GdDriver implements ImageDriver
         }
 
         $this->exif = $result;
+        */
     }
 
     public function exif(): array
