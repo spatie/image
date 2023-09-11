@@ -9,7 +9,7 @@ jobs:
             fail-fast: true
             matrix:
                 os: [ubuntu-latest]
-                php: [8.0, 8.1, 8.2]
+                php: [8.2]
                 dependency-version: [prefer-lowest, prefer-stable]
 
         name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
@@ -17,6 +17,11 @@ jobs:
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v2
+
+            -   name: Setup Node
+                uses: actions/setup-node@v2
+                with:
+                  node-version: '20'
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -34,4 +39,6 @@ jobs:
                 run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
             -   name: Execute tests
-                run: vendor/bin/pest
+                run: |
+                   npm install
+                   vendor/bin/pest

@@ -18,17 +18,19 @@
     "require": {
         "php": "^8.2",
         "ext-exif": "*",
-        "ext-mbstring": "*",
+        "ext-gd": "*",
+        "ext-imagick": "*",
         "ext-json": "*",
+        "ext-mbstring": "*",
         "spatie/image-optimizer": "^1.7",
         "spatie/temporary-directory": "^1.0|^2.0",
-        "symfony/process": "^3.0|^4.0|^5.0|^6.0",
-        "ext-imagick": "*",
-        "ext-gd": "*"
+        "symfony/process": "^6.0"
     },
     "require-dev": {
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-drift": "^2.4",
+        "spatie/pest-plugin-snapshots": "^2.1",
+        "spatie/pixelmatch-php": "^1.0",
         "spatie/ray": "^1.37",
         "symfony/var-dumper": "^4.0|^5.0|^6.0"
     },

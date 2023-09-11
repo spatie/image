@@ -2,13 +2,14 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\InvalidManipulation;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can blur an image', function (ImageDriver $driver) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/blur.jpg");
+it('can colorize an image', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/colorize.png");
 
     $driver->load(getTestJpg())->colorize(10, 70, 10)->save($targetFile);
 
-    expect($targetFile)->toBeFile();
+    assertMatchesImageSnapshot($targetFile);
 })->with('drivers');
 
 it('will throw an exception when passing an invalid blur value', function (ImageDriver $driver) {

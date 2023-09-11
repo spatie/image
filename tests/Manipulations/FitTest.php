@@ -2,6 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\Fit;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can contain an image in the given dimensions', function (
     ImageDriver $driver,
@@ -9,7 +10,7 @@ it('can contain an image in the given dimensions', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-contain.jpg");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-contain.png");
 
     $driver->load(getTestJpg())->fit(Fit::Contain, ...$fitDimensions)->save($targetFile);
 
@@ -18,7 +19,7 @@ it('can contain an image in the given dimensions', function (
     $savedImage = $driver->load($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
-
+    assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
     [[100, 60], 73, 60],
     [[60, 100], 60, 50],
