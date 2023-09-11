@@ -9,7 +9,7 @@ it('can perform a crop centered around given coordinates', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.png");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/focal-crop.png");
 
     $driver->load(getTestJpg())->focalCrop(...$focalCropArguments)->save($targetFile);
 
@@ -22,4 +22,7 @@ it('can perform a crop centered around given coordinates', function (
     assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
     [[100, 100, 60, 60], 100, 100],
+    [[100, 100, 0, 10], 100, 100],
+    [[120, 120, 270, 270], 120, 120],
+    [[120, 120, 1000, 1000], 120, 120],
 ]);
