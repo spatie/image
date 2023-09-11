@@ -385,7 +385,7 @@ class GdDriver implements ImageDriver
         $matrix = [
             [$min, $max, $min],
             [$max, $abs, $max],
-            [$min, $max, $min]
+            [$min, $max, $min],
         ];
 
         imageconvolution($this->image, $matrix, 1, 0);
