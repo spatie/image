@@ -2,6 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\CropPosition;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can crop an image relative to a position', function (

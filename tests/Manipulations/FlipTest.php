@@ -2,6 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\FlipDirection;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can blur an image', function (ImageDriver $driver, FlipDirection $direction) {
