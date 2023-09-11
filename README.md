@@ -67,6 +67,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Testing
 
 ``` bash
+npm i pixelmatch
 composer test
 ```
 
