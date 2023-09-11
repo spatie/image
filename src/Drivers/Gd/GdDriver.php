@@ -486,4 +486,9 @@ class GdDriver implements ImageDriver
 
         $this->exif = $result;
     }
+
+    public function exif(): array
+    {
+        return $this->exif;
+    }
 }

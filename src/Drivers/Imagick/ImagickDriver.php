@@ -360,4 +360,9 @@ class ImagickDriver implements ImageDriver
 
         return $this;
     }
+
+    public function exif(): array
+    {
+        return $this->exif;
+    }
 }
