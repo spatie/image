@@ -23,7 +23,7 @@ it('can contain an image in the given dimensions', function (
 
     assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
-   [[100, 60], 73, 60],
+    [[100, 60], 73, 60],
     [[60, 100], 60, 50],
     [[200, 200], 200, 165],
 ]);
