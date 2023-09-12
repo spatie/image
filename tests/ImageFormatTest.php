@@ -8,7 +8,7 @@ it('can save a jpeg', function (ImageDriver $driver) {
 
     $driver->load(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toBeFile();
+    expect($targetFile)->toHaveMime('image/jpeg');
 })->with('drivers');
 
 it('can save a png', function (ImageDriver $driver) {
@@ -16,7 +16,7 @@ it('can save a png', function (ImageDriver $driver) {
 
     $driver->load(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toBeFile();
+    expect($targetFile)->toHaveMime('image/png');
 })->with('drivers');
 
 it('can save a webp', function (ImageDriver $driver) {
@@ -24,7 +24,7 @@ it('can save a webp', function (ImageDriver $driver) {
 
     $driver->load(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toBeFile();
+    expect($targetFile)->toHaveMime('image/webp');
 })->with('drivers');
 
 it('can save a gif', function (ImageDriver $driver) {
@@ -32,7 +32,7 @@ it('can save a gif', function (ImageDriver $driver) {
 
     $driver->load(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toBeFile();
+    expect($targetFile)->toHaveMime('image/gif');
 })->with('drivers');
 
 it('can not save a bogus extension', function (ImageDriver $driver) {
