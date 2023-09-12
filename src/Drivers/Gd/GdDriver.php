@@ -534,4 +534,35 @@ class GdDriver implements ImageDriver
 
         return $this;
     }
+
+    public function insert(
+        ImageDriver|string $otherImage,
+        AlignPosition $position = AlignPosition::Center,
+        int $x = 0,
+        int $y = 0,
+    ): self
+    {
+        if (is_string($otherImage)) {
+            $otherImage = (new self())->load($otherImage);
+        }
+
+        $imageSize = $this->getSize()->align($position, $x, $y);
+        $otherImageSize = $otherImage->getSize()->align($position);
+        $target = $imageSize->relativePosition($otherImageSize);
+
+        imagealphablending($this->image, true);
+
+        imagecopy(
+            $this->image,
+            $otherImage->image,
+            $target->x,
+            $target->y,
+            0,
+            0,
+            $otherImageSize->width,
+            $otherImageSize->height
+        );
+
+        return $this;
+    }
 }

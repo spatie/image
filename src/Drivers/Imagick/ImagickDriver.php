@@ -397,4 +397,31 @@ class ImagickDriver implements ImageDriver
 
         return $this;
     }
+
+    public function insert(
+        ImageDriver|string $otherImage,
+        AlignPosition $position = AlignPosition::Center,
+        int $x = 0,
+        int $y = 0,
+    ): self
+    {
+        if (is_string($otherImage)) {
+            $otherImage = (new self())->load($otherImage);
+        }
+
+        $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
+
+        $imageSize = $this->getSize()->align($position, $x, $y);
+        $watermarkSize = $otherImage->getSize()->align($position);
+        $target = $imageSize->relativePosition($watermarkSize);
+
+        $this->image->compositeImage(
+            $otherImage->image,
+            Imagick::COMPOSITE_DEFAULT,
+            $target->x,
+            $target->y
+        );
+
+        return $this;
+    }
 }

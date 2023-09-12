@@ -80,4 +80,11 @@ interface ImageDriver
     public function flip(FlipDirection $flip): self;
 
     public function pixelate(int $pixelate): self;
+
+    public function insert(
+        ImageDriver|string $otherImage,
+        AlignPosition $position = AlignPosition::Center,
+        int $x = 0,
+        int $y = 0,
+    ): self;
 }
