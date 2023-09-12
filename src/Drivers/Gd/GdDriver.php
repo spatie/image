@@ -207,24 +207,29 @@ class GdDriver implements ImageDriver
         int $sourceWidth = 0,
         int $sourceHeight = 0,
     ): self {
-        // create new image
-        $modified = imagecreatetruecolor($desiredWidth, $desiredHeight);
+        $newImage = imagecreatetruecolor($desiredWidth, $desiredHeight);
 
-        // preserve transparency
-        $transIndex = imagecolortransparent($this->image);
+        $transparentColorValue = imagecolortransparent($this->image);
 
-        if ($transIndex != -1) {
-            $rgba = imagecolorsforindex($modified, $transIndex);
-            $transColor = imagecolorallocatealpha($modified, $rgba['red'], $rgba['green'], $rgba['blue'], 127);
-            imagefill($modified, 0, 0, $transColor);
-            imagecolortransparent($modified, $transColor);
+        if ($transparentColorValue != -1) {
+            $rgba = imagecolorsforindex($newImage, $transparentColorValue);
+
+            $transparentColor = imagecolorallocatealpha(
+                $newImage,
+                $rgba['red'],
+                $rgba['green'],
+                $rgba['blue'],
+                127
+            );
+            imagefill($newImage, 0, 0, $transparentColor);
+            imagecolortransparent($newImage, $transparentColor);
         } else {
-            imagealphablending($modified, false);
-            imagesavealpha($modified, true);
+            imagealphablending($newImage, false);
+            imagesavealpha($newImage, true);
         }
 
         imagecopyresampled(
-            $modified,
+            $newImage,
             $this->image,
             0,
             0,
@@ -236,7 +241,7 @@ class GdDriver implements ImageDriver
             $sourceHeight,
         );
 
-        $this->image = $modified;
+        $this->image = $newImage;
 
         return $this;
     }
