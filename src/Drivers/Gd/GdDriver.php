@@ -183,9 +183,14 @@ class GdDriver implements ImageDriver
             $desiredHeight
         );
 
-        ray($calculatedSize);
-
-        $this->modify($this->getWidth(), $this->getHeight(), $calculatedSize->width, $calculatedSize->height);
+        $this->modify(
+            $calculatedSize->width,
+            $calculatedSize->height,
+            0,
+            0,
+            $this->getWidth(),
+            $this->getHeight(),
+        );
 
         if ($fit->shouldResizeCanvas()) {
             $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
@@ -195,12 +200,12 @@ class GdDriver implements ImageDriver
     }
 
     protected function modify(
-        int $originalWidth,
-        int $originalHeight,
         int $desiredWidth,
         int $desiredHeight,
         int $sourceX = 0,
         int $sourceY = 0,
+        int $sourceWidth = 0,
+        int $sourceHeight = 0,
     ): self {
         // create new image
         $modified = imagecreatetruecolor($desiredWidth, $desiredHeight);
@@ -227,8 +232,8 @@ class GdDriver implements ImageDriver
             $sourceY,
             $desiredWidth,
             $desiredHeight,
-            $originalWidth,
-            $originalHeight,
+            $sourceWidth,
+            $sourceHeight,
         );
 
         $this->image = $modified;
@@ -377,12 +382,12 @@ class GdDriver implements ImageDriver
         $height = min($cropped->height, $maxCroppedHeight);
 
         $this->modify(
-            $position->x,
-            $position->y,
             $width,
             $height,
             $position->x,
             $position->y,
+            $width,
+            $height,
         );
 
         return $this;
