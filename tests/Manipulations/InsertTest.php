@@ -2,9 +2,10 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
+
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can insert another image', function(
+it('can insert another image', function (
     ImageDriver $driver,
     array $insertArguments,
 ) {
