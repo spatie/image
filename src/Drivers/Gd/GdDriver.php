@@ -8,7 +8,6 @@ use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Drivers\Imagick\ImagickColor;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
@@ -63,7 +62,7 @@ class GdDriver implements ImageDriver
 
         $image = imagecreatefromstring($contents);
 
-        if (!$image) {
+        if (! $image) {
             throw CouldNotLoadImage::make($path);
         }
 
@@ -161,7 +160,7 @@ class GdDriver implements ImageDriver
         ob_end_clean();
 
         if ($prefixWithFormat) {
-            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image_data);
+            return 'data:image/'.$imageFormat.';base64,'.base64_encode($image_data);
         }
 
         return base64_encode($image_data);
@@ -209,8 +208,7 @@ class GdDriver implements ImageDriver
         int $sourceY = 0,
         int $sourceWidth = 0,
         int $sourceHeight = 0,
-    ): self
-    {
+    ): self {
         $newImage = imagecreatetruecolor($desiredWidth, $desiredHeight);
 
         $transparentColorValue = imagecolortransparent($this->image);
@@ -254,7 +252,7 @@ class GdDriver implements ImageDriver
     {
         $color = imagecolorat($this->image, $x, $y);
 
-        if (!imageistruecolor($this->image)) {
+        if (! imageistruecolor($this->image)) {
             $color = imagecolorsforindex($this->image, $color);
             $color['alpha'] = round(1 - $color['alpha'] / 127, 2);
         }
@@ -270,8 +268,7 @@ class GdDriver implements ImageDriver
         AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): self
-    {
+    ): self {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -587,8 +584,8 @@ class GdDriver implements ImageDriver
 
             $this
                 ->resize(
-                    (int)round($this->getWidth() - ($width * 2)),
-                    (int)round($this->getHeight() - ($width * 2)),
+                    (int) round($this->getWidth() - ($width * 2)),
+                    (int) round($this->getHeight() - ($width * 2)),
                     [Constraint::PreserveAspectRatio],
                 )
                 ->resizeCanvas(
@@ -604,8 +601,8 @@ class GdDriver implements ImageDriver
 
         if ($type === BorderType::Expand) {
             $this->resizeCanvas(
-                (int)round($width * 2),
-                (int)round($width * 2),
+                (int) round($width * 2),
+                (int) round($width * 2),
                 AlignPosition::Center,
                 true,
                 $color,
@@ -619,10 +616,10 @@ class GdDriver implements ImageDriver
 
             imagefilledrectangle(
                 $this->image,
-                (int)round($width / 2),
-                (int)round($width / 2),
-                (int)round($this->getWidth() - ($width / 2)),
-                (int)round($this->getHeight() - ($width / 2)),
+                (int) round($width / 2),
+                (int) round($width / 2),
+                (int) round($this->getWidth() - ($width / 2)),
+                (int) round($this->getHeight() - ($width / 2)),
                 $backgroundColor->getInt()
             );
 
@@ -632,10 +629,10 @@ class GdDriver implements ImageDriver
 
             imagerectangle(
                 $this->image,
-                (int)round($width / 2),
-                (int)round($width / 2),
-                (int)round($this->getWidth() - ($width / 2)),
-                (int)round($this->getHeight() - ($width / 2)),
+                (int) round($width / 2),
+                (int) round($width / 2),
+                (int) round($this->getWidth() - ($width / 2)),
+                (int) round($this->getHeight() - ($width / 2)),
                 $borderColor->getInt()
             );
 
