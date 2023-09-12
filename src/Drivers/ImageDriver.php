@@ -3,6 +3,7 @@
 namespace Spatie\Image\Drivers;
 
 use Spatie\Image\Enums\AlignPosition;
+use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
@@ -87,4 +88,11 @@ interface ImageDriver
         int $x = 0,
         int $y = 0,
     ): self;
+
+    public function image(): mixed;
+
+    public function resize(int $width, int $height, array $constraints): self;
+
+    public function border(int $width, BorderType $type, string $color = '000000'): self;
+
 }

@@ -5,13 +5,16 @@ namespace Spatie\Image\Drivers\Imagick;
 use Imagick;
 use ImagickDraw;
 use ImagickPixel;
+use Intervention\Image\Imagick\Color;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
+use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
+use Spatie\Image\Enums\Constraint;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
@@ -52,17 +55,17 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
+    public function image(): Imagick
+    {
+        return $this->image;
+    }
+
     public function load(string $path): self
     {
         $this->image = new Imagick($path);
         $this->exif = $this->image->getImageProperties('exif:*');
 
         return $this;
-    }
-
-    public function image(): Imagick
-    {
-        return $this->image;
     }
 
     public function getWidth(): int
@@ -117,7 +120,8 @@ class ImagickDriver implements ImageDriver
         AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): self {
+    ): self
+    {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -200,7 +204,7 @@ class ImagickDriver implements ImageDriver
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
-        if (! in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
+        if (!in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
             throw UnsupportedImageFormat::make($extension);
         }
 
@@ -215,7 +219,7 @@ class ImagickDriver implements ImageDriver
         $image->setFormat($imageFormat);
 
         if ($prefixWithFormat) {
-            return 'data:image/'.$imageFormat.';base64,'.base64_encode($image->getImageBlob());
+            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image->getImageBlob());
         }
 
         return base64_encode($image->getImageBlob());
@@ -421,6 +425,77 @@ class ImagickDriver implements ImageDriver
             $target->x,
             $target->y
         );
+
+        return $this;
+    }
+
+    public function resize(int $width, int $height, array $constraints = []): self
+    {
+        $resized = $this->getSize()->resize($width, $height, $constraints);
+
+        $this->image->scaleImage($resized->width, $resized->height);
+
+        return $this;
+    }
+
+    public function border(int $width, BorderType $type, string $color = '000000'): self
+    {
+        if ($type === BorderType::Shrink) {
+            $originalWidth = $this->getWidth();
+            $originalHeight = $this->getHeight();
+
+            $this
+                ->resize(
+                    (int)round($this->getWidth() - ($width * 2)),
+                    (int)round($this->getHeight() - ($width * 2)),
+                    [Constraint::PreserveAspectRatio],
+                )
+                ->resizeCanvas(
+                    $originalWidth,
+                    $originalHeight,
+                    AlignPosition::Center,
+                    false,
+                    $color,
+                );
+
+            return $this;
+        }
+
+        if ($type === BorderType::Expand) {
+            $this->resizeCanvas(
+                (int)round($width * 2),
+                (int)round($width * 2),
+                AlignPosition::Center,
+                true,
+                $color,
+            );
+
+            return $this;
+        }
+
+        if ($type === BorderType::Overlay) {
+            $shape = new ImagickDraw();
+
+
+            $backgroundColor = new ImagickColor();
+            $shape->setFillColor($backgroundColor->getPixel());
+
+            $borderColor = new ImagickColor($color);
+            $shape->setStrokeColor($borderColor->getPixel());
+
+            $shape->setStrokeWidth($width);
+
+            $shape->rectangle(
+                (int) round($width / 2),
+                (int) round($width / 2),
+                (int) round($this->getWidth() - ($width / 2)),
+                (int) round($this->getHeight() - ($width / 2)),
+            );
+
+            $this->image->drawImage($shape);
+
+            return $this;
+        }
 
         return $this;
     }
