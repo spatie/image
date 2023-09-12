@@ -27,5 +27,6 @@ it('can crop an image relative to a position', function (
     [[50, 100, CropPosition::Top], 50, 100],
     [[50, 100, CropPosition::Left], 50, 100],
     [[50, 100, CropPosition::Right], 50, 100],
+    [[50, 100, CropPosition::BottomRight], 50, 100],
 
 ]);
