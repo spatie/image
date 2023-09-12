@@ -55,7 +55,7 @@ dataset('drivers', [
     'gd' => [Image::useImageDriver('gd')],
 ]);
 
-expect()->extend('toHaveMime', function(string $expectedMime) {
+expect()->extend('toHaveMime', function (string $expectedMime) {
     $file = finfo_open(FILEINFO_MIME_TYPE);
     $actualMime = finfo_file($file, $this->value);
     finfo_close($file);
