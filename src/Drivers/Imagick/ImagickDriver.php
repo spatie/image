@@ -102,6 +102,8 @@ class ImagickDriver implements ImageDriver
             $desiredHeight
         );
 
+        ray($calculatedSize);
+
         $this->image->scaleImage($calculatedSize->width, $calculatedSize->height);
 
         if ($fit->shouldResizeCanvas()) {

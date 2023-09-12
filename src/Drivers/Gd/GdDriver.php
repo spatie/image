@@ -183,6 +183,8 @@ class GdDriver implements ImageDriver
             $desiredHeight
         );
 
+        ray($calculatedSize);
+
         $this->modify($this->getWidth(), $this->getHeight(), $calculatedSize->width, $calculatedSize->height);
 
         if ($fit->shouldResizeCanvas()) {
@@ -225,8 +227,8 @@ class GdDriver implements ImageDriver
             $sourceY,
             $desiredWidth,
             $desiredHeight,
-            $desiredWidth,
-            $desiredHeight,
+            $originalWidth,
+            $originalHeight,
         );
 
         $this->image = $modified;
