@@ -2,9 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\BorderType;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
-use Spatie\Image\Image;
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can add a border to an image', function (ImageDriver $driver, array $borderArguments) {

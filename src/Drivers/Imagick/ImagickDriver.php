@@ -120,8 +120,7 @@ class ImagickDriver implements ImageDriver
         AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): self
-    {
+    ): self {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -204,7 +203,7 @@ class ImagickDriver implements ImageDriver
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
-        if (!in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
+        if (! in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
             throw UnsupportedImageFormat::make($extension);
         }
 
@@ -219,7 +218,7 @@ class ImagickDriver implements ImageDriver
         $image->setFormat($imageFormat);
 
         if ($prefixWithFormat) {
-            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image->getImageBlob());
+            return 'data:image/'.$imageFormat.';base64,'.base64_encode($image->getImageBlob());
         }
 
         return base64_encode($image->getImageBlob());
@@ -445,8 +444,8 @@ class ImagickDriver implements ImageDriver
 
             $this
                 ->resize(
-                    (int)round($this->getWidth() - ($width * 2)),
-                    (int)round($this->getHeight() - ($width * 2)),
+                    (int) round($this->getWidth() - ($width * 2)),
+                    (int) round($this->getHeight() - ($width * 2)),
                     [Constraint::PreserveAspectRatio],
                 )
                 ->resizeCanvas(
@@ -462,8 +461,8 @@ class ImagickDriver implements ImageDriver
 
         if ($type === BorderType::Expand) {
             $this->resizeCanvas(
-                (int)round($width * 2),
-                (int)round($width * 2),
+                (int) round($width * 2),
+                (int) round($width * 2),
                 AlignPosition::Center,
                 true,
                 $color,
@@ -474,7 +473,6 @@ class ImagickDriver implements ImageDriver
 
         if ($type === BorderType::Overlay) {
             $shape = new ImagickDraw();
-
 
             $backgroundColor = new ImagickColor();
             $shape->setFillColor($backgroundColor->getPixel());
