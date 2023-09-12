@@ -23,4 +23,8 @@ it('can crop an image relative to a position', function (
     assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
     [[50, 100, CropPosition::TopLeft], 50, 100],
+    [[50, 100, CropPosition::Center], 50, 100],
+    [[50, 100, CropPosition::Top], 50, 100],
+    [[50, 100, CropPosition::Left], 50, 100],
+
 ]);
