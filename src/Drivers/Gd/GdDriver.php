@@ -540,8 +540,7 @@ class GdDriver implements ImageDriver
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
-    ): self
-    {
+    ): self {
         if (is_string($otherImage)) {
             $otherImage = (new self())->load($otherImage);
         }
