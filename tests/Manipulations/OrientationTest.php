@@ -6,7 +6,7 @@ use Spatie\Image\Enums\Orientation;
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
 it('can rotate an image', function (ImageDriver $driver, ?Orientation $orientation) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-{$orientation?->name}}.png");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-{$orientation?->name}.png");
 
     $driver->load(getTestFile('portrait.jpg'))->orientation($orientation)->save($targetFile);
 
