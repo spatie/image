@@ -444,8 +444,8 @@ class ImagickDriver implements ImageDriver
 
             $this
                 ->resize(
-                    (int)round($this->getWidth() - ($width * 2)),
-                    (int)round($this->getHeight() - ($width * 2)),
+                    (int) round($this->getWidth() - ($width * 2)),
+                    (int) round($this->getHeight() - ($width * 2)),
                     [Constraint::PreserveAspectRatio],
                 )
                 ->resizeCanvas(
@@ -461,8 +461,8 @@ class ImagickDriver implements ImageDriver
 
         if ($type === BorderType::Expand) {
             $this->resizeCanvas(
-                (int)round($width * 2),
-                (int)round($width * 2),
+                (int) round($width * 2),
+                (int) round($width * 2),
                 AlignPosition::Center,
                 true,
                 $color,
@@ -483,10 +483,10 @@ class ImagickDriver implements ImageDriver
             $shape->setStrokeWidth($width);
 
             $shape->rectangle(
-                (int)round($width / 2),
-                (int)round($width / 2),
-                (int)round($this->getWidth() - ($width / 2)),
-                (int)round($this->getHeight() - ($width / 2)),
+                (int) round($width / 2),
+                (int) round($width / 2),
+                (int) round($this->getWidth() - ($width / 2)),
+                (int) round($this->getHeight() - ($width / 2)),
             );
 
             $this->image->drawImage($shape);

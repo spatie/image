@@ -648,6 +648,7 @@ class GdDriver implements ImageDriver
     {
         $this->ensureNumberBetween($quality, -1, 100, 'quality');
         $this->quality = $quality;
+
         return $this;
     }
 
