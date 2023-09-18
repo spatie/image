@@ -346,9 +346,9 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): self
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x = 0, int $y = 0): self
     {
-        $bottomImage->image()->compositeImage($this->image, Imagick::COMPOSITE_DEFAULT, $x, $y);
+        $bottomImage->insert($topImage, AlignPosition::Center, $x, $y);
         $this->image = $bottomImage->image();
 
         return $this;
