@@ -32,6 +32,8 @@ class GdDriver implements ImageDriver
 
     protected array $exif = [];
 
+    protected int $quality = -1;
+
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
         $image = imagecreatetruecolor($width, $height);
@@ -116,16 +118,16 @@ class GdDriver implements ImageDriver
         switch (strtolower($extension)) {
             case 'jpg':
             case 'jpeg':
-                imagejpeg($this->image, $path);
+                imagejpeg($this->image, $path, $this->quality);
                 break;
             case 'png':
-                imagepng($this->image, $path);
+                imagepng($this->image, $path, $this->pngCompression());
                 break;
             case 'gif':
                 imagegif($this->image, $path);
                 break;
             case 'webp':
-                imagewebp($this->image, $path);
+                imagewebp($this->image, $path, $this->quality);
                 break;
             default:
                 throw UnsupportedImageFormat::make($extension);
@@ -640,5 +642,21 @@ class GdDriver implements ImageDriver
         }
 
         return $this;
+    }
+
+    public function quality(int $quality): self
+    {
+        $this->ensureNumberBetween($quality, -1, 100, 'quality');
+        $this->quality = $quality;
+        return $this;
+    }
+
+    protected function pngCompression(): int
+    {
+        if ($this->quality === -1) {
+            return -1;
+        }
+
+        return round((100 - $this->quality) / 10);
     }
 }
