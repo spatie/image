@@ -476,11 +476,9 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): self
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x = 0, int $y = 0): self
     {
-        imagealphablending($bottomImage->image(), true);
-        imagecopy($bottomImage->image(), $this->image, $x, $y, 0, 0, $bottomImage->getWidth(), $bottomImage->getHeight());
-
+        $bottomImage->insert($topImage, AlignPosition::TopLeft, $x, $y);
         $this->image = $bottomImage->image();
 
         return $this;
