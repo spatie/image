@@ -127,7 +127,7 @@ class GdDriver implements ImageDriver
                 imagegif($this->image, $path);
                 break;
             case 'webp':
-                imagewebp($this->image, $path, $this->quality);
+                imagewebp($this->image);
                 break;
             default:
                 throw UnsupportedImageFormat::make($extension);
@@ -143,10 +143,10 @@ class GdDriver implements ImageDriver
         switch (strtolower($imageFormat)) {
             case 'jpg':
             case 'jpeg':
-                imagejpeg($this->image);
+                imagejpeg($this->image, $this->quality);
                 break;
             case 'png':
-                imagepng($this->image);
+                imagepng($this->image, $this->quality);
                 break;
             case 'gif':
                 imagegif($this->image);
