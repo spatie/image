@@ -20,7 +20,7 @@ class ImageSet
             $images[] = Image::load($path);
         }
 
-        return (new self($images));
+        return new self($images);
     }
 
     public function save(array $paths): self
@@ -31,7 +31,7 @@ class ImageSet
             $image->save($paths[$i]);
         }
 
-        return (new self($images));
+        return new self($images);
     }
 
     public function __call(string $methodName, array $arguments): ImageSet
