@@ -124,7 +124,7 @@ class Image
         if ($this->shouldOptimize()) {
             $optimizerChainConfiguration = $this->manipulations->getFirstManipulationArgument('optimize');
 
-            $optimizerChainConfiguration = json_decode($optimizerChainConfiguration, true);
+            $optimizerChainConfiguration = json_decode($optimizerChainConfiguration, true, 512, JSON_THROW_ON_ERROR);
 
             $this->performOptimization($outputPath, $optimizerChainConfiguration);
         }
