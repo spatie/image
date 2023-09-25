@@ -2,8 +2,6 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 
-use function Spatie\Snapshots\assertMatchesImageSnapshot;
-
 it('can set the quality of a png', function (ImageDriver $driver) {
     $lowQualityTargetFile = $this->tempDir->path("{$driver->driverName()}/quality10.png");
     $driver->load(getTestJpg())->quality(10)->save($lowQualityTargetFile);
