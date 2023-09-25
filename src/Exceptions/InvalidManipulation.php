@@ -16,15 +16,6 @@ class InvalidManipulation extends Exception
         return new self("Height should be a positive number. `{$height}` given.");
     }
 
-    public static function invalidParameter(string $name, $invalidValue, array $validValues): self
-    {
-        $validValues = self::formatValues($validValues);
-
-        $name = ucfirst($name);
-
-        return new self("{$name} should be one of {$validValues}. `{$invalidValue}` given.");
-    }
-
     public static function valueNotInRange(string $name, $invalidValue, $minValue, $maxValue): self
     {
         $name = ucfirst($name);
