@@ -69,9 +69,6 @@ interface ImageDriver
 
     public function background(string $color): self;
 
-    /**
-     * Accepts two images and aligns the top image at the given position.
-     */
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): self;
 
     public function orientation(Orientation $orientation = null): self;

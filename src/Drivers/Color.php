@@ -49,11 +49,6 @@ abstract class Color
         return $this;
     }
 
-    /**
-     * Formats current color instance into given format
-     *
-     * @param  string  $type
-     */
     public function format(ColorFormat $colorFormat): mixed
     {
         return match ($colorFormat) {
@@ -67,8 +62,6 @@ abstract class Color
 
     protected function rgbaFromString(string $colorValue): array
     {
-        $result = false;
-
         // parse color string in hexidecimal format like #cccccc or cccccc or ccc
         $hexPattern = '/^#?([a-f0-9]{1,2})([a-f0-9]{1,2})([a-f0-9]{1,2})$/i';
 
