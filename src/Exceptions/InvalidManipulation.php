@@ -22,13 +22,4 @@ class InvalidManipulation extends Exception
 
         return new self("{$name} should be a number in the range {$minValue} until {$maxValue}. `{$invalidValue}` given.");
     }
-
-    protected static function formatValues(array $values): string
-    {
-        $quotedValues = array_map(function (string $value) {
-            return "`{$value}`";
-        }, $values);
-
-        return implode(', ', $quotedValues);
-    }
 }

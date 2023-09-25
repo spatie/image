@@ -34,22 +34,23 @@ class Size
         $dominantWidthSize = clone $this;
 
         $dominantWidthSize = $dominantWidthSize
-            ->resizeHeight($desiredWidth, $desiredHeight, $constraints)
-            ->resizeWidth($desiredWidth, $desiredHeight, $constraints);
+            ->resizeHeight($desiredHeight, $constraints)
+            ->resizeWidth($desiredWidth, $constraints);
 
         $dominantHeightSize = clone $this;
         $dominantHeightSize = $dominantHeightSize
-            ->resizeWidth($desiredWidth, $desiredHeight, $constraints)
-            ->resizeHeight($desiredWidth, $desiredHeight, $constraints);
+            ->resizeWidth($desiredWidth, $constraints)
+            ->resizeHeight($desiredHeight, $constraints);
 
-        $result = $dominantHeightSize->fitsInto(new Size($desiredWidth, $desiredHeight))
+        return $dominantHeightSize->fitsInto(new Size($desiredWidth, $desiredHeight))
             ? $dominantHeightSize
             : $dominantWidthSize;
-
-        return $result;
     }
 
-    public function resizeWidth(int $desiredWidth = null, int $desiredHeight = null, array $constraints = []): self
+    public function resizeWidth(
+        int $desiredWidth = null,
+        array $constraints = []
+    ): self
     {
         $originalWidth = $this->width;
         $originalHeight = $this->height;
@@ -82,7 +83,7 @@ class Size
         return $this;
     }
 
-    public function resizeHeight(int $desiredWidth = null, int $desiredHeight = null, array $constraints = []): self
+    public function resizeHeight(int $desiredHeight = null, array $constraints = []): self
     {
         $originalWidth = $this->width;
         $originalHeight = $this->height;
@@ -92,7 +93,6 @@ class Size
         }
 
         if (in_array(Constraint::DoNotUpsize, $constraints)) {
-            // TODO: is this correct?
             $maximumHeight = $this->height;
             $maximumWidth = $this->width;
 
