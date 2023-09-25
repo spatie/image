@@ -24,8 +24,7 @@ class Size
         int $desiredWidth = null,
         int $desiredHeight = null,
         array $constraints = []
-    ): self
-    {
+    ): self {
         // TODO: improve this check and exception
         if ($desiredWidth === null && $desiredHeight === null) {
             throw new Exception("Width and height can't both be null");
