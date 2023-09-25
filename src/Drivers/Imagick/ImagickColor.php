@@ -27,16 +27,9 @@ class ImagickColor extends Color
     {
         $value = array_values($value);
 
-        if (count($value) == 4) {
+        [$red, $green, $blue] = $value;
 
-            [$red, $green, $blue, $alpha] = $value;
-
-        } elseif (count($value) == 3) {
-
-            // color array without alpha value
-            [$red, $green, $blue] = $value;
-            $alpha = 1;
-        }
+        $alpha = $value[3] ?? 1;
 
         $this->setPixel($red, $green, $blue, $alpha);
 
