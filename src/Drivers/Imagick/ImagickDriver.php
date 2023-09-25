@@ -497,7 +497,9 @@ class ImagickDriver implements ImageDriver
 
     public function quality(int $quality): self
     {
-        $this->image->setCompressionQuality($quality);
+        $this->ensureNumberBetween($quality, 0, 100, 'quality');
+
+        $this->image->setCompressionQuality(100 - $quality);
 
         return $this;
     }
