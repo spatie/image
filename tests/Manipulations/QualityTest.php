@@ -18,4 +18,4 @@ it('can set the quality for different formats', function (ImageDriver $driver, s
     $driver->load(getTestJpg())->quality(20)->save($targetFile);
 
     expect($targetFile)->toBeFile();
-})->with('drivers', ['jpg', 'gif', 'webp']);
+})->with('drivers', ['jpg', 'gif', 'webp', 'png']);
