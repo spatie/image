@@ -49,8 +49,7 @@ class Size
     public function resizeWidth(
         int $desiredWidth = null,
         array $constraints = []
-    ): self
-    {
+    ): self {
         $originalWidth = $this->width;
         $originalHeight = $this->height;
 

@@ -91,7 +91,7 @@ class ImagickDriver implements ImageDriver
     {
         $this->ensureNumberBetween($blur, 0, 100, 'blur');
 
-        $this->image->blurImage(1 * $blur, 0.5 * $blur);
+        $this->image->blurImage(0.5 * $blur, 0.1 * $blur);
 
         return $this;
     }
