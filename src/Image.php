@@ -8,6 +8,7 @@ use Spatie\Image\Drivers\Imagick\ImagickDriver;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\ImageMethodDoesNotExist;
 use Spatie\Image\Exceptions\InvalidImageDriver;
+use \Spatie\Image\Enums\ImageDriver as ImageDriverEnum;
 
 class Image
 {
@@ -27,8 +28,12 @@ class Image
         return (new self($pathToImage))->imageDriver->load($pathToImage);
     }
 
-    public static function useImageDriver(string $imageDriverName): ImageDriver
+    public static function useImageDriver(ImageDriverEnum|string $imageDriverName): ImageDriver
     {
+        if ($imageDriverName instanceof ImageDriverEnum) {
+            $imageDriverName = $imageDriverName->value;
+        }
+
         if (! in_array($imageDriverName, ['gd', 'imagick'])) {
             throw InvalidImageDriver::driver($imageDriverName);
         }
