@@ -9,7 +9,6 @@ use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\ImageMethodDoesNotExist;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 
-/** @mixin ImageDriver */
 class Image
 {
     protected ImageDriver $imageDriver;
@@ -38,16 +37,5 @@ class Image
             'gd' => new GdDriver(),
             'imagick' => new ImagickDriver(),
         };
-    }
-
-    public function __call(string $methodName, array $arguments): static
-    {
-        if (! method_exists($this->imageDriver, $methodName)) {
-            throw ImageMethodDoesNotExist::make($methodName);
-        }
-
-        $this->imageDriver->$methodName(...$arguments);
-
-        return $this;
     }
 }
