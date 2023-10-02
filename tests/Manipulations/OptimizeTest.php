@@ -14,7 +14,7 @@ it('can optimize an image', function (ImageDriver $driver) {
         ->addOptimizer(new Jpegoptim([
             '--strip-all',
             '--all-progressive',
-            '-m85'
+            '-m85',
         ]));
 
     $driver->load($testFile)->optimize($optimizerChain)->save($optimizedFile);
