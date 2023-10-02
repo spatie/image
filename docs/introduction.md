@@ -7,8 +7,6 @@ Image manipulation doesn't have to be hard. This PHP package makes it super easy
 
 For all available manipulations, please see the [overview](/image/v1/image-manipulations/overview).
 
-Under the hood this package uses [Glide](http://glide.thephpleague.com) by [Jonathan Reinink](https://twitter.com/reinink).
-
 ## Quick examples
 
 For all the examples in this documentation we'll use this beautiful photo of New York:
