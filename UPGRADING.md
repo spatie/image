@@ -1,6 +1,8 @@
 # v2 to v3
 V3 is a major rewrite where we removed several dependencies and tried to streamline all manipulations.
 
+Note that some results might be slightly different from previous versions as we made improvement across a number of methods.
+
 ## Working wit the Image object.
 The `Image` class has been slimmed down to only being responsible for initializing and delegating to the correct driver (GD or Imagick).
 
