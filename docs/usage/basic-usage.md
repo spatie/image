@@ -11,6 +11,14 @@ Load an image by calling the static `load` method on the `Image` and passing in 
 $image = Image::load(string $pathToImage);
 ```
 
+## Selecting a driver
+
+By default the Imagick driver will be used. However if you would like to use GD you can do this by selecting the driver before loading the image.
+
+```php
+$image = Image::useImageDriver(ImageDriver::GD)->load(string $pathToImage);
+```
+
 ## Applying manipulations
 
 Any of the [image manipulations](/image/v1/image-manipulations/overview) can be applied to the loaded `Image` by calling the manipulation's method. All image manipulation methods can be chained.
