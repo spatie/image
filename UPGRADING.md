@@ -18,3 +18,6 @@ $image = Image::load('path/to/image.jpg');
 // 3. Selecting a driver and then loading the image.
 $image = Image::useImageDriver(ImageDriver::Imagick)->load('path/to/image.jpg');
 ```
+
+## Other changes
+- The option to create a manipulations instance has been removed.
