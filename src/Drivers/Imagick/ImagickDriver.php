@@ -5,10 +5,10 @@ namespace Spatie\Image\Drivers\Imagick;
 use Imagick;
 use ImagickDraw;
 use ImagickPixel;
-use Intervention\Image\Imagick\Color;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
+use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
@@ -28,6 +28,7 @@ class ImagickDriver implements ImageDriver
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
+    use PerformsOptimizations;
     use ValidatesArguments;
 
     protected Imagick $image;
@@ -62,6 +63,8 @@ class ImagickDriver implements ImageDriver
 
     public function load(string $path): self
     {
+        $this->optimize = false;
+
         $this->image = new Imagick($path);
         $this->exif = $this->image->getImageProperties('exif:*');
 
@@ -208,6 +211,10 @@ class ImagickDriver implements ImageDriver
         }
 
         $this->image->writeImage($path);
+
+        if ($this->optimize) {
+            $this->optimizerChain->optimize($path);
+        }
 
         return $this;
     }

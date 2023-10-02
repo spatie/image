@@ -6,6 +6,7 @@ use GdImage;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
+use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
@@ -26,6 +27,7 @@ class GdDriver implements ImageDriver
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
+    use PerformsOptimizations;
     use ValidatesArguments;
 
     protected GdImage $image;
@@ -54,6 +56,9 @@ class GdDriver implements ImageDriver
 
     public function load(string $path): self
     {
+        $this->optimize = false;
+        $this->quality = -1;
+
         $this->setExif($path);
 
         $handle = fopen($path, 'r');
@@ -131,6 +136,10 @@ class GdDriver implements ImageDriver
                 break;
             default:
                 throw UnsupportedImageFormat::make($extension);
+        }
+
+        if ($this->optimize) {
+            $this->optimizerChain->optimize($path);
         }
 
         return $this;
