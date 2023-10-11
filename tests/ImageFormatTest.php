@@ -5,11 +5,11 @@ use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
 
 it('can save supported formats', function (ImageDriver $driver, string $format) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test." . $format);
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.".$format);
 
     $driver->load(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toHaveMime('image/' . $format);
+    expect($targetFile)->toHaveMime('image/'.$format);
 })->with('drivers', ['jpeg', 'gif', 'png', 'webp']);
 
 it('can save a heic with Imagick', function () {
