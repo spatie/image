@@ -46,6 +46,16 @@ it('can save a heic with Imagick', function () {
     expect($targetFile)->toHaveMime('image/heic');
 });
 
+it('can save a tiff with Imagick', function () {
+    $driver = Image::useImageDriver('imagick');
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.tiff");
+
+    $driver->load(getTestJpg())->save($targetFile);
+
+    expect($targetFile)->toHaveMime('image/tiff');
+});
+
 it('can not save a bogus extension', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.foobar");
 
