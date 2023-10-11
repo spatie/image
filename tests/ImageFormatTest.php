@@ -12,25 +12,23 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
     expect($targetFile)->toHaveMime('image/'.$format);
 })->with('drivers', ['jpeg', 'gif', 'png', 'webp']);
 
-it('can save a heic with Imagick', function () {
+it('can save Imagick specific formats', function (string $format) {
     $driver = Image::useImageDriver('imagick');
 
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.heic");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
 
     $driver->load(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toHaveMime('image/heic');
-});
+    expect($targetFile)->toHaveMime("image/$format");
+})->with(['heic', 'tiff']);
 
-it('can save a tiff with Imagick', function () {
-    $driver = Image::useImageDriver('imagick');
+it('throws an error for unsupported GD image formats', function (string $format) {
+    $driver = Image::useImageDriver('gd');
 
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.tiff");
-
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
     $driver->load(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toHaveMime('image/tiff');
-});
+})->with(['heic', 'tiff'])->throws(UnsupportedImageFormat::class);
 
 it('can not save a bogus extension', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.foobar");
