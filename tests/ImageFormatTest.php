@@ -2,6 +2,7 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
+use Spatie\Image\Image;
 
 it('can save a jpeg', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.jpeg");
@@ -34,6 +35,16 @@ it('can save a gif', function (ImageDriver $driver) {
 
     expect($targetFile)->toHaveMime('image/gif');
 })->with('drivers');
+
+it('can save a heic with Imagick', function () {
+    $driver = Image::useImageDriver('imagick');
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.heic");
+
+    $driver->load(getTestJpg())->save($targetFile);
+
+    expect($targetFile)->toHaveMime('image/heic');
+});
 
 it('can not save a bogus extension', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.foobar");
