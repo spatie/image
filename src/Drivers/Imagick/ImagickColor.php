@@ -12,13 +12,14 @@ class ImagickColor extends Color
 
     public function initFromInteger(int $value): self
     {
-        $a = ($value >> 24) & 0xFF;
-        $r = ($value >> 16) & 0xFF;
-        $g = ($value >> 8) & 0xFF;
-        $b = $value & 0xFF;
-        $a = $this->rgb2alpha($a);
+        $alpha = ($value >> 24) & 0xFF;
+        $red = ($value >> 16) & 0xFF;
+        $green = ($value >> 8) & 0xFF;
+        $blue = $value & 0xFF;
 
-        $this->setPixel($r, $g, $b, $a);
+        $alpha = $this->rgb2alpha($alpha);
+
+        $this->setPixel($red, $green, $blue, $alpha);
 
         return $this;
     }
@@ -68,12 +69,12 @@ class ImagickColor extends Color
 
     public function getInt(): int
     {
-        $r = $this->getRedValue();
-        $g = $this->getGreenValue();
-        $b = $this->getBlueValue();
-        $a = intval(round($this->getAlphaValue() * 255));
+        $red = $this->getRedValue();
+        $green = $this->getGreenValue();
+        $blue = $this->getBlueValue();
+        $alpha = intval(round($this->getAlphaValue() * 255));
 
-        return ($a << 24) + ($r << 16) + ($g << 8) + $b;
+        return ($alpha << 24) + ($red << 16) + ($green << 8) + $blue;
     }
 
     public function getHex(string $prefix = ''): string
@@ -107,8 +108,8 @@ class ImagickColor extends Color
 
     public function differs(Color $color, int $tolerance = 0): bool
     {
-        $color_tolerance = round($tolerance * 2.55);
-        $alpha_tolerance = round($tolerance);
+        $colorTolerance = round($tolerance * 2.55);
+        $alphaTolerance = round($tolerance);
 
         $delta = [
             'r' => abs($color->getRedValue() - $this->getRedValue()),
@@ -118,10 +119,10 @@ class ImagickColor extends Color
         ];
 
         return
-            $delta['r'] > $color_tolerance ||
-            $delta['g'] > $color_tolerance ||
-            $delta['b'] > $color_tolerance ||
-            $delta['a'] > $alpha_tolerance;
+            $delta['r'] > $colorTolerance ||
+            $delta['g'] > $colorTolerance ||
+            $delta['b'] > $colorTolerance ||
+            $delta['a'] > $alphaTolerance;
     }
 
     public function getRedValue(): int
@@ -144,12 +145,17 @@ class ImagickColor extends Color
         return round($this->pixel->getColorValue(Imagick::COLOR_ALPHA), 2);
     }
 
-    private function setPixel($r, $g, $b, $a = null): ImagickPixel
+    private function setPixel(
+        $red,
+        $green,
+        $blue,
+        $alpha = null
+    ): ImagickPixel
     {
-        $a = is_null($a) ? 1 : $a;
+        $alpha = is_null($alpha) ? 1 : $alpha;
 
         return $this->pixel = new \ImagickPixel(
-            sprintf('rgba(%d, %d, %d, %.2F)', $r, $g, $b, $a)
+            sprintf('rgba(%d, %d, %d, %.2F)', $red, $green, $blue, $alpha)
         );
     }
 

@@ -30,12 +30,12 @@ class GdColor extends Color
     {
         $value = array_values($value);
 
-        if (count($value) == 4) {
+        if (count($value) === 4) {
 
             [$red, $green, $blue, $alpha] = $value;
             $this->alpha = $this->alpha2gd($alpha);
 
-        } elseif (count($value) == 3) {
+        } elseif (count($value) === 3) {
 
             [$red, $green, $blue] = $value;
             $this->alpha = 0;
@@ -112,14 +112,14 @@ class GdColor extends Color
             $this->red,
             $this->green,
             $this->blue,
-            round(1 - $this->alpha / 127, 2)
+            round(1 - $this->alpha / 127, 2),
         );
     }
 
     public function differs(Color $color, int $tolerance = 0): bool
     {
-        $color_tolerance = round($tolerance * 2.55);
-        $alpha_tolerance = round($tolerance * 1.27);
+        $colorTolerance = round($tolerance * 2.55);
+        $alphaTolerance = round($tolerance * 1.27);
 
         $delta = [
             'r' => abs($color->red - $this->red),
@@ -129,10 +129,10 @@ class GdColor extends Color
         ];
 
         return
-            $delta['r'] > $color_tolerance ||
-            $delta['g'] > $color_tolerance ||
-            $delta['b'] > $color_tolerance ||
-            $delta['a'] > $alpha_tolerance;
+            $delta['r'] > $colorTolerance ||
+            $delta['g'] > $colorTolerance ||
+            $delta['b'] > $colorTolerance ||
+            $delta['a'] > $alphaTolerance;
     }
 
     private function alpha2gd(float $input): int
