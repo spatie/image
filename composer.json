@@ -28,11 +28,10 @@
     },
     "require-dev": {
         "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-drift": "^2.4",
         "spatie/pest-plugin-snapshots": "^2.1",
         "spatie/pixelmatch-php": "^1.0",
         "spatie/ray": "^1.37",
-        "symfony/var-dumper": "^4.0|^5.0|^6.0"
+        "symfony/var-dumper": "^6.0"
     },
     "autoload": {
         "psr-4": {
