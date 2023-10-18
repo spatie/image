@@ -150,8 +150,7 @@ class ImagickColor extends Color
         $green,
         $blue,
         $alpha = null
-    ): ImagickPixel
-    {
+    ): ImagickPixel {
         $alpha = is_null($alpha) ? 1 : $alpha;
 
         return $this->pixel = new \ImagickPixel(
