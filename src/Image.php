@@ -27,19 +27,16 @@ class Image
         return (new self($pathToImage))->imageDriver->load($pathToImage);
     }
 
-    public static function useImageDriver(ImageDriverEnum|string $imageDriverName): ImageDriver
+    public static function useImageDriver(ImageDriverEnum|string $imageDriver): ImageDriver
     {
-        if ($imageDriverName instanceof ImageDriverEnum) {
-            $imageDriverName = $imageDriverName->value;
+        if (is_string($imageDriver)) {
+            $imageDriver = ImageDriverEnum::tryFrom($imageDriver)
+                ?? throw InvalidImageDriver::driver($imageDriver);
         }
 
-        if (! in_array($imageDriverName, ['gd', 'imagick'])) {
-            throw InvalidImageDriver::driver($imageDriverName);
-        }
-
-        return match ($imageDriverName) {
-            'gd' => new GdDriver(),
-            'imagick' => new ImagickDriver(),
+        return match ($imageDriver) {
+            ImageDriverEnum::Gd => new GdDriver(),
+            ImageDriverEnum::Imagick => new ImagickDriver(),
         };
     }
 }

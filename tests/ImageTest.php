@@ -3,6 +3,7 @@
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Drivers\Imagick\ImagickDriver;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
+use Spatie\Image\Exceptions\InvalidImageDriver;
 use Spatie\Image\Image;
 
 it('can load an image', function () {
@@ -28,3 +29,7 @@ it('will throw an exception when no file exists at the given path', function () 
 
     Image::load($invalidPath);
 })->throws(CouldNotLoadImage::class);
+
+it('will throw an exception when passing an invalid image driver name', function() {
+    Image::useImageDriver('invalid')->load(getTestJpg());
+})->throws(InvalidImageDriver::class);
