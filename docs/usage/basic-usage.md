@@ -21,7 +21,7 @@ $image = Image::useImageDriver(ImageDriver::GD)->load(string $pathToImage);
 
 ## Applying manipulations
 
-Any of the [image manipulations](/image/v1/image-manipulations/overview) can be applied to the loaded `Image` by calling the manipulation's method. All image manipulation methods can be chained.
+Any of the [image manipulations](/image/v3/image-manipulations/overview) can be applied to the loaded `Image` by calling the manipulation's method. All image manipulation methods can be chained.
 
 ```php
 Image::load('example.jpg')
@@ -34,7 +34,7 @@ Image::load('example.jpg')
 
 ## Saving the image
 
-Calling the `save` method on an `Image` will save the modifications to the original file. You can save your modified image by passing a `$outputPath` to the `save` method.
+Calling the `save` method on an `Image` will save the modifications to the specified file.
 
 ```php
 Image::load('example.jpg')
