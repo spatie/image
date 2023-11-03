@@ -88,3 +88,16 @@ it('can stretch an image to the given dimensions', function (
     [[500, 500], 500, 500],
     [[100, 500], 100, 500],
 ]);
+
+it('can fit and add a background', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-background.png");
+
+    $driver->load(getTestJpg())
+        ->fit(Fit::Fill, 2000, 100)
+        ->background('#ff5733')
+        ->save($targetFile);
+
+    assertMatchesImageSnapshot($targetFile);
+
+    $this->fail('TODO: bug background color is not set');
+})->with('drivers');

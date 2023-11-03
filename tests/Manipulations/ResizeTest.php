@@ -16,5 +16,5 @@ it('can resize an image', function (ImageDriver $driver) {
 
     assertMatchesImageSnapshot($targetFile);
 
-    $this->markTestIncomplete('TODO: results of resize on GD look like a crop, not a resize.');
+    $this->fail('TODO: bug, results of resize on GD look like a crop, not a resize.');
 })->with('drivers');
