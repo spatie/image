@@ -27,3 +27,5 @@ $image = Image::useImageDriver(ImageDriver::Imagick)->load('path/to/image.jpg');
 - the `fit` method now accepts a Fit enum value.
 - the `crop` method now accepts a CropPosition enum value.
 - the `focalCrop` method has the $zoom parameter removed.
+- the `watermark` method has been renamed to the `insert` method and accepts additional parameters.
+- the `watermarkOpacity`, `watermarkPadding`, `watermarkHeight` and `watermarkWidth` methods have been removed.
