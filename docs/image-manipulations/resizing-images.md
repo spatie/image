@@ -80,7 +80,7 @@ $image
 
 ```php
 Image::load('example.jpg')
-    ->fit(Manipulations::FIT_STRETCH, 450, 150)
+    ->fit(Fit:Stretch, 450, 150)
     ->save();
 ```
 
