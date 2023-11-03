@@ -397,7 +397,7 @@ class ImagickDriver implements ImageDriver
 
     public function pixelate(int $pixelate = 50): self
     {
-        $this->ensureNumberBetween($pixelate, 0, 1000, 'pixelate');
+        $this->ensureNumberBetween($pixelate, 0, 100, 'pixelate');
 
         $width = $this->getWidth();
         $height = $this->getHeight();
