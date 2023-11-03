@@ -91,17 +91,17 @@ Image::load('example.jpg')
 By calling the `crop` method part of the image will be cropped to the given `$width` and `$height` dimensions (pixels). Use the `$cropMethod` to specify which part will be cropped out.
 
 ```php
-$image->crop(string $cropMethod, int $width, int $height);
+$image->crop(int $width, int $height, CropPosition $position = CropPosition::Center);
 ```
 
-The following `$cropMethod`s are available through constants of the `Manipulations` class:
-`CROP_TOP_LEFT`, `CROP_TOP`, `CROP_TOP_RIGHT`, `CROP_LEFT`, `CROP_CENTER`, `CROP_RIGHT`, `CROP_BOTTOM_LEFT`, `CROP_BOTTOM`, `CROP_BOTTOM_RIGHT`.
+The following `CropPosition`s are available on the enum:
+`TopLeft`, `Top`, `TopRight`, `Left`, `Center`, `Right`, `BottomLeft`, `Bottom`, `BottomRight`.
 
 ### Example usage
 
 ```php
 Image::load('example.jpg')
-    ->crop(Manipulations::CROP_TOP_RIGHT, 250, 250)
+    ->crop(250, 250, CropPosition::TopRight)
     ->save();
 ```
 

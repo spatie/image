@@ -25,3 +25,4 @@ $image = Image::useImageDriver(ImageDriver::Imagick)->load('path/to/image.jpg');
 - the `orientation` method now accepts a Orientation enum value.
 - the `flip` method now accepts a FlipDirection enum value.
 - the `fit` method now accepts a Fit enum value.
+- the `crop` method now accepts a CropPosition enum value.
