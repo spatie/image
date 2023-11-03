@@ -55,7 +55,7 @@ $image->orientation();
 
 ![Border](../../images/example-orientation.jpg)
 
-The accepted values are available as the following constants on the `Manipulations` class:
+The accepted values are:
 
 - `Orientation::Rotate0`
 - `Orientation::Rotate90`
