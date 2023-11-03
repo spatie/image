@@ -9,8 +9,6 @@ it('can resize an image', function (ImageDriver $driver) {
 
     $image = $driver->load(getTestJpg())->resize(100, 70)->save($targetFile);
 
-    ray($image->getWidth(), $image->getHeight());
-
     expect($image->getWidth())->toBe(100);
     expect($image->getHeight())->toBe(70);
 
