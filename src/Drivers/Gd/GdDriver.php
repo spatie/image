@@ -36,6 +36,8 @@ class GdDriver implements ImageDriver
 
     protected int $quality = -1;
 
+    protected string $originalPath;
+
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
         $image = imagecreatetruecolor($width, $height);
@@ -58,6 +60,7 @@ class GdDriver implements ImageDriver
     {
         $this->optimize = false;
         $this->quality = -1;
+        $this->originalPath = $path;
 
         $this->setExif($path);
 
@@ -116,8 +119,12 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function save(string $path): self
+    public function save(string $path = null): self
     {
+        if (!$path) {
+            $path = $this->originalPath;
+        }
+
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
         switch (strtolower($extension)) {

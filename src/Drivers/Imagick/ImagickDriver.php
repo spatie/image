@@ -35,6 +35,8 @@ class ImagickDriver implements ImageDriver
 
     protected array $exif = [];
 
+    protected string $originalPath;
+
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
         $backgroundColor = new ImagickColor($backgroundColor);
@@ -63,6 +65,8 @@ class ImagickDriver implements ImageDriver
 
     public function load(string $path): self
     {
+        $this->originalPath = $path;
+
         $this->optimize = false;
 
         $this->image = new Imagick($path);
@@ -202,8 +206,12 @@ class ImagickDriver implements ImageDriver
         return $color->format($colorFormat);
     }
 
-    public function save(string $path): ImageDriver
+    public function save(string $path = null): ImageDriver
     {
+        if (!$path) {
+            $path = $this->originalPath;
+        }
+
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
         if (! in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
