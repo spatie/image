@@ -67,13 +67,13 @@ The accepted values are available as the following constants on the `Manipulatio
 Flip/mirror an image 'horizontally', 'vertically' or 'both'.
 
 ```php
-$image->flip(Manipulations::FLIP_HORIZONTALLY);
+$image->flip(FlipDirection::Horizontal);
 ```
 
 ![Border](../../images/example-flip-horizontally.jpg)
 
-The accepted values are available as the following constants on the `Manipulations` class:
+The accepted values are:
 
-- `Manipulations::FLIP_HORIZONTALLY`
-- `Manipulations::FLIP_VERTICALLY`
-- `Manipulations::FLIP_BOTH`
+- `FlipDirection::Vertical`
+- `FlipDirection::Horizontal`
+- `FlipDirection::Both`
