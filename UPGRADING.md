@@ -21,11 +21,13 @@ $image = Image::useImageDriver(ImageDriver::Imagick)->load('path/to/image.jpg');
 
 ## Other changes
 - The option to create a manipulations instance has been removed.
-- the `border` method now accepts a BorderType enum value, and it's parameters have been reordered.
-- the `orientation` method now accepts a Orientation enum value.
-- the `flip` method now accepts a FlipDirection enum value.
-- the `fit` method now accepts a Fit enum value.
-- the `crop` method now accepts a CropPosition enum value.
-- the `focalCrop` method has the $zoom parameter removed.
-- the `watermark` method has been renamed to the `insert` method and accepts additional parameters.
-- the `watermarkOpacity`, `watermarkPadding`, `watermarkHeight` and `watermarkWidth` methods have been removed.
+- The `apply` method has been removed.
+- Calling a manipulation method multiple times will now apply all manipulations.
+- The `border` method now accepts a BorderType enum value, and it's parameters have been reordered.
+- The `orientation` method now accepts a Orientation enum value.
+- The `flip` method now accepts a FlipDirection enum value.
+- The `fit` method now accepts a Fit enum value.
+- The `crop` method now accepts a CropPosition enum value.
+- The `focalCrop` method has the $zoom parameter removed.
+- The `watermark` method has been renamed to the `insert` method and accepts additional parameters.
+- v `watermarkOpacity`, `watermarkPadding`, `watermarkHeight` and `watermarkWidth` methods have been removed.
