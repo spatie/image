@@ -112,6 +112,7 @@ Image::load('example.jpg')
 The `focalCrop` method can be used to crop around an exact position. The center of the crop is controlled by the `$focalX` and `$focalY` values in percent (`0` - `100`).
 
 You can also zoom into your focal point, if needed. Zoom is controlled by a floating point ranging from `1` to `100`. Each step represents a 100% zoom, so passing 2 will be the same as viewing the image at 200%. The suggested range is 1-10.
+
 ```php
 $image->focalCrop(int $width, int $height, int $cropCenterX = null, $cropCenterY = null);
 ```
