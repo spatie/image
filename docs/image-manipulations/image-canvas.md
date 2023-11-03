@@ -41,20 +41,26 @@ The `Expand` type adds the border to the outside of the image and thus expands t
 
 ## Orientation
 
-The `orientation` method can be used to rotate the `Image` `90`, `180` or `270` degrees. 
+The `orientation` method can be used to rotate the `Image` by passing a Orientation enum value. 
 
 ```php
-$image->orientation(Manipulations::ORIENTATION_180);
+$image->orientation(Orientation::Rotate180);
+```
+
+When passing no parameters the orientation will be derived from the exif data of the image.
+
+```php
+$image->orientation();
 ```
 
 ![Border](../../images/example-orientation.jpg)
 
 The accepted values are available as the following constants on the `Manipulations` class:
 
-- `Manipulations::ORIENTATION_AUTO` (default EXIF orientation)
-- `Manipulations::ORIENTATION_90`
-- `Manipulations::ORIENTATION_180`
-- `Manipulations::ORIENTATION_270`
+- `Orientation::Rotate0`
+- `Orientation::Rotate90`
+- `Orientation::Rotate180`
+- `Orientation::Rotate270`
 
 ## Flip
 
