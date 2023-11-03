@@ -13,7 +13,7 @@ $image->blur(50);
 
 ![Blurred image](../../images/example-blur.jpg)
 
-## Pixelate
+## Pixelate![pixelate.png](..%2F..%2Ftests%2FTestSupport%2Ftemp%2Fimagick%2Fpixelate.png)
 
 The `pixelate` method pixelates the `Image`. The method accepts a value between `0` and `100`.
 
