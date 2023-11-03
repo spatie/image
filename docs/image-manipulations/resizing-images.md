@@ -24,6 +24,7 @@ Image::load('example.jpg')
 ![Example width 250px](../../images/example-resize-contain.jpg)
 
 ## Resize
+
 If you want to resize both height and width at the same time you can use the `resize` method.
 
 ```php
@@ -35,45 +36,45 @@ Image::load('example.jpg')->resize(250, 200);
 The `fit` method fits the image within the given `$width` and `$height` dimensions (pixels) using a certain `$fitMethod`.
 
 ```php
-$image->fit(string $fitMethod, int $width, int $height);
+$image->fit(Fit $fit, int $width, int $height);
 ```
 
-The following `$fitMethod`s are available through constants of the `Manipulations` class:
+The following `$fit`s are available through the `Fit` enum:
 
-#### `Manipulations::FIT_CONTAIN` (Default)
+#### `Fit::Contain` (Default)
 
 Resizes the image to fit within the width and height boundaries without cropping, distorting or altering the aspect ratio.
 
-#### `Manipulations::FIT_MAX`
+#### `Fit::Max`
 
 Resizes the image to fit within the width and height boundaries without cropping, distorting or altering the aspect ratio, and will also not increase the size of the image if it is smaller than the output size.
 
-#### `Manipulations::FIT_FILL`
+#### `Fit::Fill`
 
 Resizes the image to fit within the width and height boundaries without cropping or distorting the image, and the remaining space is filled with the background color. The resulting image will match the constraining dimensions.
+
+#### `Fit::Stretch`
+
+Stretches the image to fit the constraining dimensions exactly. The resulting image will fill the dimensions, and will not maintain the aspect ratio of the input image.
+
+#### `Fit::Crop`
+
+Resizes the image to fill the width and height boundaries and crops any excess image data. The resulting image will match the width and height constraints without distorting the image.
+
+
+#### `Manipulations::FillMax`
+
+Resizes the image to fit within the width and height boundaries without cropping but upscaling the image if it’s smaller. The finished image will have remaining space on either width or height (except if the aspect ratio of the new image is the same as the old image). The remaining space will be filled with the background color. The resulting image will match the constraining dimensions.
 
 ```php
 # Example of how to set background colour to fill remaining pixels
 
 $image
-    ->fit(Manipulations::FIT_FILL, 497, 290)
-    ->background('007698');
+    ->fit(Fit::Fill, 497, 290)
+    ->background('#ff5733');
 ```
 
 ![Blue background on fit filled JPG](../../images/example-background.png)
-
-#### `Manipulations::FIT_FILL_MAX`
-
-Resizes the image to fit within the width and height boundaries without cropping but upscaling the image if it’s smaller. The finished image will have remaining space on either width or height (except if the aspect ratio of the new image is the same as the old image). The remaining space will be filled with the background color. The resulting image will match the constraining dimensions.
-
-
-#### `Manipulations::FIT_STRETCH`
-
-Stretches the image to fit the constraining dimensions exactly. The resulting image will fill the dimensions, and will not maintain the aspect ratio of the input image.
-
-#### `Manipulations::FIT_CROP`
-
-Resizes the image to fill the width and height boundaries and crops any excess image data. The resulting image will match the width and height constraints without distorting the image.
 
 ### Example usage
 

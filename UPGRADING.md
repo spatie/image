@@ -24,3 +24,4 @@ $image = Image::useImageDriver(ImageDriver::Imagick)->load('path/to/image.jpg');
 - the `border` method now accepts a BorderType enum value, and it's parameters have been reordered.
 - the `orientation` method now accepts a Orientation enum value.
 - the `flip` method now accepts a FlipDirection enum value.
+- the `fit` method now accepts a Fit enum value.
