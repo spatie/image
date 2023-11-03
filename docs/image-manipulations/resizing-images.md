@@ -23,6 +23,13 @@ Image::load('example.jpg')
 
 ![Example width 250px](../../images/example-resize-contain.jpg)
 
+## Resize
+If you want to resize both height and width at the same time you can use the `resize` method.
+
+```php
+Image::load('example.jpg')->resize(250, 200);
+```
+
 ## Fit
 
 The `fit` method fits the image within the given `$width` and `$height` dimensions (pixels) using a certain `$fitMethod`.
