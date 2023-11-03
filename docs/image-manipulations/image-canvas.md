@@ -27,17 +27,17 @@ $image->border(15, BorderType::Shrink, '007698');
 
 ### Border types
 
-#### `Manipulations::BORDER_OVERLAY`
+#### `BorderType::Overlay`
 
 By default the border will be added as an overlay to the image.
 
-#### `Manipulations::BORDER_SHRINK`
+#### `BorderType::Shrink`
 
-The `BORDER_SHRINK` type shrinks the image to fit the border around. The canvas size stays the same.
+The `Shrink` type shrinks the image to fit the border around. The canvas size stays the same.
 
-#### `Manipulations::BORDER_EXPAND`
+#### `BorderType::Expand`
 
-The `BORDER_EXPAND` type adds the border to the outside of the image and thus expands the canvas.
+The `Expand` type adds the border to the outside of the image and thus expands the canvas.
 
 ## Orientation
 
