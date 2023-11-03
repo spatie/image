@@ -21,3 +21,4 @@ $image = Image::useImageDriver(ImageDriver::Imagick)->load('path/to/image.jpg');
 
 ## Other changes
 - The option to create a manipulations instance has been removed.
+- the `border` method now accepts a BorderType enum value, and it's parameters have been reordered.

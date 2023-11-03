@@ -17,10 +17,10 @@ $image->background('darkgray');
 
 ## Border
 
-The `border` method adds border with a certain `$width`, `$color` and `$borderType` to the `Image`. 
+The `border` method adds border with a certain `$width`, `$borderType` and `$color` to the `Image`. 
 
 ```php
-$image->border(15, '007698', Manipulations::BORDER_SHRINK);
+$image->border(15, BorderType::Shrink, '007698');
 ```
 
 ![Border](../../images/example-border.jpg)
