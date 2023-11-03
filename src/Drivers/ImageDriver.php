@@ -90,6 +90,10 @@ interface ImageDriver
 
     public function resize(int $width, int $height, array $constraints): self;
 
+    public function width(int $width): self;
+
+    public function height(int $height): self;
+
     public function border(int $width, BorderType $type, string $color = '000000'): self;
 
     public function quality(int $quality): self;

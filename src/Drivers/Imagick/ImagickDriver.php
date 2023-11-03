@@ -443,6 +443,20 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
+    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): self
+    {
+        $this->resize($width, $this->getHeight(), $constraints);
+
+        return $this;
+    }
+
+    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): self
+    {
+        $this->resize($this->getWidth(), $height, $constraints);
+
+        return $this;
+    }
+
     public function border(int $width, BorderType $type, string $color = '000000'): self
     {
         if ($type === BorderType::Shrink) {
