@@ -121,7 +121,7 @@ class GdDriver implements ImageDriver
 
     public function save(string $path = null): self
     {
-        if (!$path) {
+        if (! $path) {
             $path = $this->originalPath;
         }
 

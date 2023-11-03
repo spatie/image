@@ -208,7 +208,7 @@ class ImagickDriver implements ImageDriver
 
     public function save(string $path = null): ImageDriver
     {
-        if (!$path) {
+        if (! $path) {
             $path = $this->originalPath;
         }
 
