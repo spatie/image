@@ -49,7 +49,7 @@ it('can optimize an image with options format backward compatibility', function 
 
     Image::load(getTestFile('test.jpg'))
         ->optimize([Jpegoptim::class => [
-        '--all-progressive',
+            '--all-progressive',
         ]])
         ->save($targetFile);
 
@@ -76,7 +76,7 @@ it('can optimize an image using a provided optimizer chain', function () {
     expect($targetFile)->toBeFile();
 });
 
-it('can optimize an image specifying a desired timeout', function () {
+it('can optimize an image specifying a desired timeout with a configuration array key', function () {
     $targetFile = $this->tempDir->path('optimized.jpg');
 
     Image::load(getTestFile('test.jpg'))
@@ -89,6 +89,35 @@ it('can optimize an image specifying a desired timeout', function () {
                 ],
             ],
         ])
+        ->save($targetFile);
+
+    expect($targetFile)->toBeFile();
+});
+
+it('can optimize an image specifying a desired timeout with a method argument', function () {
+    $targetFile = $this->tempDir->path('optimized.jpg');
+
+    Image::load(getTestFile('test.jpg'))
+        ->setOptimizeChain(OptimizerChainFactory::create())
+        ->optimize([
+            'optimizers' => [
+                Jpegoptim::class => [
+                    '--all-progressive',
+                ],
+            ],
+        ], timeout: 120)
+        ->save($targetFile);
+
+    expect($targetFile)->toBeFile();
+});
+
+it('can optimize an image with options format backward compatibility and timeout parameter', function () {
+    $targetFile = $this->tempDir->path('optimized.jpg');
+
+    Image::load(getTestFile('test.jpg'))
+        ->optimize([Jpegoptim::class => [
+            '--all-progressive',
+        ]], timeout: 120)
         ->save($targetFile);
 
     expect($targetFile)->toBeFile();

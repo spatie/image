@@ -508,8 +508,12 @@ class Manipulations
     /**
      * Shave off some kilobytes by optimizing the image.
      */
-    public function optimize(array $optimizationOptions = []): static
+    public function optimize(array $optimizationOptions = [], ?int $timeout = null): static
     {
+        if ($timeout !== null) {
+            $optimizationOptions['timeout'] = $timeout;
+        }
+
         return $this->addManipulation('optimize', json_encode($optimizationOptions));
     }
 

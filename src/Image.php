@@ -140,8 +140,15 @@ class Image
         $optimizerChain = $this->optimizerChain ?? OptimizerChainFactory::create();
 
         if (count($optimizerChainConfiguration)) {
+            if (isset($optimizerChainConfiguration['timeout'])) {
+                $optimizerChain->setTimeout($optimizerChainConfiguration['timeout']);
+                // unsetting the 'timeout' key for the backward compatibility for configuration arrays not having the 'optimizers' key
+                unset($optimizerChainConfiguration['timeout']);
+            }
+
             $optimizersOptions = isset($optimizerChainConfiguration['optimizers'])
                 ? $optimizerChainConfiguration['optimizers']
+                // backward compatibility for configuration arrays not having the 'optimizers' key
                 : $optimizerChainConfiguration;
             $existingOptimizers = $optimizerChain->getOptimizers();
             $optimizers = array_map(function (array $optimizerOptions, string $optimizerClassName) use ($existingOptimizers) {
@@ -155,10 +162,6 @@ class Image
             }, $optimizersOptions, array_keys($optimizersOptions));
 
             $optimizerChain->setOptimizers($optimizers);
-
-            if (isset($optimizerChainConfiguration['timeout'])) {
-                $optimizerChain->setTimeout($optimizerChainConfiguration['timeout']);
-            }
         }
 
         $optimizerChain->optimize($path);
