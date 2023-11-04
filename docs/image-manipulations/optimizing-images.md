@@ -28,22 +28,31 @@ No matter where or how many times you call `optimize` in you chain, it will alwa
 
 ## Customizing the optimization
 
-You are able to customize the optimization by passing an options array to the `optimize` method:
-- `'timeout'` settings key lets you to set a custom timeout in seconds other than the default 60s. Adjusting this setting may be inevitable while working with large images (see e.g. [#187](https://github.com/spatie/image/pull/187))
-- `'optimizers'` settings key lets you to pass your own customized chain of optimizers as an array. The keys should be fully qualified class names of optimizers and the values should be the options that they should get
-
-Here's an example:
+You are able to customize the optimization by passing an options array to the `optimize` method. The `'optimizers'` settings key lets you to pass your own customized chain of optimizers as an array. The keys should be fully qualified class names of optimizers and the values should be the options that they should get.
 
 ```php
 Image::load('example.jpg')
     ->optimize([
-        'timeout' => 120,
         'optimizers' => [
             Jpegoptim::class => [
                 '--all-progressive',
             ],
         ],
     ])
+    ->save();
+```
+
+Besides the options array you may pass the `$timeout` argument. It lets you to set a custom timeout in seconds other than the default 60s. Adjusting this setting may be inevitable while working with large images (see e.g. [#187](https://github.com/spatie/image/pull/187)).
+
+```php
+Image::load('example.jpg')
+    ->optimize([
+        'optimizers' => [
+            Jpegoptim::class => [
+                '--all-progressive',
+            ],
+        ],
+    ], timeout: 120)
     ->save();
 ```
 
