@@ -587,7 +587,7 @@ class GdDriver implements ImageDriver
     {
         $resized = $this->getSize()->resize($width, $height, $constraints);
 
-        $this->modify($width, $height, 0, 0, $width, $height);
+        $this->modify($resized->width, $resized->height, 0, 0, $this->getWidth(), $this->getHeight());
 
         return $this;
     }

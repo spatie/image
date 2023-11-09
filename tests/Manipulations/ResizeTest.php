@@ -13,6 +13,4 @@ it('can resize an image', function (ImageDriver $driver) {
     expect($image->getHeight())->toBe(70);
 
     assertMatchesImageSnapshot($targetFile);
-
-    $this->fail('TODO: bug, results of resize on GD look like a crop, not a resize.');
 })->with('drivers');
