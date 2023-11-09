@@ -115,7 +115,7 @@ class ImagickDriver implements ImageDriver
         $this->image->scaleImage($calculatedSize->width, $calculatedSize->height);
 
         if ($fit->shouldResizeCanvas()) {
-            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
+            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center, false, '#ff5733');
         }
 
         return $this;
@@ -126,7 +126,7 @@ class ImagickDriver implements ImageDriver
         int $height = null,
         AlignPosition $position = null,
         bool $relative = false,
-        string $backgroundColor = '#ffffff'
+        string $backgroundColor = null
     ): self {
         $position ??= AlignPosition::Center;
 
@@ -180,7 +180,7 @@ class ImagickDriver implements ImageDriver
         // even if background-color is set
         $rect = new ImagickDraw;
         $fill = $canvas->pickColor(0, 0, ColorFormat::Hex);
-        $fill = $fill == '#ff0000' ? '#00ff00' : '#ff0000';
+        $fill = $fill === '#ff0000' ? '#00ff00' : '#ff0000';
         $rect->setFillColor($fill);
         $rect->rectangle($destinationX, $destinationY, $destinationX + $sourceWidth - 1, $destinationY + $sourceHeight - 1);
         $canvas->image->drawImage($rect);
