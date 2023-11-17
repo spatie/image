@@ -22,6 +22,7 @@ weight: 1
 - [Brightness](/image/v3/image-manipulations/adjustments#brightness)
 - [Contrast](/image/v3/image-manipulations/adjustments#contrast)
 - [Gamma](/image/v3/image-manipulations/adjustments#gamma)
+- [Colorize](/image/v3/image-manipulations/adjustments#colorize)
 
 ## Image canvas
 - [Background](/image/v3/image-manipulations/image-canvas#background)
