@@ -43,3 +43,20 @@ Image::load('example.jpg')
 ```
 
 To save the image in a different image format or with a different jpeg quality [see saving images](/image/v1/usage/saving-images).
+
+## Retrieve a base64 string
+
+Calling the `base64` method on an `Image` will return a base64 string of the image.
+
+```php
+Image::load('example.jpg')
+    ->base64();
+```
+
+By default the base64 string will be formatted as a jpeg and will include the mime type. 
+You can alter this by passing extra parameters:
+
+```php
+Image::load('example.jpg')
+    ->base64('jpeg', $prefixWithFormat = false);
+```
