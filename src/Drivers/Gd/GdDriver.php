@@ -156,7 +156,7 @@ class GdDriver implements ImageDriver
     {
         ob_start();
 
-       $this->format($imageFormat);
+        $this->format($imageFormat);
 
         $image_data = ob_get_contents();
         ob_end_clean();
