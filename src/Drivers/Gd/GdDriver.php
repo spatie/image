@@ -156,23 +156,7 @@ class GdDriver implements ImageDriver
     {
         ob_start();
 
-        switch (strtolower($imageFormat)) {
-            case 'jpg':
-            case 'jpeg':
-                imagejpeg($this->image, null, $this->quality);
-                break;
-            case 'png':
-                imagepng($this->image, null, $this->quality);
-                break;
-            case 'gif':
-                imagegif($this->image);
-                break;
-            case 'webp':
-                imagewebp($this->image);
-                break;
-            default:
-                throw UnsupportedImageFormat::make($imageFormat);
-        }
+       $this->format($imageFormat);
 
         $image_data = ob_get_contents();
         ob_end_clean();
@@ -687,5 +671,28 @@ class GdDriver implements ImageDriver
         }
 
         return round((100 - $this->quality) / 10);
+    }
+
+    public function format(string $format): ImageDriver
+    {
+        switch (strtolower($format)) {
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($this->image, $this->originalPath, $this->quality);
+                break;
+            case 'png':
+                imagepng($this->image, $this->originalPath, $this->pngCompression());
+                break;
+            case 'gif':
+                imagegif($this->image, $this->originalPath);
+                break;
+            case 'webp':
+                imagewebp($this->image, $this->originalPath);
+                break;
+            default:
+                throw UnsupportedImageFormat::make($format);
+        }
+
+        return $this;
     }
 }

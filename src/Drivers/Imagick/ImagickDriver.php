@@ -532,4 +532,11 @@ class ImagickDriver implements ImageDriver
 
         return $this;
     }
+
+    public function format(string $format): ImageDriver
+    {
+        $this->image->setFormat($format);
+
+        return $this;
+    }
 }

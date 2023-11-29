@@ -97,4 +97,6 @@ interface ImageDriver
     public function border(int $width, BorderType $type, string $color = '000000'): self;
 
     public function quality(int $quality): self;
+
+    public function format(string $format): self;
 }
