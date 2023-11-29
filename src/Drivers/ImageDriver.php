@@ -19,7 +19,7 @@ interface ImageDriver
 
     public function load(string $path): self;
 
-    public function save(string $path): self;
+    public function save(string $path = ''): self;
 
     public function getWidth(): int;
 
