@@ -10,6 +10,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Size;
+use Spatie\ImageOptimizer\OptimizerChain;
 
 interface ImageDriver
 {
@@ -99,4 +100,6 @@ interface ImageDriver
     public function quality(int $quality): self;
 
     public function format(string $format): self;
+
+    public function optimize(OptimizerChain $optimizerChain): self;
 }
