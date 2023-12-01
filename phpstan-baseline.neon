@@ -26,9 +26,24 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
+			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:exif\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Drivers/Gd/GdDriver.php
+
+		-
+			message: "#^Property Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:\\$exif type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Drivers/Gd/GdDriver.php
+
+		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
+
+		-
+			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:exif\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Drivers/ImageDriver.php
 
 		-
 			message: "#^Call to an undefined method Spatie\\\\Image\\\\Drivers\\\\Color\\:\\:getAlphaValue\\(\\)\\.$#"
@@ -53,6 +68,16 @@ parameters:
 		-
 			message: "#^Access to an undefined property Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:\\$image\\.$#"
 			count: 2
+			path: src/Drivers/Imagick/ImagickDriver.php
+
+		-
+			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:exif\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Drivers/Imagick/ImagickDriver.php
+
+		-
+			message: "#^Property Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:\\$exif type has no value type specified in iterable type array\\.$#"
+			count: 1
 			path: src/Drivers/Imagick/ImagickDriver.php
 
 		-
