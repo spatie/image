@@ -82,15 +82,15 @@ abstract class Color
             $result[3] = 1;
         } elseif (preg_match($rgbPattern, $colorValue, $matches)) {
             $result = [];
-            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? intval($matches[1]) : 0;
-            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? intval($matches[2]) : 0;
-            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? intval($matches[3]) : 0;
+            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int)($matches[1]) : 0;
+            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int)($matches[2]) : 0;
+            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int)($matches[3]) : 0;
             $result[3] = 1;
         } elseif (preg_match($rgbaPattern, $colorValue, $matches)) {
             $result = [];
-            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? intval($matches[1]) : 0;
-            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? intval($matches[2]) : 0;
-            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? intval($matches[3]) : 0;
+            $result[0] = ($matches[1] >= 0 && $matches[1] <= 255) ? (int)($matches[1]) : 0;
+            $result[1] = ($matches[2] >= 0 && $matches[2] <= 255) ? (int)($matches[2]) : 0;
+            $result[2] = ($matches[3] >= 0 && $matches[3] <= 255) ? (int)($matches[3]) : 0;
             $result[3] = ($matches[4] >= 0 && $matches[4] <= 1) ? $matches[4] : 0;
         } else {
             throw InvalidColor::make($colorValue);

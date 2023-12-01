@@ -72,7 +72,7 @@ class ImagickColor extends Color
         $red = $this->getRedValue();
         $green = $this->getGreenValue();
         $blue = $this->getBlueValue();
-        $alpha = intval(round($this->getAlphaValue() * 255));
+        $alpha = (int)(round($this->getAlphaValue() * 255));
 
         return ($alpha << 24) + ($red << 16) + ($green << 8) + $blue;
     }
