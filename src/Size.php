@@ -43,7 +43,7 @@ class Size
             ->resizeHeight($desiredHeight, $constraints);
 
         // @todo desiredWidth and desiredHeight can still be null here, which will cause an error
-        return $dominantHeightSize->fitsInto(new Size($desiredWidth, $desiredHeight))
+        return $dominantHeightSize->fitsInto(new self($desiredWidth, $desiredHeight))
             ? $dominantHeightSize
             : $dominantWidthSize;
     }
