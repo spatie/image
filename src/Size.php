@@ -9,9 +9,9 @@ use Spatie\Image\Enums\Constraint;
 class Size
 {
     public function __construct(
-        public $width,
-        public $height,
-        public $pivot = new Point()
+        public int|float $width,
+        public int|float $height,
+        public Point $pivot = new Point()
     ) {
     }
 
@@ -124,7 +124,7 @@ class Size
         return ($this->width <= $size->width) && ($this->height <= $size->height);
     }
 
-    public function align(AlignPosition $position, $offsetX = 0, $offsetY = 0): self
+    public function align(AlignPosition $position, int|float $offsetX = 0, int|float $offsetY = 0): self
     {
 
         switch ($position) {

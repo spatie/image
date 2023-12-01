@@ -6,7 +6,7 @@ namespace Spatie\Image\Drivers\Concerns;
 trait CalculatesFocalCropCoordinates
 {
     /** @return array<int> */
-    protected function calculateFocalCropCoordinates(int $width, int $height, $cropCenterX, $cropCenterY): array
+    protected function calculateFocalCropCoordinates(int $width, int $height, int|float $cropCenterX, int|float $cropCenterY): array
     {
         $width = min($width, $this->getWidth());
         $height = min($height, $this->getHeight());

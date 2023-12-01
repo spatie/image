@@ -146,10 +146,10 @@ class ImagickColor extends Color
     }
 
     private function setPixel(
-        $red,
-        $green,
-        $blue,
-        $alpha = null
+        int|float $red,
+        int|float $green,
+        int|float $blue,
+        int|float|null $alpha = null
     ): ImagickPixel {
         $alpha = is_null($alpha) ? 1 : $alpha;
 

@@ -417,7 +417,7 @@ class GdDriver implements ImageDriver
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 
-    public function focalCrop(int $width, int $height, $cropCenterX = null, $cropCenterY = null): self
+    public function focalCrop(int $width, int $height, int $cropCenterX = null, int $cropCenterY = null): self
     {
         [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
             $width,
