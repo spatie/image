@@ -25,7 +25,7 @@ abstract class Color
 
     abstract public function getHex(string $prefix): string;
 
-    /** @return array<int> */
+    /** @return array<int, float|int> */
     abstract public function getArray(): array;
 
     abstract public function getRgba(): string;
