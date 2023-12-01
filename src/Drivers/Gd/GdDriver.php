@@ -664,7 +664,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    protected function pngCompression(): int
+    protected function pngCompression(): float
     {
         if ($this->quality === -1) {
             return -1;

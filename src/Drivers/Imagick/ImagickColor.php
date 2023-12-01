@@ -127,17 +127,17 @@ class ImagickColor extends Color
 
     public function getRedValue(): int
     {
-        return round($this->pixel->getColorValue(Imagick::COLOR_RED) * 255);
+        return (int) round($this->pixel->getColorValue(Imagick::COLOR_RED) * 255);
     }
 
     public function getGreenValue(): int
     {
-        return round($this->pixel->getColorValue(Imagick::COLOR_GREEN) * 255);
+        return (int) round($this->pixel->getColorValue(Imagick::COLOR_GREEN) * 255);
     }
 
     public function getBlueValue(): int
     {
-        return round($this->pixel->getColorValue(Imagick::COLOR_BLUE) * 255);
+        return (int) round($this->pixel->getColorValue(Imagick::COLOR_BLUE) * 255);
     }
 
     public function getAlphaValue(): float
