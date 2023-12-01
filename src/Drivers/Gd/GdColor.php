@@ -40,6 +40,8 @@ class GdColor extends Color
             [$red, $green, $blue] = $value;
             $this->alpha = 0;
 
+        } else {
+            throw InvalidColor::make($value);
         }
 
         $this->red = $red;

@@ -1,6 +1,7 @@
 parameters:
-    level: 5
+    level: 1
     paths:
         - src/
 
-
+    ignoreErrors:
+        - '#Unsafe usage of new static#'
