@@ -124,7 +124,7 @@ class Size
         return ($this->width <= $size->width) && ($this->height <= $size->height);
     }
 
-    public function align(AlignPosition $position, int|float $offsetX = 0, int|float $offsetY = 0): self
+    public function align(AlignPosition $position, int $offsetX = 0, int $offsetY = 0): self
     {
 
         switch ($position) {

@@ -137,7 +137,7 @@ class GdColor extends Color
             $delta['a'] > $alphaTolerance;
     }
 
-    private function alpha2gd(float $input): float
+    private function alpha2gd(float $input): int
     {
         $oldMin = 0;
         $oldMax = 1;
@@ -145,6 +145,6 @@ class GdColor extends Color
         $newMin = 127;
         $newMax = 0;
 
-        return ceil(((($input - $oldMin) * ($newMax - $newMin)) / ($oldMax - $oldMin)) + $newMin);
+        return (int) ceil(((($input - $oldMin) * ($newMax - $newMin)) / ($oldMax - $oldMin)) + $newMin);
     }
 }
