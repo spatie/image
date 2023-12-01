@@ -10,7 +10,7 @@ abstract class Color
 {
     abstract public function initFromInteger(int $value): self;
 
-    /** @param array<positive-int> $value */
+    /** @param  array<positive-int>  $value */
     abstract public function initFromArray(array $value): self;
 
     abstract public function initFromString(string $value): self;

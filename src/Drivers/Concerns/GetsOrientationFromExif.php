@@ -6,7 +6,7 @@ use Spatie\Image\Enums\Orientation;
 
 trait GetsOrientationFromExif
 {
-    /** @param array{'Orientation'?: int} $exif */
+    /** @param  array{'Orientation'?: int}  $exif */
     public function getOrientationFromExif(array $exif): Orientation
     {
         if (! isset($exif['Orientation'])) {

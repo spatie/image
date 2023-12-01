@@ -90,13 +90,13 @@ interface ImageDriver
 
     public function image(): mixed;
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function resize(int $width, int $height, array $constraints): self;
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function width(int $width, array $constraints = []): self;
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function height(int $height, array $constraints = []): self;
 
     public function border(int $width, BorderType $type, string $color = '000000'): self;

@@ -20,7 +20,7 @@ class Size
         return $this->width / $this->height;
     }
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function resize(
         int $desiredWidth = null,
         int $desiredHeight = null,
@@ -47,7 +47,7 @@ class Size
             : $dominantWidthSize;
     }
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function resizeWidth(
         int $desiredWidth = null,
         array $constraints = []
@@ -83,7 +83,7 @@ class Size
         return $this;
     }
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function resizeHeight(int $desiredHeight = null, array $constraints = []): self
     {
         $originalWidth = $this->width;
