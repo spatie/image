@@ -149,7 +149,7 @@ class ImagickColor extends Color
         int|float $red,
         int|float $green,
         int|float $blue,
-        int|float|null $alpha = null
+        int|float $alpha = null
     ): ImagickPixel {
         $alpha = is_null($alpha) ? 1 : $alpha;
 
