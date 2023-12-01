@@ -215,7 +215,7 @@ class GdDriver implements ImageDriver
 
         $transparentColorValue = imagecolortransparent($this->image);
 
-        if ($transparentColorValue != -1) {
+        if ($transparentColorValue !== -1) {
             $rgba = imagecolorsforindex($newImage, $transparentColorValue);
 
             $transparentColor = imagecolorallocatealpha(
@@ -656,6 +656,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
+    /** @param int<-1, 100> $quality */
     public function quality(int $quality): self
     {
         $this->ensureNumberBetween($quality, -1, 100, 'quality');

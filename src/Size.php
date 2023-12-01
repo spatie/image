@@ -9,8 +9,8 @@ use Spatie\Image\Enums\Constraint;
 class Size
 {
     public function __construct(
-        public int|float $width,
-        public int|float $height,
+        public int $width,
+        public int $height,
         public Point $pivot = new Point()
     ) {
     }
@@ -42,6 +42,7 @@ class Size
             ->resizeWidth($desiredWidth, $constraints)
             ->resizeHeight($desiredHeight, $constraints);
 
+        // @todo desiredWidth and desiredHeight can still be null here, which will cause an error
         return $dominantHeightSize->fitsInto(new Size($desiredWidth, $desiredHeight))
             ? $dominantHeightSize
             : $dominantWidthSize;
