@@ -69,7 +69,7 @@ class Size
         }
 
         if (in_array(Constraint::PreserveAspectRatio, $constraints)) {
-            $calculatedHeight = max(1, (int)(round($this->width / (new Size($originalWidth, $originalHeight))->aspectRatio())));
+            $calculatedHeight = max(1, (int) (round($this->width / (new Size($originalWidth, $originalHeight))->aspectRatio())));
 
             if (in_array(Constraint::DoNotUpsize, $constraints)) {
                 $this->height = $calculatedHeight > $maximumHeight
@@ -105,7 +105,7 @@ class Size
         }
 
         if (in_array(Constraint::PreserveAspectRatio, $constraints)) {
-            $calculatedWidth = max(1, (int)(round($this->height * (new Size($originalWidth, $originalHeight))->aspectRatio())));
+            $calculatedWidth = max(1, (int) (round($this->height * (new Size($originalWidth, $originalHeight))->aspectRatio())));
 
             if (in_array(Constraint::DoNotUpsize, $constraints)) {
                 $this->width = $calculatedWidth > $maximumWidth
@@ -134,7 +134,7 @@ class Size
             case AlignPosition::TopMiddle:
             case AlignPosition::CenterTop:
             case AlignPosition::MiddleTop:
-                $x = (int)($this->width / 2);
+                $x = (int) ($this->width / 2);
                 $y = 0 + $offsetY;
                 break;
 
@@ -150,7 +150,7 @@ class Size
             case AlignPosition::CenterLeft:
             case AlignPosition::MiddleLeft:
                 $x = 0 + $offsetX;
-                $y = (int)($this->height / 2);
+                $y = (int) ($this->height / 2);
                 break;
 
             case AlignPosition::Right:
@@ -159,7 +159,7 @@ class Size
             case AlignPosition::CenterRight:
             case AlignPosition::MiddleRight:
                 $x = $this->width - $offsetX;
-                $y = (int)($this->height / 2);
+                $y = (int) ($this->height / 2);
                 break;
 
             case AlignPosition::BottomLeft:
@@ -173,7 +173,7 @@ class Size
             case AlignPosition::BottomMiddle:
             case AlignPosition::CenterBottom:
             case AlignPosition::MiddleBottom:
-                $x = (int)($this->width / 2);
+                $x = (int) ($this->width / 2);
                 $y = $this->height - $offsetY;
                 break;
 
@@ -187,8 +187,8 @@ class Size
             case AlignPosition::Middle:
             case AlignPosition::CenterCenter:
             case AlignPosition::MiddleMiddle:
-                $x = (int)($this->width / 2) + $offsetX;
-                $y = (int)($this->height / 2) + $offsetY;
+                $x = (int) ($this->width / 2) + $offsetX;
+                $y = (int) ($this->height / 2) + $offsetY;
                 break;
 
             default:

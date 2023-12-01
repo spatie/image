@@ -409,7 +409,7 @@ class ImagickDriver implements ImageDriver
         $width = $this->getWidth();
         $height = $this->getHeight();
 
-        $this->image->scaleImage(max(1, (int)($width / $pixelate)), max(1, (int)($height / $pixelate)));
+        $this->image->scaleImage(max(1, (int) ($width / $pixelate)), max(1, (int) ($height / $pixelate)));
         $this->image->scaleImage($width, $height);
 
         return $this;
