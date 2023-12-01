@@ -664,13 +664,14 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    protected function pngCompression(): float
+    /** @return int<-1, 9> */
+    protected function pngCompression(): int
     {
         if ($this->quality === -1) {
             return -1;
         }
 
-        return round((100 - $this->quality) / 10);
+        return (int) round((100 - $this->quality) / 10);
     }
 
     public function format(string $format): ImageDriver
