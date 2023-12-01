@@ -6,7 +6,7 @@ use Exception;
 
 class InvalidManipulation extends Exception
 {
-    public static function valueNotInRange(string $name, $invalidValue, $minValue, $maxValue): self
+    public static function valueNotInRange(string $name, int|float $invalidValue, int|float $minValue, int|float $maxValue): self
     {
         $name = ucfirst($name);
 

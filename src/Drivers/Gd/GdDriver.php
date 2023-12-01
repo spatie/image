@@ -417,7 +417,7 @@ class GdDriver implements ImageDriver
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 
-    public function focalCrop(int $width, int $height, $cropCenterX = null, $cropCenterY = null): self
+    public function focalCrop(int $width, int $height, int $cropCenterX = null, int $cropCenterY = null): self
     {
         [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
             $width,
@@ -664,13 +664,14 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
+    /** @return int<-1, 9> */
     protected function pngCompression(): int
     {
         if ($this->quality === -1) {
             return -1;
         }
 
-        return round((100 - $this->quality) / 10);
+        return (int) round((100 - $this->quality) / 10);
     }
 
     public function format(string $format): ImageDriver

@@ -72,7 +72,7 @@ class ImagickColor extends Color
         $red = $this->getRedValue();
         $green = $this->getGreenValue();
         $blue = $this->getBlueValue();
-        $alpha = intval(round($this->getAlphaValue() * 255));
+        $alpha = (int) (round($this->getAlphaValue() * 255));
 
         return ($alpha << 24) + ($red << 16) + ($green << 8) + $blue;
     }
@@ -127,17 +127,17 @@ class ImagickColor extends Color
 
     public function getRedValue(): int
     {
-        return round($this->pixel->getColorValue(Imagick::COLOR_RED) * 255);
+        return (int) round($this->pixel->getColorValue(Imagick::COLOR_RED) * 255);
     }
 
     public function getGreenValue(): int
     {
-        return round($this->pixel->getColorValue(Imagick::COLOR_GREEN) * 255);
+        return (int) round($this->pixel->getColorValue(Imagick::COLOR_GREEN) * 255);
     }
 
     public function getBlueValue(): int
     {
-        return round($this->pixel->getColorValue(Imagick::COLOR_BLUE) * 255);
+        return (int) round($this->pixel->getColorValue(Imagick::COLOR_BLUE) * 255);
     }
 
     public function getAlphaValue(): float
@@ -146,10 +146,10 @@ class ImagickColor extends Color
     }
 
     private function setPixel(
-        $red,
-        $green,
-        $blue,
-        $alpha = null
+        int|float $red,
+        int|float $green,
+        int|float $blue,
+        int|float $alpha = null
     ): ImagickPixel {
         $alpha = is_null($alpha) ? 1 : $alpha;
 

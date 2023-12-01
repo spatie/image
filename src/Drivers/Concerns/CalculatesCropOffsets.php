@@ -7,6 +7,7 @@ use Spatie\Image\Enums\CropPosition;
 /** @mixin \Spatie\Image\Drivers\ImageDriver */
 trait CalculatesCropOffsets
 {
+    /** @return array<positive-int> */
     protected function calculateCropOffsets(int $width, int $height, CropPosition $position): array
     {
         [$offsetPercentageX, $offsetPercentageY] = $position->offsetPercentages();

@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "pestphp/pest": "^2.0",
+        "phpstan/phpstan": "^1.10",
         "spatie/pest-plugin-snapshots": "^2.1",
         "spatie/pixelmatch-php": "^1.0",
         "spatie/ray": "^1.37",
@@ -44,7 +45,9 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest"
+        "test": "vendor/bin/pest",
+        "analyse": "phpstan analyse --memory-limit=1G --no-progress",
+        "baseline": "./vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline"
     },
     "config": {
         "sort-packages": true,
