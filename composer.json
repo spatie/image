@@ -46,7 +46,8 @@
     },
     "scripts": {
         "test": "vendor/bin/pest",
-        "analyse": "phpstan analyse --memory-limit=1G --no-progress"
+        "analyse": "phpstan analyse --memory-limit=1G --no-progress",
+        "baseline": "./vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline"
     },
     "config": {
         "sort-packages": true,

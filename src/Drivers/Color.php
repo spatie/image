@@ -8,22 +8,24 @@ use Spatie\Image\Exceptions\InvalidColor;
 
 abstract class Color
 {
-    abstract public function initFromInteger(int $value);
+    abstract public function initFromInteger(int $value): self;
 
-    abstract public function initFromArray(array $value);
+    /** @param array<positive-int> $value */
+    abstract public function initFromArray(array $value): self;
 
-    abstract public function initFromString(string $value);
+    abstract public function initFromString(string $value): self;
 
-    abstract public function initFromObject(ImagickPixel $value);
+    abstract public function initFromObject(ImagickPixel $value): self;
 
-    abstract public function initFromRgb(int $red, int $green, int $blue);
+    abstract public function initFromRgb(int $red, int $green, int $blue): self;
 
-    abstract public function initFromRgba(int $red, int $green, int $blue, float $alpha);
+    abstract public function initFromRgba(int $red, int $green, int $blue, float $alpha): self;
 
     abstract public function getInt(): int;
 
     abstract public function getHex(string $prefix): string;
 
+    /** @return array<positive-int> */
     abstract public function getArray(): array;
 
     abstract public function getRgba(): string;

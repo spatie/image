@@ -39,11 +39,10 @@ class ImagickDriver implements ImageDriver
 
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
-        $backgroundColor = new ImagickColor($backgroundColor);
-
+        $color = new ImagickColor($backgroundColor);
         $image = new Imagick();
 
-        $image->newImage($width, $height, $backgroundColor->getPixel(), 'png');
+        $image->newImage($width, $height, $color->getPixel(), 'png');
         $image->setType(Imagick::IMGTYPE_UNDEFINED);
         $image->setImageType(Imagick::IMGTYPE_UNDEFINED);
         $image->setColorspace(Imagick::COLORSPACE_UNDEFINED);
