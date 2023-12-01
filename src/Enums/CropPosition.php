@@ -14,7 +14,7 @@ enum CropPosition: string
     case Bottom = 'bottom';
     case BottomRight = 'bottomRight';
 
-    /** @return array<positive-int> */
+    /** @return array<int> */
     public function offsetPercentages(): array
     {
         return match ($this) {
