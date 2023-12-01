@@ -656,7 +656,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    /** @param int<-1, 100> $quality */
+    /** @param  int<-1, 100>  $quality */
     public function quality(int $quality): self
     {
         $this->ensureNumberBetween($quality, -1, 100, 'quality');
