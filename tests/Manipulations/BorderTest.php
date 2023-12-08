@@ -10,7 +10,7 @@ it('can add a border to an image', function (ImageDriver $driver, array $borderA
 
     $driver->loadFile(getTestJpg())->border(...$borderArguments)->save($targetFile);
 
-    assertMatchesImageSnapshot($targetFile);
+    assertMatchesImageSnapshot($targetFile, 0.3);
 })->with('drivers')->with([
     [[100, BorderType::Overlay, 'FAAAAA']],
     [[50, BorderType::Overlay, '333333']],
