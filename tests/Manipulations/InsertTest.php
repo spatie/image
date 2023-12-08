@@ -11,7 +11,7 @@ it('can insert another image', function (
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/watermark.png");
 
-    $testImage = $driver->load(getTestJpg());
+    $testImage = $driver->loadFile(getTestJpg());
 
     $testImage
         ->insert(getTestFile('watermark.png'), ...$insertArguments)

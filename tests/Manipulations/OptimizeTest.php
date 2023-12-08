@@ -17,8 +17,8 @@ it('can optimize an image', function (ImageDriver $driver) {
             '-m85',
         ]));
 
-    $driver->load($testFile)->optimize($optimizerChain)->save($optimizedFile);
-    $driver->load($testFile)->save($controlFile);
+    $driver->loadFile($testFile)->optimize($optimizerChain)->save($optimizedFile);
+    $driver->loadFile($testFile)->save($controlFile);
 
     expect(filesize($optimizedFile))->toBeLessThan(filesize($controlFile));
 })->with('drivers');

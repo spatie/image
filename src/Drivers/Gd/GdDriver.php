@@ -56,7 +56,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function load(string $path): self
+    public function loadFile(string $path): self
     {
         $this->optimize = false;
         $this->quality = -1;
@@ -531,7 +531,7 @@ class GdDriver implements ImageDriver
         int $y = 0,
     ): self {
         if (is_string($otherImage)) {
-            $otherImage = (new self())->load($otherImage);
+            $otherImage = (new self())->loadFile($otherImage);
         }
 
         $imageSize = $this->getSize()->align($position, $x, $y);

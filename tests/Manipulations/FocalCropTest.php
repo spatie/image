@@ -12,11 +12,11 @@ it('can perform a crop centered around given coordinates', function (
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/focal-crop.png");
 
-    $driver->load(getTestJpg())->focalCrop(...$focalCropArguments)->save($targetFile);
+    $driver->loadFile(getTestJpg())->focalCrop(...$focalCropArguments)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 
-    $savedImage = $driver->load($targetFile);
+    $savedImage = $driver->loadFile($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
 

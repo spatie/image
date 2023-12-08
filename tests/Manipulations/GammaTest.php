@@ -9,7 +9,7 @@ use function Spatie\Snapshots\assertMatchesImageSnapshot;
 it('can apply gamma to an image', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/gamma.png");
 
-    $driver->load(getTestJpg())->gamma(4.8)->save($targetFile);
+    $driver->loadFile(getTestJpg())->gamma(4.8)->save($targetFile);
 
     assertMatchesImageSnapshot($targetFile);
 })->with('drivers');

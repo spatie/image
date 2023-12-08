@@ -62,7 +62,7 @@ class ImagickDriver implements ImageDriver
         return $this->image;
     }
 
-    public function load(string $path): self
+    public function loadFile(string $path): self
     {
         $this->originalPath = $path;
 
@@ -406,7 +406,7 @@ class ImagickDriver implements ImageDriver
         int $y = 0,
     ): self {
         if (is_string($otherImage)) {
-            $otherImage = (new self())->load($otherImage);
+            $otherImage = (new self())->loadFile($otherImage);
         }
 
         $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);

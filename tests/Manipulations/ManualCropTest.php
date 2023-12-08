@@ -12,11 +12,11 @@ it('can contain an image in the given dimensions', function (
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.png");
 
-    $driver->load(getTestJpg())->manualCrop(...$dimensions)->save($targetFile);
+    $driver->loadFile(getTestJpg())->manualCrop(...$dimensions)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 
-    $savedImage = $driver->load($targetFile);
+    $savedImage = $driver->loadFile($targetFile);
 
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);

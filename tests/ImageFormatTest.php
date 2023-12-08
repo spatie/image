@@ -7,7 +7,7 @@ use Spatie\Image\Image;
 it('can save supported formats', function (ImageDriver $driver, string $format) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
 
-    $driver->load(getTestJpg())->save($targetFile);
+    $driver->loadFile(getTestJpg())->save($targetFile);
 
     expect($targetFile)->toHaveMime("image/$format");
 })->with('drivers', ['jpeg', 'gif', 'png', 'webp']);
@@ -18,7 +18,7 @@ it('can save tiff', function () {
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
 
-    $driver->load(getTestJpg())->save($targetFile);
+    $driver->loadFile(getTestJpg())->save($targetFile);
 
     expect($targetFile)->toHaveMime("image/$format");
 })->skipIfImagickDoesNotSupportFormat('tiff');
@@ -29,7 +29,7 @@ it('can save heic', function () {
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
 
-    $driver->load(getTestJpg())->save($targetFile);
+    $driver->loadFile(getTestJpg())->save($targetFile);
 
     expect($targetFile)->toHaveMime("image/$format");
 })->skipIfImagickDoesNotSupportFormat('heic');
@@ -38,12 +38,12 @@ it('throws an error for unsupported GD image formats', function (string $format)
     $driver = Image::useImageDriver('gd');
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
-    $driver->load(getTestJpg())->save($targetFile);
+    $driver->loadFile(getTestJpg())->save($targetFile);
 
 })->with(['heic', 'tiff'])->throws(UnsupportedImageFormat::class);
 
 it('can not save a bogus extension', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.foobar");
 
-    $driver->load(getTestJpg())->save($targetFile);
+    $driver->loadFile(getTestJpg())->save($targetFile);
 })->with('drivers')->throws(UnsupportedImageFormat::class);

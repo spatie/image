@@ -19,8 +19,6 @@ interface ImageDriver
 
     public function driverName(): string;
 
-//    public function load(string $path): self;
-
     public function save(string $path = ''): self;
 
     public function getWidth(): int;
@@ -66,6 +64,8 @@ interface ImageDriver
     public function manualCrop(int $width, int $height, int $x = 0, int $y = 0): self;
 
     public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): self;
+
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): self;
 
     public function base64(string $imageFormat): string;
 

@@ -13,7 +13,7 @@ it('can load an image', function () {
 });
 
 it('can load an image with a custom driver', function () {
-    $image = Image::useImageDriver(\Spatie\Image\Enums\ImageDriver::Gd)->load(getTestJpg());
+    $image = Image::useImageDriver(\Spatie\Image\Enums\ImageDriver::Gd)->loadFile(getTestJpg());
 
     expect($image)->toBeInstanceOf(ImageDriver::class);
 });
@@ -21,7 +21,7 @@ it('can load an image with a custom driver', function () {
 it('will use imagick if it is available', function () {
     $image = Image::load(getTestJpg());
 
-    expect($image)->toBeInstanceOf(ImagickDriver::class);
+    expect($image->driverName())->toEqual('imagick');
 });
 
 it('will throw an exception when no file exists at the given path', function () {

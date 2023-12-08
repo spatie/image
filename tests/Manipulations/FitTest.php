@@ -13,11 +13,11 @@ it('can contain an image in the given dimensions', function (
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-contain.png");
 
-    $driver->load(getTestJpg())->fit(Fit::Contain, ...$fitDimensions)->save($targetFile);
+    $driver->loadFile(getTestJpg())->fit(Fit::Contain, ...$fitDimensions)->save($targetFile);
 
     expect($targetFile)->toBeFile();
 
-    $savedImage = $driver->load($targetFile);
+    $savedImage = $driver->loadFile($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
 
@@ -36,9 +36,9 @@ it('can fill an image in the given dimensions', function (
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-fill.png");
 
-    $driver->load(getTestJpg())->fit(Fit::Fill, ...$fitDimensions)->save($targetFile);
+    $driver->loadFile(getTestJpg())->fit(Fit::Fill, ...$fitDimensions)->save($targetFile);
 
-    $savedImage = $driver->load($targetFile);
+    $savedImage = $driver->loadFile($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
     assertMatchesImageSnapshot($targetFile);
@@ -56,9 +56,9 @@ it('can fill and stretch an image in the given dimensions', function (
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-max.png");
 
-    $driver->load(getTestJpg())->fit(Fit::Max, ...$fitDimensions)->save($targetFile);
+    $driver->loadFile(getTestJpg())->fit(Fit::Max, ...$fitDimensions)->save($targetFile);
 
-    $savedImage = $driver->load($targetFile);
+    $savedImage = $driver->loadFile($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
     assertMatchesImageSnapshot($targetFile);
@@ -76,9 +76,9 @@ it('can stretch an image to the given dimensions', function (
 ) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-stretch.png");
 
-    $driver->load(getTestJpg())->fit(Fit::Stretch, ...$fitDimensions)->save($targetFile);
+    $driver->loadFile(getTestJpg())->fit(Fit::Stretch, ...$fitDimensions)->save($targetFile);
 
-    $savedImage = $driver->load($targetFile);
+    $savedImage = $driver->loadFile($targetFile);
     expect($savedImage->getWidth())->toBe($expectedWidth);
     expect($savedImage->getHeight())->toBe($expectedHeight);
     assertMatchesImageSnapshot($targetFile);
@@ -92,7 +92,7 @@ it('can stretch an image to the given dimensions', function (
 it('can fit and add a background', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-background.png");
 
-    $driver->load(getTestJpg())
+    $driver->loadFile(getTestJpg())
         ->fit(Fit::Fill, 2000, 100)
         //->background('ff5733')
         ->save($targetFile);

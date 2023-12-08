@@ -9,6 +9,7 @@ use Spatie\Image\Drivers\Imagick\ImagickDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
+use Spatie\Image\Enums\Constraint;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
@@ -24,7 +25,7 @@ class Image implements ImageDriver
 
     protected ImageDriver $imageDriver;
 
-    public function __construct(protected string $pathToImage)
+    public function __construct(protected ?string $pathToImage = null)
     {
         $this->imageDriver = new ImagickDriver();
     }
@@ -35,7 +36,14 @@ class Image implements ImageDriver
             throw CouldNotLoadImage::fileDoesNotExist($pathToImage);
         }
 
-        return (new self($pathToImage))->imageDriver->load($pathToImage);
+        return new static($pathToImage);
+    }
+
+    public function loadFile(string $pathToImage): ImageDriver
+    {
+        $this->imageDriver->loadFile($pathToImage);
+
+        return $this;
     }
 
     public static function useImageDriver(ImageDriverEnum|string $imageDriver): ImageDriver
@@ -45,15 +53,22 @@ class Image implements ImageDriver
                 ?? throw InvalidImageDriver::driver($imageDriver);
         }
 
-        return match ($imageDriver) {
+        $driver = match ($imageDriver) {
             ImageDriverEnum::Gd => new GdDriver(),
             ImageDriverEnum::Imagick => new ImagickDriver(),
         };
+
+        $image = new self();
+        $image->imageDriver = $driver;
+
+        return $image;
     }
 
     public function new(int $width, int $height, string $backgroundColor = null): ImageDriver
     {
-        // TODO: Implement new() method.
+        $this->imageDriver->new($width, $height, $backgroundColor);
+
+        return $this;
     }
 
     public function driverName(): string
@@ -172,7 +187,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function manualCrop(int $width, int $height, int $x = 0, int $y = 0): ImageDriver
+    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): ImageDriver
     {
         $this->imageDriver->manualCrop($width, $height, $x, $y);
 
@@ -186,7 +201,14 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function base64(string $imageFormat): string
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): self
+    {
+        $this->imageDriver->focalCrop($width, $height, $cropCenterX, $cropCenterY);
+
+        return $this;
+    }
+
+    public function base64(string $imageFormat = 'jpeg', bool $prefixWithFormat = true): string
     {
         return $this->imageDriver->base64($imageFormat);
     }
@@ -224,7 +246,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function pixelate(int $pixelate): ImageDriver
+    public function pixelate(int $pixelate = 50): ImageDriver
     {
         $this->ensureNumberBetween($pixelate, 0, 100, 'pixelate');
 
@@ -245,23 +267,23 @@ class Image implements ImageDriver
         return $this->imageDriver->image();
     }
 
-    public function resize(int $width, int $height, array $constraints): ImageDriver
+    public function resize(int $width, int $height, array $constraints = []): ImageDriver
     {
         $this->imageDriver->resize($width, $height, $constraints);
 
         return $this;
     }
 
-    public function width(int $width): ImageDriver
+    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): ImageDriver
     {
-        $this->imageDriver->width($width);
+        $this->imageDriver->width($width, $constraints);
 
         return $this;
     }
 
-    public function height(int $height): ImageDriver
+    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): ImageDriver
     {
-        $this->imageDriver->height($height);
+        $this->imageDriver->height($height, $constraints);
 
         return $this;
     }
