@@ -311,7 +311,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function optimize(OptimizerChain $optimizerChain): ImageDriver
+    public function optimize(?OptimizerChain $optimizerChain = null): ImageDriver
     {
         $this->imageDriver->optimize($optimizerChain);
 

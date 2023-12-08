@@ -105,5 +105,5 @@ interface ImageDriver
 
     public function format(string $format): self;
 
-    public function optimize(OptimizerChain $optimizerChain): self;
+    public function optimize(?OptimizerChain $optimizerChain = null): self;
 }
