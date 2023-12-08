@@ -64,7 +64,7 @@ class Image implements ImageDriver
         return $image;
     }
 
-    public function new(int $width, int $height, string $backgroundColor = null): ImageDriver
+    public function new(int $width, int $height, ?string $backgroundColor = null): ImageDriver
     {
         $this->imageDriver->new($width, $height, $backgroundColor);
 
@@ -168,7 +168,7 @@ class Image implements ImageDriver
         return $this->imageDriver->getSize();
     }
 
-    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): ImageDriver
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): ImageDriver
     {
         $this->imageDriver->fit($fit, $desiredWidth, $desiredHeight);
 
@@ -180,7 +180,7 @@ class Image implements ImageDriver
         return $this->imageDriver->pickColor($x, $y, $colorFormat);
     }
 
-    public function resizeCanvas(int $width = null, int $height = null, AlignPosition $position = null, bool $relative = false, string $backgroundColor = '#000000'): ImageDriver
+    public function resizeCanvas(?int $width = null, ?int $height = null, ?AlignPosition $position = null, bool $relative = false, string $backgroundColor = '#000000'): ImageDriver
     {
         $this->imageDriver->resizeCanvas($width, $height, $position, $relative, $backgroundColor);
 
@@ -227,7 +227,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function orientation(Orientation $orientation = null): ImageDriver
+    public function orientation(?Orientation $orientation = null): ImageDriver
     {
         $this->imageDriver->orientation($orientation);
 
@@ -255,7 +255,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0,): ImageDriver
+    public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0): ImageDriver
     {
         $this->imageDriver->insert($otherImage, $position, $x, $y);
 
