@@ -15,7 +15,7 @@ use Spatie\ImageOptimizer\OptimizerChain;
 
 interface ImageDriver
 {
-    public function new(int $width, int $height, string $backgroundColor = null): self;
+    public function new(int $width, int $height, ?string $backgroundColor = null): self;
 
     public function driverName(): string;
 
@@ -51,14 +51,14 @@ interface ImageDriver
 
     public function getSize(): Size;
 
-    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self;
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): self;
 
     public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed;
 
     public function resizeCanvas(
-        int $width = null,
-        int $height = null,
-        AlignPosition $position = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#000000'
     ): self;
@@ -73,7 +73,7 @@ interface ImageDriver
 
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): self;
 
-    public function orientation(Orientation $orientation = null): self;
+    public function orientation(?Orientation $orientation = null): self;
 
     public function exif(): array;
 

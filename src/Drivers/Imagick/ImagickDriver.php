@@ -37,7 +37,7 @@ class ImagickDriver implements ImageDriver
 
     protected string $originalPath;
 
-    public function new(int $width, int $height, string $backgroundColor = null): self
+    public function new(int $width, int $height, ?string $backgroundColor = null): self
     {
         $color = new ImagickColor($backgroundColor);
         $image = new Imagick();
@@ -102,7 +102,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): self
     {
         $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
@@ -121,11 +121,11 @@ class ImagickDriver implements ImageDriver
     }
 
     public function resizeCanvas(
-        int $width = null,
-        int $height = null,
-        AlignPosition $position = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?AlignPosition $position = null,
         bool $relative = false,
-        string $backgroundColor = null
+        ?string $backgroundColor = null
     ): self {
         $position ??= AlignPosition::Center;
 
@@ -205,7 +205,7 @@ class ImagickDriver implements ImageDriver
         return $color->format($colorFormat);
     }
 
-    public function save(string $path = null): ImageDriver
+    public function save(?string $path = null): ImageDriver
     {
         if (! $path) {
             $path = $this->originalPath;
@@ -292,7 +292,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function manualCrop(int $width, int $height, int $x = null, int $y = null): self
+    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): self
     {
         $cropped = new Size($width, $height);
         $position = new Point($x ?? 0, $y ?? 0);
@@ -317,7 +317,7 @@ class ImagickDriver implements ImageDriver
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 
-    public function focalCrop(int $width, int $height, int $cropCenterX = null, int $cropCenterY = null): self
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): self
     {
         [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
             $width,
@@ -368,7 +368,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function orientation(Orientation $orientation = null): self
+    public function orientation(?Orientation $orientation = null): self
     {
         if (is_null($orientation)) {
             $orientation = $this->getOrientationFromExif($this->exif);

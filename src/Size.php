@@ -22,8 +22,8 @@ class Size
 
     /** @param  array<Constraint>  $constraints */
     public function resize(
-        int $desiredWidth = null,
-        int $desiredHeight = null,
+        ?int $desiredWidth = null,
+        ?int $desiredHeight = null,
         array $constraints = []
     ): self {
         // TODO: improve this check and exception
@@ -50,7 +50,7 @@ class Size
 
     /** @param  array<Constraint>  $constraints */
     public function resizeWidth(
-        int $desiredWidth = null,
+        ?int $desiredWidth = null,
         array $constraints = []
     ): self {
         $originalWidth = $this->width;
@@ -85,7 +85,7 @@ class Size
     }
 
     /** @param  array<Constraint>  $constraints */
-    public function resizeHeight(int $desiredHeight = null, array $constraints = []): self
+    public function resizeHeight(?int $desiredHeight = null, array $constraints = []): self
     {
         $originalWidth = $this->width;
         $originalHeight = $this->height;

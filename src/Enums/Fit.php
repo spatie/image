@@ -15,8 +15,8 @@ enum Fit: string
     public function calculateSize(
         int $originalWidth,
         int $originalHeight,
-        int $desiredWidth = null,
-        int $desiredHeight = null,
+        ?int $desiredWidth = null,
+        ?int $desiredHeight = null,
     ): Size {
         $desiredWidth ??= $originalWidth;
         $desiredHeight ??= $originalHeight;

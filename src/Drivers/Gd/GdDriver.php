@@ -38,7 +38,7 @@ class GdDriver implements ImageDriver
 
     protected string $originalPath;
 
-    public function new(int $width, int $height, string $backgroundColor = null): self
+    public function new(int $width, int $height, ?string $backgroundColor = null): self
     {
         $image = imagecreatetruecolor($width, $height);
 
@@ -122,7 +122,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function save(string $path = null): self
+    public function save(?string $path = null): self
     {
         if (! $path) {
             $path = $this->originalPath;
@@ -181,7 +181,7 @@ class GdDriver implements ImageDriver
         return new Size($this->getWidth(), $this->getHeight());
     }
 
-    public function fit(Fit $fit, int $desiredWidth = null, int $desiredHeight = null): self
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): self
     {
         $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
@@ -268,9 +268,9 @@ class GdDriver implements ImageDriver
     }
 
     public function resizeCanvas(
-        int $width = null,
-        int $height = null,
-        AlignPosition $position = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
     ): self {
@@ -375,7 +375,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function manualCrop(int $width, int $height, int $x = null, int $y = null): self
+    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): self
     {
         $cropped = new Size($width, $height);
         $position = new Point($x ?? 0, $y ?? 0);
@@ -420,7 +420,7 @@ class GdDriver implements ImageDriver
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 
-    public function focalCrop(int $width, int $height, int $cropCenterX = null, int $cropCenterY = null): self
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): self
     {
         [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
             $width,
@@ -487,7 +487,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function orientation(Orientation $orientation = null): self
+    public function orientation(?Orientation $orientation = null): self
     {
         if (is_null($orientation)) {
             $orientation = $this->getOrientationFromExif($this->exif);

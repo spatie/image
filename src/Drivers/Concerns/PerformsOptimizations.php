@@ -11,7 +11,7 @@ trait PerformsOptimizations
 
     protected OptimizerChain $optimizerChain;
 
-    public function optimize(OptimizerChain $optimizerChain = null): self
+    public function optimize(?OptimizerChain $optimizerChain = null): self
     {
         $this->optimize = true;
         $this->optimizerChain = $optimizerChain ?? OptimizerChainFactory::create();
