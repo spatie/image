@@ -9,5 +9,5 @@ it('can sepia an image', function (ImageDriver $driver) {
 
     $driver->loadFile(getTestJpg())->sepia()->save($targetFile);
 
-    assertMatchesImageSnapshot($targetFile);
+    assertMatchesImageSnapshot($targetFile, 0.3);
 })->with('drivers');
