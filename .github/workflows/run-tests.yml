@@ -23,6 +23,12 @@ jobs:
                 with:
                   node-version: '20'
 
+            -   name: Install optimizers
+                run: |
+                    sudo apt-get update -y
+                    sudo apt-get install -y jpegoptim pngquant gifsicle optipng libjpeg-progs webp libavif-bin
+                    sudo npm install -g svgo
+
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
