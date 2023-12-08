@@ -66,7 +66,10 @@ class GdDriver implements ImageDriver
 
         $handle = fopen($path, 'r');
 
-        $contents = fread($handle, filesize($path));
+        $contents = '';
+        if (filesize($path)) {
+            $contents = fread($handle, filesize($path));
+        }
 
         fclose($handle);
 
