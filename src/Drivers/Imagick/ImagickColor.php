@@ -153,7 +153,7 @@ class ImagickColor extends Color
     ): ImagickPixel {
         $alpha = is_null($alpha) ? 1 : $alpha;
 
-        return $this->pixel = new \ImagickPixel(
+        return $this->pixel = new ImagickPixel(
             sprintf('rgba(%d, %d, %d, %.2F)', $red, $green, $blue, $alpha)
         );
     }
