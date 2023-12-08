@@ -680,6 +680,8 @@ class GdDriver implements ImageDriver
 
     public function format(string $format): ImageDriver
     {
+        ob_start();
+
         switch (strtolower($format)) {
             case 'jpg':
             case 'jpeg':
@@ -697,6 +699,10 @@ class GdDriver implements ImageDriver
             default:
                 throw UnsupportedImageFormat::make($format);
         }
+
+        $this->image = imagecreatefromstring(ob_get_contents());
+
+        ob_end_clean();
 
         return $this;
     }
