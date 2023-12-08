@@ -86,8 +86,6 @@ class ImagickDriver implements ImageDriver
 
     public function brightness(int $brightness): self
     {
-        $this->ensureNumberBetween($brightness, -100, 100, 'brightness');
-
         $this->image->modulateImage(100 + $brightness, 100, 100);
 
         return $this;
@@ -95,8 +93,6 @@ class ImagickDriver implements ImageDriver
 
     public function blur(int $blur): self
     {
-        $this->ensureNumberBetween($blur, 0, 100, 'blur');
-
         $this->image->blurImage(0.5 * $blur, 0.1 * $blur);
 
         return $this;
@@ -250,8 +246,6 @@ class ImagickDriver implements ImageDriver
 
     public function gamma(float $gamma): self
     {
-        $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
-
         $this->image->gammaImage($gamma);
 
         return $this;
@@ -259,8 +253,6 @@ class ImagickDriver implements ImageDriver
 
     public function contrast(float $level): self
     {
-        $this->ensureNumberBetween($level, -100, 100, 'contrast');
-
         $this->image->brightnessContrastImage(1, $level);
 
         return $this;
@@ -268,10 +260,6 @@ class ImagickDriver implements ImageDriver
 
     public function colorize(int $red, int $green, int $blue): self
     {
-        $this->ensureNumberBetween($red, -100, 100, 'red');
-        $this->ensureNumberBetween($green, -100, 100, 'green');
-        $this->ensureNumberBetween($blue, -100, 100, 'blue');
-
         $quantumRange = $this->image->getQuantumRange();
 
         $red = Helpers::normalizeColorizeLevel($red);
@@ -344,8 +332,6 @@ class ImagickDriver implements ImageDriver
 
     public function sharpen(float $amount): self
     {
-        $this->ensureNumberBetween($amount, 0, 100, 'sharpen');
-
         $this->image->unsharpMaskImage(1, 1, $amount / 6.25, 0);
 
         return $this;
@@ -404,8 +390,6 @@ class ImagickDriver implements ImageDriver
 
     public function pixelate(int $pixelate = 50): self
     {
-        $this->ensureNumberBetween($pixelate, 0, 100, 'pixelate');
-
         $width = $this->getWidth();
         $height = $this->getHeight();
 
@@ -525,8 +509,6 @@ class ImagickDriver implements ImageDriver
 
     public function quality(int $quality): self
     {
-        $this->ensureNumberBetween($quality, 0, 100, 'quality');
-
         $this->image->setCompressionQuality(100 - $quality);
 
         return $this;

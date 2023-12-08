@@ -101,8 +101,6 @@ class GdDriver implements ImageDriver
 
     public function brightness(int $brightness): self
     {
-        $this->ensureNumberBetween($brightness, -100, 100, 'brightness');
-
         // TODO: Convert value between -100 and 100 to -255 and 255
         $brightness = round($brightness * 2.55);
 
@@ -113,8 +111,6 @@ class GdDriver implements ImageDriver
 
     public function blur(int $blur): self
     {
-        $this->ensureNumberBetween($blur, 0, 100, 'blur');
-
         for ($i = 0; $i < $blur; $i++) {
             imagefilter($this->image, IMG_FILTER_GAUSSIAN_BLUR);
         }
@@ -337,8 +333,6 @@ class GdDriver implements ImageDriver
 
     public function gamma(float $gamma): self
     {
-        $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
-
         imagegammacorrect($this->image, 1, $gamma);
 
         return $this;
@@ -346,8 +340,6 @@ class GdDriver implements ImageDriver
 
     public function contrast(float $level): self
     {
-        $this->ensureNumberBetween($level, -100, 100, 'contrast');
-
         imagefilter($this->image, IMG_FILTER_CONTRAST, ($level * -1));
 
         return $this;
@@ -355,10 +347,6 @@ class GdDriver implements ImageDriver
 
     public function colorize(int $red, int $green, int $blue): self
     {
-        $this->ensureNumberBetween($red, -100, 100, 'red');
-        $this->ensureNumberBetween($green, -100, 100, 'green');
-        $this->ensureNumberBetween($blue, -100, 100, 'blue');
-
         $red = round($red * 2.55);
         $green = round($green * 2.55);
         $blue = round($blue * 2.55);
@@ -446,8 +434,6 @@ class GdDriver implements ImageDriver
 
     public function sharpen(float $amount): self
     {
-        $this->ensureNumberBetween($amount, 0, 100, 'sharpen');
-
         $min = $amount >= 10 ? $amount * -0.01 : 0;
         $max = $amount * -0.025;
         $abs = ((4 * $min + 4 * $max) * -1) + 1;
@@ -533,8 +519,6 @@ class GdDriver implements ImageDriver
 
     public function pixelate(int $pixelate = 50): self
     {
-        $this->ensureNumberBetween($pixelate, 0, 100, 'pixelate');
-
         imagefilter($this->image, IMG_FILTER_PIXELATE, $pixelate, true);
 
         return $this;
@@ -662,7 +646,6 @@ class GdDriver implements ImageDriver
     /** @param  int<-1, 100>  $quality */
     public function quality(int $quality): self
     {
-        $this->ensureNumberBetween($quality, -1, 100, 'quality');
         $this->quality = $quality;
 
         return $this;
