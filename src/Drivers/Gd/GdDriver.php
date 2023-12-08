@@ -683,16 +683,16 @@ class GdDriver implements ImageDriver
         switch (strtolower($format)) {
             case 'jpg':
             case 'jpeg':
-                imagejpeg($this->image, $this->originalPath, $this->quality);
+                imagejpeg($this->image, null, $this->quality);
                 break;
             case 'png':
-                imagepng($this->image, $this->originalPath, $this->pngCompression());
+                imagepng($this->image, null, $this->pngCompression());
                 break;
             case 'gif':
-                imagegif($this->image, $this->originalPath);
+                imagegif($this->image, null);
                 break;
             case 'webp':
-                imagewebp($this->image, $this->originalPath);
+                imagewebp($this->image, null);
                 break;
             default:
                 throw UnsupportedImageFormat::make($format);
