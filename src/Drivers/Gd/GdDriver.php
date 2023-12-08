@@ -161,14 +161,14 @@ class GdDriver implements ImageDriver
 
         $this->format($imageFormat);
 
-        $image_data = ob_get_contents();
+        $imageData = ob_get_contents();
         ob_end_clean();
 
         if ($prefixWithFormat) {
-            return 'data:image/'.$imageFormat.';base64,'.base64_encode($image_data);
+            return 'data:image/'.$imageFormat.';base64,'.base64_encode($imageData);
         }
 
-        return base64_encode($image_data);
+        return base64_encode($imageData);
     }
 
     public function driverName(): string
