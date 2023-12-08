@@ -9,9 +9,9 @@ use Spatie\Image\Enums\Constraint;
 class Size
 {
     public function __construct(
-        public $width,
-        public $height,
-        public $pivot = new Point()
+        public int $width,
+        public int $height,
+        public Point $pivot = new Point()
     ) {
     }
 
@@ -20,6 +20,7 @@ class Size
         return $this->width / $this->height;
     }
 
+    /** @param  array<Constraint>  $constraints */
     public function resize(
         int $desiredWidth = null,
         int $desiredHeight = null,
@@ -41,11 +42,13 @@ class Size
             ->resizeWidth($desiredWidth, $constraints)
             ->resizeHeight($desiredHeight, $constraints);
 
-        return $dominantHeightSize->fitsInto(new Size($desiredWidth, $desiredHeight))
+        // @todo desiredWidth and desiredHeight can still be null here, which will cause an error
+        return $dominantHeightSize->fitsInto(new self($desiredWidth, $desiredHeight))
             ? $dominantHeightSize
             : $dominantWidthSize;
     }
 
+    /** @param  array<Constraint>  $constraints */
     public function resizeWidth(
         int $desiredWidth = null,
         array $constraints = []
@@ -67,7 +70,7 @@ class Size
         }
 
         if (in_array(Constraint::PreserveAspectRatio, $constraints)) {
-            $calculatedHeight = max(1, intval(round($this->width / (new Size($originalWidth, $originalHeight))->aspectRatio())));
+            $calculatedHeight = max(1, (int) (round($this->width / (new Size($originalWidth, $originalHeight))->aspectRatio())));
 
             if (in_array(Constraint::DoNotUpsize, $constraints)) {
                 $this->height = $calculatedHeight > $maximumHeight
@@ -81,6 +84,7 @@ class Size
         return $this;
     }
 
+    /** @param  array<Constraint>  $constraints */
     public function resizeHeight(int $desiredHeight = null, array $constraints = []): self
     {
         $originalWidth = $this->width;
@@ -102,7 +106,7 @@ class Size
         }
 
         if (in_array(Constraint::PreserveAspectRatio, $constraints)) {
-            $calculatedWidth = max(1, intval(round($this->height * (new Size($originalWidth, $originalHeight))->aspectRatio())));
+            $calculatedWidth = max(1, (int) (round($this->height * (new Size($originalWidth, $originalHeight))->aspectRatio())));
 
             if (in_array(Constraint::DoNotUpsize, $constraints)) {
                 $this->width = $calculatedWidth > $maximumWidth
@@ -121,7 +125,7 @@ class Size
         return ($this->width <= $size->width) && ($this->height <= $size->height);
     }
 
-    public function align(AlignPosition $position, $offsetX = 0, $offsetY = 0): self
+    public function align(AlignPosition $position, int $offsetX = 0, int $offsetY = 0): self
     {
 
         switch ($position) {
@@ -131,7 +135,7 @@ class Size
             case AlignPosition::TopMiddle:
             case AlignPosition::CenterTop:
             case AlignPosition::MiddleTop:
-                $x = intval($this->width / 2);
+                $x = (int) ($this->width / 2);
                 $y = 0 + $offsetY;
                 break;
 
@@ -147,7 +151,7 @@ class Size
             case AlignPosition::CenterLeft:
             case AlignPosition::MiddleLeft:
                 $x = 0 + $offsetX;
-                $y = intval($this->height / 2);
+                $y = (int) ($this->height / 2);
                 break;
 
             case AlignPosition::Right:
@@ -156,7 +160,7 @@ class Size
             case AlignPosition::CenterRight:
             case AlignPosition::MiddleRight:
                 $x = $this->width - $offsetX;
-                $y = intval($this->height / 2);
+                $y = (int) ($this->height / 2);
                 break;
 
             case AlignPosition::BottomLeft:
@@ -170,7 +174,7 @@ class Size
             case AlignPosition::BottomMiddle:
             case AlignPosition::CenterBottom:
             case AlignPosition::MiddleBottom:
-                $x = intval($this->width / 2);
+                $x = (int) ($this->width / 2);
                 $y = $this->height - $offsetY;
                 break;
 
@@ -184,8 +188,8 @@ class Size
             case AlignPosition::Middle:
             case AlignPosition::CenterCenter:
             case AlignPosition::MiddleMiddle:
-                $x = intval($this->width / 2) + $offsetX;
-                $y = intval($this->height / 2) + $offsetY;
+                $x = (int) ($this->width / 2) + $offsetX;
+                $y = (int) ($this->height / 2) + $offsetY;
                 break;
 
             default:

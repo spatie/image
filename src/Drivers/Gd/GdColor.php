@@ -40,6 +40,8 @@ class GdColor extends Color
             [$red, $green, $blue] = $value;
             $this->alpha = 0;
 
+        } else {
+            throw InvalidColor::make($value);
         }
 
         $this->red = $red;
@@ -143,6 +145,6 @@ class GdColor extends Color
         $newMin = 127;
         $newMax = 0;
 
-        return ceil(((($input - $oldMin) * ($newMax - $newMin)) / ($oldMax - $oldMin)) + $newMin);
+        return (int) ceil(((($input - $oldMin) * ($newMax - $newMin)) / ($oldMax - $oldMin)) + $newMin);
     }
 }

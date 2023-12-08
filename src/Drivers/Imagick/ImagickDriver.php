@@ -39,11 +39,10 @@ class ImagickDriver implements ImageDriver
 
     public function new(int $width, int $height, string $backgroundColor = null): self
     {
-        $backgroundColor = new ImagickColor($backgroundColor);
-
+        $color = new ImagickColor($backgroundColor);
         $image = new Imagick();
 
-        $image->newImage($width, $height, $backgroundColor->getPixel(), 'png');
+        $image->newImage($width, $height, $color->getPixel(), 'png');
         $image->setType(Imagick::IMGTYPE_UNDEFINED);
         $image->setImageType(Imagick::IMGTYPE_UNDEFINED);
         $image->setColorspace(Imagick::COLORSPACE_UNDEFINED);
@@ -318,7 +317,7 @@ class ImagickDriver implements ImageDriver
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 
-    public function focalCrop(int $width, int $height, $cropCenterX = null, $cropCenterY = null): self
+    public function focalCrop(int $width, int $height, int $cropCenterX = null, int $cropCenterY = null): self
     {
         [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
             $width,
@@ -410,7 +409,7 @@ class ImagickDriver implements ImageDriver
         $width = $this->getWidth();
         $height = $this->getHeight();
 
-        $this->image->scaleImage(max(1, intval($width / $pixelate)), max(1, intval($height / $pixelate)));
+        $this->image->scaleImage(max(1, (int) ($width / $pixelate)), max(1, (int) ($height / $pixelate)));
         $this->image->scaleImage($width, $height);
 
         return $this;
