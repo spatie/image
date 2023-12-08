@@ -63,3 +63,10 @@ expect()->extend('toHaveMime', function (string $expectedMime) {
     expect($actualMime)->toBe($expectedMime);
 
 });
+
+function skipIfImagickDoesNotSupportFormat(string $format)
+{
+    if (! in_array(strtoupper($format), Imagick::queryFormats('*'))) {
+        test()->markTestSkipped('Imagick does not support this format.');
+    }
+}
