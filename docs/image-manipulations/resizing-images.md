@@ -41,7 +41,7 @@ $image->fit(Fit $fit, int $width, int $height);
 
 The following `$fit`s are available through the `Fit` enum:
 
-#### `Fit::Contain` (Default)[image-canvas.md](image-canvas.md)
+#### `Fit::Contain`
 
 Resizes the image to fit within the width and height boundaries without cropping, distorting or altering the aspect ratio.
 
