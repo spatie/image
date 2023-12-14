@@ -3,8 +3,10 @@
 namespace Spatie\Image;
 
 use Exception;
+use InvalidArgumentException;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\Constraint;
+use Spatie\Image\Exceptions\CannotResize;
 
 class Size
 {
@@ -26,9 +28,8 @@ class Size
         ?int $desiredHeight = null,
         array $constraints = []
     ): self {
-        // TODO: improve this check and exception
         if ($desiredWidth === null && $desiredHeight === null) {
-            throw new Exception("Width and height can't both be null");
+            throw new InvalidArgumentException("Width and height can't both be null");
         }
 
         $dominantWidthSize = clone $this;
@@ -41,6 +42,14 @@ class Size
         $dominantHeightSize = $dominantHeightSize
             ->resizeWidth($desiredWidth, $constraints)
             ->resizeHeight($desiredHeight, $constraints);
+
+        if ($desiredWidth === null) {
+            throw CannotResize::invalidWidth();
+        }
+
+        if ($desiredHeight === null) {
+            throw CannotResize::invalidHeight();
+        }
 
         // @todo desiredWidth and desiredHeight can still be null here, which will cause an error
         return $dominantHeightSize->fitsInto(new self($desiredWidth, $desiredHeight))

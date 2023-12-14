@@ -17,6 +17,8 @@ interface ImageDriver
 {
     public function new(int $width, int $height, ?string $backgroundColor = null): static;
 
+    public function loadFile(string $path): static;
+
     public function driverName(): string;
 
     public function save(string $path = ''): static;
