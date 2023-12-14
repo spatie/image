@@ -16,4 +16,4 @@ it('can add a border to an image', function (ImageDriver $driver, array $borderA
     [[50, BorderType::Overlay, '333333']],
     [[100, BorderType::Shrink, 'FAAAAA']],
     [[100, BorderType::Expand, 'FAAAAA']],
-]);
+])->skipWhenRunningOnGitHub();
