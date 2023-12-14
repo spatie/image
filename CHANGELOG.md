@@ -2,6 +2,19 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.0.0 - 2023-12-14
+
+### What's Changed
+
+- do not rely on Glide anymore
+
+### New Contributors
+
+* @erikn69 made their first contribution in https://github.com/spatie/image/pull/197
+* @timvandijck made their first contribution in https://github.com/spatie/image/pull/199
+
+**Full Changelog**: https://github.com/spatie/image/compare/2.2.7...3.0.0
+
 ## 2.2.7 - 2023-07-24
 
 - bump requirements
