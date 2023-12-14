@@ -9,8 +9,11 @@ use Spatie\Image\Exceptions\InvalidColor;
 abstract class Color
 {
     public int $red;
+
     public int $green;
+
     public int $blue;
+
     public float $alpha;
 
     abstract public function initFromInteger(int $value): self;

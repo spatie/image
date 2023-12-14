@@ -2,7 +2,6 @@
 
 namespace Spatie\Image;
 
-use Exception;
 use InvalidArgumentException;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\Constraint;
