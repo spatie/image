@@ -62,7 +62,7 @@ abstract class Color
         };
     }
 
-    /** @return array<int> */
+    /** @return array<int, float|int> */
     protected function rgbaFromString(string $colorValue): array
     {
         // parse color string in hexidecimal format like #cccccc or cccccc or ccc
