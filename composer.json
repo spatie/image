@@ -22,17 +22,17 @@
         "ext-imagick": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "spatie/image-optimizer": "^1.7",
-        "spatie/temporary-directory": "^2.0",
-        "symfony/process": "^6.0|^7.0"
+        "spatie/image-optimizer": "^1.7.2",
+        "spatie/temporary-directory": "^2.2",
+        "symfony/process": "^6.4|^7.0"
     },
     "require-dev": {
-        "pestphp/pest": "^2.0",
-        "phpstan/phpstan": "^1.10",
+        "pestphp/pest": "^2.28",
+        "phpstan/phpstan": "^1.10.50",
         "spatie/pest-plugin-snapshots": "^2.1",
         "spatie/pixelmatch-php": "^1.0",
-        "spatie/ray": "^1.37",
-        "symfony/var-dumper": "^6.0|7.0"
+        "spatie/ray": "^1.40.1",
+        "symfony/var-dumper": "^6.4|7.0"
     },
     "autoload": {
         "psr-4": {
