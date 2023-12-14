@@ -77,6 +77,9 @@ interface ImageDriver
 
     public function orientation(?Orientation $orientation = null): static;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function exif(): array;
 
     public function flip(FlipDirection $flip): static;

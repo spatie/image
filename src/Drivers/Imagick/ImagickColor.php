@@ -4,6 +4,7 @@ namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
 use ImagickPixel;
+use InvalidArgumentException;
 use Spatie\Image\Drivers\Color;
 
 class ImagickColor extends Color
@@ -108,6 +109,10 @@ class ImagickColor extends Color
 
     public function differs(Color $color, int $tolerance = 0): bool
     {
+        if (! $color instanceof self) {
+            throw new InvalidArgumentException('Color must be an instance of ' . self::class);
+        }
+
         $colorTolerance = round($tolerance * 2.55);
         $alphaTolerance = round($tolerance);
 

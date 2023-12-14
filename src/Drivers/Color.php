@@ -8,6 +8,11 @@ use Spatie\Image\Exceptions\InvalidColor;
 
 abstract class Color
 {
+    public int $red;
+    public int $green;
+    public int $blue;
+    public float $alpha;
+
     abstract public function initFromInteger(int $value): self;
 
     /** @param  array<int>  $value */
@@ -43,7 +48,7 @@ abstract class Color
             is_string($colorValue) => $this->initFromString($colorValue),
             is_int($colorValue) => $this->initFromInteger($colorValue),
             is_array($colorValue) => $this->initFromArray($colorValue),
-            is_object($colorValue) => $this->initFromObject($colorValue),
+            $colorValue instanceof ImagickPixel => $this->initFromObject($colorValue),
             is_null($colorValue) => $this->initFromArray([255, 255, 255, 0]),
             default => throw InvalidColor::make($colorValue),
         };

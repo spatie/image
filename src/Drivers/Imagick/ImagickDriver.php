@@ -365,6 +365,9 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function exif(): array
     {
         return $this->exif;

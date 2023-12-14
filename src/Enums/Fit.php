@@ -26,8 +26,7 @@ enum Fit: string
         $constraints = match ($this) {
             Fit::Contain, Fit::Max => [Constraint::PreserveAspectRatio],
             Fit::Fill => [Constraint::PreserveAspectRatio, Constraint::DoNotUpsize],
-            Fit::Stretch => [],
-            // @todo Crop is missing here
+            Fit::Stretch, Fit::Crop => [],
         };
 
         return $size->resize($desiredWidth, $desiredHeight, $constraints);

@@ -58,7 +58,7 @@ class Image implements ImageDriver
             ImageDriverEnum::Imagick => new ImagickDriver(),
         };
 
-        $image = new self();
+        $image = new static();
         $image->imageDriver = $driver;
 
         return $image;
@@ -234,6 +234,9 @@ class Image implements ImageDriver
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function exif(): array
     {
         return $this->imageDriver->exif();

@@ -1,12 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$value of method Spatie\\\\Image\\\\Drivers\\\\Color\\:\\:initFromObject\\(\\) expects ImagickPixel, object given\\.$#"
-			count: 1
-			path: src/Drivers/Color.php
-
-		-
-			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:exif\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Access to an undefined property Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:\\$image\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
@@ -17,11 +12,16 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$data of function imagecreatefromstring expects string, string\\|false given\\.$#"
-			count: 1
+			count: 2
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
 			message: "#^Parameter \\#1 \\$dst_image of function imagecopyresampled expects GdImage, GdImage\\|false given\\.$#"
+			count: 1
+			path: src/Drivers/Gd/GdDriver.php
+
+		-
+			message: "#^Parameter \\#1 \\$exif of method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:getOrientationFromExif\\(\\) expects array\\{Orientation\\?\\: int\\}, array\\<string, mixed\\> given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
@@ -47,16 +47,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$image of function imagefill expects GdImage, GdImage\\|false given\\.$#"
-			count: 2
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagesavealpha expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#1 \\$image of method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:setImage\\(\\) expects GdImage, GdImage\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$image of function imagesavealpha expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
@@ -96,11 +91,6 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#2 \\$length of function fread expects int\\<0, max\\>, int\\<0, max\\>\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
 			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
@@ -111,13 +101,8 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Property Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:\\$exif type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
 			message: "#^Property Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:\\$image \\(GdImage\\) does not accept GdImage\\|false\\.$#"
-			count: 2
+			count: 3
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
@@ -131,12 +116,12 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:exif\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Drivers/ImageDriver.php
+			message: "#^Access to an undefined property Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:\\$image\\.$#"
+			count: 2
+			path: src/Drivers/Imagick/ImagickDriver.php
 
 		-
-			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:exif\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:new\\(\\) should return static\\(Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\) but returns Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\.$#"
 			count: 1
 			path: src/Drivers/Imagick/ImagickDriver.php
 
@@ -161,11 +146,16 @@ parameters:
 			path: src/Drivers/Imagick/ImagickDriver.php
 
 		-
-			message: "#^Match expression does not handle remaining value\\: Spatie\\\\Image\\\\Enums\\\\Fit\\:\\:Crop$#"
-			count: 1
-			path: src/Enums/Fit.php
-
-		-
 			message: "#^Part \\$color \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
 			count: 1
 			path: src/Exceptions/InvalidColor.php
+
+		-
+			message: "#^Parameter \\#3 \\$x of method Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Image.php
+
+		-
+			message: "#^Parameter \\#4 \\$y of method Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Image.php

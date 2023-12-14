@@ -54,9 +54,9 @@ class GdColor extends Color
     public function initFromString(string $value): self
     {
         if ($color = $this->rgbaFromString($value)) {
-            $this->red = $color[0];
-            $this->green = $color[1];
-            $this->blue = $color[2];
+            $this->red = (int)$color[0];
+            $this->green = (int)$color[1];
+            $this->blue = (int)$color[2];
             $this->alpha = $this->alpha2gd($color[3]);
         }
 
