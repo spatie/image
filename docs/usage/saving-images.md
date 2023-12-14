@@ -3,7 +3,7 @@ title: Saving images
 weight: 2
 ---
 
-By default calling the `save` method on the `Image`  will apply all manipulations to your original image file. 
+By default, calling the `save` method on the `Image`  will apply all manipulations to your original image file. 
 
 ```php
 Image::load('example.jpg')

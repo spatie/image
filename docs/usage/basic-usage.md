@@ -32,6 +32,17 @@ Image::load('example.jpg')
 
 ![Sepia + blur manipulation](../../images/example-sepia-blur.jpg)
 
+Every manipulation you call will be applied. When calling a manipulation method multiple times each call will be applied immediately.
+
+```php
+// This will lower the brightness first by 40% and then by 20%
+Image::load('example.jpg')
+    ->brightness(-40)
+    ->brightness(-20)
+    ->save();
+```
+
+
 ## Saving the image
 
 Calling the `save` method on an `Image` will save the modifications to the specified file.

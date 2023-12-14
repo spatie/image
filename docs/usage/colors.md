@@ -1,6 +1,6 @@
 ---
 title: Colors
-weight: 1
+weight: 4
 ---
 
 ## Picking a color
