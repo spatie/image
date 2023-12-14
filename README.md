@@ -36,8 +36,6 @@ Image::load($pathToImage)
 
 You'll find more examples in [the full documentation](https://docs.spatie.be/image).
 
-Under the hood [Glide](http://glide.thephpleague.com/) by [Jonathan Reinink](https://twitter.com/reinink) is used.
-
 ## Support us
 
 [<img src="https://github-ads.s3.eu-central-1.amazonaws.com/image.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/image)
