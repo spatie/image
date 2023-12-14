@@ -15,11 +15,11 @@ use Spatie\ImageOptimizer\OptimizerChain;
 
 interface ImageDriver
 {
-    public function new(int $width, int $height, ?string $backgroundColor = null): self;
+    public function new(int $width, int $height, ?string $backgroundColor = null): static;
 
     public function driverName(): string;
 
-    public function save(string $path = ''): self;
+    public function save(string $path = ''): static;
 
     public function getWidth(): int;
 
@@ -28,28 +28,28 @@ interface ImageDriver
     /**
      * @param  int  $brightness A value between -100 and 100
      */
-    public function brightness(int $brightness): self;
+    public function brightness(int $brightness): static;
 
-    public function gamma(float $gamma): self;
+    public function gamma(float $gamma): static;
 
-    public function contrast(float $level): self;
+    public function contrast(float $level): static;
 
     /**
      * @param  int  $blur A value between 0 and 100.
      */
-    public function blur(int $blur): self;
+    public function blur(int $blur): static;
 
-    public function colorize(int $red, int $green, int $blue): self;
+    public function colorize(int $red, int $green, int $blue): static;
 
-    public function greyscale(): self;
+    public function greyscale(): static;
 
-    public function sepia(): self;
+    public function sepia(): static;
 
-    public function sharpen(float $amount): self;
+    public function sharpen(float $amount): static;
 
     public function getSize(): Size;
 
-    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): self;
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static;
 
     public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed;
 
@@ -59,51 +59,51 @@ interface ImageDriver
         ?AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#000000'
-    ): self;
+    ): static;
 
-    public function manualCrop(int $width, int $height, int $x = 0, int $y = 0): self;
+    public function manualCrop(int $width, int $height, int $x = 0, int $y = 0): static;
 
-    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): self;
+    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): static;
 
-    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): self;
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static;
 
     public function base64(string $imageFormat): string;
 
-    public function background(string $color): self;
+    public function background(string $color): static;
 
-    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): self;
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): static;
 
-    public function orientation(?Orientation $orientation = null): self;
+    public function orientation(?Orientation $orientation = null): static;
 
     public function exif(): array;
 
-    public function flip(FlipDirection $flip): self;
+    public function flip(FlipDirection $flip): static;
 
-    public function pixelate(int $pixelate): self;
+    public function pixelate(int $pixelate): static;
 
     public function insert(
         ImageDriver|string $otherImage,
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
-    ): self;
+    ): static;
 
     public function image(): mixed;
 
     /** @param  array<Constraint>  $constraints */
-    public function resize(int $width, int $height, array $constraints): self;
+    public function resize(int $width, int $height, array $constraints): static;
 
     /** @param  array<Constraint>  $constraints */
-    public function width(int $width, array $constraints = []): self;
+    public function width(int $width, array $constraints = []): static;
 
     /** @param  array<Constraint>  $constraints */
-    public function height(int $height, array $constraints = []): self;
+    public function height(int $height, array $constraints = []): static;
 
-    public function border(int $width, BorderType $type, string $color = '000000'): self;
+    public function border(int $width, BorderType $type, string $color = '000000'): static;
 
-    public function quality(int $quality): self;
+    public function quality(int $quality): static;
 
-    public function format(string $format): self;
+    public function format(string $format): static;
 
-    public function optimize(?OptimizerChain $optimizerChain = null): self;
+    public function optimize(?OptimizerChain $optimizerChain = null): static;
 }

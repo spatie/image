@@ -37,7 +37,7 @@ class ImagickDriver implements ImageDriver
 
     protected string $originalPath;
 
-    public function new(int $width, int $height, ?string $backgroundColor = null): self
+    public function new(int $width, int $height, ?string $backgroundColor = null): static
     {
         $color = new ImagickColor($backgroundColor);
         $image = new Imagick();
@@ -50,7 +50,7 @@ class ImagickDriver implements ImageDriver
         return (new self())->setImage($image);
     }
 
-    protected function setImage(Imagick $image): self
+    protected function setImage(Imagick $image): static
     {
         $this->image = $image;
 
@@ -62,7 +62,7 @@ class ImagickDriver implements ImageDriver
         return $this->image;
     }
 
-    public function loadFile(string $path): self
+    public function loadFile(string $path): static
     {
         $this->originalPath = $path;
 
@@ -84,21 +84,21 @@ class ImagickDriver implements ImageDriver
         return $this->image->getImageHeight();
     }
 
-    public function brightness(int $brightness): self
+    public function brightness(int $brightness): static
     {
         $this->image->modulateImage(100 + $brightness, 100, 100);
 
         return $this;
     }
 
-    public function blur(int $blur): self
+    public function blur(int $blur): static
     {
         $this->image->blurImage(0.5 * $blur, 0.1 * $blur);
 
         return $this;
     }
 
-    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): self
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static
     {
         $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
@@ -122,7 +122,7 @@ class ImagickDriver implements ImageDriver
         ?AlignPosition $position = null,
         bool $relative = false,
         ?string $backgroundColor = null
-    ): self {
+    ): static {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -201,7 +201,7 @@ class ImagickDriver implements ImageDriver
         return $color->format($colorFormat);
     }
 
-    public function save(?string $path = null): ImageDriver
+    public function save(?string $path = null): static
     {
         if (! $path) {
             $path = $this->originalPath;
@@ -244,21 +244,21 @@ class ImagickDriver implements ImageDriver
         return new Size($this->getWidth(), $this->getHeight());
     }
 
-    public function gamma(float $gamma): self
+    public function gamma(float $gamma): static
     {
         $this->image->gammaImage($gamma);
 
         return $this;
     }
 
-    public function contrast(float $level): self
+    public function contrast(float $level): static
     {
         $this->image->brightnessContrastImage(1, $level);
 
         return $this;
     }
 
-    public function colorize(int $red, int $green, int $blue): self
+    public function colorize(int $red, int $green, int $blue): static
     {
         $quantumRange = $this->image->getQuantumRange();
 
@@ -273,14 +273,14 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function greyscale(): self
+    public function greyscale(): static
     {
         $this->image->modulateImage(100, 0, 100);
 
         return $this;
     }
 
-    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): self
+    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): static
     {
         $cropped = new Size($width, $height);
         $position = new Point($x ?? 0, $y ?? 0);
@@ -298,14 +298,14 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): self
+    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): static
     {
         [$offsetX, $offsetY] = $this->calculateCropOffsets($width, $height, $position);
 
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 
-    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): self
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
     {
         [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
             $width,
@@ -319,7 +319,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function sepia(): ImageDriver
+    public function sepia(): static
     {
         return $this
             ->greyscale()
@@ -330,14 +330,14 @@ class ImagickDriver implements ImageDriver
             ->contrast(10);
     }
 
-    public function sharpen(float $amount): self
+    public function sharpen(float $amount): static
     {
         $this->image->unsharpMaskImage(1, 1, $amount / 6.25, 0);
 
         return $this;
     }
 
-    public function background(string $color): self
+    public function background(string $color): static
     {
         $background = $this->new($this->getWidth(), $this->getHeight(), $color);
 
@@ -346,7 +346,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x = 0, int $y = 0): self
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x = 0, int $y = 0): static
     {
         $bottomImage->insert($topImage, AlignPosition::Center, $x, $y);
         $this->image = $bottomImage->image();
@@ -354,7 +354,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function orientation(?Orientation $orientation = null): self
+    public function orientation(?Orientation $orientation = null): static
     {
         if (is_null($orientation)) {
             $orientation = $this->getOrientationFromExif($this->exif);
@@ -370,7 +370,7 @@ class ImagickDriver implements ImageDriver
         return $this->exif;
     }
 
-    public function flip(FlipDirection $flip): self
+    public function flip(FlipDirection $flip): static
     {
         switch ($flip) {
             case FlipDirection::Vertical:
@@ -388,7 +388,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function pixelate(int $pixelate = 50): self
+    public function pixelate(int $pixelate = 50): static
     {
         $width = $this->getWidth();
         $height = $this->getHeight();
@@ -404,7 +404,7 @@ class ImagickDriver implements ImageDriver
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
-    ): self {
+    ): static {
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }
@@ -425,7 +425,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function resize(int $width, int $height, array $constraints = []): self
+    public function resize(int $width, int $height, array $constraints = []): static
     {
         $resized = $this->getSize()->resize($width, $height, $constraints);
 
@@ -434,21 +434,21 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): self
+    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
         $this->resize($width, $this->getHeight(), $constraints);
 
         return $this;
     }
 
-    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): self
+    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
         $this->resize($this->getWidth(), $height, $constraints);
 
         return $this;
     }
 
-    public function border(int $width, BorderType $type, string $color = '000000'): self
+    public function border(int $width, BorderType $type, string $color = '000000'): static
     {
         if ($type === BorderType::Shrink) {
             $originalWidth = $this->getWidth();
@@ -507,14 +507,14 @@ class ImagickDriver implements ImageDriver
         }
     }
 
-    public function quality(int $quality): self
+    public function quality(int $quality): static
     {
         $this->image->setCompressionQuality(100 - $quality);
 
         return $this;
     }
 
-    public function format(string $format): ImageDriver
+    public function format(string $format): static
     {
         $this->image->setFormat($format);
 

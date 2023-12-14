@@ -30,7 +30,7 @@ class Image implements ImageDriver
         $this->imageDriver = new ImagickDriver();
     }
 
-    public static function load(string $pathToImage): ImageDriver
+    public static function load(string $pathToImage): static
     {
         if (! file_exists($pathToImage)) {
             throw CouldNotLoadImage::fileDoesNotExist($pathToImage);
@@ -39,14 +39,14 @@ class Image implements ImageDriver
         return new static($pathToImage);
     }
 
-    public function loadFile(string $pathToImage): ImageDriver
+    public function loadFile(string $pathToImage): static
     {
         $this->imageDriver->loadFile($pathToImage);
 
         return $this;
     }
 
-    public static function useImageDriver(ImageDriverEnum|string $imageDriver): ImageDriver
+    public static function useImageDriver(ImageDriverEnum|string $imageDriver): static
     {
         if (is_string($imageDriver)) {
             $imageDriver = ImageDriverEnum::tryFrom($imageDriver)
@@ -64,7 +64,7 @@ class Image implements ImageDriver
         return $image;
     }
 
-    public function new(int $width, int $height, ?string $backgroundColor = null): ImageDriver
+    public function new(int $width, int $height, ?string $backgroundColor = null): static
     {
         $this->imageDriver->new($width, $height, $backgroundColor);
 
@@ -76,7 +76,7 @@ class Image implements ImageDriver
         return $this->imageDriver->driverName();
     }
 
-    public function save(string $path = ''): ImageDriver
+    public function save(string $path = ''): static
     {
         $this->imageDriver->save($path);
 
@@ -93,7 +93,7 @@ class Image implements ImageDriver
         return $this->imageDriver->getHeight();
     }
 
-    public function brightness(int $brightness): self
+    public function brightness(int $brightness): static
     {
         $this->ensureNumberBetween($brightness, -100, 100, 'brightness');
 
@@ -102,7 +102,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function gamma(float $gamma): ImageDriver
+    public function gamma(float $gamma): static
     {
         $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
 
@@ -111,7 +111,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function contrast(float $level): ImageDriver
+    public function contrast(float $level): static
     {
         $this->ensureNumberBetween($level, -100, 100, 'contrast');
 
@@ -120,7 +120,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function blur(int $blur): ImageDriver
+    public function blur(int $blur): static
     {
         $this->ensureNumberBetween($blur, 0, 100, 'blur');
 
@@ -129,7 +129,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function colorize(int $red, int $green, int $blue): ImageDriver
+    public function colorize(int $red, int $green, int $blue): static
     {
         $this->ensureNumberBetween($red, -100, 100, 'red');
         $this->ensureNumberBetween($green, -100, 100, 'green');
@@ -140,21 +140,21 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function greyscale(): ImageDriver
+    public function greyscale(): static
     {
         $this->imageDriver->greyscale();
 
         return $this;
     }
 
-    public function sepia(): ImageDriver
+    public function sepia(): static
     {
         $this->imageDriver->sepia();
 
         return $this;
     }
 
-    public function sharpen(float $amount): ImageDriver
+    public function sharpen(float $amount): static
     {
         $this->ensureNumberBetween($amount, 0, 100, 'sharpen');
 
@@ -168,7 +168,7 @@ class Image implements ImageDriver
         return $this->imageDriver->getSize();
     }
 
-    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): ImageDriver
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static
     {
         $this->imageDriver->fit($fit, $desiredWidth, $desiredHeight);
 
@@ -180,28 +180,28 @@ class Image implements ImageDriver
         return $this->imageDriver->pickColor($x, $y, $colorFormat);
     }
 
-    public function resizeCanvas(?int $width = null, ?int $height = null, ?AlignPosition $position = null, bool $relative = false, string $backgroundColor = '#000000'): ImageDriver
+    public function resizeCanvas(?int $width = null, ?int $height = null, ?AlignPosition $position = null, bool $relative = false, string $backgroundColor = '#000000'): static
     {
         $this->imageDriver->resizeCanvas($width, $height, $position, $relative, $backgroundColor);
 
         return $this;
     }
 
-    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): ImageDriver
+    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): static
     {
         $this->imageDriver->manualCrop($width, $height, $x, $y);
 
         return $this;
     }
 
-    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): ImageDriver
+    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): static
     {
         $this->imageDriver->crop($width, $height, $position);
 
         return $this;
     }
 
-    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): self
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
     {
         $this->imageDriver->focalCrop($width, $height, $cropCenterX, $cropCenterY);
 
@@ -213,21 +213,21 @@ class Image implements ImageDriver
         return $this->imageDriver->base64($imageFormat);
     }
 
-    public function background(string $color): ImageDriver
+    public function background(string $color): static
     {
         $this->imageDriver->background($color);
 
         return $this;
     }
 
-    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): ImageDriver
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): static
     {
         $this->imageDriver->overlay($bottomImage, $topImage, $x, $y);
 
         return $this;
     }
 
-    public function orientation(?Orientation $orientation = null): ImageDriver
+    public function orientation(?Orientation $orientation = null): static
     {
         $this->imageDriver->orientation($orientation);
 
@@ -239,14 +239,14 @@ class Image implements ImageDriver
         return $this->imageDriver->exif();
     }
 
-    public function flip(FlipDirection $flip): ImageDriver
+    public function flip(FlipDirection $flip): static
     {
         $this->imageDriver->flip($flip);
 
         return $this;
     }
 
-    public function pixelate(int $pixelate = 50): ImageDriver
+    public function pixelate(int $pixelate = 50): static
     {
         $this->ensureNumberBetween($pixelate, 0, 100, 'pixelate');
 
@@ -255,7 +255,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0): ImageDriver
+    public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0): static
     {
         $this->imageDriver->insert($otherImage, $position, $x, $y);
 
@@ -267,35 +267,35 @@ class Image implements ImageDriver
         return $this->imageDriver->image();
     }
 
-    public function resize(int $width, int $height, array $constraints = []): ImageDriver
+    public function resize(int $width, int $height, array $constraints = []): static
     {
         $this->imageDriver->resize($width, $height, $constraints);
 
         return $this;
     }
 
-    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): ImageDriver
+    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
         $this->imageDriver->width($width, $constraints);
 
         return $this;
     }
 
-    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): ImageDriver
+    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
         $this->imageDriver->height($height, $constraints);
 
         return $this;
     }
 
-    public function border(int $width, BorderType $type, string $color = '000000'): ImageDriver
+    public function border(int $width, BorderType $type, string $color = '000000'): static
     {
         $this->imageDriver->border($width, $type, $color);
 
         return $this;
     }
 
-    public function quality(int $quality): ImageDriver
+    public function quality(int $quality): static
     {
         $this->ensureNumberBetween($quality, 0, 100, 'quality');
 
@@ -304,14 +304,14 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function format(string $format): ImageDriver
+    public function format(string $format): static
     {
         $this->imageDriver->format($format);
 
         return $this;
     }
 
-    public function optimize(?OptimizerChain $optimizerChain = null): ImageDriver
+    public function optimize(?OptimizerChain $optimizerChain = null): static
     {
         $this->imageDriver->optimize($optimizerChain);
 

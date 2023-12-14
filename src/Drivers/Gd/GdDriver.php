@@ -38,7 +38,7 @@ class GdDriver implements ImageDriver
 
     protected string $originalPath;
 
-    public function new(int $width, int $height, ?string $backgroundColor = null): self
+    public function new(int $width, int $height, ?string $backgroundColor = null): static
     {
         $image = imagecreatetruecolor($width, $height);
 
@@ -49,14 +49,14 @@ class GdDriver implements ImageDriver
         return (new self)->setImage($image);
     }
 
-    protected function setImage(GdImage $image): self
+    protected function setImage(GdImage $image): static
     {
         $this->image = $image;
 
         return $this;
     }
 
-    public function loadFile(string $path): self
+    public function loadFile(string $path): static
     {
         $this->optimize = false;
         $this->quality = -1;
@@ -99,7 +99,7 @@ class GdDriver implements ImageDriver
         return imagesy($this->image);
     }
 
-    public function brightness(int $brightness): self
+    public function brightness(int $brightness): static
     {
         // TODO: Convert value between -100 and 100 to -255 and 255
         $brightness = round($brightness * 2.55);
@@ -109,7 +109,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function blur(int $blur): self
+    public function blur(int $blur): static
     {
         for ($i = 0; $i < $blur; $i++) {
             imagefilter($this->image, IMG_FILTER_GAUSSIAN_BLUR);
@@ -118,7 +118,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function save(?string $path = null): self
+    public function save(?string $path = null): static
     {
         if (! $path) {
             $path = $this->originalPath;
@@ -177,7 +177,7 @@ class GdDriver implements ImageDriver
         return new Size($this->getWidth(), $this->getHeight());
     }
 
-    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): self
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static
     {
         $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
@@ -209,7 +209,7 @@ class GdDriver implements ImageDriver
         int $sourceY = 0,
         int $sourceWidth = 0,
         int $sourceHeight = 0,
-    ): self {
+    ): static {
         $newImage = imagecreatetruecolor($desiredWidth, $desiredHeight);
 
         $transparentColorValue = imagecolortransparent($this->image);
@@ -269,7 +269,7 @@ class GdDriver implements ImageDriver
         ?AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): self {
+    ): static {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -331,21 +331,21 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function gamma(float $gamma): self
+    public function gamma(float $gamma): static
     {
         imagegammacorrect($this->image, 1, $gamma);
 
         return $this;
     }
 
-    public function contrast(float $level): self
+    public function contrast(float $level): static
     {
         imagefilter($this->image, IMG_FILTER_CONTRAST, ($level * -1));
 
         return $this;
     }
 
-    public function colorize(int $red, int $green, int $blue): self
+    public function colorize(int $red, int $green, int $blue): static
     {
         $red = round($red * 2.55);
         $green = round($green * 2.55);
@@ -356,14 +356,14 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function greyscale(): self
+    public function greyscale(): static
     {
         imagefilter($this->image, IMG_FILTER_GRAYSCALE);
 
         return $this;
     }
 
-    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): self
+    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): static
     {
         $cropped = new Size($width, $height);
         $position = new Point($x ?? 0, $y ?? 0);
@@ -393,7 +393,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): self
+    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): static
     {
         $width = min($width, $this->getWidth());
         $height = min($height, $this->getHeight());
@@ -408,7 +408,7 @@ class GdDriver implements ImageDriver
         return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 
-    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): self
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
     {
         [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
             $width,
@@ -422,7 +422,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function sepia(): ImageDriver
+    public function sepia(): static
     {
         return $this
             ->greyscale()
@@ -432,7 +432,7 @@ class GdDriver implements ImageDriver
             ->contrast(5);
     }
 
-    public function sharpen(float $amount): self
+    public function sharpen(float $amount): static
     {
         $min = $amount >= 10 ? $amount * -0.01 : 0;
         $max = $amount * -0.025;
@@ -449,7 +449,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function background(string $color): self
+    public function background(string $color): static
     {
         $width = $this->getWidth();
         $height = $this->getHeight();
@@ -465,7 +465,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x = 0, int $y = 0): self
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x = 0, int $y = 0): static
     {
         $bottomImage->insert($topImage, AlignPosition::TopLeft, $x, $y);
         $this->image = $bottomImage->image();
@@ -473,7 +473,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function orientation(?Orientation $orientation = null): self
+    public function orientation(?Orientation $orientation = null): static
     {
         if (is_null($orientation)) {
             $orientation = $this->getOrientationFromExif($this->exif);
@@ -504,7 +504,7 @@ class GdDriver implements ImageDriver
         return $this->exif;
     }
 
-    public function flip(FlipDirection $flip): self
+    public function flip(FlipDirection $flip): static
     {
         $direction = match ($flip) {
             FlipDirection::Horizontal => IMG_FLIP_HORIZONTAL,
@@ -517,7 +517,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function pixelate(int $pixelate = 50): self
+    public function pixelate(int $pixelate = 50): static
     {
         imagefilter($this->image, IMG_FILTER_PIXELATE, $pixelate, true);
 
@@ -529,7 +529,7 @@ class GdDriver implements ImageDriver
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
-    ): self {
+    ): static {
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }
@@ -554,7 +554,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function resize(int $width, int $height, array $constraints = []): self
+    public function resize(int $width, int $height, array $constraints = []): static
     {
         $resized = $this->getSize()->resize($width, $height, $constraints);
 
@@ -563,21 +563,21 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): self
+    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
         $this->resize($width, $this->getHeight(), $constraints);
 
         return $this;
     }
 
-    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): self
+    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
         $this->resize($this->getWidth(), $height, $constraints);
 
         return $this;
     }
 
-    public function border(int $width, BorderType $type, string $color = '000000'): self
+    public function border(int $width, BorderType $type, string $color = '000000'): static
     {
         if ($type === BorderType::Shrink) {
             $originalWidth = $this->getWidth();
@@ -644,7 +644,7 @@ class GdDriver implements ImageDriver
     }
 
     /** @param  int<-1, 100>  $quality */
-    public function quality(int $quality): self
+    public function quality(int $quality): static
     {
         $this->quality = $quality;
 
@@ -661,7 +661,7 @@ class GdDriver implements ImageDriver
         return (int) round((100 - $this->quality) / 10);
     }
 
-    public function format(string $format): ImageDriver
+    public function format(string $format): static
     {
         ob_start();
 
