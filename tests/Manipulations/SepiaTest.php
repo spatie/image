@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
 
-use Spatie\Image\Image;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can make an image sepia', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can sepia an image', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/sepia.png");
 
-    Image::load(getTestJpg())->sepia()->save($targetFile);
+    $driver->loadFile(getTestJpg())->sepia()->save($targetFile);
 
-    expect($targetFile)->toBeFile();
-});
+    assertMatchesImageSnapshot($targetFile, 0.3);
+})->with('drivers');

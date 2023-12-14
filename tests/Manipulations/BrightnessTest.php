@@ -1,18 +1,18 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
-
+use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
 
-it('can adjust the brightness', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-    Image::load(getTestJpg())->brightness(-75)->save($targetFile);
+it('can adjust the brightness', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/brightness.png");
 
-    expect($targetFile)->toBeFile();
-});
+    $driver->loadFile(getTestJpg())->brightness(-50)->save($targetFile);
 
-it('will throw an exception when passing an invalid brightness', function () {
-    Image::load(getTestJpg())->brightness(-101);
-})->throws(InvalidManipulation::class);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers');
+
+it('will throw an exception when passing an invalid brightness', function (ImageDriver $driver) {
+    $driver->loadFile(getTestJpg())->brightness(-101);
+})->with('drivers')->throws(InvalidManipulation::class);

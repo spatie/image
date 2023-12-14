@@ -1,18 +1,18 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
-
+use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
 
-it('can blur', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-    Image::load(getTestJpg())->blur(5)->save($targetFile);
+it('can blur an image', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/blur.png");
 
-    expect($targetFile)->toBeFile();
-});
+    $driver->loadFile(getTestJpg())->blur(50)->save($targetFile);
 
-it('will throw an exception when passing an invalid blur value', function () {
-    Image::load(getTestJpg())->blur(1000);
-})->throws(InvalidManipulation::class);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers');
+
+it('will throw an exception when passing an invalid blur value', function (ImageDriver $driver) {
+    $driver->loadFile(getTestJpg())->blur(101);
+})->with('drivers')->throws(InvalidManipulation::class);

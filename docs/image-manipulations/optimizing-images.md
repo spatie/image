@@ -28,27 +28,17 @@ No matter where or how many times you call `optimize` in you chain, it will alwa
 
 ## Customizing the optimization
 
-To optimization of images is done by the underlying [spatie/image-optimizer](https://github.com/spatie/image-optimizer) package. You can pass your own customized chains as array. The keys should be fully qualified class names of optimizers and the values the options that they should get. Here's an example
+To optimization of images is done by the underlying [spatie/image-optimizer](https://github.com/spatie/image-optimizer) package. You can customize this by passing a [OptimizerChain](https://github.com/spatie/image-optimizer#creating-your-own-optimization-chains) instance. 
 
 ```php
-Image::load('example.jpg')
-    ->optimize([Jpegoptim::class => [
-        '--all-progressive',
-    ]])
-    ->save();
-```
-
-If you need more control over the optimizer chain, you can still pass your own instance of `OptimizerChain`. It can be especially useful if you need to set a custom timeout or a custom binary path. You may not have enough privileges to install the necessary binaries on your server but you can still upload some [precompiled binaries](https://github.com/imagemin?q=bin&type=&language=).
-
-```php
-$optimizer = new OptimizerChain();
-$optimizer->setTimeout(10);
-$optimizer->addOptimizer((new Jpegoptim([
-    '--all-progressive',
-]))->setBinaryPath('/home/user/bin'));
+$optimizerChain = (new OptimizerChain)
+        ->addOptimizer(new Jpegoptim([
+            '--strip-all',
+            '--all-progressive',
+            '-m85'
+        ]));
 
 Image::load('example.jpg')
-    ->setOptimizeChain($optimizer)
-    ->optimize()
+    ->optimize($optimizerChain)
     ->save();
 ```

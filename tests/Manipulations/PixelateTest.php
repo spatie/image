@@ -1,18 +1,13 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can pixelate', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can pixelate an image', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/pixelate.png");
 
-    Image::load(getTestJpg())->pixelate(50)->save($targetFile);
+    $driver->loadFile(getTestJpg())->pixelate()->save($targetFile);
 
-    expect($targetFile)->toBeFile();
-});
-
-it('will throw an exception when passing an invalid pixelate value', function () {
-    Image::load(getTestJpg())->pixelate(1001);
-})->throws(InvalidManipulation::class);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers');

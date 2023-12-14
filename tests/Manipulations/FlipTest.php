@@ -1,14 +1,13 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Enums\FlipDirection;
 
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can flip an image', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can flip an image', function (ImageDriver $driver, FlipDirection $direction) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/{$direction->name}.png");
+    $driver->loadFile(getTestJpg())->flip($direction)->save($targetFile);
 
-    Image::load(getTestJpg())->flip(Manipulations::FLIP_HORIZONTALLY)->save($targetFile);
-
-    expect($targetFile)->toBeFile();
-});
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with(FlipDirection::cases());

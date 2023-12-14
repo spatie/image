@@ -16,20 +16,23 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.2",
         "ext-exif": "*",
-        "ext-mbstring": "*",
+        "ext-gd": "*",
+        "ext-imagick": "*",
         "ext-json": "*",
-        "league/glide": "^2.2.2",
+        "ext-mbstring": "*",
         "spatie/image-optimizer": "^1.7",
         "spatie/temporary-directory": "^1.0|^2.0",
-        "symfony/process": "^3.0|^4.0|^5.0|^6.0"
+        "symfony/process": "^6.0"
     },
     "require-dev": {
-        "pestphp/pest": "^1.22",
-        "phpunit/phpunit": "^9.5",
-        "symfony/var-dumper": "^4.0|^5.0|^6.0",
-        "vimeo/psalm": "^4.6"
+        "pestphp/pest": "^2.0",
+        "phpstan/phpstan": "^1.10",
+        "spatie/pest-plugin-snapshots": "^2.1",
+        "spatie/pixelmatch-php": "^1.0",
+        "spatie/ray": "^1.37",
+        "symfony/var-dumper": "^6.0"
     },
     "autoload": {
         "psr-4": {
@@ -42,8 +45,9 @@
         }
     },
     "scripts": {
-        "psalm": "vendor/bin/psalm",
-        "test": "vendor/bin/pest"
+        "test": "vendor/bin/pest",
+        "analyse": "phpstan analyse --memory-limit=1G --no-progress",
+        "baseline": "./vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline"
     },
     "config": {
         "sort-packages": true,

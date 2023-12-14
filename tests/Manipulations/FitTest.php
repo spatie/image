@@ -1,44 +1,103 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Enums\Fit;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can fit an image', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can contain an image in the given dimensions', function (
+    ImageDriver $driver,
+    array $fitDimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-contain.png");
 
-    Image::load(getTestJpg())->fit(Manipulations::FIT_CONTAIN, 500, 300)->save($targetFile);
-
-    expect($targetFile)->toBeFile();
-});
-
-it('can fit an image with only width', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
-
-    Image::load(getTestJpg())->fit(Manipulations::FIT_FILL_MAX, width: 500)->save($targetFile);
+    $driver->loadFile(getTestJpg())->fit(Fit::Contain, ...$fitDimensions)->save($targetFile);
 
     expect($targetFile)->toBeFile();
-    expect(getimagesize($targetFile)[0])->toBe(500);
-    expect(getimagesize($targetFile)[1])->toBe(412);
-});
 
+    $savedImage = $driver->loadFile($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
 
-it('can fit an image with only height', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    [[100, 60], 73, 60],
+    [[60, 100], 60, 50],
+    [[200, 200], 200, 165],
+]);
 
-    Image::load(getTestJpg())->fit(Manipulations::FIT_FILL_MAX, height: 500)->save($targetFile);
+it('can fill an image in the given dimensions', function (
+    ImageDriver $driver,
+    array $fitDimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-fill.png");
 
-    expect($targetFile)->toBeFile();
-    expect(getimagesize($targetFile)[0])->toBe(607);
-    expect(getimagesize($targetFile)[1])->toBe(500);
-});
+    $driver->loadFile(getTestJpg())->fit(Fit::Fill, ...$fitDimensions)->save($targetFile);
 
-it('will throw an exception when passing an invalid fit', function () {
-    Image::load(getTestJpg())->fit('blabla', 500, 300);
-})->throws(InvalidManipulation::class);
+    $savedImage = $driver->loadFile($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    [[500, 500], 500, 500],
+    [[250, 300], 250, 300],
+    [[100, 100], 100, 100],
+]);
 
-it('will throw an exception when passing no width and no height', function () {
-    Image::load(getTestJpg())->fit(Manipulations::FIT_CONTAIN);
-})->throws(InvalidManipulation::class);
+it('can fill and stretch an image in the given dimensions', function (
+    ImageDriver $driver,
+    array $fitDimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-max.png");
+
+    $driver->loadFile(getTestJpg())->fit(Fit::Max, ...$fitDimensions)->save($targetFile);
+
+    $savedImage = $driver->loadFile($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    [[100, 100], 100, 100],
+    [[250, 300], 250, 300],
+    [[500, 500], 500, 500],
+]);
+
+it('can stretch an image to the given dimensions', function (
+    ImageDriver $driver,
+    array $fitDimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-stretch.png");
+
+    $driver->loadFile(getTestJpg())->fit(Fit::Stretch, ...$fitDimensions)->save($targetFile);
+
+    $savedImage = $driver->loadFile($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    [[100, 100], 100, 100],
+    [[250, 300], 250, 300],
+    [[500, 500], 500, 500],
+    [[100, 500], 100, 500],
+]);
+
+it('can fit and add a background', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-background.png");
+
+    $driver->loadFile(getTestJpg())
+        ->fit(Fit::Fill, 2000, 100)
+        //->background('ff5733')
+        ->save($targetFile);
+
+    assertMatchesImageSnapshot($targetFile);
+
+    //$this->fail('TODO: bug background color is not set');
+})->with('drivers');

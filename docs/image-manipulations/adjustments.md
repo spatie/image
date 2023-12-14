@@ -32,3 +32,11 @@ $image->gamma(4.1);
 ```
 
 ![Gamma](../../images/example-gamma.jpg)
+
+## Colorize
+
+The `colorize` method colorizes the `Image`. The method accepts values between -100 and 100 for red, green and blue.
+
+```php
+$image->colorize(100, 0, 0);
+```

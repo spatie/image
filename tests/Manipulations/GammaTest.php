@@ -2,17 +2,14 @@
 
 namespace Spatie\Image\Test\Manipulations;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
+use Spatie\Image\Drivers\ImageDriver;
 
-it('can adjust the gamma', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-    Image::load(getTestJpg())->gamma(9.5)->save($targetFile);
+it('can apply gamma to an image', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/gamma.png");
 
-    expect($targetFile)->toBeFile();
-});
+    $driver->loadFile(getTestJpg())->gamma(4.8)->save($targetFile);
 
-it('will throw an exception when passing an invalid gamma', function () {
-    Image::load(getTestJpg())->gamma(101);
-})->throws(InvalidManipulation::class);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers');

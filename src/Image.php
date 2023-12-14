@@ -2,190 +2,319 @@
 
 namespace Spatie\Image;
 
-use BadMethodCallException;
-use Intervention\Image\ImageManagerStatic as InterventionImage;
+use Spatie\Image\Drivers\Concerns\ValidatesArguments;
+use Spatie\Image\Drivers\Gd\GdDriver;
+use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Drivers\Imagick\ImagickDriver;
+use Spatie\Image\Enums\AlignPosition;
+use Spatie\Image\Enums\BorderType;
+use Spatie\Image\Enums\ColorFormat;
+use Spatie\Image\Enums\Constraint;
+use Spatie\Image\Enums\CropPosition;
+use Spatie\Image\Enums\Fit;
+use Spatie\Image\Enums\FlipDirection;
+use Spatie\Image\Enums\ImageDriver as ImageDriverEnum;
+use Spatie\Image\Enums\Orientation;
+use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 use Spatie\ImageOptimizer\OptimizerChain;
-use Spatie\ImageOptimizer\OptimizerChainFactory;
-use Spatie\ImageOptimizer\Optimizers\BaseOptimizer;
 
-/** @mixin \Spatie\Image\Manipulations */
-class Image
+class Image implements ImageDriver
 {
-    protected Manipulations $manipulations;
+    use ValidatesArguments;
 
-    protected string $imageDriver = 'gd';
+    protected ImageDriver $imageDriver;
 
-    protected ?string $temporaryDirectory = null;
-
-    protected ?OptimizerChain $optimizerChain = null;
-
-    public function __construct(protected string $pathToImage)
+    public function __construct(protected ?string $pathToImage = null)
     {
-        $this->manipulations = new Manipulations();
+        $this->imageDriver = new ImagickDriver();
     }
 
     public static function load(string $pathToImage): static
     {
+        if (! file_exists($pathToImage)) {
+            throw CouldNotLoadImage::fileDoesNotExist($pathToImage);
+        }
+
         return new static($pathToImage);
     }
 
-    public function setTemporaryDirectory($tempDir): static
+    public function loadFile(string $pathToImage): static
     {
-        $this->temporaryDirectory = $tempDir;
+        $this->imageDriver->loadFile($pathToImage);
 
         return $this;
     }
 
-    public function setOptimizeChain(OptimizerChain $optimizerChain): static
+    public static function useImageDriver(ImageDriverEnum|string $imageDriver): static
     {
-        $this->optimizerChain = $optimizerChain;
+        if (is_string($imageDriver)) {
+            $imageDriver = ImageDriverEnum::tryFrom($imageDriver)
+                ?? throw InvalidImageDriver::driver($imageDriver);
+        }
+
+        $driver = match ($imageDriver) {
+            ImageDriverEnum::Gd => new GdDriver(),
+            ImageDriverEnum::Imagick => new ImagickDriver(),
+        };
+
+        $image = new self();
+        $image->imageDriver = $driver;
+
+        return $image;
+    }
+
+    public function new(int $width, int $height, ?string $backgroundColor = null): static
+    {
+        $this->imageDriver->new($width, $height, $backgroundColor);
 
         return $this;
     }
 
-    /**
-     * @param string $imageDriver
-     * @return $this
-     * @throws InvalidImageDriver
-     */
-    public function useImageDriver(string $imageDriver): static
+    public function driverName(): string
     {
-        if (! in_array($imageDriver, ['gd', 'imagick'])) {
-            throw InvalidImageDriver::driver($imageDriver);
-        }
-
-        $this->imageDriver = $imageDriver;
-
-        InterventionImage::configure([
-            'driver' => $this->imageDriver,
-        ]);
-
-        return $this;
+        return $this->imageDriver->driverName();
     }
 
-    public function manipulate(callable | Manipulations $manipulations): static
+    public function save(string $path = ''): static
     {
-        if (is_callable($manipulations)) {
-            $manipulations($this->manipulations);
-        }
-
-        if ($manipulations instanceof Manipulations) {
-            $this->manipulations->mergeManipulations($manipulations);
-        }
-
-        return $this;
-    }
-
-    public function __call($name, $arguments): static
-    {
-        if (! method_exists($this->manipulations, $name)) {
-            throw new BadMethodCallException("Manipulation `{$name}` does not exist");
-        }
-
-        $this->manipulations->$name(...$arguments);
+        $this->imageDriver->save($path);
 
         return $this;
     }
 
     public function getWidth(): int
     {
-        return InterventionImage::make($this->pathToImage)->width();
+        return $this->imageDriver->getWidth();
     }
 
     public function getHeight(): int
     {
-        return InterventionImage::make($this->pathToImage)->height();
+        return $this->imageDriver->getHeight();
     }
 
-    public function getManipulationSequence(): ManipulationSequence
+    public function brightness(int $brightness): static
     {
-        return $this->manipulations->getManipulationSequence();
+        $this->ensureNumberBetween($brightness, -100, 100, 'brightness');
+
+        $this->imageDriver->brightness($brightness);
+
+        return $this;
     }
 
-    public function save(string $outputPath = ''): void
+    public function gamma(float $gamma): static
     {
-        if ($outputPath === '') {
-            $outputPath = $this->pathToImage;
-        }
+        $this->ensureNumberBetween($gamma, 0.1, 9.99, 'gamma');
 
-        $this->addFormatManipulation($outputPath);
+        $this->imageDriver->gamma($gamma);
 
-        $glideConversion = GlideConversion::create($this->pathToImage)->useImageDriver($this->imageDriver);
-
-        if (! is_null($this->temporaryDirectory)) {
-            $glideConversion->setTemporaryDirectory($this->temporaryDirectory);
-        }
-
-        $glideConversion->performManipulations($this->manipulations);
-
-        $glideConversion->save($outputPath);
-
-        if ($this->shouldOptimize()) {
-            $optimizerChainConfiguration = $this->manipulations->getFirstManipulationArgument('optimize');
-
-            $optimizerChainConfiguration = json_decode($optimizerChainConfiguration, true);
-
-            $this->performOptimization($outputPath, $optimizerChainConfiguration);
-        }
+        return $this;
     }
 
-    protected function shouldOptimize(): bool
+    public function contrast(float $level): static
     {
-        return ! is_null($this->manipulations->getFirstManipulationArgument('optimize'));
+        $this->ensureNumberBetween($level, -100, 100, 'contrast');
+
+        $this->imageDriver->contrast($level);
+
+        return $this;
     }
 
-    protected function performOptimization($path, array $optimizerChainConfiguration): void
+    public function blur(int $blur): static
     {
-        $optimizerChain = $this->optimizerChain ?? OptimizerChainFactory::create();
+        $this->ensureNumberBetween($blur, 0, 100, 'blur');
 
-        if (count($optimizerChainConfiguration)) {
-            $existingOptimizers = $optimizerChain->getOptimizers();
+        $this->imageDriver->blur($blur);
 
-            $optimizers = array_map(function (array $optimizerOptions, string $optimizerClassName) use ($existingOptimizers) {
-                $optimizer = array_values(array_filter($existingOptimizers, function ($optimizer) use ($optimizerClassName) {
-                    return $optimizer::class === $optimizerClassName;
-                }));
-
-                $optimizer = isset($optimizer[0]) && $optimizer[0] instanceof BaseOptimizer ? $optimizer[0] : new $optimizerClassName();
-
-                return $optimizer->setOptions($optimizerOptions)->setBinaryPath($optimizer->binaryPath);
-            }, $optimizerChainConfiguration, array_keys($optimizerChainConfiguration));
-
-            $optimizerChain->setOptimizers($optimizers);
-        }
-
-        $optimizerChain->optimize($path);
+        return $this;
     }
 
-    protected function addFormatManipulation($outputPath): void
+    public function colorize(int $red, int $green, int $blue): static
     {
-        if ($this->manipulations->hasManipulation('format')) {
-            return;
-        }
+        $this->ensureNumberBetween($red, -100, 100, 'red');
+        $this->ensureNumberBetween($green, -100, 100, 'green');
+        $this->ensureNumberBetween($blue, -100, 100, 'blue');
 
-        $inputExtension = strtolower(pathinfo($this->pathToImage, PATHINFO_EXTENSION));
-        $outputExtension = strtolower(pathinfo($outputPath, PATHINFO_EXTENSION));
+        $this->imageDriver->colorize($red, $green, $blue);
 
-        if ($inputExtension === $outputExtension) {
-            return;
-        }
+        return $this;
+    }
 
-        $supportedFormats = [
-            Manipulations::FORMAT_JPG,
-            Manipulations::FORMAT_PJPG,
-            Manipulations::FORMAT_PNG,
-            Manipulations::FORMAT_GIF,
-            Manipulations::FORMAT_WEBP,
-            Manipulations::FORMAT_AVIF,
-        ];
-        //gd driver doesn't support TIFF
-        if ($this->imageDriver === 'imagick') {
-            $supportedFormats[] = Manipulations::FORMAT_TIFF;
-        }
+    public function greyscale(): static
+    {
+        $this->imageDriver->greyscale();
 
-        if (in_array($outputExtension, $supportedFormats)) {
-            $this->manipulations->format($outputExtension);
-        }
+        return $this;
+    }
+
+    public function sepia(): static
+    {
+        $this->imageDriver->sepia();
+
+        return $this;
+    }
+
+    public function sharpen(float $amount): static
+    {
+        $this->ensureNumberBetween($amount, 0, 100, 'sharpen');
+
+        $this->imageDriver->sharpen($amount);
+
+        return $this;
+    }
+
+    public function getSize(): Size
+    {
+        return $this->imageDriver->getSize();
+    }
+
+    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static
+    {
+        $this->imageDriver->fit($fit, $desiredWidth, $desiredHeight);
+
+        return $this;
+    }
+
+    public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed
+    {
+        return $this->imageDriver->pickColor($x, $y, $colorFormat);
+    }
+
+    public function resizeCanvas(?int $width = null, ?int $height = null, ?AlignPosition $position = null, bool $relative = false, string $backgroundColor = '#000000'): static
+    {
+        $this->imageDriver->resizeCanvas($width, $height, $position, $relative, $backgroundColor);
+
+        return $this;
+    }
+
+    public function manualCrop(int $width, int $height, ?int $x = null, ?int $y = null): static
+    {
+        $this->imageDriver->manualCrop($width, $height, $x, $y);
+
+        return $this;
+    }
+
+    public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): static
+    {
+        $this->imageDriver->crop($width, $height, $position);
+
+        return $this;
+    }
+
+    public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
+    {
+        $this->imageDriver->focalCrop($width, $height, $cropCenterX, $cropCenterY);
+
+        return $this;
+    }
+
+    public function base64(string $imageFormat = 'jpeg', bool $prefixWithFormat = true): string
+    {
+        return $this->imageDriver->base64($imageFormat);
+    }
+
+    public function background(string $color): static
+    {
+        $this->imageDriver->background($color);
+
+        return $this;
+    }
+
+    public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): static
+    {
+        $this->imageDriver->overlay($bottomImage, $topImage, $x, $y);
+
+        return $this;
+    }
+
+    public function orientation(?Orientation $orientation = null): static
+    {
+        $this->imageDriver->orientation($orientation);
+
+        return $this;
+    }
+
+    public function exif(): array
+    {
+        return $this->imageDriver->exif();
+    }
+
+    public function flip(FlipDirection $flip): static
+    {
+        $this->imageDriver->flip($flip);
+
+        return $this;
+    }
+
+    public function pixelate(int $pixelate = 50): static
+    {
+        $this->ensureNumberBetween($pixelate, 0, 100, 'pixelate');
+
+        $this->imageDriver->pixelate($pixelate);
+
+        return $this;
+    }
+
+    public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0): static
+    {
+        $this->imageDriver->insert($otherImage, $position, $x, $y);
+
+        return $this;
+    }
+
+    public function image(): mixed
+    {
+        return $this->imageDriver->image();
+    }
+
+    public function resize(int $width, int $height, array $constraints = []): static
+    {
+        $this->imageDriver->resize($width, $height, $constraints);
+
+        return $this;
+    }
+
+    public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): static
+    {
+        $this->imageDriver->width($width, $constraints);
+
+        return $this;
+    }
+
+    public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): static
+    {
+        $this->imageDriver->height($height, $constraints);
+
+        return $this;
+    }
+
+    public function border(int $width, BorderType $type, string $color = '000000'): static
+    {
+        $this->imageDriver->border($width, $type, $color);
+
+        return $this;
+    }
+
+    public function quality(int $quality): static
+    {
+        $this->ensureNumberBetween($quality, 0, 100, 'quality');
+
+        $this->imageDriver->quality($quality);
+
+        return $this;
+    }
+
+    public function format(string $format): static
+    {
+        $this->imageDriver->format($format);
+
+        return $this;
+    }
+
+    public function optimize(?OptimizerChain $optimizerChain = null): static
+    {
+        $this->imageDriver->optimize($optimizerChain);
+
+        return $this;
     }
 }

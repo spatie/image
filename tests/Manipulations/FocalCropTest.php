@@ -1,30 +1,29 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can focal crop', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can perform a crop centered around given coordinates', function (
+    ImageDriver $driver,
+    array $focalCropArguments,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/focal-crop.png");
 
-    Image::load(getTestJpg())->focalCrop(100, 500, 100, 100)->save($targetFile);
-
-    expect($targetFile)->toBeFile();
-});
-
-it('can focal crop with zoom', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
-
-    Image::load(getTestJpg())->focalCrop(100, 500, 100, 100, 2)->save($targetFile);
+    $driver->loadFile(getTestJpg())->focalCrop(...$focalCropArguments)->save($targetFile);
 
     expect($targetFile)->toBeFile();
-});
 
-it('will throw an exception when passing an invalid width', function () {
-    Image::load(getTestJpg())->focalCrop(-100, 500, 100, 100);
-})->throws(InvalidManipulation::class);
+    $savedImage = $driver->loadFile($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
 
-it('will throw an exception when passing an zoom value not in range', function () {
-    Image::load(getTestJpg())->focalCrop(100, 500, 100, 100, 900);
-})->throws(InvalidManipulation::class);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    [[100, 100, 60, 60], 100, 100],
+    [[100, 100, 0, 10], 100, 100],
+    [[120, 120, 270, 270], 120, 120],
+    [[120, 120, 1000, 1000], 120, 120],
+]);

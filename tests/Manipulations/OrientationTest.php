@@ -1,19 +1,20 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Enums\Orientation;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can set the orientation', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can rotate an image', function (ImageDriver $driver, ?Orientation $orientation) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-{$orientation?->name}.png");
 
-    Image::load(getTestJpg())->orientation(Manipulations::ORIENTATION_90)->save($targetFile);
+    $driver->loadFile(getTestFile('portrait.jpg'))->orientation($orientation)->save($targetFile);
 
-    expect($targetFile)->toBeFile();
-});
-
-it('will throw an exception when passing an invalid orientation', function () {
-    Image::load(getTestJpg())->orientation('blabla');
-})->throws(InvalidManipulation::class);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    null,
+    Orientation::Rotate0,
+    Orientation::Rotate90,
+    Orientation::Rotate180,
+    Orientation::Rotate270,
+]);

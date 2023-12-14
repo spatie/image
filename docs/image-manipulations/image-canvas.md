@@ -17,57 +17,63 @@ $image->background('darkgray');
 
 ## Border
 
-The `border` method adds border with a certain `$width`, `$color` and `$borderType` to the `Image`. 
+The `border` method adds border with a certain `$width`, `$borderType` and `$color` to the `Image`. 
 
 ```php
-$image->border(15, '007698', Manipulations::BORDER_SHRINK);
+$image->border(15, BorderType::Shrink, '007698');
 ```
 
 ![Border](../../images/example-border.jpg)
 
 ### Border types
 
-#### `Manipulations::BORDER_OVERLAY`
+#### `BorderType::Overlay`
 
 By default the border will be added as an overlay to the image.
 
-#### `Manipulations::BORDER_SHRINK`
+#### `BorderType::Shrink`
 
-The `BORDER_SHRINK` type shrinks the image to fit the border around. The canvas size stays the same.
+The `Shrink` type shrinks the image to fit the border around. The canvas size stays the same.
 
-#### `Manipulations::BORDER_EXPAND`
+#### `BorderType::Expand`
 
-The `BORDER_EXPAND` type adds the border to the outside of the image and thus expands the canvas.
+The `Expand` type adds the border to the outside of the image and thus expands the canvas.
 
 ## Orientation
 
-The `orientation` method can be used to rotate the `Image` `90`, `180` or `270` degrees. 
+The `orientation` method can be used to rotate the `Image` by passing a Orientation enum value. 
 
 ```php
-$image->orientation(Manipulations::ORIENTATION_180);
+$image->orientation(Orientation::Rotate180);
+```
+
+When passing no parameters the orientation will be derived from the exif data of the image.
+
+```php
+$image->orientation();
 ```
 
 ![Border](../../images/example-orientation.jpg)
 
-The accepted values are available as the following constants on the `Manipulations` class:
+The accepted values are:
 
-- `Manipulations::ORIENTATION_AUTO` (default EXIF orientation)
-- `Manipulations::ORIENTATION_90`
-- `Manipulations::ORIENTATION_180`
-- `Manipulations::ORIENTATION_270`
+- `Orientation::Rotate0`
+- `Orientation::Rotate90`
+- `Orientation::Rotate180`
+- `Orientation::Rotate270`
 
 ## Flip
 
 Flip/mirror an image 'horizontally', 'vertically' or 'both'.
 
 ```php
-$image->flip(Manipulations::FLIP_HORIZONTALLY);
+$image->flip(FlipDirection::Horizontal);
 ```
 
 ![Border](../../images/example-flip-horizontally.jpg)
 
-The accepted values are available as the following constants on the `Manipulations` class:
+The accepted values are:
 
-- `Manipulations::FLIP_HORIZONTALLY`
-- `Manipulations::FLIP_VERTICALLY`
-- `Manipulations::FLIP_BOTH`
+- `FlipDirection::Vertical`
+- `FlipDirection::Horizontal`
+- `FlipDirection::Both`

@@ -1,27 +1,37 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Enums\CropPosition;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can crop', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can crop an image relative to a position', function (
+    ImageDriver $driver,
+    array $cropArguments,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.png");
 
-    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, 100, 500)->save($targetFile);
+    $driver->loadFile(getTestJpg())->crop(...$cropArguments)->save($targetFile);
 
     expect($targetFile)->toBeFile();
-});
 
-it('will throw an exception when passing an invalid crop method', function () {
-    Image::load(getTestJpg())->crop('blabla', 10, 10);
-})->throws(InvalidManipulation::class);
-
-it('will throw an exception when passing a negative width', function () {
-    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, -10, 10);
-})->throws(InvalidManipulation::class);
-
-it('will throw an exception when passing a negative height', function () {
-    Image::load(getTestJpg())->crop(Manipulations::CROP_BOTTOM, 10, -10);
-})->throws(InvalidManipulation::class);
+    $savedImage = $driver->loadFile($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    [[50, 100, CropPosition::TopLeft], 50, 100],
+    [[50, 100, CropPosition::Center], 50, 100],
+    [[50, 100, CropPosition::Top], 50, 100],
+    [[50, 100, CropPosition::Left], 50, 100],
+    [[50, 100, CropPosition::Right], 50, 100],
+    [[50, 100, CropPosition::BottomRight], 50, 100],
+    [[50, 100, CropPosition::BottomLeft], 50, 100],
+    [[50, 100, CropPosition::TopLeft], 50, 100],
+    [[50, 100, CropPosition::TopRight], 50, 100],
+    [[1000, 100, CropPosition::Center], 340, 100],
+    [[50, 1000, CropPosition::Center], 50, 280],
+    [[50, 1000, CropPosition::Top], 50, 280],
+]);

@@ -1,18 +1,31 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can manual crop', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can contain an image in the given dimensions', function (
+    ImageDriver $driver,
+    array $dimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.png");
 
-    Image::load(getTestJpg())->manualCrop(100, 500, 30, 30)->save($targetFile);
+    $driver->loadFile(getTestJpg())->manualCrop(...$dimensions)->save($targetFile);
 
     expect($targetFile)->toBeFile();
-});
 
-it('will throw an exception when passing an invalid width', function () {
-    Image::load(getTestJpg())->manualCrop(-100, 500, 100, 100);
-})->throws(InvalidManipulation::class);
+    $savedImage = $driver->loadFile($targetFile);
+
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    [[100, 50], 100, 50],
+    [[100, 50, 0, 50], 100, 50],
+    [[100, 50, 200, 200], 100, 50],
+    [[1000, 50, 200, 200], 140, 50],
+    [[100, 1000, 200, 200], 100, 80],
+]);

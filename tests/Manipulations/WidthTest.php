@@ -1,18 +1,13 @@
 <?php
 
-namespace Spatie\Image\Test\Manipulations;
+use Spatie\Image\Drivers\ImageDriver;
 
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Image;
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
-it('can set the width', function () {
-    $targetFile = $this->tempDir->path('conversion.jpg');
+it('can colorize an image', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/width.png");
 
-    Image::load(getTestJpg())->width(100)->save($targetFile);
+    $driver->loadFile(getTestJpg())->width(100)->save($targetFile);
 
-    expect($targetFile)->toBeFile();
-});
-
-it('will throw an exception when passing an invalid width', function () {
-    Image::load(getTestJpg())->width(-10);
-})->throws(InvalidManipulation::class);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers');

@@ -5,9 +5,7 @@ weight: 1
 
 Image manipulation doesn't have to be hard. This PHP package makes it super easy to apply common manipulations to images like resizing, cropping and adding effects.
 
-For all available manipulations, please see the [overview](/image/v1/image-manipulations/overview).
-
-Under the hood this package uses [Glide](http://glide.thephpleague.com) by [Jonathan Reinink](https://twitter.com/reinink).
+For all available manipulations, please see the [overview](/image/v3/image-manipulations/overview).
 
 ## Quick examples
 
@@ -46,9 +44,9 @@ The image is converted to JPG simply by saving it with the correct file extensio
 
 ```php
 Image::load('github-logo.png')
-    ->fit(Manipulations::FIT_FILL, 500, 300)
+    ->fit(Fit::Fill, 500, 300)
     ->background('lightblue')
-    ->border(15, '007698', Manipulations::BORDER_EXPAND)
+    ->border(15, BorderType::Expand, '007698')
     ->save('example.jpg');
 ```
 

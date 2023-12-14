@@ -67,6 +67,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Testing
 
 ``` bash
+npm i pixelmatch
 composer test
 ```
 
@@ -91,7 +92,7 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 - [Freek Van der Herten](https://github.com/freekmurze)
 - [All Contributors](../../contributors)
 
-Under the hood [Glide](http://glide.thephpleague.com/) by [Jonathan Reinink](https://twitter.com/reinink) is used. We've based our documentation and docblocks on text found in [the Glide documentation](http://glide.thephpleague.com/)
+Large parts of this codebase were copied from [Intervention Image](https://image.intervention.io/v3) by [Oliver Vogel](https://github.com/olivervogel), and modified for readability and to fit our needs.
 
 ## License
 
