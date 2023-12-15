@@ -13,5 +13,6 @@ The following image formats are tested and supported by the package. If your GD/
 | png    | ✅  | ✅ |
 | gif    | ✅  | ✅ |
 | webp   | ✅  | ✅ |
+| avif   | ✅  | ✅ |
 | heic   | ❌  | ✅ |
 | tiff   | ❌  | ✅ |
