@@ -147,7 +147,7 @@ class GdDriver implements ImageDriver
                 imagewebp($this->image, $path);
                 break;
             case 'avif':
-                imageavif($this->image,$path);
+                imageavif($this->image, $path);
                 break;
             default:
                 throw UnsupportedImageFormat::make($extension);

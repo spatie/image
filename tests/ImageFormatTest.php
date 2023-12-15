@@ -10,7 +10,7 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
     $driver->loadFile(getTestJpg())->save($targetFile);
 
     expect($targetFile)->toHaveMime("image/$format");
-})->with('drivers', ['jpeg', 'gif', 'png', 'webp','avif']);
+})->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif']);
 
 it('can save tiff', function () {
     $format = 'tiff';
