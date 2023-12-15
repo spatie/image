@@ -2,6 +2,14 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.1.0 - 2023-12-15
+
+### What's Changed
+
+* add Avif Support by @ariaieboy in https://github.com/spatie/image/pull/207
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.0.0...3.1.0
+
 ## 3.0.0 - 2023-12-14
 
 ### What's Changed
