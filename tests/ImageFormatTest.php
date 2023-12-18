@@ -18,6 +18,21 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
     expect($targetFile)->toHaveMime("image/$format");
 })->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif']);
 
+
+it('can change to supported formats', function (ImageDriver $driver, string $format) {
+    if ($format === 'avif' && ! function_exists('imageavif')) {
+        $this->markTestSkipped('avif is not supported on this system');
+
+        return;
+    }
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
+
+    $driver->loadFile(getTestJpg())->format($format)->save($targetFile);
+
+    expect($targetFile)->toHaveMime("image/$format");
+})->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif']);
+
 it('can save tiff', function () {
     $format = 'tiff';
     $driver = Image::useImageDriver('imagick');
