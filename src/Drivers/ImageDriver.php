@@ -29,7 +29,7 @@ interface ImageDriver
     public function getHeight(): int;
 
     /**
-     * @param int $brightness A value between -100 and 100
+     * @param  int  $brightness A value between -100 and 100
      */
     public function brightness(int $brightness): static;
 
@@ -38,7 +38,7 @@ interface ImageDriver
     public function contrast(float $level): static;
 
     /**
-     * @param int $blur A value between 0 and 100.
+     * @param  int  $blur A value between 0 and 100.
      */
     public function blur(int $blur): static;
 
@@ -57,11 +57,11 @@ interface ImageDriver
     public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed;
 
     public function resizeCanvas(
-        ?int           $width = null,
-        ?int           $height = null,
+        ?int $width = null,
+        ?int $height = null,
         ?AlignPosition $position = null,
-        bool           $relative = false,
-        string         $backgroundColor = '#000000'
+        bool $relative = false,
+        string $backgroundColor = '#000000'
     ): static;
 
     public function manualCrop(int $width, int $height, int $x = 0, int $y = 0): static;
@@ -87,24 +87,24 @@ interface ImageDriver
 
     public function pixelate(int $pixelate): static;
 
-    public function insertPadding(int $x = 0, int $y = 0, Unit $unit = Unit::PX):static;
+    public function insertPadding(int $x = 0, int $y = 0, Unit $unit = Unit::PX): static;
 
     public function insert(
         ImageDriver|string $otherImage,
-        AlignPosition      $position = AlignPosition::Center,
-        int                $x = 0,
-        int                $y = 0,
+        AlignPosition $position = AlignPosition::Center,
+        int $x = 0,
+        int $y = 0,
     ): static;
 
     public function image(): mixed;
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function resize(int $width, int $height, array $constraints): static;
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function width(int $width, array $constraints = []): static;
 
-    /** @param array<Constraint> $constraints */
+    /** @param  array<Constraint>  $constraints */
     public function height(int $height, array $constraints = []): static;
 
     public function border(int $width, BorderType $type, string $color = '000000'): static;

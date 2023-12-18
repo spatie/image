@@ -29,9 +29,9 @@ class ImagickDriver implements ImageDriver
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
+    use InsertManipulations;
     use PerformsOptimizations;
     use ValidatesArguments;
-    use InsertManipulations;
 
     protected Imagick $image;
 
@@ -415,7 +415,7 @@ class ImagickDriver implements ImageDriver
         }
 
         $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
-        if ($x===0&&$y===0&&($this->paddingX!==0 || $this->paddingY !== 0)){
+        if ($x === 0 && $y === 0 && ($this->paddingX !== 0 || $this->paddingY !== 0)) {
             $x = $this->calculatePaddingX();
             $y = $this->calculatePaddingY();
         }
@@ -430,6 +430,7 @@ class ImagickDriver implements ImageDriver
             $target->y
         );
         $this->resetInsertPadding();
+
         return $this;
     }
 

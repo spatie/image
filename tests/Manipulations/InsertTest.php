@@ -44,8 +44,8 @@ it('can insert with custom padding', function (
 
     assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
-    [[20,10]],
-    [[10,20]],
-    [[10,20,Unit::Percent]],
-    [[20,10,Unit::Percent]],
+    [[20, 10]],
+    [[10, 20]],
+    [[10, 20, Unit::Percent]],
+    [[20, 10, Unit::Percent]],
 ]);

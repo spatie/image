@@ -19,7 +19,6 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
-use Spatie\Image\Enums\Unit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
@@ -30,9 +29,9 @@ class GdDriver implements ImageDriver
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
+    use InsertManipulations;
     use PerformsOptimizations;
     use ValidatesArguments;
-    use InsertManipulations;
 
     protected GdImage $image;
 
@@ -548,7 +547,7 @@ class GdDriver implements ImageDriver
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }
-        if ($x===0&&$y===0&&($this->paddingX!==0 || $this->paddingY !== 0)){
+        if ($x === 0 && $y === 0 && ($this->paddingX !== 0 || $this->paddingY !== 0)) {
             $x = $this->calculatePaddingX();
             $y = $this->calculatePaddingY();
         }
@@ -569,6 +568,7 @@ class GdDriver implements ImageDriver
             $otherImageSize->height
         );
         $this->resetInsertPadding();
+
         return $this;
     }
 
@@ -707,6 +707,4 @@ class GdDriver implements ImageDriver
 
         return $this;
     }
-
-
 }
