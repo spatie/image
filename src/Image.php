@@ -2,6 +2,8 @@
 
 namespace Spatie\Image;
 
+use GdImage;
+use Imagick;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\Gd\GdDriver;
 use Spatie\Image\Drivers\ImageDriver;
@@ -27,7 +29,7 @@ class Image implements ImageDriver
 
     public function __construct(?string $pathToImage = null)
     {
-        $this->imageDriver = new ImagickDriver();
+        $this->imageDriver = static::chooseDriver();
 
         if ($pathToImage) {
             $this->imageDriver->loadFile($pathToImage);
@@ -323,5 +325,18 @@ class Image implements ImageDriver
         $this->imageDriver->optimize($optimizerChain);
 
         return $this;
+    }
+
+    protected static function chooseDriver(): ImageDriver
+    {
+        if (class_exists(Imagick::class)) {
+            return new ImagickDriver();
+        }
+
+        if (class_exists(GdImage::class)) {
+            return new GdDriver();
+        }
+
+        throw new InvalidImageDriver('No image driver is available. Please install either the imagick or gd extension');
     }
 }
