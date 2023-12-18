@@ -7,6 +7,7 @@ use Spatie\Image\Image;
 it('can save supported formats', function (ImageDriver $driver, string $format) {
     if ($format === 'avif' && ! function_exists('imageavif')) {
         $this->markTestSkipped('avif is not supported on this system');
+
         return;
     }
 

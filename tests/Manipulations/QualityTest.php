@@ -20,6 +20,7 @@ it('can set the quality of a png', function (ImageDriver $driver) {
 it('can set the quality for different formats', function (ImageDriver $driver, string $format, int $quality) {
     if ($format === 'avif' && ! function_exists('imageavif')) {
         $this->markTestSkipped('avif is not supported on this system');
+
         return;
     }
 
