@@ -4,6 +4,6 @@ namespace Spatie\Image\Enums;
 
 enum Unit
 {
-    case PX;
+    case Pixel;
     case Percent;
 }
