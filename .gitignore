@@ -8,3 +8,5 @@ vendor
 .idea
 tests/TestSupport/temp/
 node_modules/
+package-lock.json
+```

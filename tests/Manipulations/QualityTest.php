@@ -18,6 +18,11 @@ it('can set the quality of a png', function (ImageDriver $driver) {
 })->with('drivers');
 
 it('can set the quality for different formats', function (ImageDriver $driver, string $format, int $quality) {
+    if ($format === 'avif' && ! function_exists('imageavif')) {
+        $this->markTestSkipped('avif is not supported on this system');
+        return;
+    }
+
     $targetFile = $this->tempDir->path("{$driver->driverName()}/quality.{$format}");
 
     $driver->loadFile(getTestJpg())->quality($quality)->save($targetFile);

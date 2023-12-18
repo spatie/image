@@ -25,12 +25,12 @@ class Image implements ImageDriver
 
     protected ImageDriver $imageDriver;
 
-    public function __construct(protected ?string $pathToImage = null)
+    public function __construct(?string $pathToImage = null)
     {
         $this->imageDriver = new ImagickDriver();
 
-        if ($this->pathToImage) {
-            $this->imageDriver->loadFile($this->pathToImage);
+        if ($pathToImage) {
+            $this->imageDriver->loadFile($pathToImage);
         }
     }
 
