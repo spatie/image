@@ -7,6 +7,7 @@ use GdImage;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
+use Spatie\Image\Drivers\Concerns\InsertManipulations;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
@@ -18,6 +19,7 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
+use Spatie\Image\Enums\Unit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
@@ -30,6 +32,7 @@ class GdDriver implements ImageDriver
     use GetsOrientationFromExif;
     use PerformsOptimizations;
     use ValidatesArguments;
+    use InsertManipulations;
 
     protected GdImage $image;
 
@@ -545,7 +548,10 @@ class GdDriver implements ImageDriver
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }
-
+        if ($x===0&&$y===0&&($this->paddingX!==0 || $this->paddingY !== 0)){
+            $x = $this->calculatePaddingX();
+            $y = $this->calculatePaddingY();
+        }
         $imageSize = $this->getSize()->align($position, $x, $y);
         $otherImageSize = $otherImage->getSize()->align($position);
         $target = $imageSize->relativePosition($otherImageSize);
@@ -562,7 +568,7 @@ class GdDriver implements ImageDriver
             $otherImageSize->width,
             $otherImageSize->height
         );
-
+        $this->resetInsertPadding();
         return $this;
     }
 
@@ -701,4 +707,6 @@ class GdDriver implements ImageDriver
 
         return $this;
     }
+
+
 }
