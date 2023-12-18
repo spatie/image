@@ -8,10 +8,8 @@ use Spatie\Image\Enums\Unit;
 trait InsertManipulations
 {
     protected int $paddingX = 0;
-
     protected int $paddingY = 0;
-
-    protected $paddingUnit = Unit::PX;
+    protected Unit $paddingUnit = Unit::PX;
 
     public function insertPadding(int $x = 0, int $y = 0, Unit $unit = Unit::PX): static
     {
@@ -22,7 +20,6 @@ trait InsertManipulations
         $this->paddingX = $x;
         $this->paddingY = $y;
         $this->paddingUnit = $unit;
-
         return $this;
     }
 
@@ -31,7 +28,6 @@ trait InsertManipulations
         if ($this->paddingUnit === Unit::Percent) {
             return $this->getWidth() * $this->paddingX / 100;
         }
-
         return $this->paddingX;
     }
 
@@ -40,7 +36,6 @@ trait InsertManipulations
         if ($this->paddingUnit === Unit::Percent) {
             return $this->getHeight() * $this->paddingY / 100;
         }
-
         return $this->paddingY;
     }
 
@@ -49,7 +44,6 @@ trait InsertManipulations
         $this->paddingX = 0;
         $this->paddingY = 0;
         $this->paddingUnit = Unit::PX;
-
         return $this;
     }
 }
