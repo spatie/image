@@ -3,7 +3,7 @@ V3 is a major rewrite where we removed several dependencies and tried to streaml
 
 Note that some results might be slightly different from previous versions as we made improvement across a number of methods.
 
-## Working wit the Image object.
+## Working with the Image object.
 The `Image` class has been slimmed down to only being responsible for initializing and delegating to the correct driver (GD or Imagick).
 
 As of V3 there are 3 ways to create a new image instance:
