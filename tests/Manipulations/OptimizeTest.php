@@ -15,7 +15,8 @@ it('can optimize an image', function (ImageDriver $driver) {
             '--strip-all',
             '--all-progressive',
             '-m85',
-        ]));
+        ]))
+        ->setTimeout(90);
 
     $driver->loadFile($testFile)->optimize($optimizerChain)->save($optimizedFile);
     $driver->loadFile($testFile)->save($controlFile);
