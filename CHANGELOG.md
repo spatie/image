@@ -2,6 +2,21 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.2.0 - 2023-12-18
+
+### What's Changed
+
+* Bump actions/checkout from 3 to 4 by @dependabot in https://github.com/spatie/image/pull/210
+* Add `OptimizerChain::setTimeout()` to the image optimization tests and docs by @golubev in https://github.com/spatie/image/pull/208
+* Image load fix by @kbond in https://github.com/spatie/image/pull/214
+
+### New Contributors
+
+* @golubev made their first contribution in https://github.com/spatie/image/pull/208
+* @kbond made their first contribution in https://github.com/spatie/image/pull/214
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.1.0...3.2.0
+
 ## 3.1.0 - 2023-12-15
 
 ### What's Changed
