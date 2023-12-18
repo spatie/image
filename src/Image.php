@@ -28,6 +28,10 @@ class Image implements ImageDriver
     public function __construct(protected ?string $pathToImage = null)
     {
         $this->imageDriver = new ImagickDriver();
+
+        if ($this->pathToImage) {
+            $this->imageDriver->loadFile($this->pathToImage);
+        }
     }
 
     public static function load(string $pathToImage): static

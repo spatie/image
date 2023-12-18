@@ -23,6 +23,12 @@ it('will use imagick if it is available', function () {
     expect($image->driverName())->toEqual('imagick');
 });
 
+it('it can load image from file', function () {
+    $image = Image::load(getTestJpg());
+
+    expect($image->getHeight())->toEqual(280);
+});
+
 it('will throw an exception when no file exists at the given path', function () {
     $invalidPath = getTestJpg().'non-existing';
 
