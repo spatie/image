@@ -6,7 +6,7 @@ use Spatie\Image\Image;
 
 it('can save supported formats', function (ImageDriver $driver, string $format) {
     if (($driver instanceof \Spatie\Image\Drivers\Gd\GdDriver && $format === 'avif' && ! function_exists('imageavif'))
-        ||($driver instanceof \Spatie\Image\Drivers\Imagick\ImagickDriver && $format === 'avif' && empty(Imagick::queryFormats('AVIF*')))) {
+        || ($driver instanceof \Spatie\Image\Drivers\Imagick\ImagickDriver && $format === 'avif' && empty(Imagick::queryFormats('AVIF*')))) {
         $this->markTestSkipped('avif is not supported on this system');
 
         return;
@@ -21,7 +21,7 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
 
 it('can change to supported formats', function (ImageDriver $driver, string $format) {
     if (($driver instanceof \Spatie\Image\Drivers\Gd\GdDriver && $format === 'avif' && ! function_exists('imageavif'))
-        ||($driver instanceof \Spatie\Image\Drivers\Imagick\ImagickDriver && $format === 'avif' && empty(Imagick::queryFormats('AVIF*')))) {
+        || ($driver instanceof \Spatie\Image\Drivers\Imagick\ImagickDriver && $format === 'avif' && empty(Imagick::queryFormats('AVIF*')))) {
         $this->markTestSkipped('avif is not supported on this system');
 
         return;
