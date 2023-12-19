@@ -1,5 +1,8 @@
 <?php
 
+use Spatie\Image\Drivers\Gd\GdDriver;
+use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Drivers\Imagick\ImagickDriver;
 use Spatie\Image\Image;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
@@ -61,8 +64,20 @@ expect()->extend('toHaveMime', function (string $expectedMime) {
     finfo_close($file);
 
     expect($actualMime)->toBe($expectedMime);
-
 });
+
+function avifIsSupported(string $driverName): bool
+{
+    if ($driverName === 'gd') {
+        return function_exists('imageavif');
+    }
+
+    if ($driverName === 'imagick') {
+        return count(Imagick::queryFormats('AVIF*')) > 0;
+    }
+
+    return false;
+}
 
 function skipIfImagickDoesNotSupportFormat(string $format)
 {
