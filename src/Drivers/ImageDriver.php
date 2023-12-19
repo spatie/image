@@ -93,9 +93,9 @@ interface ImageDriver
         int $paddingX = 0,
         int $paddingY = 0,
         Unit $paddingUnit = Unit::Pixel,
-        ?int $width = null,
+        int $width = 0,
         Unit $widthUnit = Unit::Pixel,
-        ?int $height = null,
+        int $height = 0,
         Unit $heightUnit = Unit::Pixel,
         Fit $fit = Fit::Contain
     ): static;

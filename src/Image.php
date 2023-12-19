@@ -36,7 +36,7 @@ class Image implements ImageDriver
 
     public static function load(string $pathToImage): static
     {
-        if (! file_exists($pathToImage)) {
+        if (!file_exists($pathToImage)) {
             throw CouldNotLoadImage::fileDoesNotExist($pathToImage);
         }
 
@@ -322,6 +322,12 @@ class Image implements ImageDriver
     {
         $this->imageDriver->optimize($optimizerChain);
 
+        return $this;
+    }
+
+    public function watermark(ImageDriver|string $watermark, AlignPosition $position = AlignPosition::BottomRight, int $paddingX = 0, int $paddingY = 0, Unit $paddingUnit = Unit::Pixel, int $width = 0, Unit $widthUnit = Unit::Pixel, int $height = 0, Unit $heightUnit = Unit::Pixel, Fit $fit = Fit::Contain): static
+    {
+        $this->imageDriver->watermark($watermark, $position, $paddingX, $paddingY, $paddingUnit, $width, $widthUnit, $height, $heightUnit, $fit);
         return $this;
     }
 }
