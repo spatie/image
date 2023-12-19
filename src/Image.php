@@ -263,13 +263,6 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function insertPadding(int $x = 0, int $y = 0, Unit $unit = Unit::Pixel): static
-    {
-        $this->imageDriver->insertPadding($x, $y, $unit);
-
-        return $this;
-    }
-
     public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0): static
     {
         $this->imageDriver->insert($otherImage, $position, $x, $y);

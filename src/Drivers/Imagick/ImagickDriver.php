@@ -8,7 +8,7 @@ use ImagickPixel;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
-use Spatie\Image\Drivers\Concerns\InsertManipulations;
+use Spatie\Image\Drivers\Concerns\WaterMark;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
@@ -29,7 +29,7 @@ class ImagickDriver implements ImageDriver
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
-    use InsertManipulations;
+    use WaterMark;
     use PerformsOptimizations;
     use ValidatesArguments;
 
@@ -415,10 +415,7 @@ class ImagickDriver implements ImageDriver
         }
 
         $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
-        if ($x === 0 && $y === 0 && ($this->paddingX !== 0 || $this->paddingY !== 0)) {
-            $x = $this->calculatePaddingX();
-            $y = $this->calculatePaddingY();
-        }
+
         $imageSize = $this->getSize()->align($position, $x, $y);
         $watermarkSize = $otherImage->getSize()->align($position);
         $target = $imageSize->relativePosition($watermarkSize);
@@ -429,7 +426,6 @@ class ImagickDriver implements ImageDriver
             $target->x,
             $target->y
         );
-        $this->resetInsertPadding();
 
         return $this;
     }

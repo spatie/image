@@ -86,9 +86,18 @@ interface ImageDriver
     public function flip(FlipDirection $flip): static;
 
     public function pixelate(int $pixelate): static;
-
-    public function insertPadding(int $x = 0, int $y = 0, Unit $unit = Unit::Pixel): static;
-
+    public function watermark(
+        ImageDriver|string $watermark,
+        AlignPosition $position = AlignPosition::BottomRight,
+        int $paddingX = 0,
+        int $paddingY = 0,
+        Unit $paddingUnit = Unit::Pixel,
+        ?int $width = null,
+        Unit $widthUnit = Unit::Pixel,
+        ?int $height = null,
+        Unit $heightUnit = Unit::Pixel,
+        Fit $fit = Fit::Contain
+    ): static;
     public function insert(
         ImageDriver|string $otherImage,
         AlignPosition $position = AlignPosition::Center,
