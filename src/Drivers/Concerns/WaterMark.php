@@ -37,11 +37,11 @@ trait WaterMark
         $paddingY = $this->calculateY($paddingY, $paddingUnit);
         $width = $width ? $this->calculateX($width, $widthUnit) : null;
         $height = $height ? $this->calculateY($height, $widthUnit) : null;
-        if (is_null($width)&&!is_null($height)){
-            $watermark->height($height,[$fit]);
-        }elseif(!is_null($width)&&is_null($height)){
-            $watermark->width($width,[$fit]);
-        }else{
+        if (is_null($width) && ! is_null($height)) {
+            $watermark->height($height, [$fit]);
+        } elseif (! is_null($width) && is_null($height)) {
+            $watermark->width($width, [$fit]);
+        } else {
             $watermark->fit($fit, $width, $height);
         }
         $this->insert($watermark, $position, $paddingX, $paddingY);
