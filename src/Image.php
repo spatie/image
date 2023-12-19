@@ -15,6 +15,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\ImageDriver as ImageDriverEnum;
 use Spatie\Image\Enums\Orientation;
+use Spatie\Image\Enums\Unit;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 use Spatie\ImageOptimizer\OptimizerChain;
