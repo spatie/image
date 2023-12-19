@@ -5,7 +5,8 @@ use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
 
 it('can save supported formats', function (ImageDriver $driver, string $format) {
-    if ($format === 'avif' && ! function_exists('imageavif')) {
+    if (($driver instanceof \Spatie\Image\Drivers\Gd\GdDriver && $format === 'avif' && ! function_exists('imageavif'))
+        || ($driver instanceof \Spatie\Image\Drivers\Imagick\ImagickDriver && $format === 'avif' && empty(Imagick::queryFormats('AVIF*')))) {
         $this->markTestSkipped('avif is not supported on this system');
 
         return;
@@ -17,6 +18,16 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
 
     expect($targetFile)->toHaveMime("image/$format");
 })->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif']);
+
+it('can save supported formats using format() function', function (ImageDriver $driver, string $format) {
+    if (($driver instanceof \Spatie\Image\Drivers\Gd\GdDriver && $format === 'avif' && ! function_exists('imageavif'))
+        || ($driver instanceof \Spatie\Image\Drivers\Imagick\ImagickDriver && $format === 'avif' && empty(Imagick::queryFormats('AVIF*')))) {
+        $this->markTestSkipped('avif is not supported on this system');
+
+        return;
+    }
+    $driver->loadFile(getTestJpg())->format($format);
+})->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif'])->throwsNoExceptions();
 
 it('can save tiff', function () {
     $format = 'tiff';
