@@ -38,9 +38,9 @@ trait WaterMark
         $width = $width ? $this->calculateX($width, $widthUnit) : null;
         $height = $height ? $this->calculateY($height, $widthUnit) : null;
         if (is_null($width) && ! is_null($height)) {
-            $watermark->height($height, [$fit]);
+            $watermark->height($height);
         } elseif (! is_null($width) && is_null($height)) {
-            $watermark->width($width, [$fit]);
+            $watermark->width($width);
         } else {
             $watermark->fit($fit, $width, $height);
         }
