@@ -1,8 +1,5 @@
 <?php
 
-use Spatie\Image\Drivers\Gd\GdDriver;
-use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Drivers\Imagick\ImagickDriver;
 use Spatie\Image\Image;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 

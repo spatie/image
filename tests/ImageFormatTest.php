@@ -8,6 +8,7 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
 
     if ($format === 'avif' && ! avifIsSupported($driver->driverName())) {
         $this->markTestSkipped('avif is not supported on this system');
+
         return;
     }
 
