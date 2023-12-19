@@ -11,36 +11,38 @@ use Spatie\Image\Enums\Unit;
 trait WaterMark
 {
     public function watermark(ImageDriver|string $watermark, AlignPosition $position = AlignPosition::BottomRight,
-                                      int $paddingX = 0,
-                                      int $paddingY = 0,
-                                      Unit $paddingUnit = Unit::Pixel,
-                                      int $width = 0,
-                                      Unit $widthUnit = Unit::Pixel,
-                                      int $height = 0,
-                                      Unit $heightUnit = Unit::Pixel,
-                                      Fit $fit = Fit::Contain): static
+        int $paddingX = 0,
+        int $paddingY = 0,
+        Unit $paddingUnit = Unit::Pixel,
+        int $width = 0,
+        Unit $widthUnit = Unit::Pixel,
+        int $height = 0,
+        Unit $heightUnit = Unit::Pixel,
+        Fit $fit = Fit::Contain): static
     {
         if (is_string($watermark)) {
             $watermark = (new self())->loadFile($watermark);
         }
-        if ($paddingUnit === Unit::Percent){
-            $this->ensureNumberBetween($paddingX,0,100,'paddingX');
-            $this->ensureNumberBetween($paddingY,0,100,'paddingY');
+        if ($paddingUnit === Unit::Percent) {
+            $this->ensureNumberBetween($paddingX, 0, 100, 'paddingX');
+            $this->ensureNumberBetween($paddingY, 0, 100, 'paddingY');
         }
-        if ($widthUnit === Unit::Percent){
-            $this->ensureNumberBetween($width,0,100,'width');
+        if ($widthUnit === Unit::Percent) {
+            $this->ensureNumberBetween($width, 0, 100, 'width');
         }
-        if ($heightUnit === Unit::Percent){
-            $this->ensureNumberBetween($height,0,100,'height');
+        if ($heightUnit === Unit::Percent) {
+            $this->ensureNumberBetween($height, 0, 100, 'height');
         }
-        $paddingX = $this->calculateX($paddingX,$paddingUnit);
-        $paddingY = $this->calculateY($paddingY,$paddingUnit);
-        $width = $width?$this->calculateX($width,$widthUnit):$this->getWidth();
-        $height = $height?$this->calculateY($height,$widthUnit):$this->getHeight();
-        $watermark->fit($fit,$width,$height);
-        $this->insert($watermark,$position,$paddingX,$paddingY);
+        $paddingX = $this->calculateX($paddingX, $paddingUnit);
+        $paddingY = $this->calculateY($paddingY, $paddingUnit);
+        $width = $width ? $this->calculateX($width, $widthUnit) : $this->getWidth();
+        $height = $height ? $this->calculateY($height, $widthUnit) : $this->getHeight();
+        $watermark->fit($fit, $width, $height);
+        $this->insert($watermark, $position, $paddingX, $paddingY);
+
         return $this;
     }
+
     protected function calculateX(int $x, Unit $unit): int
     {
         if ($unit === Unit::Percent) {
@@ -49,6 +51,7 @@ trait WaterMark
 
         return $x;
     }
+
     protected function calculateY(int $y, Unit $unit): int
     {
         if ($unit === Unit::Percent) {
