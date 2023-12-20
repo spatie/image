@@ -23,6 +23,7 @@ use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
+use function PHPUnit\Framework\throwException;
 
 class GdDriver implements ImageDriver
 {
@@ -46,7 +47,7 @@ class GdDriver implements ImageDriver
     {
         $image = imagecreatetruecolor($width, $height);
 
-        if (! $image) {
+        if (!$image) {
             throw new Exception('Could not create image');
         }
 
@@ -83,7 +84,7 @@ class GdDriver implements ImageDriver
 
         $image = imagecreatefromstring($contents);
 
-        if (! $image) {
+        if (!$image) {
             throw CouldNotLoadImage::make($path);
         }
 
@@ -128,7 +129,7 @@ class GdDriver implements ImageDriver
 
     public function save(?string $path = null): static
     {
-        if (! $path) {
+        if (!$path) {
             $path = $this->originalPath;
         }
 
@@ -172,7 +173,7 @@ class GdDriver implements ImageDriver
         ob_end_clean();
 
         if ($prefixWithFormat) {
-            return 'data:image/'.$imageFormat.';base64,'.base64_encode($imageData);
+            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($imageData);
         }
 
         return base64_encode($imageData);
@@ -220,7 +221,8 @@ class GdDriver implements ImageDriver
         int $sourceY = 0,
         int $sourceWidth = 0,
         int $sourceHeight = 0,
-    ): static {
+    ): static
+    {
         $newImage = imagecreatetruecolor($desiredWidth, $desiredHeight);
 
         $transparentColorValue = imagecolortransparent($this->image);
@@ -264,7 +266,7 @@ class GdDriver implements ImageDriver
     {
         $color = imagecolorat($this->image, $x, $y);
 
-        if (! imageistruecolor($this->image)) {
+        if (!imageistruecolor($this->image)) {
             $color = imagecolorsforindex($this->image, $color);
             $color['alpha'] = round(1 - $color['alpha'] / 127, 2);
         }
@@ -275,12 +277,13 @@ class GdDriver implements ImageDriver
     }
 
     public function resizeCanvas(
-        ?int $width = null,
-        ?int $height = null,
+        ?int           $width = null,
+        ?int           $height = null,
         ?AlignPosition $position = null,
-        bool $relative = false,
-        string $backgroundColor = '#ffffff'
-    ): static {
+        bool           $relative = false,
+        string         $backgroundColor = '#ffffff'
+    ): static
+    {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -540,11 +543,12 @@ class GdDriver implements ImageDriver
 
     public function insert(
         ImageDriver|string $otherImage,
-        AlignPosition $position = AlignPosition::Center,
-        int $x = 0,
-        int $y = 0,
-        int $alpha = 100
-    ): static {
+        AlignPosition      $position = AlignPosition::Center,
+        int                $x = 0,
+        int                $y = 0,
+        int                $alpha = 100
+    ): static
+    {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
@@ -557,6 +561,9 @@ class GdDriver implements ImageDriver
         imagealphablending($this->image, true);
         // check here for the next 3 line https://www.php.net/manual/en/function.imagecopymerge.php#92787
         $cut = imagecreatetruecolor($otherImageSize->width, $otherImageSize->height);
+        if (!$cut) {
+            throw new Exception('Could not create image');
+        }
         imagecopy($cut, $this->image, 0, 0, $target->x, $target->y, $otherImageSize->width, $otherImageSize->height);
         imagecopy($cut, $otherImage->image, 0, 0, 0, 0, $otherImageSize->width, $otherImageSize->height);
 
@@ -606,8 +613,8 @@ class GdDriver implements ImageDriver
 
             $this
                 ->resize(
-                    (int) round($this->getWidth() - ($width * 2)),
-                    (int) round($this->getHeight() - ($width * 2)),
+                    (int)round($this->getWidth() - ($width * 2)),
+                    (int)round($this->getHeight() - ($width * 2)),
                     [Constraint::PreserveAspectRatio],
                 )
                 ->resizeCanvas(
@@ -623,8 +630,8 @@ class GdDriver implements ImageDriver
 
         if ($type === BorderType::Expand) {
             $this->resizeCanvas(
-                (int) round($width * 2),
-                (int) round($width * 2),
+                (int)round($width * 2),
+                (int)round($width * 2),
                 AlignPosition::Center,
                 true,
                 $color,
@@ -638,10 +645,10 @@ class GdDriver implements ImageDriver
 
             imagefilledrectangle(
                 $this->image,
-                (int) round($width / 2),
-                (int) round($width / 2),
-                (int) round($this->getWidth() - ($width / 2)),
-                (int) round($this->getHeight() - ($width / 2)),
+                (int)round($width / 2),
+                (int)round($width / 2),
+                (int)round($this->getWidth() - ($width / 2)),
+                (int)round($this->getHeight() - ($width / 2)),
                 $backgroundColor->getInt()
             );
 
@@ -651,10 +658,10 @@ class GdDriver implements ImageDriver
 
             imagerectangle(
                 $this->image,
-                (int) round($width / 2),
-                (int) round($width / 2),
-                (int) round($this->getWidth() - ($width / 2)),
-                (int) round($this->getHeight() - ($width / 2)),
+                (int)round($width / 2),
+                (int)round($width / 2),
+                (int)round($this->getWidth() - ($width / 2)),
+                (int)round($this->getHeight() - ($width / 2)),
                 $borderColor->getInt()
             );
 
@@ -664,7 +671,7 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    /** @param  int<-1, 100>  $quality */
+    /** @param int<-1, 100> $quality */
     public function quality(int $quality): static
     {
         $this->quality = $quality;
@@ -679,7 +686,7 @@ class GdDriver implements ImageDriver
             return -1;
         }
 
-        return (int) round((100 - $this->quality) / 10);
+        return (int)round((100 - $this->quality) / 10);
     }
 
     public function format(string $format): static
