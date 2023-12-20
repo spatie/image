@@ -555,9 +555,11 @@ class GdDriver implements ImageDriver
         $target = $imageSize->relativePosition($otherImageSize);
 
         imagealphablending($this->image, true);
+        // check here for the next 3 line https://www.php.net/manual/en/function.imagecopymerge.php#92787
         $cut = imagecreatetruecolor($otherImageSize->width, $otherImageSize->height);
         imagecopy($cut, $this->image, 0, 0, $target->x, $target->y, $otherImageSize->width, $otherImageSize->height);
         imagecopy($cut, $otherImage->image, 0, 0, 0, 0, $otherImageSize->width, $otherImageSize->height);
+
         imagecopymerge(
             $this->image,
             $cut,
