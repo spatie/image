@@ -26,7 +26,7 @@ it('can save supported formats using format() function', function (ImageDriver $
         return;
     }
     $driver->loadFile(getTestJpg())->format($format);
-})->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif'])->throwsNoExceptions();
+})->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif', 'svg'])->throwsNoExceptions();
 
 it('can save tiff', function () {
     $format = 'tiff';
@@ -49,6 +49,15 @@ it('can save heic', function () {
 
     expect($targetFile)->toHaveMime("image/$format");
 })->skipIfImagickDoesNotSupportFormat('heic');
+
+it('can save svg', function () {
+    $format = 'svg';
+    $driver = Image::useImageDriver('gd');
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
+
+    $driver->loadFile(getTestJpg())->save($targetFile);
+})->throwsNoExceptions();
 
 it('throws an error for unsupported GD image formats', function (string $format) {
     $driver = Image::useImageDriver('gd');

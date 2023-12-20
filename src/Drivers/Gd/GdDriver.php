@@ -149,6 +149,8 @@ class GdDriver implements ImageDriver
             case 'avif':
                 imageavif($this->image, $path);
                 break;
+            case 'svg';
+                break;
             default:
                 throw UnsupportedImageFormat::make($extension);
         }
@@ -679,6 +681,7 @@ class GdDriver implements ImageDriver
 
         switch (strtolower($format)) {
             case 'jpg':
+            case 'svg':
             case 'jpeg':
                 imagejpeg($this->image, null, $this->quality);
                 break;
