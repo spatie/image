@@ -543,7 +543,9 @@ class GdDriver implements ImageDriver
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
+        int $alpha = 100
     ): static {
+        $this->ensureNumberBetween($alpha,0,100,'alpha');
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }
@@ -553,16 +555,19 @@ class GdDriver implements ImageDriver
         $target = $imageSize->relativePosition($otherImageSize);
 
         imagealphablending($this->image, true);
-
-        imagecopy(
+        $cut = imagecreatetruecolor($otherImageSize->width, $otherImageSize->height);
+        imagecopy($cut, $this->image, 0, 0, $target->x, $target->y, $otherImageSize->width, $otherImageSize->height);
+        imagecopy($cut, $otherImage->image, 0, 0, 0, 0, $otherImageSize->width, $otherImageSize->height);
+        imagecopymerge(
             $this->image,
-            $otherImage->image,
+            $cut,
             $target->x,
             $target->y,
             0,
             0,
             $otherImageSize->width,
-            $otherImageSize->height
+            $otherImageSize->height,
+            $alpha
         );
 
         return $this;

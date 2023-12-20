@@ -97,7 +97,8 @@ interface ImageDriver
         Unit $widthUnit = Unit::Pixel,
         int $height = 0,
         Unit $heightUnit = Unit::Pixel,
-        Fit $fit = Fit::Contain
+        Fit $fit = Fit::Contain,
+        int $alpha = 100
     ): static;
 
     public function insert(
@@ -105,6 +106,7 @@ interface ImageDriver
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
+        int $alpha = 100
     ): static;
 
     public function image(): mixed;

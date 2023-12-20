@@ -18,11 +18,13 @@ trait WaterMark
         Unit $widthUnit = Unit::Pixel,
         int $height = 0,
         Unit $heightUnit = Unit::Pixel,
-        Fit $fit = Fit::Contain): static
+        Fit $fit = Fit::Contain,
+    int $alpha = 100): static
     {
         if (is_string($watermark)) {
             $watermark = (new self())->loadFile($watermark);
         }
+        $this->ensureNumberBetween($alpha,0,100,'alpha');
         if ($paddingUnit === Unit::Percent) {
             $this->ensureNumberBetween($paddingX, 0, 100, 'paddingX');
             $this->ensureNumberBetween($paddingY, 0, 100, 'paddingY');
@@ -44,7 +46,7 @@ trait WaterMark
         } else {
             $watermark->fit($fit, $width, $height);
         }
-        $this->insert($watermark, $position, $paddingX, $paddingY);
+        $this->insert($watermark, $position, $paddingX, $paddingY,$alpha);
 
         return $this;
     }
