@@ -263,9 +263,9 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0,int $alpha=100): static
+    public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0, int $alpha = 100): static
     {
-        $this->imageDriver->insert($otherImage, $position, $x, $y,$alpha);
+        $this->imageDriver->insert($otherImage, $position, $x, $y, $alpha);
 
         return $this;
     }
@@ -326,9 +326,9 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function watermark(ImageDriver|string $watermark, AlignPosition $position = AlignPosition::BottomRight, int $paddingX = 0, int $paddingY = 0, Unit $paddingUnit = Unit::Pixel, int $width = 0, Unit $widthUnit = Unit::Pixel, int $height = 0, Unit $heightUnit = Unit::Pixel, Fit $fit = Fit::Contain, int $alpha=100): static
+    public function watermark(ImageDriver|string $watermark, AlignPosition $position = AlignPosition::BottomRight, int $paddingX = 0, int $paddingY = 0, Unit $paddingUnit = Unit::Pixel, int $width = 0, Unit $widthUnit = Unit::Pixel, int $height = 0, Unit $heightUnit = Unit::Pixel, Fit $fit = Fit::Contain, int $alpha = 100): static
     {
-        $this->imageDriver->watermark($watermark, $position, $paddingX, $paddingY, $paddingUnit, $width, $widthUnit, $height, $heightUnit, $fit,$alpha);
+        $this->imageDriver->watermark($watermark, $position, $paddingX, $paddingY, $paddingUnit, $width, $widthUnit, $height, $heightUnit, $fit, $alpha);
 
         return $this;
     }

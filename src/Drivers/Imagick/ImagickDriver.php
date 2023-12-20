@@ -411,13 +411,13 @@ class ImagickDriver implements ImageDriver
         int $y = 0,
         int $alpha = 100
     ): static {
-        $this->ensureNumberBetween($alpha,0,100,'alpha');
+        $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }
 
         $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
-        $otherImage->image->evaluateImage(Imagick::EVALUATE_DIVIDE,(1/($alpha/100)),Imagick::CHANNEL_ALPHA);
+        $otherImage->image->evaluateImage(Imagick::EVALUATE_DIVIDE, (1 / ($alpha / 100)), Imagick::CHANNEL_ALPHA);
 
         $imageSize = $this->getSize()->align($position, $x, $y);
         $watermarkSize = $otherImage->getSize()->align($position);

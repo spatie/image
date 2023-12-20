@@ -32,5 +32,5 @@ it('can insert watermark to image', function (
     'width 100px, height 50px, strech' => [[0, 0, Unit::Pixel, 100, Unit::Pixel, 50, Unit::Pixel, Fit::Stretch]],
     'width 100%, height 50%, strech' => [[0, 0, Unit::Pixel, 100, Unit::Percent, 50, Unit::Percent, Fit::Stretch]],
     'opacity 50%' => [[0, 0, Unit::Pixel, 100, Unit::Percent, 50, Unit::Percent, Fit::Contain, 50]],
-    'opacity 25%'=>[[0, 0, Unit::Pixel, 100, Unit::Percent, 50, Unit::Percent, Fit::Contain,25]]
+    'opacity 25%' => [[0, 0, Unit::Pixel, 100, Unit::Percent, 50, Unit::Percent, Fit::Contain, 25]],
 ]);

@@ -545,7 +545,7 @@ class GdDriver implements ImageDriver
         int $y = 0,
         int $alpha = 100
     ): static {
-        $this->ensureNumberBetween($alpha,0,100,'alpha');
+        $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }

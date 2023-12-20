@@ -27,7 +27,7 @@ it('can insert another image', function (
     [[AlignPosition::BottomRight]],
     [[AlignPosition::BottomRight, 50, 75]],
     [[AlignPosition::Center, 50, 75]],
-    [[AlignPosition::Center, 50, 75,50]],
-    [[AlignPosition::Center, 50, 75,80]],
-    [[AlignPosition::Center, 50, 75,90]],
+    [[AlignPosition::Center, 50, 75, 50]],
+    [[AlignPosition::Center, 50, 75, 80]],
+    [[AlignPosition::Center, 50, 75, 90]],
 ]);
