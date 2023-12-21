@@ -10,6 +10,7 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
+use Spatie\Image\Enums\Unit;
 use Spatie\Image\Size;
 use Spatie\ImageOptimizer\OptimizerChain;
 
@@ -86,11 +87,26 @@ interface ImageDriver
 
     public function pixelate(int $pixelate): static;
 
+    public function watermark(
+        ImageDriver|string $watermark,
+        AlignPosition $position = AlignPosition::BottomRight,
+        int $paddingX = 0,
+        int $paddingY = 0,
+        Unit $paddingUnit = Unit::Pixel,
+        int $width = 0,
+        Unit $widthUnit = Unit::Pixel,
+        int $height = 0,
+        Unit $heightUnit = Unit::Pixel,
+        Fit $fit = Fit::Contain,
+        int $alpha = 100
+    ): static;
+
     public function insert(
         ImageDriver|string $otherImage,
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
+        int $alpha = 100
     ): static;
 
     public function image(): mixed;

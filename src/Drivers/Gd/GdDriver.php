@@ -9,6 +9,7 @@ use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
+use Spatie\Image\Drivers\Concerns\WaterMark;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
@@ -30,6 +31,7 @@ class GdDriver implements ImageDriver
     use GetsOrientationFromExif;
     use PerformsOptimizations;
     use ValidatesArguments;
+    use WaterMark;
 
     protected GdImage $image;
 
@@ -541,7 +543,9 @@ class GdDriver implements ImageDriver
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
+        int $alpha = 100
     ): static {
+        $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }
@@ -551,16 +555,24 @@ class GdDriver implements ImageDriver
         $target = $imageSize->relativePosition($otherImageSize);
 
         imagealphablending($this->image, true);
+        // check here for the next 3 line https://www.php.net/manual/en/function.imagecopymerge.php#92787
+        $cut = imagecreatetruecolor($otherImageSize->width, $otherImageSize->height);
+        if (! $cut) {
+            throw new Exception('Could not create image');
+        }
+        imagecopy($cut, $this->image, 0, 0, $target->x, $target->y, $otherImageSize->width, $otherImageSize->height);
+        imagecopy($cut, $otherImage->image, 0, 0, 0, 0, $otherImageSize->width, $otherImageSize->height);
 
-        imagecopy(
+        imagecopymerge(
             $this->image,
-            $otherImage->image,
+            $cut,
             $target->x,
             $target->y,
             0,
             0,
             $otherImageSize->width,
-            $otherImageSize->height
+            $otherImageSize->height,
+            $alpha
         );
 
         return $this;

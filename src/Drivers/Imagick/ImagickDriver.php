@@ -10,6 +10,7 @@ use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
+use Spatie\Image\Drivers\Concerns\WaterMark;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
@@ -30,6 +31,7 @@ class ImagickDriver implements ImageDriver
     use GetsOrientationFromExif;
     use PerformsOptimizations;
     use ValidatesArguments;
+    use WaterMark;
 
     protected Imagick $image;
 
@@ -407,12 +409,15 @@ class ImagickDriver implements ImageDriver
         AlignPosition $position = AlignPosition::Center,
         int $x = 0,
         int $y = 0,
+        int $alpha = 100
     ): static {
+        $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
         }
 
         $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
+        $otherImage->image->evaluateImage(Imagick::EVALUATE_DIVIDE, (1 / ($alpha / 100)), Imagick::CHANNEL_ALPHA);
 
         $imageSize = $this->getSize()->align($position, $x, $y);
         $watermarkSize = $otherImage->getSize()->align($position);
@@ -420,7 +425,7 @@ class ImagickDriver implements ImageDriver
 
         $this->image->compositeImage(
             $otherImage->image,
-            Imagick::COMPOSITE_DEFAULT,
+            Imagick::COMPOSITE_OVER,
             $target->x,
             $target->y
         );
