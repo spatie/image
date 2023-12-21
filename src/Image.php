@@ -351,7 +351,7 @@ class Image implements ImageDriver
             $height,
             $heightUnit,
             $fit,
-            $alpha
+            $alpha,
         );
 
         return $this;
