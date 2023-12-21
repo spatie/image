@@ -4,12 +4,12 @@ namespace Spatie\Image\Drivers\Gd;
 
 use Exception;
 use GdImage;
+use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
-use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
@@ -26,12 +26,12 @@ use Spatie\Image\Size;
 
 class GdDriver implements ImageDriver
 {
+    use AddsWatermark;
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
     use PerformsOptimizations;
     use ValidatesArguments;
-    use AddsWatermark;
 
     protected GdImage $image;
 
