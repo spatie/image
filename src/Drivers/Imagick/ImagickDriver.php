@@ -10,7 +10,7 @@ use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
-use Spatie\Image\Drivers\Concerns\WaterMark;
+use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
@@ -31,7 +31,7 @@ class ImagickDriver implements ImageDriver
     use GetsOrientationFromExif;
     use PerformsOptimizations;
     use ValidatesArguments;
-    use WaterMark;
+    use AddsWatermark;
 
     protected Imagick $image;
 

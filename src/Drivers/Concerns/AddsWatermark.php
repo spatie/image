@@ -8,9 +8,11 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\Unit;
 
 /** @mixin \Spatie\Image\Drivers\ImageDriver */
-trait WaterMark
+trait AddsWatermark
 {
-    public function watermark(ImageDriver|string $watermark, AlignPosition $position = AlignPosition::BottomRight,
+    public function watermark(
+        ImageDriver|string $watermark,
+        AlignPosition $position = AlignPosition::BottomRight,
         int $paddingX = 0,
         int $paddingY = 0,
         Unit $paddingUnit = Unit::Pixel,
@@ -24,21 +26,28 @@ trait WaterMark
         if (is_string($watermark)) {
             $watermark = (new self())->loadFile($watermark);
         }
+
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
+
         if ($paddingUnit === Unit::Percent) {
             $this->ensureNumberBetween($paddingX, 0, 100, 'paddingX');
             $this->ensureNumberBetween($paddingY, 0, 100, 'paddingY');
         }
+
         if ($widthUnit === Unit::Percent) {
             $this->ensureNumberBetween($width, 0, 100, 'width');
         }
+
         if ($heightUnit === Unit::Percent) {
             $this->ensureNumberBetween($height, 0, 100, 'height');
         }
-        $paddingX = $this->calculateX($paddingX, $paddingUnit);
-        $paddingY = $this->calculateY($paddingY, $paddingUnit);
-        $width = $width ? $this->calculateX($width, $widthUnit) : null;
-        $height = $height ? $this->calculateY($height, $widthUnit) : null;
+
+        $paddingX = $this->calculateWatermarkX($paddingX, $paddingUnit);
+        $paddingY = $this->calculateWatermarkY($paddingY, $paddingUnit);
+
+        $width = $width ? $this->calculateWatermarkX($width, $widthUnit) : null;
+        $height = $height ? $this->calculateWatermarkY($height, $widthUnit) : null;
+
         if (is_null($width) && ! is_null($height)) {
             $watermark->height($height);
         } elseif (! is_null($width) && is_null($height)) {
@@ -46,12 +55,13 @@ trait WaterMark
         } else {
             $watermark->fit($fit, $width, $height);
         }
+
         $this->insert($watermark, $position, $paddingX, $paddingY, $alpha);
 
         return $this;
     }
 
-    protected function calculateX(int $x, Unit $unit): int
+    protected function calculateWatermarkX(int $x, Unit $unit): int
     {
         if ($unit === Unit::Percent) {
             return $this->getWidth() * $x / 100;
@@ -60,7 +70,7 @@ trait WaterMark
         return $x;
     }
 
-    protected function calculateY(int $y, Unit $unit): int
+    protected function calculateWatermarkY(int $y, Unit $unit): int
     {
         if ($unit === Unit::Percent) {
             return $this->getHeight() * $y / 100;
