@@ -88,7 +88,7 @@ interface ImageDriver
     public function pixelate(int $pixelate): static;
 
     public function watermark(
-        ImageDriver|string $watermark,
+        ImageDriver|string $watermarkImage,
         AlignPosition $position = AlignPosition::BottomRight,
         int $paddingX = 0,
         int $paddingY = 0,

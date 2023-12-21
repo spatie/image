@@ -11,7 +11,7 @@ use Spatie\Image\Enums\Unit;
 trait AddsWatermark
 {
     public function watermark(
-        ImageDriver|string $watermark,
+        ImageDriver|string $watermarkImage,
         AlignPosition $position = AlignPosition::BottomRight,
         int $paddingX = 0,
         int $paddingY = 0,
@@ -23,8 +23,8 @@ trait AddsWatermark
         Fit $fit = Fit::Contain,
         int $alpha = 100): static
     {
-        if (is_string($watermark)) {
-            $watermark = (new self())->loadFile($watermark);
+        if (is_string($watermarkImage)) {
+            $watermarkImage = (new self())->loadFile($watermarkImage);
         }
 
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
@@ -49,14 +49,14 @@ trait AddsWatermark
         $height = $height ? $this->calculateWatermarkY($height, $widthUnit) : null;
 
         if (is_null($width) && ! is_null($height)) {
-            $watermark->height($height);
+            $watermarkImage->height($height);
         } elseif (! is_null($width) && is_null($height)) {
-            $watermark->width($width);
+            $watermarkImage->width($width);
         } else {
-            $watermark->fit($fit, $width, $height);
+            $watermarkImage->fit($fit, $width, $height);
         }
 
-        $this->insert($watermark, $position, $paddingX, $paddingY, $alpha);
+        $this->insert($watermarkImage, $position, $paddingX, $paddingY, $alpha);
 
         return $this;
     }
