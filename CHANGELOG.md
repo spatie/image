@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.0 - 2023-12-21
+
+- add watermark method
+
 ## 3.2.0 - 2023-12-18
 
 ### What's Changed
