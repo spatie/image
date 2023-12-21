@@ -338,8 +338,7 @@ class Image implements ImageDriver
         Unit $heightUnit = Unit::Pixel,
         Fit $fit = Fit::Contain,
         int $alpha = 100
-    ): static
-    {
+    ): static {
         $this->imageDriver->watermark(
             $watermarkImage,
             $position,
