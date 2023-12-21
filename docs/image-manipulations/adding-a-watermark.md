@@ -1,13 +1,9 @@
 ---
-title: Watermarks
+title: Adding a watermark
 weight: 8
 ---
 
-In addition to the insert method, we introduced a new method called `watermark` that can help you manipulate the insert image on the fly.
-
-This method is very useful especially when you want to define a media conversion in [laravel-media-library](https://spatie.be/index.php/docs/laravel-medialibrary/v11/converting-images/defining-conversions).
-
-Adding a watermark to an `Image` is simple:
+Using the `watermark` method you can easily position and add a watermark. By default, it will be placer in the bottom right corner of the image.
 
 ```php
 $image->watermark('watermark.png');
@@ -15,15 +11,14 @@ $image->watermark('watermark.png');
 
 ![Example](../../images/example-watermark.jpg)
 
-
 ## Watermark position
 
-As you can see in the example above the watermark is placed in the bottom right corner by default. You can change this behavior by passing the desired `AlignPosition` Enum:
+The watermark is placed in the bottom right corner by default. You can change this behavior by passing the desired `AlignPosition` Enum:
 
 ### Example usage
 
 ```php
-$image->watermark('watermark.png',AlignPosition::center);
+$image->watermark('watermark.png', AlignPosition::center);
 ```
 
 ![Example](../../images/example-watermark-position.jpg)
@@ -33,16 +28,17 @@ $image->watermark('watermark.png',AlignPosition::center);
 
 Use the `$paddingX` and `$paddingY` params to set the distance from the watermark to the edges of the image. It also accepts a unit param.
 
-By default the padding values are assumed to be pixels. You can however pass in `Unit::
+By default, the padding values are assumed to be pixels. You can however pass in `Unit::
 PERCENT` as the `$paddingUnit` to use percentages as padding values.
 
 ### Example usage
 
 ```php
 $image->watermark('watermark.png',
-				paddingX:10,
-				paddingY:10,
-				paddingUnit:Unit::percent); // 10% padding around the watermark
+    paddingX: 10,
+    paddingY: 10,
+    paddingUnit: Unit::Percent
+); // 10% padding around the watermark
 ```
 
 ![Example](../../images/example-watermark-padding.jpg)
@@ -54,10 +50,13 @@ The width and height of the watermark can be set using the `$width` and `$height
 For example, you might want to add the watermark on the entire top half of the image:
 
 ```php
-$image->watermark('watermark.png',AlignPosition::Top,
-	width:100,widthUnit:Unit::Percent,// 100 percent width
-	height:50,heightUnit:Unit::Percent);// 50 percent height
-
+$image->watermark('watermark.png',
+    AlignPosition::Top,
+	width: 100,
+	widthUnit: Unit::Percent,
+	height: 50,
+	heightUnit: Unit::Percent
+);
 ```
 
 ![Example](../../images/example-watermark-resize.jpg)
@@ -86,7 +85,7 @@ $image->watermark('watermark.png',AlignPosition::Top,
 Usually, watermarks are slightly opaque. You can set the opacity of the watermark with the `$alpha` param. The accepted value is a percentage between `0` and `100` (default).
 
 ```php
-$image->watermark('watermark.png',alpha:50);
+$image->watermark('watermark.png',alpha: 50);
 ```
 
 ![Example](../../images/example-watermark-opacity.jpg)
