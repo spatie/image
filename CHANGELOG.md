@@ -2,6 +2,14 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.1 - 2023-12-22
+
+### What's Changed
+
+* update GD driver by @ariaieboy in https://github.com/spatie/image/pull/221
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.0...3.3.1
+
 ## 3.3.0 - 2023-12-21
 
 - add watermark method
