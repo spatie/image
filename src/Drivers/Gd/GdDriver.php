@@ -170,7 +170,26 @@ class GdDriver implements ImageDriver
     {
         ob_start();
 
-        $this->format($imageFormat);
+        switch (strtolower($imageFormat)) {
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($this->image, null, $this->quality);
+                break;
+            case 'png':
+                imagepng($this->image, null, $this->pngCompression());
+                break;
+            case 'gif':
+                imagegif($this->image, null);
+                break;
+            case 'webp':
+                imagewebp($this->image, null);
+                break;
+            case 'avif':
+                imageavif($this->image, null);
+                break;
+            default:
+                throw UnsupportedImageFormat::make($imageFormat);
+        }
 
         $imageData = ob_get_contents();
         ob_end_clean();
