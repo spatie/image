@@ -163,6 +163,7 @@ class GdDriver implements ImageDriver
             $this->optimizerChain->optimize($path);
         }
         $this->format = null;
+
         return $this;
     }
 
