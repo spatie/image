@@ -162,7 +162,7 @@ class GdDriver implements ImageDriver
         if ($this->optimize) {
             $this->optimizerChain->optimize($path);
         }
-
+        $this->format = null;
         return $this;
     }
 
