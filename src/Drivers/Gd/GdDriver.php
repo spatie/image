@@ -35,6 +35,8 @@ class GdDriver implements ImageDriver
 
     protected GdImage $image;
 
+    protected ?string $format = null;
+
     /** @var array<string, mixed> */
     protected array $exif = [];
 
@@ -131,9 +133,11 @@ class GdDriver implements ImageDriver
         if (! $path) {
             $path = $this->originalPath;
         }
-
-        $extension = pathinfo($path, PATHINFO_EXTENSION);
-
+        if (is_null($this->format)) {
+            $extension = pathinfo($path, PATHINFO_EXTENSION);
+        } else {
+            $extension = $this->format;
+        }
         switch (strtolower($extension)) {
             case 'jpg':
             case 'jpeg':
@@ -158,6 +162,7 @@ class GdDriver implements ImageDriver
         if ($this->optimize) {
             $this->optimizerChain->optimize($path);
         }
+        $this->format = null;
 
         return $this;
     }
@@ -166,7 +171,26 @@ class GdDriver implements ImageDriver
     {
         ob_start();
 
-        $this->format($imageFormat);
+        switch (strtolower($imageFormat)) {
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($this->image, null, $this->quality);
+                break;
+            case 'png':
+                imagepng($this->image, null, $this->pngCompression());
+                break;
+            case 'gif':
+                imagegif($this->image, null);
+                break;
+            case 'webp':
+                imagewebp($this->image, null);
+                break;
+            case 'avif':
+                imageavif($this->image, null);
+                break;
+            default:
+                throw UnsupportedImageFormat::make($imageFormat);
+        }
 
         $imageData = ob_get_contents();
         ob_end_clean();
@@ -687,32 +711,10 @@ class GdDriver implements ImageDriver
 
     public function format(string $format): static
     {
-        ob_start();
-
-        switch (strtolower($format)) {
-            case 'jpg':
-            case 'jpeg':
-                imagejpeg($this->image, null, $this->quality);
-                break;
-            case 'png':
-                imagepng($this->image, null, $this->pngCompression());
-                break;
-            case 'gif':
-                imagegif($this->image, null);
-                break;
-            case 'webp':
-                imagewebp($this->image, null);
-                break;
-            case 'avif':
-                imageavif($this->image, null);
-                break;
-            default:
-                throw UnsupportedImageFormat::make($format);
+        if (! in_array($format, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'])) {
+            throw UnsupportedImageFormat::make($format);
         }
-
-        $this->image = imagecreatefromstring(ob_get_contents());
-
-        ob_end_clean();
+        $this->format = $format;
 
         return $this;
     }

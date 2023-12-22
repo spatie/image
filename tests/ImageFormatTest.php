@@ -25,7 +25,7 @@ it('can save supported formats using format() function', function (ImageDriver $
 
         return;
     }
-    $driver->loadFile(getTestJpg())->format($format);
+    $driver->loadFile(getTestJpg())->format($format)->save($this->tempDir->path("{$driver->driverName()}/format-test.$format"));
 })->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif'])->throwsNoExceptions();
 
 it('can save tiff', function () {
