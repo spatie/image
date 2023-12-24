@@ -2,6 +2,14 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.2 - 2023-12-24
+
+### What's Changed
+
+* move ext requirement to dev by @ariaieboy in https://github.com/spatie/image/pull/222
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.1...3.3.2
+
 ## 3.3.1 - 2023-12-22
 
 ### What's Changed
