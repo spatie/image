@@ -16,7 +16,7 @@ $image = Image::load(string $pathToImage);
 By default, the Imagick driver will be used. However if you would like to use GD you can do this by selecting the driver before loading the image.
 
 ```php
-$image = Image::useImageDriver(ImageDriver::GD)->load(string $pathToImage);
+$image = Image::useImageDriver(ImageDriver::Gd)->load(string $pathToImage);
 ```
 
 ## Applying manipulations
