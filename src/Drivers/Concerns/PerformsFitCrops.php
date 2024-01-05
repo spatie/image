@@ -7,9 +7,11 @@ use Spatie\Image\Enums\Fit;
 
 trait PerformsFitCrops
 {
-    abstract function height(int $height): static;
-    abstract function width(int $width): static;
-    abstract function resizeCanvas(int $width, int $height, AlignPosition $position): static;
+    abstract public function height(int $height): static;
+
+    abstract public function width(int $width): static;
+
+    abstract public function resizeCanvas(int $width, int $height, AlignPosition $position): static;
 
     public function fitCrop(
         Fit $fit,
@@ -17,8 +19,7 @@ trait PerformsFitCrops
         int $originalHeight,
         ?int $desiredWidth = null,
         ?int $desiredHeight = null
-    ): static
-    {
+    ): static {
         $desiredWidth ??= $originalWidth;
         $desiredHeight ??= $originalHeight;
 
