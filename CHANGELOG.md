@@ -2,6 +2,21 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.3 - 2024-01-05
+
+### What's Changed
+
+* Fix broken fit/crop operation.
+* Bump aglipanci/laravel-pint-action from 2.3.0 to 2.3.1 by @dependabot in https://github.com/spatie/image/pull/224
+* Fix enum case by @lukasleitsch in https://github.com/spatie/image/pull/226
+* update load image with gd driver example by @lukasleitsch in https://github.com/spatie/image/pull/227
+
+### New Contributors
+
+* @lukasleitsch made their first contribution in https://github.com/spatie/image/pull/226
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.2...3.3.3
+
 ## 3.3.2 - 2023-12-24
 
 ### What's Changed
