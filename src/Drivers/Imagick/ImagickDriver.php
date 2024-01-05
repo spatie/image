@@ -9,6 +9,7 @@ use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
+use Spatie\Image\Drivers\Concerns\PerformsFitCrops;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
@@ -30,6 +31,7 @@ class ImagickDriver implements ImageDriver
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
+    use PerformsFitCrops;
     use PerformsOptimizations;
     use ValidatesArguments;
 
@@ -102,6 +104,10 @@ class ImagickDriver implements ImageDriver
 
     public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static
     {
+        if ($fit === Fit::Crop) {
+            return $this->fitCrop($fit, $this->getWidth(), $this->getHeight(), $desiredWidth, $desiredHeight);
+        }
+
         $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
             $this->getHeight(),

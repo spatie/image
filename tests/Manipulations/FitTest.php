@@ -101,3 +101,23 @@ it('can fit and add a background', function (ImageDriver $driver) {
 
     //$this->fail('TODO: bug background color is not set');
 })->with('drivers');
+
+it('can do fit and crop', function (
+    ImageDriver $driver,
+    array $fitDimensions,
+    int $expectedWidth,
+    int $expectedHeight,
+) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-fill.png");
+
+    $driver->loadFile(getTestJpg())->fit(Fit::Crop, ...$fitDimensions)->save($targetFile);
+
+    $savedImage = $driver->loadFile($targetFile);
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers')->with([
+    [[500, 500], 500, 500],
+    [[250, 300], 250, 300],
+    [[100, 100], 100, 100],
+]);

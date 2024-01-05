@@ -1,0 +1,38 @@
+<?php
+
+namespace Spatie\Image\Drivers\Concerns;
+
+use Spatie\Image\Enums\AlignPosition;
+use Spatie\Image\Enums\Fit;
+
+trait PerformsFitCrops
+{
+    abstract function height(int $height): static;
+    abstract function width(int $width): static;
+    abstract function resizeCanvas(int $width, int $height, AlignPosition $position): static;
+
+    public function fitCrop(
+        Fit $fit,
+        int $originalWidth,
+        int $originalHeight,
+        ?int $desiredWidth = null,
+        ?int $desiredHeight = null
+    ): static
+    {
+        $desiredWidth ??= $originalWidth;
+        $desiredHeight ??= $originalHeight;
+
+        $currentAspectRatio = $originalWidth / $originalHeight;
+        $desiredAspectRatio = $desiredWidth / $desiredHeight;
+
+        if ($currentAspectRatio > $desiredAspectRatio) {
+            $this->height($desiredHeight);
+        } else {
+            $this->width($desiredWidth);
+        }
+
+        $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
+
+        return $this;
+    }
+}
