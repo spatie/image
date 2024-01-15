@@ -108,7 +108,7 @@ it('can do fit and crop', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-fill.png");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-crop.png");
 
     $driver->loadFile(getTestJpg())->fit(Fit::Crop, ...$fitDimensions)->save($targetFile);
 
