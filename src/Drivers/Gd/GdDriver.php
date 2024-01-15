@@ -619,14 +619,18 @@ class GdDriver implements ImageDriver
 
     public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
-        $this->resize($width, $this->getHeight(), $constraints);
+        $newHeight = (int) round($width / $this->getSize()->aspectRatio());
+
+        $this->resize($width, $newHeight, $constraints);
 
         return $this;
     }
 
     public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
-        $this->resize($this->getWidth(), $height, $constraints);
+        $newWidth = (int) round($height * $this->getSize()->aspectRatio());
+
+        $this->resize($newWidth, $height, $constraints);
 
         return $this;
     }

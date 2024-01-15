@@ -84,6 +84,7 @@ class Size
                 $this->height = $calculatedHeight > $maximumHeight
                     ? $maximumHeight
                     : $calculatedHeight;
+
             } else {
                 $this->height = $calculatedHeight;
             }

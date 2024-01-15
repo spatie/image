@@ -23,6 +23,14 @@ trait PerformsFitCrops
         $desiredWidth ??= $originalWidth;
         $desiredHeight ??= $originalHeight;
 
+        if ($originalWidth < $desiredWidth || $originalHeight < $desiredHeight) {
+            if ($desiredWidth < $desiredHeight) {
+                $this->height($desiredHeight);
+            } else {
+                $this->width($desiredWidth);
+            }
+        }
+
         $currentAspectRatio = $originalWidth / $originalHeight;
         $desiredAspectRatio = $desiredWidth / $desiredHeight;
 
