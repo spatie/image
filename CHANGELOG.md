@@ -2,6 +2,14 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.4 - 2024-01-15
+
+### What's Changed
+
+* Crop issue fixes by @timvandijck in https://github.com/spatie/image/pull/230
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.3...3.3.4
+
 ## 3.3.3 - 2024-01-05
 
 ### What's Changed
