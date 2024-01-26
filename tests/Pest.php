@@ -21,6 +21,12 @@ function getTestJpg(): string
     return getTestFile('test.jpg');
 }
 
+
+function getTestGif(): string
+{
+    return getTestFile('test.gif');
+}
+
 function getTestPhoto(): string
 {
     return getTestFile('test-photo.jpg');

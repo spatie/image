@@ -38,3 +38,17 @@ it('will throw an exception when no file exists at the given path', function () 
 it('will throw an exception when passing an invalid image driver name', function () {
     Image::useImageDriver('invalid')->load(getTestJpg());
 })->throws(InvalidImageDriver::class);
+
+it('can resize a gif without losing frames when Imagick is used', function () {
+    $driver = Image::useImageDriver('imagick');
+    $image = $driver->loadFile(getTestGif());
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/resize.gif");
+    $numberOfFrames = count($image->image());
+    expect($image->getHeight())->toEqual(320);
+
+    $image->width(200)->save($targetFile);
+
+    $targetImage = $driver->loadFile($targetFile);
+    expect(count($targetImage->image()))->toBe($numberOfFrames);
+    expect($targetImage->getWidth())->toEqual(200);
+});

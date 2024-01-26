@@ -78,6 +78,10 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
+    protected function isAnimated(): bool {
+        return count($this->image) > 1;
+    }
+
     public function getWidth(): int
     {
         return $this->image->getImageWidth();
@@ -90,14 +94,18 @@ class ImagickDriver implements ImageDriver
 
     public function brightness(int $brightness): static
     {
-        $this->image->modulateImage(100 + $brightness, 100, 100);
+        foreach ($this->image as $image) {
+            $image->modulateImage(100 + $brightness, 100, 100);
+        }
 
         return $this;
     }
 
     public function blur(int $blur): static
     {
-        $this->image->blurImage(0.5 * $blur, 0.1 * $blur);
+        foreach ($this->image as $image) {
+            $image->blurImage(0.5 * $blur, 0.1 * $blur);
+        }
 
         return $this;
     }
@@ -115,7 +123,9 @@ class ImagickDriver implements ImageDriver
             $desiredHeight
         );
 
-        $this->image->scaleImage($calculatedSize->width, $calculatedSize->height);
+        foreach ($this->image as $image) {
+            $image->scaleImage($calculatedSize->width, $calculatedSize->height);
+        }
 
         if ($fit->shouldResizeCanvas()) {
             $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center, false, null);
@@ -125,12 +135,13 @@ class ImagickDriver implements ImageDriver
     }
 
     public function resizeCanvas(
-        ?int $width = null,
-        ?int $height = null,
+        ?int           $width = null,
+        ?int           $height = null,
         ?AlignPosition $position = null,
-        bool $relative = false,
-        ?string $backgroundColor = null
-    ): static {
+        bool           $relative = false,
+        ?string        $backgroundColor = null
+    ): static
+    {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -211,17 +222,22 @@ class ImagickDriver implements ImageDriver
 
     public function save(?string $path = null): static
     {
-        if (! $path) {
+        if (!$path) {
             $path = $this->originalPath;
         }
 
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
-        if (! in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
+        if (!in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
             throw UnsupportedImageFormat::make($extension);
         }
 
-        $this->image->writeImage($path);
+        if ($this->isAnimated()) {
+            $this->image->deconstructImages();
+            $this->image->writeImages($path, true);
+        } else {
+            $this->image->writeImage($path);
+        }
 
         if ($this->optimize) {
             $this->optimizerChain->optimize($path);
@@ -236,7 +252,7 @@ class ImagickDriver implements ImageDriver
         $image->setFormat($imageFormat);
 
         if ($prefixWithFormat) {
-            return 'data:image/'.$imageFormat.';base64,'.base64_encode($image->getImageBlob());
+            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image->getImageBlob());
         }
 
         return base64_encode($image->getImageBlob());
@@ -254,14 +270,18 @@ class ImagickDriver implements ImageDriver
 
     public function gamma(float $gamma): static
     {
-        $this->image->gammaImage($gamma);
+        foreach ($this->image as $image) {
+            $image->gammaImage($gamma);
+        }
 
         return $this;
     }
 
     public function contrast(float $level): static
     {
-        $this->image->brightnessContrastImage(1, $level);
+        foreach ($this->image as $image) {
+            $image->brightnessContrastImage(1, $level);
+        }
 
         return $this;
     }
@@ -274,16 +294,20 @@ class ImagickDriver implements ImageDriver
         $green = Helpers::normalizeColorizeLevel($green);
         $blue = Helpers::normalizeColorizeLevel($blue);
 
-        $this->image->levelImage(0, $red, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_RED);
-        $this->image->levelImage(0, $green, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_GREEN);
-        $this->image->levelImage(0, $blue, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_BLUE);
+        foreach ($this->image as $image) {
+            $image->levelImage(0, $red, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_RED);
+            $image->levelImage(0, $green, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_GREEN);
+            $image->levelImage(0, $blue, $quantumRange['quantumRangeLong'], Imagick::CHANNEL_BLUE);
+        }
 
         return $this;
     }
 
     public function greyscale(): static
     {
-        $this->image->modulateImage(100, 0, 100);
+        foreach ($this->image as $image) {
+            $image->modulateImage(100, 0, 100);
+        }
 
         return $this;
     }
@@ -300,8 +324,10 @@ class ImagickDriver implements ImageDriver
                 ->relativePosition($cropped->align(AlignPosition::Center));
         }
 
-        $this->image->cropImage($cropped->width, $cropped->height, $position->x, $position->y);
-        $this->image->setImagePage(0, 0, 0, 0);
+        foreach ($this->image as $image) {
+            $image->cropImage($cropped->width, $cropped->height, $position->x, $position->y);
+            $image->setImagePage(0, 0, 0, 0);
+        }
 
         return $this;
     }
@@ -340,7 +366,9 @@ class ImagickDriver implements ImageDriver
 
     public function sharpen(float $amount): static
     {
-        $this->image->unsharpMaskImage(1, 1, $amount / 6.25, 0);
+        foreach ($this->image as $image) {
+            $image->unsharpMaskImage(1, 1, $amount / 6.25, 0);
+        }
 
         return $this;
     }
@@ -368,7 +396,9 @@ class ImagickDriver implements ImageDriver
             $orientation = $this->getOrientationFromExif($this->exif);
         }
 
-        $this->image->rotateImage(new ImagickPixel('none'), $orientation->degrees());
+        foreach ($this->image as $image) {
+            $image->rotateImage(new ImagickPixel('none'), $orientation->degrees());
+        }
 
         return $this;
     }
@@ -383,19 +413,20 @@ class ImagickDriver implements ImageDriver
 
     public function flip(FlipDirection $flip): static
     {
-        switch ($flip) {
-            case FlipDirection::Vertical:
-                $this->image->flipImage();
-                break;
-            case FlipDirection::Horizontal:
-                $this->image->flopImage();
-                break;
-            case FlipDirection::Both:
-                $this->image->flipImage();
-                $this->image->flopImage();
-                break;
+        foreach ($this->image as $image) {
+            switch ($flip) {
+                case FlipDirection::Vertical:
+                    $image->flipImage();
+                    break;
+                case FlipDirection::Horizontal:
+                    $image->flopImage();
+                    break;
+                case FlipDirection::Both:
+                    $image->flipImage();
+                    $image->flopImage();
+                    break;
+            }
         }
-
         return $this;
     }
 
@@ -404,19 +435,22 @@ class ImagickDriver implements ImageDriver
         $width = $this->getWidth();
         $height = $this->getHeight();
 
-        $this->image->scaleImage(max(1, (int) ($width / $pixelate)), max(1, (int) ($height / $pixelate)));
-        $this->image->scaleImage($width, $height);
+        foreach ($this->image as $image) {
+            $image->scaleImage(max(1, (int)($width / $pixelate)), max(1, (int)($height / $pixelate)));
+            $image->scaleImage($width, $height);
+        }
 
         return $this;
     }
 
     public function insert(
         ImageDriver|string $otherImage,
-        AlignPosition $position = AlignPosition::Center,
-        int $x = 0,
-        int $y = 0,
-        int $alpha = 100
-    ): static {
+        AlignPosition      $position = AlignPosition::Center,
+        int                $x = 0,
+        int                $y = 0,
+        int                $alpha = 100
+    ): static
+    {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
@@ -429,12 +463,14 @@ class ImagickDriver implements ImageDriver
         $watermarkSize = $otherImage->getSize()->align($position);
         $target = $imageSize->relativePosition($watermarkSize);
 
-        $this->image->compositeImage(
-            $otherImage->image,
-            Imagick::COMPOSITE_OVER,
-            $target->x,
-            $target->y
-        );
+        foreach ($this->image as $image) {
+            $image->compositeImage(
+                $otherImage->image,
+                Imagick::COMPOSITE_OVER,
+                $target->x,
+                $target->y
+            );
+        }
 
         return $this;
     }
@@ -443,14 +479,16 @@ class ImagickDriver implements ImageDriver
     {
         $resized = $this->getSize()->resize($width, $height, $constraints);
 
-        $this->image->scaleImage($resized->width, $resized->height);
+        foreach ($this->image as $image) {
+            $image->scaleImage($resized->width, $resized->height);
+        }
 
         return $this;
     }
 
     public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
-        $newHeight = (int) round($width / $this->getSize()->aspectRatio());
+        $newHeight = (int)round($width / $this->getSize()->aspectRatio());
 
         $this->resize($width, $newHeight, $constraints);
 
@@ -459,7 +497,7 @@ class ImagickDriver implements ImageDriver
 
     public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
-        $newWidth = (int) round($height * $this->getSize()->aspectRatio());
+        $newWidth = (int)round($height * $this->getSize()->aspectRatio());
 
         $this->resize($newWidth, $height, $constraints);
 
@@ -474,8 +512,8 @@ class ImagickDriver implements ImageDriver
 
             $this
                 ->resize(
-                    (int) round($this->getWidth() - ($width * 2)),
-                    (int) round($this->getHeight() - ($width * 2)),
+                    (int)round($this->getWidth() - ($width * 2)),
+                    (int)round($this->getHeight() - ($width * 2)),
                     [Constraint::PreserveAspectRatio],
                 )
                 ->resizeCanvas(
@@ -491,8 +529,8 @@ class ImagickDriver implements ImageDriver
 
         if ($type === BorderType::Expand) {
             $this->resizeCanvas(
-                (int) round($width * 2),
-                (int) round($width * 2),
+                (int)round($width * 2),
+                (int)round($width * 2),
                 AlignPosition::Center,
                 true,
                 $color,
@@ -513,13 +551,15 @@ class ImagickDriver implements ImageDriver
             $shape->setStrokeWidth($width);
 
             $shape->rectangle(
-                (int) round($width / 2),
-                (int) round($width / 2),
-                (int) round($this->getWidth() - ($width / 2)),
-                (int) round($this->getHeight() - ($width / 2)),
+                (int)round($width / 2),
+                (int)round($width / 2),
+                (int)round($this->getWidth() - ($width / 2)),
+                (int)round($this->getHeight() - ($width / 2)),
             );
 
-            $this->image->drawImage($shape);
+            foreach ($this->image as $image) {
+                $image->drawImage($shape);
+            }
 
             return $this;
         }
@@ -527,14 +567,18 @@ class ImagickDriver implements ImageDriver
 
     public function quality(int $quality): static
     {
-        $this->image->setCompressionQuality(100 - $quality);
+        foreach ($this->image as $image) {
+            $image->setCompressionQuality(100 - $quality);
+        }
 
         return $this;
     }
 
     public function format(string $format): static
     {
-        $this->image->setFormat($format);
+        foreach ($this->image as $image) {
+            $image->setFormat($format);
+        }
 
         return $this;
     }
