@@ -75,10 +75,14 @@ class ImagickDriver implements ImageDriver
         $this->image = new Imagick($path);
         $this->exif = $this->image->getImageProperties('exif:*');
 
+        if ($this->isAnimated()) {
+            $this->image = $this->image->coalesceImages();
+        }
         return $this;
     }
 
-    protected function isAnimated(): bool {
+    protected function isAnimated(): bool
+    {
         return count($this->image) > 1;
     }
 
@@ -233,8 +237,8 @@ class ImagickDriver implements ImageDriver
         }
 
         if ($this->isAnimated()) {
-            $this->image->deconstructImages();
-            $this->image->writeImages($path, true);
+            $image = $this->image->deconstructImages();
+            $image->writeImages($path, true);
         } else {
             $this->image->writeImage($path);
         }
