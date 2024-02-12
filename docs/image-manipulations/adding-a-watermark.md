@@ -3,7 +3,7 @@ title: Adding a watermark
 weight: 8
 ---
 
-Using the `watermark` method you can easily position and add a watermark. By default, it will be placer in the bottom right corner of the image.
+Using the `watermark` method you can easily position and add a watermark. By default, it will be placed in the bottom right corner of the image.
 
 ```php
 $image->watermark('watermark.png');
