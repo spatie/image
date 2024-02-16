@@ -78,6 +78,7 @@ class ImagickDriver implements ImageDriver
         if ($this->isAnimated()) {
             $this->image = $this->image->coalesceImages();
         }
+
         return $this;
     }
 
@@ -139,13 +140,12 @@ class ImagickDriver implements ImageDriver
     }
 
     public function resizeCanvas(
-        ?int           $width = null,
-        ?int           $height = null,
+        ?int $width = null,
+        ?int $height = null,
         ?AlignPosition $position = null,
-        bool           $relative = false,
-        ?string        $backgroundColor = null
-    ): static
-    {
+        bool $relative = false,
+        ?string $backgroundColor = null
+    ): static {
         $position ??= AlignPosition::Center;
 
         $originalWidth = $this->getWidth();
@@ -226,13 +226,13 @@ class ImagickDriver implements ImageDriver
 
     public function save(?string $path = null): static
     {
-        if (!$path) {
+        if (! $path) {
             $path = $this->originalPath;
         }
 
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
-        if (!in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
+        if (! in_array(strtoupper($extension), Imagick::queryFormats('*'))) {
             throw UnsupportedImageFormat::make($extension);
         }
 
@@ -256,7 +256,7 @@ class ImagickDriver implements ImageDriver
         $image->setFormat($imageFormat);
 
         if ($prefixWithFormat) {
-            return 'data:image/' . $imageFormat . ';base64,' . base64_encode($image->getImageBlob());
+            return 'data:image/'.$imageFormat.';base64,'.base64_encode($image->getImageBlob());
         }
 
         return base64_encode($image->getImageBlob());
@@ -431,6 +431,7 @@ class ImagickDriver implements ImageDriver
                     break;
             }
         }
+
         return $this;
     }
 
@@ -440,7 +441,7 @@ class ImagickDriver implements ImageDriver
         $height = $this->getHeight();
 
         foreach ($this->image as $image) {
-            $image->scaleImage(max(1, (int)($width / $pixelate)), max(1, (int)($height / $pixelate)));
+            $image->scaleImage(max(1, (int) ($width / $pixelate)), max(1, (int) ($height / $pixelate)));
             $image->scaleImage($width, $height);
         }
 
@@ -449,12 +450,11 @@ class ImagickDriver implements ImageDriver
 
     public function insert(
         ImageDriver|string $otherImage,
-        AlignPosition      $position = AlignPosition::Center,
-        int                $x = 0,
-        int                $y = 0,
-        int                $alpha = 100
-    ): static
-    {
+        AlignPosition $position = AlignPosition::Center,
+        int $x = 0,
+        int $y = 0,
+        int $alpha = 100
+    ): static {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
             $otherImage = (new self())->loadFile($otherImage);
@@ -492,7 +492,7 @@ class ImagickDriver implements ImageDriver
 
     public function width(int $width, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
-        $newHeight = (int)round($width / $this->getSize()->aspectRatio());
+        $newHeight = (int) round($width / $this->getSize()->aspectRatio());
 
         $this->resize($width, $newHeight, $constraints);
 
@@ -501,7 +501,7 @@ class ImagickDriver implements ImageDriver
 
     public function height(int $height, array $constraints = [Constraint::PreserveAspectRatio]): static
     {
-        $newWidth = (int)round($height * $this->getSize()->aspectRatio());
+        $newWidth = (int) round($height * $this->getSize()->aspectRatio());
 
         $this->resize($newWidth, $height, $constraints);
 
@@ -516,8 +516,8 @@ class ImagickDriver implements ImageDriver
 
             $this
                 ->resize(
-                    (int)round($this->getWidth() - ($width * 2)),
-                    (int)round($this->getHeight() - ($width * 2)),
+                    (int) round($this->getWidth() - ($width * 2)),
+                    (int) round($this->getHeight() - ($width * 2)),
                     [Constraint::PreserveAspectRatio],
                 )
                 ->resizeCanvas(
@@ -533,8 +533,8 @@ class ImagickDriver implements ImageDriver
 
         if ($type === BorderType::Expand) {
             $this->resizeCanvas(
-                (int)round($width * 2),
-                (int)round($width * 2),
+                (int) round($width * 2),
+                (int) round($width * 2),
                 AlignPosition::Center,
                 true,
                 $color,
@@ -555,10 +555,10 @@ class ImagickDriver implements ImageDriver
             $shape->setStrokeWidth($width);
 
             $shape->rectangle(
-                (int)round($width / 2),
-                (int)round($width / 2),
-                (int)round($this->getWidth() - ($width / 2)),
-                (int)round($this->getHeight() - ($width / 2)),
+                (int) round($width / 2),
+                (int) round($width / 2),
+                (int) round($this->getWidth() - ($width / 2)),
+                (int) round($this->getHeight() - ($width / 2)),
             );
 
             foreach ($this->image as $image) {

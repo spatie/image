@@ -29,7 +29,7 @@ interface ImageDriver
     public function getHeight(): int;
 
     /**
-     * @param  int  $brightness A value between -100 and 100
+     * @param  int  $brightness  A value between -100 and 100
      */
     public function brightness(int $brightness): static;
 
@@ -38,7 +38,7 @@ interface ImageDriver
     public function contrast(float $level): static;
 
     /**
-     * @param  int  $blur A value between 0 and 100.
+     * @param  int  $blur  A value between 0 and 100.
      */
     public function blur(int $blur): static;
 
