@@ -2,6 +2,20 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.5 - 2024-02-16
+
+### What's Changed
+
+* Update adding-a-watermark.md by @yoeriboven in https://github.com/spatie/image/pull/235
+* Manipulating animated GIF's is now supported using Imagick. by @jhorie in https://github.com/spatie/image/pull/234
+
+### New Contributors
+
+* @yoeriboven made their first contribution in https://github.com/spatie/image/pull/235
+* @jhorie made their first contribution in https://github.com/spatie/image/pull/234
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.4...3.3.5
+
 ## 3.3.4 - 2024-01-15
 
 ### What's Changed
