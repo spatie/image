@@ -152,6 +152,7 @@ class GdDriver implements ImageDriver
                 imagegif($this->image, $path);
                 break;
             case 'webp':
+                imagepalettetotruecolor($this->image);
                 imagewebp($this->image, $path);
                 break;
             case 'avif':
