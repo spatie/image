@@ -152,7 +152,7 @@ class GdDriver implements ImageDriver
                 imagegif($this->image, $path);
                 break;
             case 'webp':
-                imagewebp($this->image, $path);
+                imagewebp($this->image, $path, $this->quality);
                 break;
             case 'avif':
                 imageavif($this->image, $path);

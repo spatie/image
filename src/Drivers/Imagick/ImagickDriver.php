@@ -527,7 +527,8 @@ class ImagickDriver implements ImageDriver
 
     public function quality(int $quality): static
     {
-        $this->image->setCompressionQuality(100 - $quality);
+        $this->image->setImageCompressionQuality($quality);
+        $this->image->setCompressionQuality(100 - $quality); // For PNGs
 
         return $this;
     }
