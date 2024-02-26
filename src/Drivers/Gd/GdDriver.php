@@ -3,6 +3,7 @@
 namespace Spatie\Image\Drivers\Gd;
 
 use Exception;
+use finfo;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
@@ -68,13 +69,11 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
-    public function loadFile(string $path): static
+    public function loadFile(string $path, bool $autoRotate = true): static
     {
         $this->optimize = false;
         $this->quality = -1;
         $this->originalPath = $path;
-
-        $this->setExif($path);
 
         $handle = fopen($path, 'r');
 
@@ -84,6 +83,8 @@ class GdDriver implements ImageDriver
         }
 
         fclose($handle);
+
+        $this->setExif($path);
 
         $image = imagecreatefromstring($contents);
 
@@ -95,6 +96,10 @@ class GdDriver implements ImageDriver
         imagesavealpha($image, true);
 
         $this->image = $image;
+
+        if ($autoRotate) {
+            $this->autoRotate();
+        }
 
         return $this;
     }
@@ -530,7 +535,22 @@ class GdDriver implements ImageDriver
 
     public function setExif(string $path): void
     {
-        /*
+        if (!extension_loaded('exif')) {
+            return;
+        }
+
+        if (!extension_loaded('fileinfo')) {
+            return;
+        }
+
+        $fInfo = finfo_open(FILEINFO_RAW);
+        $mime = finfo_file($fInfo, $path);
+        finfo_close($fInfo);
+
+        if (!str_contains($mime, 'Exif')) {
+            return;
+        }
+
         $result = exif_read_data($path);
 
         if (! is_array($result)) {
@@ -540,7 +560,6 @@ class GdDriver implements ImageDriver
         }
 
         $this->exif = $result;
-        */
     }
 
     /**
@@ -733,5 +752,26 @@ class GdDriver implements ImageDriver
         $this->format = $format;
 
         return $this;
+    }
+
+    public function autoRotate(): void
+    {
+        if (!$this->exif || empty($this->exif['Orientation'])) {
+            return;
+        }
+
+        switch($this->exif['Orientation']) {
+            case 8:
+                $this->image = imagerotate($this->image, 90, 0);
+                break;
+            case 3:
+                $this->image = imagerotate($this->image, 180, 0);
+                break;
+            case 5:
+            case 7:
+            case 6:
+                $this->image = imagerotate($this->image, -90, 0);
+                break;
+        }
     }
 }

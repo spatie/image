@@ -66,7 +66,7 @@ class ImagickDriver implements ImageDriver
         return $this->image;
     }
 
-    public function loadFile(string $path): static
+    public function loadFile(string $path, bool $autoRotate = true): static
     {
         $this->originalPath = $path;
 
@@ -74,6 +74,10 @@ class ImagickDriver implements ImageDriver
 
         $this->image = new Imagick($path);
         $this->exif = $this->image->getImageProperties('exif:*');
+
+        if ($autoRotate) {
+            $this->autoRotate();
+        }
 
         if ($this->isAnimated()) {
             $this->image = $this->image->coalesceImages();
@@ -586,5 +590,41 @@ class ImagickDriver implements ImageDriver
         }
 
         return $this;
+    }
+
+    public function autoRotate()
+    {
+        switch ($this->image->getImageOrientation()) {
+            case Imagick::ORIENTATION_TOPLEFT:
+                break;
+            case Imagick::ORIENTATION_TOPRIGHT:
+                $this->image->flopImage();
+                break;
+            case Imagick::ORIENTATION_BOTTOMRIGHT:
+                $this->image->rotateImage("#000", 180);
+                break;
+            case Imagick::ORIENTATION_BOTTOMLEFT:
+                $this->image->flopImage();
+                $this->image->rotateImage("#000", 180);
+                break;
+            case Imagick::ORIENTATION_LEFTTOP:
+                $this->image->flopImage();
+                $this->image->rotateImage("#000", -90);
+                break;
+            case Imagick::ORIENTATION_RIGHTTOP:
+                $this->image->rotateImage("#000", 90);
+                break;
+            case Imagick::ORIENTATION_RIGHTBOTTOM:
+                $this->image->flopImage();
+                $this->image->rotateImage("#000", 90);
+                break;
+            case Imagick::ORIENTATION_LEFTBOTTOM:
+                $this->image->rotateImage("#000", -90);
+                break;
+            default: // Invalid orientation
+                break;
+        }
+
+        $this->image->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
     }
 }
