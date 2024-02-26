@@ -592,7 +592,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function autoRotate()
+    public function autoRotate(): void
     {
         switch ($this->image->getImageOrientation()) {
             case Imagick::ORIENTATION_TOPLEFT:

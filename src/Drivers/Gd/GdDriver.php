@@ -543,10 +543,12 @@ class GdDriver implements ImageDriver
         }
 
         $fInfo = finfo_open(FILEINFO_RAW);
-        $mime = finfo_file($fInfo, $path);
-        finfo_close($fInfo);
+        if ($fInfo) {
+            $info = finfo_file($fInfo, $path);
+            finfo_close($fInfo);
+        }
 
-        if (! str_contains($mime, 'Exif')) {
+        if (! isset($info) || ! is_string($info) || ! str_contains($info, 'Exif')) {
             return;
         }
 

@@ -102,7 +102,7 @@ parameters:
 
 		-
 			message: "#^Property Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:\\$image \\(GdImage\\) does not accept GdImage\\|false\\.$#"
-			count: 2
+			count: 5
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
