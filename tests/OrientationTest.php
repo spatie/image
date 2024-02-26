@@ -2,8 +2,8 @@
 
 use Spatie\Image\Drivers\ImageDriver;
 
-it('works with transparent pngs', function (ImageDriver $driver) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/saving-transparent-png.png");
+it('keeps the correct orientation based on Exif data', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation.jpg");
 
     $original = $driver->loadFile(getTestFile('testOrientation.jpg'));
 
