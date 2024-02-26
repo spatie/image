@@ -2,6 +2,16 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.6 - 2024-02-26
+
+### What's Changed
+
+* Bugfix for cases where setting a quality did nothing https://github.com/spatie/image/pull/237
+* Bugfix for transparent PNG's not staying transparent when working with GD.
+* Autorotate images based on their Exif data https://github.com/spatie/image/pull/238
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.5...3.3.6
+
 ## 3.3.5 - 2024-02-16
 
 ### What's Changed
