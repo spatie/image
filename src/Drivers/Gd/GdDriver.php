@@ -3,7 +3,6 @@
 namespace Spatie\Image\Drivers\Gd;
 
 use Exception;
-use finfo;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
@@ -535,11 +534,11 @@ class GdDriver implements ImageDriver
 
     public function setExif(string $path): void
     {
-        if (!extension_loaded('exif')) {
+        if (! extension_loaded('exif')) {
             return;
         }
 
-        if (!extension_loaded('fileinfo')) {
+        if (! extension_loaded('fileinfo')) {
             return;
         }
 
@@ -547,7 +546,7 @@ class GdDriver implements ImageDriver
         $mime = finfo_file($fInfo, $path);
         finfo_close($fInfo);
 
-        if (!str_contains($mime, 'Exif')) {
+        if (! str_contains($mime, 'Exif')) {
             return;
         }
 
@@ -756,11 +755,11 @@ class GdDriver implements ImageDriver
 
     public function autoRotate(): void
     {
-        if (!$this->exif || empty($this->exif['Orientation'])) {
+        if (! $this->exif || empty($this->exif['Orientation'])) {
             return;
         }
 
-        switch($this->exif['Orientation']) {
+        switch ($this->exif['Orientation']) {
             case 8:
                 $this->image = imagerotate($this->image, 90, 0);
                 break;

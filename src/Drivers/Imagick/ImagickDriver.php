@@ -601,25 +601,25 @@ class ImagickDriver implements ImageDriver
                 $this->image->flopImage();
                 break;
             case Imagick::ORIENTATION_BOTTOMRIGHT:
-                $this->image->rotateImage("#000", 180);
+                $this->image->rotateImage('#000', 180);
                 break;
             case Imagick::ORIENTATION_BOTTOMLEFT:
                 $this->image->flopImage();
-                $this->image->rotateImage("#000", 180);
+                $this->image->rotateImage('#000', 180);
                 break;
             case Imagick::ORIENTATION_LEFTTOP:
                 $this->image->flopImage();
-                $this->image->rotateImage("#000", -90);
+                $this->image->rotateImage('#000', -90);
                 break;
             case Imagick::ORIENTATION_RIGHTTOP:
-                $this->image->rotateImage("#000", 90);
+                $this->image->rotateImage('#000', 90);
                 break;
             case Imagick::ORIENTATION_RIGHTBOTTOM:
                 $this->image->flopImage();
-                $this->image->rotateImage("#000", 90);
+                $this->image->rotateImage('#000', 90);
                 break;
             case Imagick::ORIENTATION_LEFTBOTTOM:
-                $this->image->rotateImage("#000", -90);
+                $this->image->rotateImage('#000', -90);
                 break;
             default: // Invalid orientation
                 break;
