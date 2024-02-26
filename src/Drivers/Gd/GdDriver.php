@@ -640,6 +640,9 @@ class GdDriver implements ImageDriver
 
     public function border(int $width, BorderType $type, string $color = '000000'): static
     {
+        imagealphablending($this->image, true);
+        imagesavealpha($this->image, true);
+
         if ($type === BorderType::Shrink) {
             $originalWidth = $this->getWidth();
             $originalHeight = $this->getHeight();
