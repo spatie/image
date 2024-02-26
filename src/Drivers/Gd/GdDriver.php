@@ -91,6 +91,9 @@ class GdDriver implements ImageDriver
             throw CouldNotLoadImage::make($path);
         }
 
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
+
         $this->image = $image;
 
         return $this;

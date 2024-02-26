@@ -5,6 +5,8 @@ use Spatie\Image\Exceptions\CouldNotLoadImage;
 use Spatie\Image\Exceptions\InvalidImageDriver;
 use Spatie\Image\Image;
 
+use function Spatie\Snapshots\assertMatchesImageSnapshot;
+
 it('can load an image', function () {
     $image = Image::load(getTestJpg());
 
@@ -52,3 +54,11 @@ it('can resize a gif without losing frames when Imagick is used', function () {
     expect(count($targetImage->image()))->toBe($numberOfFrames);
     expect($targetImage->getWidth())->toEqual(200);
 });
+
+it('works with transparent pngs', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/saving-transparent-png.png");
+
+    $driver->loadFile(getTestFile('transparent.png'))->save($targetFile);
+
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers');
