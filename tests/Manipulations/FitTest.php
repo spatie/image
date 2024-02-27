@@ -48,7 +48,7 @@ it('can fill an image in the given dimensions', function (
     [[100, 100], 100, 100],
 ]);
 
-it('can fill and stretch an image in the given dimensions', function (
+it('can downsize an image maintaining its dimensions if not within the bounds', function (
     ImageDriver $driver,
     array $fitDimensions,
     int $expectedWidth,
@@ -63,9 +63,9 @@ it('can fill and stretch an image in the given dimensions', function (
     expect($savedImage->getHeight())->toBe($expectedHeight);
     assertMatchesImageSnapshot($targetFile);
 })->with('drivers')->with([
-    [[100, 100], 100, 100],
-    [[250, 300], 250, 300],
-    [[500, 500], 500, 500],
+    [[100, 100], 100, 82],
+    [[250, 200], 243, 200],
+    [[500, 500], 340, 280],
 ]);
 
 it('can stretch an image to the given dimensions', function (
