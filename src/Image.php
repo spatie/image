@@ -305,7 +305,7 @@ class Image implements ImageDriver
 
     public function quality(int $quality): static
     {
-        $this->ensureNumberBetween($quality, 0, 100, 'quality');
+        $this->ensureNumberBetween($quality, 0, IMG_WEBP_LOSSLESS, 'quality');
 
         $this->imageDriver->quality($quality);
 
