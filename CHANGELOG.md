@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.7 - 2024-03-01
+
+### What's Changed
+
+* Fix for Fit::Max not behaving as described in the documentation by @RaBic in https://github.com/spatie/image/pull/239
+
+### New Contributors
+
+* @RaBic made their first contribution in https://github.com/spatie/image/pull/239
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.6...3.3.7
+
 ## 3.3.6 - 2024-02-26
 
 ### What's Changed
