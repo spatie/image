@@ -24,8 +24,8 @@ enum Fit: string
         $size = new Size($originalWidth, $originalHeight);
 
         $constraints = match ($this) {
-            Fit::Contain, Fit::Max => [Constraint::PreserveAspectRatio],
-            Fit::Fill => [Constraint::PreserveAspectRatio, Constraint::DoNotUpsize],
+            Fit::Contain => [Constraint::PreserveAspectRatio],
+            Fit::Fill, Fit::Max => [Constraint::PreserveAspectRatio, Constraint::DoNotUpsize],
             Fit::Stretch, Fit::Crop => [],
         };
 
@@ -34,6 +34,6 @@ enum Fit: string
 
     public function shouldResizeCanvas(): bool
     {
-        return in_array($this, [self::Max, self::Fill]);
+        return in_array($this, [self::Fill]);
     }
 }
