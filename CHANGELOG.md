@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.3.8 - 2024-03-04
+
+### What's Changed
+
+* Allow lossless saving of Webp with the GD driver by @fabio-ivona in https://github.com/spatie/image/pull/240
+
+### New Contributors
+
+* @fabio-ivona made their first contribution in https://github.com/spatie/image/pull/240
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.7...3.3.8
+
 ## 3.3.7 - 2024-03-01
 
 ### What's Changed
