@@ -790,7 +790,7 @@ class GdDriver implements ImageDriver
         $textColor = new GdColor($color);
 
         if (! $fontPath || ! file_exists($fontPath)) {
-            throw new InvalidFont();
+            throw InvalidFont::make($fontPath);
         }
 
         imagettftext(
@@ -812,7 +812,7 @@ class GdDriver implements ImageDriver
     public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
     {
         if (! $fontPath || ! file_exists($fontPath)) {
-            throw new InvalidFont();
+            throw InvalidFont::make($fontPath);
         }
 
         $wrapped = '';
@@ -822,6 +822,12 @@ class GdDriver implements ImageDriver
             $teststring = "{$wrapped} {$word}";
 
             $testbox = imagettfbbox($fontSize, $angle, $fontPath, $teststring);
+
+            if (! $testbox) {
+                $wrapped .= ' ' . $word;
+
+                continue;
+            }
 
             if ($testbox[2] > $width) {
                 $wrapped .= "\n".$word;
