@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Drivers;
 
+use Spatie\Image\Drivers\Gd\GdColor;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
@@ -108,6 +109,25 @@ interface ImageDriver
         int $y = 0,
         int $alpha = 100
     ): static;
+
+    public function text(
+        string $text,
+        int $fontSize,
+        string $color = '000000',
+        int $x = 0,
+        int $y = 0,
+        int $angle = 0,
+        string $fontPath = '',
+        int $width = 0,
+    ): static;
+
+    public function wrapText(
+        string $text,
+        int $fontSize,
+        string $fontPath = '',
+        int $angle = 0,
+        int $width = 0,
+    ): string;
 
     public function image(): mixed;
 
