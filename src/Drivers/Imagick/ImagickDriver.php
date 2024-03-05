@@ -21,6 +21,7 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
+use Spatie\Image\Exceptions\InvalidFont;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
@@ -626,5 +627,71 @@ class ImagickDriver implements ImageDriver
         }
 
         $this->image->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+    }
+
+    public function text(
+        string $text,
+        int $fontSize,
+        string $color = '000000',
+        int $x = 0,
+        int $y = 0,
+        int $angle = 0,
+        string $fontPath = '',
+        int $width = 0,
+    ): static {
+        if ($fontPath && ! file_exists($fontPath)) {
+            throw InvalidFont::make($fontPath);
+        }
+
+        $textColor = new ImagickColor($color);
+
+        $draw = new ImagickDraw();
+        $draw->setFillColor($textColor->getPixel());
+        $draw->setFontSize($fontSize);
+        if ($fontPath) {
+            $draw->setFont($fontPath);
+        }
+
+        $this->image->annotateImage(
+            $draw,
+            $x,
+            $y,
+            $angle,
+            $width > 0
+                ? $this->wrapText($text, $fontSize, $fontPath, $angle, $width)
+                : $text,
+        );
+
+        return $this;
+    }
+
+    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
+    {
+        if ($fontPath && ! file_exists($fontPath)) {
+            throw InvalidFont::make($fontPath);
+        }
+
+        $wrapped = '';
+        $words = explode(' ', $text);
+
+        foreach ($words as $word) {
+            $teststring = "{$wrapped} {$word}";
+
+            $draw = new ImagickDraw();
+            if ($fontPath) {
+                $draw->setFont($fontPath);
+            }
+            $draw->setFontSize($fontSize);
+
+            $metrics = (new Imagick())->queryFontMetrics($draw, $teststring);
+
+            if ($metrics['textWidth'] > $width) {
+                $wrapped .= "\n".$word;
+            } else {
+                $wrapped .= ' '.$word;
+            }
+        }
+
+        return $wrapped;
     }
 }

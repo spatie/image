@@ -21,6 +21,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Exceptions\CouldNotLoadImage;
+use Spatie\Image\Exceptions\InvalidFont;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
@@ -775,5 +776,67 @@ class GdDriver implements ImageDriver
                 $this->image = imagerotate($this->image, -90, 0);
                 break;
         }
+    }
+
+    public function text(
+        string $text,
+        int $fontSize,
+        string $color = '000000',
+        int $x = 0,
+        int $y = 0,
+        int $angle = 0,
+        string $fontPath = '',
+        int $width = 0,
+    ): static {
+        $textColor = new GdColor($color);
+
+        if (! $fontPath || ! file_exists($fontPath)) {
+            throw InvalidFont::make($fontPath);
+        }
+
+        imagettftext(
+            $this->image,
+            $fontSize,
+            $angle,
+            $x,
+            $y,
+            $textColor->getInt(),
+            $fontPath,
+            $width > 0
+                ? $this->wrapText($text, $fontSize, $fontPath, $angle, $width)
+                : $text,
+        );
+
+        return $this;
+    }
+
+    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
+    {
+        if (! $fontPath || ! file_exists($fontPath)) {
+            throw InvalidFont::make($fontPath);
+        }
+
+        $wrapped = '';
+        $words = explode(' ', $text);
+
+        foreach ($words as $word) {
+            $teststring = "{$wrapped} {$word}";
+
+            $testbox = imagettfbbox($fontSize, $angle, $fontPath, $teststring);
+
+            if (! $testbox) {
+                $wrapped .= ' '.$word;
+
+                continue;
+            }
+
+            if ($testbox[2] > $width) {
+                $wrapped .= "\n".$word;
+            } else {
+                $wrapped .= ' '.$word;
+            }
+        }
+
+        return $wrapped;
     }
 }

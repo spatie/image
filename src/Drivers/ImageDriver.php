@@ -109,6 +109,25 @@ interface ImageDriver
         int $alpha = 100
     ): static;
 
+    public function text(
+        string $text,
+        int $fontSize,
+        string $color = '000000',
+        int $x = 0,
+        int $y = 0,
+        int $angle = 0,
+        string $fontPath = '',
+        int $width = 0,
+    ): static;
+
+    public function wrapText(
+        string $text,
+        int $fontSize,
+        string $fontPath = '',
+        int $angle = 0,
+        int $width = 0,
+    ): string;
+
     public function image(): mixed;
 
     /** @param  array<Constraint>  $constraints */
