@@ -2,6 +2,19 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.4.0 - 2024-03-05
+
+### What's Changed
+
+* Bump ramsey/composer-install from 2 to 3 by @dependabot in https://github.com/spatie/image/pull/241
+* Add a ->text method to the package by @riasvdv in https://github.com/spatie/image/pull/242
+
+### New Contributors
+
+* @riasvdv made their first contribution in https://github.com/spatie/image/pull/242
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.3.8...3.4.0
+
 ## 3.3.8 - 2024-03-04
 
 ### What's Changed
