@@ -665,7 +665,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0,): string
+    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
     {
         if ($fontPath && ! file_exists($fontPath)) {
             throw InvalidFont::make($fontPath);

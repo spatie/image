@@ -824,7 +824,7 @@ class GdDriver implements ImageDriver
             $testbox = imagettfbbox($fontSize, $angle, $fontPath, $teststring);
 
             if (! $testbox) {
-                $wrapped .= ' ' . $word;
+                $wrapped .= ' '.$word;
 
                 continue;
             }
