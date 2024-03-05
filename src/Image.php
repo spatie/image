@@ -380,7 +380,7 @@ class Image implements ImageDriver
         return $this;
     }
 
-    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0,): string
+    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
     {
         return $this->imageDriver->wrapText(
             $text,

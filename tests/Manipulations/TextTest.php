@@ -1,8 +1,6 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Enums\Fit;
-use Spatie\Image\Enums\Unit;
 
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 

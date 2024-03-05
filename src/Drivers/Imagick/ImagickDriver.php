@@ -21,7 +21,6 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
-use Spatie\Image\Enums\Unit;
 use Spatie\Image\Exceptions\InvalidFont;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
@@ -637,7 +636,7 @@ class ImagickDriver implements ImageDriver
         int $x = 0,
         int $y = 0,
         int $angle = 0,
-        string $fontPath = null,
+        ?string $fontPath = null,
         int $width = 0,
     ): static {
         if ($fontPath && ! file_exists($fontPath)) {
@@ -666,7 +665,7 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
-    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0,): string
+    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
     {
         if ($fontPath && ! file_exists($fontPath)) {
             throw new InvalidFont();

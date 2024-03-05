@@ -2,7 +2,6 @@
 
 namespace Spatie\Image\Drivers;
 
-use Spatie\Image\Drivers\Gd\GdColor;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
