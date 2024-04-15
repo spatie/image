@@ -2,6 +2,19 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.4.1 - 2024-04-15
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.3.1 to 2.4 by @dependabot in https://github.com/spatie/image/pull/246
+* Suppress warnings from exif_read_data by @glennjacobs in https://github.com/spatie/image/pull/247
+
+### New Contributors
+
+* @glennjacobs made their first contribution in https://github.com/spatie/image/pull/247
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.4.0...3.4.1
+
 ## 3.4.0 - 2024-03-05
 
 ### What's Changed
