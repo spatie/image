@@ -554,7 +554,7 @@ class GdDriver implements ImageDriver
             return;
         }
 
-        $result = exif_read_data($path);
+        $result = @exif_read_data($path);
 
         if (! is_array($result)) {
             $this->exif = [];
