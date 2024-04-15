@@ -86,7 +86,7 @@ class GdDriver implements ImageDriver
 
         $this->setExif($path);
 
-        $image = imagecreatefromstring($contents);
+        $image = @imagecreatefromstring($contents);
 
         if (! $image) {
             throw CouldNotLoadImage::make($path);
