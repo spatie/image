@@ -151,6 +151,7 @@ class GdDriver implements ImageDriver
         switch (strtolower($extension)) {
             case 'jpg':
             case 'jpeg':
+            case 'jfif':
                 imagejpeg($this->image, $path, $this->quality);
                 break;
             case 'png':
@@ -185,6 +186,7 @@ class GdDriver implements ImageDriver
         switch (strtolower($imageFormat)) {
             case 'jpg':
             case 'jpeg':
+            case 'jfif':
                 imagejpeg($this->image, null, $this->quality);
                 break;
             case 'png':
