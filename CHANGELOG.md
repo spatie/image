@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.5.0 - 2024-04-17
+
+### What's Changed
+
+* Fix saving jfif image by @clementbirkle in https://github.com/spatie/image/pull/248
+
+### New Contributors
+
+* @clementbirkle made their first contribution in https://github.com/spatie/image/pull/248
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.4.2...3.5.0
+
 ## 3.4.2 - 2024-04-15
 
 ### What's Changed
