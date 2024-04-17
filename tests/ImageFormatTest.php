@@ -16,8 +16,14 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
 
     $driver->loadFile(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toHaveMime("image/$format");
-})->with('drivers', ['jpeg', 'gif', 'png', 'webp', 'avif']);
+    $expectedFormat = $format;
+
+    if (in_array($expectedFormat, ['jpg', 'jfif'])) {
+        $expectedFormat = 'jpeg';
+    }
+
+    expect($targetFile)->toHaveMime("image/$expectedFormat");
+})->with('drivers', ['jpeg', 'jpg', 'jfif', 'gif', 'png', 'webp', 'avif']);
 
 it('can save supported formats using format() function', function (ImageDriver $driver, string $format) {
     if ($format === 'avif' && ! avifIsSupported($driver->driverName())) {
