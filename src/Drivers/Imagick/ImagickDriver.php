@@ -119,8 +119,14 @@ class ImagickDriver implements ImageDriver
 
         return $this;
     }
-
-    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static
+    
+    public function fit(
+        Fit $fit, 
+        ?int $desiredWidth = null, 
+        ?int $desiredHeight = null,
+        bool $relative = false,
+        string $backgroundColor = '#ffffff'
+    ): static
     {
         if ($fit === Fit::Crop) {
             return $this->fitCrop($fit, $this->getWidth(), $this->getHeight(), $desiredWidth, $desiredHeight);
