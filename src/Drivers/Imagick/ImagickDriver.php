@@ -119,13 +119,13 @@ class ImagickDriver implements ImageDriver
 
         return $this;
     }
-    
+
     public function fit(
         Fit $fit, 
         ?int $desiredWidth = null, 
         ?int $desiredHeight = null,
         bool $relative = false,
-        string $backgroundColor = '#ffffff'
+        string $backgroundColor = null,
     ): static
     {
         if ($fit === Fit::Crop) {
