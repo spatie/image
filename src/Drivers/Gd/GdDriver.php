@@ -525,13 +525,7 @@ class GdDriver implements ImageDriver
 
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x = 0, int $y = 0): static
     {
-        $bottomImage->save(base_path('_bottom.png'));
-        $topImage->save(base_path('_top.png'));
-
         $bottomImage->insert($topImage, AlignPosition::TopLeft, $x, $y);
-
-        $bottomImage->save(base_path('_z.png'));
-
         $this->image = $bottomImage->image();
 
         return $this;
