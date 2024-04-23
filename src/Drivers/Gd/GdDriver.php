@@ -225,7 +225,13 @@ class GdDriver implements ImageDriver
         return new Size($this->getWidth(), $this->getHeight());
     }
 
-    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static
+    public function fit(
+        Fit $fit,
+        ?int $desiredWidth = null,
+        ?int $desiredHeight = null,
+        bool $relative = false,
+        string $backgroundColor = '#ffffff'
+    ): static
     {
         if ($fit === Fit::Crop) {
             return $this->fitCrop($fit, $this->getWidth(), $this->getHeight(), $desiredWidth, $desiredHeight);
@@ -248,7 +254,7 @@ class GdDriver implements ImageDriver
         );
 
         if ($fit->shouldResizeCanvas()) {
-            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
+            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center, $relative, $backgroundColor);
         }
 
         return $this;
@@ -519,7 +525,13 @@ class GdDriver implements ImageDriver
 
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x = 0, int $y = 0): static
     {
+        $bottomImage->save(base_path('_bottom.png'));
+        $topImage->save(base_path('_top.png'));
+
         $bottomImage->insert($topImage, AlignPosition::TopLeft, $x, $y);
+
+        $bottomImage->save(base_path('_z.png'));
+
         $this->image = $bottomImage->image();
 
         return $this;
