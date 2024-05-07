@@ -2,20 +2,15 @@
 
 namespace Spatie\Image\Enums;
 
-enum Orientation
+enum Orientation: int
 {
-    case Rotate0;
-    case Rotate90;
-    case Rotate180;
-    case Rotate270;
+    case Rotate0 = 0;
+    case Rotate90 = 90;
+    case Rotate180 = 180;
+    case Rotate270 = 270;
 
     public function degrees(): int
     {
-        return match ($this) {
-            self::Rotate0 => 0,
-            self::Rotate90 => 90,
-            self::Rotate180 => 180,
-            self::Rotate270 => 270,
-        };
+        return $this->value;
     }
 }
