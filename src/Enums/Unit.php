@@ -2,8 +2,8 @@
 
 namespace Spatie\Image\Enums;
 
-enum Unit
+enum Unit: string
 {
-    case Pixel;
-    case Percent;
+    case Pixel = 'pixel';
+    case Percent = 'percent';
 }
