@@ -2,6 +2,20 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.6.0 - 2024-05-07
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.0.0 by @dependabot in https://github.com/spatie/image/pull/244
+* Bump dependabot/fetch-metadata from 2.0.0 to 2.1.0 by @dependabot in https://github.com/spatie/image/pull/251
+* Convert Unit and Orientation to BackedEnum by @MrMeshok in https://github.com/spatie/image/pull/252
+
+### New Contributors
+
+* @MrMeshok made their first contribution in https://github.com/spatie/image/pull/252
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.5.0...3.6.0
+
 ## 3.5.0 - 2024-04-17
 
 ### What's Changed
