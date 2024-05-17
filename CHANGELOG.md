@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.6.1 - 2024-05-17
+
+### What's Changed
+
+* Ability to resize canvas when keeping fill background a certain color by @OzanKurt in https://github.com/spatie/image/pull/249
+
+### New Contributors
+
+* @OzanKurt made their first contribution in https://github.com/spatie/image/pull/249
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.6.0...3.6.1
+
 ## 3.6.0 - 2024-05-07
 
 ### What's Changed
