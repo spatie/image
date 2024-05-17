@@ -225,7 +225,13 @@ class GdDriver implements ImageDriver
         return new Size($this->getWidth(), $this->getHeight());
     }
 
-    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null): static
+    public function fit(
+        Fit $fit,
+        ?int $desiredWidth = null,
+        ?int $desiredHeight = null,
+        bool $relative = false,
+        string $backgroundColor = '#ffffff'
+    ): static
     {
         if ($fit === Fit::Crop) {
             return $this->fitCrop($fit, $this->getWidth(), $this->getHeight(), $desiredWidth, $desiredHeight);
@@ -248,7 +254,7 @@ class GdDriver implements ImageDriver
         );
 
         if ($fit->shouldResizeCanvas()) {
-            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center);
+            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center, $relative, $backgroundColor);
         }
 
         return $this;
