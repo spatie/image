@@ -53,8 +53,8 @@ interface ImageDriver
     public function getSize(): Size;
 
     public function fit(
-        Fit $fit, 
-        ?int $desiredWidth = null, 
+        Fit $fit,
+        ?int $desiredWidth = null,
         ?int $desiredHeight = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'

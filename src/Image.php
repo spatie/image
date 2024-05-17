@@ -179,8 +179,7 @@ class Image implements ImageDriver
         ?int $desiredHeight = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): static
-    {
+    ): static {
         $this->imageDriver->fit($fit, $desiredWidth, $desiredHeight, $relative, $backgroundColor);
 
         return $this;

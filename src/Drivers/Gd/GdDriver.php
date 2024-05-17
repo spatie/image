@@ -231,8 +231,7 @@ class GdDriver implements ImageDriver
         ?int $desiredHeight = null,
         bool $relative = false,
         string $backgroundColor = '#ffffff'
-    ): static
-    {
+    ): static {
         if ($fit === Fit::Crop) {
             return $this->fitCrop($fit, $this->getWidth(), $this->getHeight(), $desiredWidth, $desiredHeight);
         }
