@@ -20,7 +20,7 @@
         "ext-exif": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "spatie/image-optimizer": "^1.7.2",
+        "spatie/image-optimizer": "^1.7.5",
         "spatie/temporary-directory": "^2.2",
         "symfony/process": "^6.4|^7.0"
     },
