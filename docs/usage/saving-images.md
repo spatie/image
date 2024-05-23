@@ -28,7 +28,7 @@ Image::load('example.jpg')
     ->save('example.png');
 ```
 
-You can find the supported image formats here: [Supported image formats](/image/v3/formats)
+You can find the supported image formats here: [Supported image formats](/docs/image/v3/formats)
 
 ## Changing JPEG quality
 
