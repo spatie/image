@@ -5,7 +5,7 @@ weight: 1
 
 Image manipulation doesn't have to be hard. This PHP package makes it super easy to apply common manipulations to images like resizing, cropping and adding effects.
 
-For all available manipulations, please see the [overview](/image/v3/image-manipulations/overview).
+For all available manipulations, please see the [overview](/docs/image/v3/image-manipulations/overview).
 
 ## Quick examples
 
