@@ -2,6 +2,23 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.6.2 - 2024-05-23
+
+### What's Changed
+
+* Update overview.md by @schmeits in https://github.com/spatie/image/pull/253
+* Update saving-images.md by @schmeits in https://github.com/spatie/image/pull/256
+* Update introduction.md by @schmeits in https://github.com/spatie/image/pull/255
+* Update basic-usage.md by @schmeits in https://github.com/spatie/image/pull/254
+* Update composer.json by @thanosalexandris in https://github.com/spatie/image/pull/257
+
+### New Contributors
+
+* @schmeits made their first contribution in https://github.com/spatie/image/pull/253
+* @thanosalexandris made their first contribution in https://github.com/spatie/image/pull/257
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.6.1...3.6.2
+
 ## 3.6.1 - 2024-05-17
 
 ### What's Changed
