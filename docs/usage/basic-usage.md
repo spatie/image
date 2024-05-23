@@ -21,7 +21,7 @@ $image = Image::useImageDriver(ImageDriver::Gd)->loadFile(string $pathToImage);
 
 ## Applying manipulations
 
-Any of the [image manipulations](/image/v3/image-manipulations/overview) can be applied to the loaded `Image` by calling the manipulation's method. All image manipulation methods can be chained.
+Any of the [image manipulations](/docs/image/v3/image-manipulations/overview) can be applied to the loaded `Image` by calling the manipulation's method. All image manipulation methods can be chained.
 
 ```php
 Image::load('example.jpg')
