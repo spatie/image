@@ -93,7 +93,7 @@ it('can fit and add a background', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-background.png");
 
     $driver->loadFile(getTestJpg())
-        ->fit(fit: Fit::FillMax, desiredWidth:  800,  desiredHeight: 400, backgroundColor: '#0073ff')
+        ->fit(fit: Fit::FillMax, desiredWidth: 800, desiredHeight: 400, backgroundColor: '#0073ff')
         ->save($targetFile);
 
     assertMatchesImageSnapshot($targetFile);
