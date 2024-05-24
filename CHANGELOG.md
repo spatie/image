@@ -2,6 +2,10 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.6.3 - 2024-05-24
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.6.2...3.6.3
+
 ## 3.6.2 - 2024-05-23
 
 ### What's Changed
