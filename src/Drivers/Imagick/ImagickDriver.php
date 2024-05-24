@@ -131,6 +131,10 @@ class ImagickDriver implements ImageDriver
             return $this->fitCrop($fit, $this->getWidth(), $this->getHeight(), $desiredWidth, $desiredHeight);
         }
 
+        if ($fit === Fit::FillMax) {
+            return $this->fitFillMax($desiredWidth, $desiredHeight, $backgroundColor);
+        }
+
         $calculatedSize = $fit->calculateSize(
             $this->getWidth(),
             $this->getHeight(),
@@ -145,6 +149,14 @@ class ImagickDriver implements ImageDriver
         if ($fit->shouldResizeCanvas()) {
             $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center, $relative, $backgroundColor);
         }
+
+        return $this;
+    }
+
+    public function fitFillMax(?int $desiredWidth = null, ?int $desiredHeight = null, ?string $backgroundColor = null, ?bool $relative = false): static
+    {
+        $this->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]);
+        $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center, $relative, $backgroundColor);
 
         return $this;
     }
