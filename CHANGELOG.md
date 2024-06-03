@@ -2,6 +2,14 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.6.4 - 2024-06-03
+
+### What's Changed
+
+* Implement Fit::FillMax by @timvandijck in https://github.com/spatie/image/pull/258
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.6.3...3.6.4
+
 ## 3.6.3 - 2024-05-24
 
 **Full Changelog**: https://github.com/spatie/image/compare/3.6.2...3.6.3
