@@ -70,7 +70,7 @@ Resizes the image to fit within the width and height boundaries without cropping
 # Example of how to set background colour to fill remaining pixels
 
 $image
-    ->fit(fit: Fit::Fill, desiredWidth:  497,  desiredHeight: 290, backgroundColor: '#ff5733');
+    ->fit(fit: Fit::Fit::FillMax, desiredWidth:  497,  desiredHeight: 290, backgroundColor: '#ff5733');
 ```
 
 ![Blue background on fit filled JPG](../../images/example-background.png)
