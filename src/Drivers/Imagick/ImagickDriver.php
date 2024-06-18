@@ -115,7 +115,7 @@ class ImagickDriver implements ImageDriver
     public function blur(int $blur): static
     {
         foreach ($this->image as $image) {
-            $image->blurImage(0.5 * $blur, 0.1 * $blur);
+            $image->blurImage(1 * $blur, 0.5 * $blur);
         }
 
         return $this;
