@@ -223,7 +223,7 @@ class ImagickDriver implements ImageDriver
 
         // make image area transparent to keep transparency
         // even if background-color is set
-        $rect = new ImagickDraw;
+        $rect = new ImagickDraw();
         $fill = $canvas->pickColor(0, 0, ColorFormat::Hex);
         $fill = $fill === '#ff0000' ? '#00ff00' : '#ff0000';
         $rect->setFillColor($fill);
@@ -470,12 +470,14 @@ class ImagickDriver implements ImageDriver
 
     public function pixelate(int $pixelate = 50): static
     {
-        $width = $this->getWidth();
-        $height = $this->getHeight();
+        if ($pixelate !== 0) {
+            $width = $this->getWidth();
+            $height = $this->getHeight();
 
-        foreach ($this->image as $image) {
-            $image->scaleImage(max(1, (int) ($width / $pixelate)), max(1, (int) ($height / $pixelate)));
-            $image->scaleImage($width, $height);
+            foreach ($this->image as $image) {
+                $image->scaleImage(max(1, (int) ($width / $pixelate)), max(1, (int) ($height / $pixelate)));
+                $image->scaleImage($width, $height);
+            }
         }
 
         return $this;
