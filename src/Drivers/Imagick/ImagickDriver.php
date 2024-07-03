@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Spatie\Image\Drivers\Imagick;
 
 use Imagick;
@@ -56,13 +58,6 @@ class ImagickDriver implements ImageDriver
         return (new self())->setImage($image);
     }
 
-    protected function setImage(Imagick $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     public function image(): Imagick
     {
         return $this->image;
@@ -86,11 +81,6 @@ class ImagickDriver implements ImageDriver
         }
 
         return $this;
-    }
-
-    protected function isAnimated(): bool
-    {
-        return count($this->image) > 1;
     }
 
     public function getWidth(): int
@@ -133,7 +123,7 @@ class ImagickDriver implements ImageDriver
         }
 
         if ($fit === Fit::FillMax) {
-            if (is_null($desiredWidth) || is_null($desiredHeight)) {
+            if (null === $desiredWidth || null === $desiredHeight) {
                 throw new MissingParameter('Both desiredWidth and desiredHeight must be set when using Fit::FillMax');
             }
 
@@ -265,7 +255,7 @@ class ImagickDriver implements ImageDriver
             $formats[] = 'JFIF';
         }
 
-        if (! in_array(strtoupper($extension), $formats)) {
+        if (! in_array(mb_strtoupper($extension), $formats)) {
             throw UnsupportedImageFormat::make($extension);
         }
 
@@ -354,7 +344,7 @@ class ImagickDriver implements ImageDriver
         $cropped = new Size($width, $height);
         $position = new Point($x ?? 0, $y ?? 0);
 
-        if (is_null($x) && is_null($y)) {
+        if (null === $x && null === $y) {
             $position = $this
                 ->getSize()
                 ->align(AlignPosition::Center)
@@ -429,7 +419,7 @@ class ImagickDriver implements ImageDriver
 
     public function orientation(?Orientation $orientation = null): static
     {
-        if (is_null($orientation)) {
+        if (null === $orientation) {
             $orientation = $this->getOrientationFromExif($this->exif);
         }
 
@@ -470,14 +460,16 @@ class ImagickDriver implements ImageDriver
 
     public function pixelate(int $pixelate = 50): static
     {
-        if ($pixelate !== 0) {
-            $width = $this->getWidth();
-            $height = $this->getHeight();
+        if ($pixelate === 0) {
+            return $this;
+        }
 
-            foreach ($this->image as $image) {
-                $image->scaleImage(max(1, (int) ($width / $pixelate)), max(1, (int) ($height / $pixelate)));
-                $image->scaleImage($width, $height);
-            }
+        $width = $this->getWidth();
+        $height = $this->getHeight();
+
+        foreach ($this->image as $image) {
+            $image->scaleImage(max(1, (int) ($width / $pixelate)), max(1, (int) ($height / $pixelate)));
+            $image->scaleImage($width, $height);
         }
 
         return $this;
@@ -723,5 +715,17 @@ class ImagickDriver implements ImageDriver
         }
 
         return $wrapped;
+    }
+
+    protected function setImage(Imagick $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    protected function isAnimated(): bool
+    {
+        return count($this->image) > 1;
     }
 }
