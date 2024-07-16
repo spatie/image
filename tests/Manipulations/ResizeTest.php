@@ -1,7 +1,6 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Image;
 
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
