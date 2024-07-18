@@ -470,6 +470,10 @@ class ImagickDriver implements ImageDriver
 
     public function pixelate(int $pixelate = 50): static
     {
+        if ($pixelate === 0) {
+            return $this;
+        }
+
         $width = $this->getWidth();
         $height = $this->getHeight();
 
