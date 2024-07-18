@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.7.1 - 2024-07-18
+
+### What's Changed
+
+* fix: GdDriver resizeCanvas save alpha channel; by @olexoliinyk0 in https://github.com/spatie/image/pull/266
+
+### New Contributors
+
+* @olexoliinyk0 made their first contribution in https://github.com/spatie/image/pull/266
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.7.0...3.7.1
+
 ## 3.7.0 - 2024-07-18
 
 ### What's Changed
