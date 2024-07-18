@@ -13,8 +13,7 @@ class Size
         public int $width,
         public int $height,
         public Point $pivot = new Point()
-    ) {
-    }
+    ) {}
 
     public function aspectRatio(): float
     {
