@@ -24,7 +24,7 @@ trait AddsWatermark
         int $alpha = 100): static
     {
         if (is_string($watermarkImage)) {
-            $watermarkImage = (new self())->loadFile($watermarkImage);
+            $watermarkImage = (new self)->loadFile($watermarkImage);
         }
 
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');

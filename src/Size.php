@@ -12,7 +12,7 @@ class Size
     public function __construct(
         public int $width,
         public int $height,
-        public Point $pivot = new Point()
+        public Point $pivot = new Point
     ) {}
 
     public function aspectRatio(): float

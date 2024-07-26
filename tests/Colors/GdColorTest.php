@@ -4,43 +4,43 @@ use Spatie\Image\Drivers\Gd\GdColor;
 use Spatie\Image\Exceptions\InvalidColor;
 
 it('can create a new gd color object', function () {
-    $color = new GdColor();
+    $color = new GdColor;
 
     validateGdColor($color, 255, 255, 255, 127);
 });
 
 it('can parse null', function () {
-    $color = (new GdColor())->parse(null);
+    $color = (new GdColor)->parse(null);
 
     validateGdColor($color, 255, 255, 255, 127);
 });
 
 it('can parse an integer', function () {
-    $color = (new GdColor())->parse(850736919);
+    $color = (new GdColor)->parse(850736919);
 
     validateGdColor($color, 181, 55, 23, 50);
 });
 
 it('can parse an array', function () {
-    $color = (new GdColor())->parse([181, 55, 23, 0.5]);
+    $color = (new GdColor)->parse([181, 55, 23, 0.5]);
 
     validateGdColor($color, 181, 55, 23, 64);
 });
 
 it('can parse a hex string', function () {
-    $color = new GdColor();
+    $color = new GdColor;
     $color->parse('#b53717');
     validateGdColor($color, 181, 55, 23, 0);
 });
 
 it('can parse an rgba string', function () {
-    $color = (new GdColor())->parse('rgba(181, 55, 23, 1)');
+    $color = (new GdColor)->parse('rgba(181, 55, 23, 1)');
 
     validateGdColor($color, 181, 55, 23, 0);
 });
 
 it('can initialize from an integer', function () {
-    $color = (new GdColor())->initFromInteger(0);
+    $color = (new GdColor)->initFromInteger(0);
     validateGdColor($color, 0, 0, 0, 0);
 
     $color->initFromInteger(2147483647);
@@ -57,7 +57,7 @@ it('can initialize from an integer', function () {
 });
 
 it('can initialize from array', function () {
-    $color = (new GdColor())->initFromArray([0, 0, 0, 0]);
+    $color = (new GdColor)->initFromArray([0, 0, 0, 0]);
     validateGdColor($color, 0, 0, 0, 127);
 
     $color->initFromArray([0, 0, 0, 1]);
@@ -86,7 +86,7 @@ it('can initialize from array', function () {
 });
 
 it('init can initialize from a hex string', function () {
-    $color = (new GdColor())->initFromString('#cccccc');
+    $color = (new GdColor)->initFromString('#cccccc');
     validateGdColor($color, 204, 204, 204, 0);
 
     $color->initFromString('#b53717');
@@ -106,7 +106,7 @@ it('init can initialize from a hex string', function () {
 });
 
 it('can initialize from an rgb string', function () {
-    $color = (new GdColor())->initFromString('rgb(1, 14, 144)');
+    $color = (new GdColor)->initFromString('rgb(1, 14, 144)');
     validateGdColor($color, 1, 14, 144, 0);
 
     $color->initFromString('rgb (255, 255, 255)');
@@ -129,7 +129,7 @@ it('can initialize from an rgb string', function () {
 });
 
 it('can initialize from rgb value', function () {
-    $color = (new GdColor())->initFromRgb(0, 0, 0);
+    $color = (new GdColor)->initFromRgb(0, 0, 0);
     validateGdColor($color, 0, 0, 0, 0);
 
     $color->initFromRgb(255, 255, 255);
@@ -140,7 +140,7 @@ it('can initialize from rgb value', function () {
 });
 
 it('can initialize from rgba values', function () {
-    $color = (new GdColor())->initFromRgba(0, 0, 0, 1);
+    $color = (new GdColor)->initFromRgba(0, 0, 0, 1);
     validateGdColor($color, 0, 0, 0, 0);
 
     $color->initFromRgba(255, 255, 255, 1);
@@ -157,7 +157,7 @@ it('can initialize from rgba values', function () {
 });
 
 it('can get the int value of a color', function () {
-    $color = new GdColor();
+    $color = new GdColor;
     expect($color->getInt())->toEqual(2147483647);
 
     $color = new GdColor([255, 255, 255]);
@@ -177,7 +177,7 @@ it('can get the int value of a color', function () {
 });
 
 it('can get the hex value from a color', function () {
-    $color = new GdColor();
+    $color = new GdColor;
     expect($color->getHex())->toEqual('ffffff');
 
     $color = new GdColor([255, 255, 255, 1]);
@@ -191,7 +191,7 @@ it('can get the hex value from a color', function () {
 });
 
 it('can convert the color to an array', function () {
-    $color = new GdColor();
+    $color = new GdColor;
     $i = $color->getArray();
 
     expect([255, 255, 255, 0])->toEqual($i);
@@ -213,7 +213,7 @@ it('can convert the color to an array', function () {
 });
 
 it('can get the rgba values', function () {
-    $color = (new GdColor());
+    $color = (new GdColor);
     expect($color->getRgba())->toEqual('rgba(255, 255, 255, 0.00)');
 
     $color = new GdColor([255, 255, 255, 1]);

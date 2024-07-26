@@ -4,40 +4,40 @@ use Spatie\Image\Drivers\Imagick\ImagickColor;
 use Spatie\Image\Exceptions\InvalidColor;
 
 it('can create an imagick color', function () {
-    $color = new ImagickColor();
+    $color = new ImagickColor;
     validateImagickColor($color, 255, 255, 255, 0);
 });
 
 it('can parse null', function () {
-    $color = (new ImagickColor())->parse(null);
+    $color = (new ImagickColor)->parse(null);
     validateImagickColor($color, 255, 255, 255, 0);
 });
 
 it('can parse an integer', function () {
-    $color = (new ImagickColor())->parse(16777215);
+    $color = (new ImagickColor)->parse(16777215);
     validateImagickColor($color, 255, 255, 255, 0);
 
-    $color = (new ImagickColor())->parse(4294967295);
+    $color = (new ImagickColor)->parse(4294967295);
     validateImagickColor($color, 255, 255, 255, 1);
 });
 
 it('can parse an array', function () {
-    $color = (new ImagickColor())->parse([181, 55, 23, 0.5]);
+    $color = (new ImagickColor)->parse([181, 55, 23, 0.5]);
     validateImagickColor($color, 181, 55, 23, 0.5);
 });
 
 it('can parse a hex string', function () {
-    $color = (new ImagickColor())->parse('#b53717');
+    $color = (new ImagickColor)->parse('#b53717');
     validateImagickColor($color, 181, 55, 23, 1);
 });
 
 it('can parse an rgba string', function () {
-    $color = (new ImagickColor())->parse('rgba(181, 55, 23, 1)');
+    $color = (new ImagickColor)->parse('rgba(181, 55, 23, 1)');
     validateImagickColor($color, 181, 55, 23, 1);
 });
 
 it('can init from an integer', function (int $int, int $red, int $green, int $blue, float $alpha) {
-    $color = (new ImagickColor())->initFromInteger($int);
+    $color = (new ImagickColor)->initFromInteger($int);
     validateImagickColor($color, $red, $green, $blue, $alpha);
 })->with([
     [0, 0, 0, 0, 0],
@@ -48,7 +48,7 @@ it('can init from an integer', function (int $int, int $red, int $green, int $bl
 ]);
 
 it('can init from an array', function (array $input, int $red, int $green, int $blue, float $alpha) {
-    $color = (new ImagickColor())->initFromArray($input);
+    $color = (new ImagickColor)->initFromArray($input);
     validateImagickColor($color, $red, $green, $blue, $alpha);
 })->with([
     [[0, 0, 0, 0], 0, 0, 0, 0],
@@ -64,7 +64,7 @@ it('can init from an array', function (array $input, int $red, int $green, int $
 ]);
 
 it('can init from a hex string', function (string $hexColor, int $red, int $green, int $blue, float $alpha) {
-    $color = (new ImagickColor())->initFromString($hexColor);
+    $color = (new ImagickColor)->initFromString($hexColor);
     validateImagickColor($color, $red, $green, $blue, $alpha);
 })->with([
     ['#cccccc', 204, 204, 204, 1],
@@ -76,7 +76,7 @@ it('can init from a hex string', function (string $hexColor, int $red, int $gree
 ]);
 
 it('can init from an rgb string', function (string $rgbString, int $red, int $green, int $blue, float $alpha) {
-    $color = (new ImagickColor())->initFromString($rgbString);
+    $color = (new ImagickColor)->initFromString($rgbString);
     validateImagickColor($color, $red, $green, $blue, $alpha);
 })->with([
     ['rgb(1, 14, 144)',  1, 14, 144, 1],
@@ -89,7 +89,7 @@ it('can init from an rgb string', function (string $rgbString, int $red, int $gr
 ]);
 
 it('can init from rgb values', function (array $inputValues, array $expectedValues) {
-    $color = (new ImagickColor())->initFromRgb(...$inputValues);
+    $color = (new ImagickColor)->initFromRgb(...$inputValues);
     validateImagickColor($color, ...$expectedValues);
 })->with([
     [[0, 0, 0], [0, 0, 0, 1]],
@@ -98,7 +98,7 @@ it('can init from rgb values', function (array $inputValues, array $expectedValu
 ]);
 
 it('can init from an rgba value', function (array $inputValues, array $expectedValues) {
-    $color = (new ImagickColor())->initFromRgba(...$inputValues);
+    $color = (new ImagickColor)->initFromRgba(...$inputValues);
     validateImagickColor($color, ...$expectedValues);
 })->with([
     [[0, 0, 0, 1], [0, 0, 0, 1]],

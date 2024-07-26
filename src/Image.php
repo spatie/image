@@ -28,7 +28,7 @@ class Image implements ImageDriver
 
     public function __construct(?string $pathToImage = null)
     {
-        $this->imageDriver = new ImagickDriver();
+        $this->imageDriver = new ImagickDriver;
 
         if ($pathToImage) {
             $this->imageDriver->loadFile($pathToImage);
@@ -59,11 +59,11 @@ class Image implements ImageDriver
         }
 
         $driver = match ($imageDriver) {
-            ImageDriverEnum::Gd => new GdDriver(),
-            ImageDriverEnum::Imagick => new ImagickDriver(),
+            ImageDriverEnum::Gd => new GdDriver,
+            ImageDriverEnum::Imagick => new ImagickDriver,
         };
 
-        $image = new static();
+        $image = new static;
         $image->imageDriver = $driver;
 
         return $image;

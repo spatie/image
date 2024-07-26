@@ -48,14 +48,14 @@ class ImagickDriver implements ImageDriver
     public function new(int $width, int $height, ?string $backgroundColor = null): static
     {
         $color = new ImagickColor($backgroundColor);
-        $image = new Imagick();
+        $image = new Imagick;
 
         $image->newImage($width, $height, $color->getPixel(), 'png');
         $image->setType(Imagick::IMGTYPE_UNDEFINED);
         $image->setImageType(Imagick::IMGTYPE_UNDEFINED);
         $image->setColorspace(Imagick::COLORSPACE_UNDEFINED);
 
-        return (new self())->setImage($image);
+        return (new self)->setImage($image);
     }
 
     protected function setImage(Imagick $image): static
@@ -278,7 +278,7 @@ class ImagickDriver implements ImageDriver
                 $image->setFormat($format);
             }
         }
-    
+
         if ($this->isAnimated()) {
             $image = $this->image->deconstructImages();
             $image->writeImages($path, true);
@@ -505,7 +505,7 @@ class ImagickDriver implements ImageDriver
     ): static {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
-            $otherImage = (new self())->loadFile($otherImage);
+            $otherImage = (new self)->loadFile($otherImage);
         }
 
         $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
@@ -592,9 +592,9 @@ class ImagickDriver implements ImageDriver
         }
 
         if ($type === BorderType::Overlay) {
-            $shape = new ImagickDraw();
+            $shape = new ImagickDraw;
 
-            $backgroundColor = new ImagickColor();
+            $backgroundColor = new ImagickColor;
             $shape->setFillColor($backgroundColor->getPixel());
 
             $borderColor = new ImagickColor($color);
@@ -686,7 +686,7 @@ class ImagickDriver implements ImageDriver
 
         $textColor = new ImagickColor($color);
 
-        $draw = new ImagickDraw();
+        $draw = new ImagickDraw;
         $draw->setFillColor($textColor->getPixel());
         $draw->setFontSize($fontSize);
         if ($fontPath) {
@@ -718,13 +718,13 @@ class ImagickDriver implements ImageDriver
         foreach ($words as $word) {
             $teststring = "{$wrapped} {$word}";
 
-            $draw = new ImagickDraw();
+            $draw = new ImagickDraw;
             if ($fontPath) {
                 $draw->setFont($fontPath);
             }
             $draw->setFontSize($fontSize);
 
-            $metrics = (new Imagick())->queryFontMetrics($draw, $teststring);
+            $metrics = (new Imagick)->queryFontMetrics($draw, $teststring);
 
             if ($metrics['textWidth'] > $width) {
                 $wrapped .= "\n".$word;

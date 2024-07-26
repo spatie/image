@@ -627,7 +627,7 @@ class GdDriver implements ImageDriver
     ): static {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
-            $otherImage = (new self())->loadFile($otherImage);
+            $otherImage = (new self)->loadFile($otherImage);
         }
 
         $imageSize = $this->getSize()->align($position, $x, $y);
