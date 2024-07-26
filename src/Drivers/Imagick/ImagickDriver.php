@@ -39,6 +39,8 @@ class ImagickDriver implements ImageDriver
 
     protected Imagick $image;
 
+    protected ?string $format = null;
+
     protected array $exif = [];
 
     protected string $originalPath;
@@ -256,19 +258,27 @@ class ImagickDriver implements ImageDriver
         if (! $path) {
             $path = $this->originalPath;
         }
-
-        $extension = pathinfo($path, PATHINFO_EXTENSION);
-
+        if (is_null($this->format)) {
+            $format = pathinfo($path, PATHINFO_EXTENSION);
+        } else {
+            $format = $this->format;
+        }
         $formats = Imagick::queryFormats('*');
-
         if (in_array('JPEG', $formats)) {
             $formats[] = 'JFIF';
         }
-
-        if (! in_array(strtoupper($extension), $formats)) {
-            throw UnsupportedImageFormat::make($extension);
+        if (! in_array(strtoupper($format), $formats)) {
+            throw UnsupportedImageFormat::make($format);
         }
 
+        foreach ($this->image as $image) {
+            if (strtoupper($format) === 'JFIF') {
+                $image->setFormat('JPEG');
+            } else {
+                $image->setFormat($format);
+            }
+        }
+    
         if ($this->isAnimated()) {
             $image = $this->image->deconstructImages();
             $image->writeImages($path, true);
@@ -279,6 +289,7 @@ class ImagickDriver implements ImageDriver
         if ($this->optimize) {
             $this->optimizerChain->optimize($path);
         }
+        $this->format = null;
 
         return $this;
     }
@@ -618,9 +629,7 @@ class ImagickDriver implements ImageDriver
 
     public function format(string $format): static
     {
-        foreach ($this->image as $image) {
-            $image->setFormat($format);
-        }
+        $this->format = $format;
 
         return $this;
     }
