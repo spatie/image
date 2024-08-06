@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.7.3 - 2024-08-06
+
+### What's Changed
+
+* Update Image.php to fix $prefixWithFormat by @tanshiqi in https://github.com/spatie/image/pull/269
+
+### New Contributors
+
+* @tanshiqi made their first contribution in https://github.com/spatie/image/pull/269
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.7.2...3.7.3
+
 ## 3.7.2 - 2024-07-26
 
 ### What's Changed
