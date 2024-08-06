@@ -220,7 +220,7 @@ class Image implements ImageDriver
 
     public function base64(string $imageFormat = 'jpeg', bool $prefixWithFormat = true): string
     {
-        return $this->imageDriver->base64($imageFormat);
+        return $this->imageDriver->base64($imageFormat, $prefixWithFormat);
     }
 
     public function background(string $color): static
