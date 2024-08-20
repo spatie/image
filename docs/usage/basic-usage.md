@@ -53,7 +53,7 @@ Image::load('example.jpg')
     ->save('modified-example.jpg');
 ```
 
-To save the image in a different image format or with a different jpeg quality [see saving images](/image/v1/usage/saving-images).
+To save the image in a different image format or with a different jpeg quality [see saving images](/image/v3/usage/saving-images).
 
 ## Retrieve a base64 string
 
