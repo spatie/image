@@ -68,9 +68,10 @@ Resizes the image to fit within the width and height boundaries without cropping
 
 ```php
 # Example of how to set background colour to fill remaining pixels
+use Spatie\Image\Enums\Fit;
 
 $image
-    ->fit(fit: Fit::Fit::FillMax, desiredWidth:  497,  desiredHeight: 290, backgroundColor: '#ff5733');
+    ->fit(fit: Fit::FillMax, desiredWidth:  497,  desiredHeight: 290, backgroundColor: '#ff5733');
 ```
 
 ![Blue background on fit filled JPG](../../images/example-background.png)
@@ -78,6 +79,8 @@ $image
 ### Example usage
 
 ```php
+use Spatie\Image\Enums\Fit;
+
 Image::load('example.jpg')
     ->fit(Fit:Stretch, 450, 150)
     ->save();
@@ -99,6 +102,8 @@ The following `CropPosition`s are available on the enum:
 ### Example usage
 
 ```php
+use Spatie\Image\Enums\CropPosition;
+
 Image::load('example.jpg')
     ->crop(250, 250, CropPosition::TopRight)
     ->save();
