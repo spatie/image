@@ -153,20 +153,20 @@ class GdDriver implements ImageDriver
             case 'jpg':
             case 'jpeg':
             case 'jfif':
-                imagejpeg($this->image, $path, $this->quality);
+                \imagejpeg($this->image, $path, $this->quality);
                 break;
             case 'png':
-                imagepng($this->image, $path, $this->pngCompression());
+                \imagepng($this->image, $path, $this->pngCompression());
                 break;
             case 'gif':
-                imagegif($this->image, $path);
+                \imagegif($this->image, $path);
                 break;
             case 'webp':
                 $quality = $this->quality === 100 ? IMG_WEBP_LOSSLESS : $this->quality;
-                imagewebp($this->image, $path, $quality);
+                \imagewebp($this->image, $path, $quality);
                 break;
             case 'avif':
-                imageavif($this->image, $path, $this->quality);
+                \imageavif($this->image, $path, $this->quality);
                 break;
             default:
                 throw UnsupportedImageFormat::make($extension);
@@ -188,19 +188,19 @@ class GdDriver implements ImageDriver
             case 'jpg':
             case 'jpeg':
             case 'jfif':
-                imagejpeg($this->image, null, $this->quality);
+                \imagejpeg($this->image, null, $this->quality);
                 break;
             case 'png':
-                imagepng($this->image, null, $this->pngCompression());
+                \imagepng($this->image, null, $this->pngCompression());
                 break;
             case 'gif':
-                imagegif($this->image, null);
+                \imagegif($this->image, null);
                 break;
             case 'webp':
-                imagewebp($this->image, null);
+                \imagewebp($this->image, null);
                 break;
             case 'avif':
-                imageavif($this->image, null);
+                \imageavif($this->image, null);
                 break;
             default:
                 throw UnsupportedImageFormat::make($imageFormat);
