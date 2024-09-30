@@ -67,7 +67,7 @@ As you can see in the example above. The watermark automatically resized itself 
 
 To change the way the watermark is resized within the given boundaries you can use the `$fit` param. This param accepts any `Fit` enum value.
 
-You can read more about resizing using the fit methods in the [resizing images](/image/v3/image-manipulations/resizing-images) part of the docs.
+You can read more about resizing using the fit methods in the [resizing images](/docs/image/v3/image-manipulations/resizing-images) part of the docs.
 
 For example, you might want to stretch the watermark over the entire bottom half of the image:
 
