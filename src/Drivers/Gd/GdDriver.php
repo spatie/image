@@ -163,6 +163,7 @@ class GdDriver implements ImageDriver
                 break;
             case 'webp':
                 $quality = $this->quality === 100 ? IMG_WEBP_LOSSLESS : $this->quality;
+                \imagepalettetotruecolor($this->image);
                 \imagewebp($this->image, $path, $quality);
                 break;
             case 'avif':

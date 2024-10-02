@@ -69,3 +69,11 @@ it('can not save a bogus extension', function (ImageDriver $driver) {
 
     $driver->loadFile(getTestJpg())->save($targetFile);
 })->with('drivers')->throws(UnsupportedImageFormat::class);
+
+it('can store webp palette images', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/palette-webp.webp");
+
+    $driver->loadFile(getTestFile('palette-webp.png'))->save($targetFile);
+
+    expect($targetFile)->toHaveMime("image/webp");
+})->with('drivers');
