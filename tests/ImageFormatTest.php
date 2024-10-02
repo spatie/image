@@ -75,5 +75,5 @@ it('can store webp palette images', function (ImageDriver $driver) {
 
     $driver->loadFile(getTestFile('palette-webp.png'))->save($targetFile);
 
-    expect($targetFile)->toHaveMime("image/webp");
+    expect($targetFile)->toHaveMime('image/webp');
 })->with('drivers');
