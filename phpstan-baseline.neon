@@ -16,42 +16,7 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#1 \\$dst_image of function imagecopyresampled expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
 			message: "#^Parameter \\#1 \\$exif of method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:getOrientationFromExif\\(\\) expects array\\{Orientation\\?\\: int\\}, array\\<string, mixed\\> given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagealphablending expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorallocatealpha expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolorsforindex expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagecolortransparent expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagefill expects GdImage, GdImage\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$image of function imagesavealpha expects GdImage, GdImage\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
@@ -76,12 +41,12 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#2 \\$color of function imagecolorsforindex expects int, int\\|false given\\.$#"
+			message: "#^Parameter \\#2 \\$color of function imagecolorsforindex expects int, int\\<0, max\\>\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#2 \\$color of function imagecolortransparent expects int\\|null, int\\|false given\\.$#"
+			message: "#^Parameter \\#2 \\$color of function imagecolortransparent expects int\\|null, int\\<0, max\\>\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
@@ -91,18 +56,18 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\|false given\\.$#"
+			message: "#^Parameter \\#4 \\$color of function imagefill expects int, int\\<0, max\\>\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#6 \\$color of function imagefilledrectangle expects int, int\\|false given\\.$#"
+			message: "#^Parameter \\#6 \\$color of function imagefilledrectangle expects int, int\\<0, max\\>\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
 			message: "#^Property Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:\\$image \\(GdImage\\) does not accept GdImage\\|false\\.$#"
-			count: 5
+			count: 4
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
