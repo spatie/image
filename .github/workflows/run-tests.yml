@@ -47,4 +47,10 @@ jobs:
             -   name: Execute tests
                 run: |
                    npm install
-                   vendor/bin/pest
+                   vendor/bin/pest --update-snapshots
+
+            -   name: Upload artifact
+                uses: actions/upload-artifact@v4
+                with:
+                    name: my-artifact
+                    path: 'tests/__snapshots__'
