@@ -139,6 +139,10 @@ class ImagickDriver implements ImageDriver
                 throw new MissingParameter('Both desiredWidth and desiredHeight must be set when using Fit::FillMax');
             }
 
+            if (is_null($backgroundColor)) {
+                throw new MissingParameter('backgroundColor must be set when using Fit::FillMax');
+            }
+
             return $this->fitFillMax($desiredWidth, $desiredHeight, $backgroundColor);
         }
 
