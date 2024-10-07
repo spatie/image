@@ -47,10 +47,4 @@ jobs:
             -   name: Execute tests
                 run: |
                    npm install
-                   vendor/bin/pest --update-snapshots
-
-            -   name: Upload artifact
-                uses: actions/upload-artifact@v4
-                with:
-                    name: "snapshot-${{ matrix.php }}"
-                    path: 'tests/__snapshots__'
+                   vendor/bin/pest
