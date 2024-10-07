@@ -76,7 +76,7 @@ interface ImageDriver
 
     public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static;
 
-    public function base64(string $imageFormat): string;
+    public function base64(string $imageFormat, bool $prefixWithFormat = true): string;
 
     public function background(string $color): static;
 
