@@ -119,3 +119,21 @@ it('can do fit and crop', function (
     [[250, 300], 250, 300],
     [[100, 100], 100, 100],
 ]);
+
+it('can fit a PNG palette image with transparency and preserve the signature', function (
+    ImageDriver $driver,
+) {
+    $fitDimensions = [438, 170];
+    $expectedWidth = 438;
+    $expectedHeight = 170;
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/fit-palette-signature.png");
+
+    $driver->loadFile(getTestFile('palette-signature.png'))->fit(Fit::Max, ...$fitDimensions)->save($targetFile);
+
+    $savedImage = $driver->loadFile($targetFile);
+
+    expect($savedImage->getWidth())->toBe($expectedWidth);
+    expect($savedImage->getHeight())->toBe($expectedHeight);
+    assertMatchesImageSnapshot($targetFile);
+})->with('drivers');
