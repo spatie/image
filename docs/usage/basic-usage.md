@@ -20,8 +20,7 @@ By default, the Imagick driver will be used. However if you would like to use GD
 ```php
 use Spatie\Image\Image;
 
-$image = Image::load($file)->useImageDriver('imagick'); // for imagick
-$image = Image::load($file)->useImageDriver('gd'); // for gd
+Image::useImageDriver(ImageDriver::Gd)->loadFile(string $pathToImage);
 ```
 
 ## Applying manipulations
