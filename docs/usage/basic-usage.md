@@ -8,6 +8,8 @@ weight: 1
 Load an image by calling the static `load` method on the `Image` and passing in the `$pathToImage`.
 
 ```php
+use Spatie\Image\Image;
+
 $image = Image::load(string $pathToImage);
 ```
 
@@ -16,7 +18,10 @@ $image = Image::load(string $pathToImage);
 By default, the Imagick driver will be used. However if you would like to use GD you can do this by selecting the driver before loading the image.
 
 ```php
-$image = Image::useImageDriver(ImageDriver::Gd)->loadFile(string $pathToImage);
+use Spatie\Image\Image;
+
+$image = Image::load($file)->useImageDriver('imagick'); // for imagick
+$image = Image::load($file)->useImageDriver('gd'); // for gd
 ```
 
 ## Applying manipulations
@@ -24,6 +29,8 @@ $image = Image::useImageDriver(ImageDriver::Gd)->loadFile(string $pathToImage);
 Any of the [image manipulations](/docs/image/v3/image-manipulations/overview) can be applied to the loaded `Image` by calling the manipulation's method. All image manipulation methods can be chained.
 
 ```php
+use Spatie\Image\Image;
+
 Image::load('example.jpg')
     ->sepia()
     ->blur(50)
@@ -35,6 +42,8 @@ Image::load('example.jpg')
 Every manipulation you call will be applied. When calling a manipulation method multiple times each call will be applied immediately.
 
 ```php
+use Spatie\Image\Image;
+
 // This will lower the brightness first by 40% and then by 20%
 Image::load('example.jpg')
     ->brightness(-40)
@@ -48,6 +57,8 @@ Image::load('example.jpg')
 Calling the `save` method on an `Image` will save the modifications to the specified file.
 
 ```php
+use Spatie\Image\Image;
+
 Image::load('example.jpg')
     ->width(50)
     ->save('modified-example.jpg');
@@ -60,6 +71,8 @@ To save the image in a different image format or with a different jpeg quality [
 Calling the `base64` method on an `Image` will return a base64 string of the image.
 
 ```php
+use Spatie\Image\Image;
+
 Image::load('example.jpg')
     ->base64();
 ```
