@@ -237,6 +237,9 @@ class ImagickDriver implements ImageDriver
         $canvas->image->drawImage($rect);
         $canvas->image->transparentPaintImage($fill, 0, 0, false);
 
+        foreach ($this->image->getImageProfiles() as $key => $value) {
+            $canvas->image->setImageProfile($key, $value);
+        }
         $canvas->image->setImageColorspace($this->image->getImageColorspace());
 
         // copy image into new canvas
