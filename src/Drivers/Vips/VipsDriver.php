@@ -78,7 +78,9 @@ class VipsDriver implements ImageDriver
 
     public function gamma(float $gamma): static
     {
-        // TODO: Implement gamma() method.
+        $this->image = $this->image->gamma(['exponent' => $gamma]);
+
+        return $this;
     }
 
     public function contrast(float $level): static
