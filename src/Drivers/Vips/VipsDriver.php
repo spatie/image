@@ -189,12 +189,12 @@ class VipsDriver implements ImageDriver
         // TODO: Implement insert() method.
     }
 
-    public function text(string $text, int $fontSize, string $color = '000000', int $x = 0, int $y = 0, int $angle = 0, string $fontPath = '', int $width = 0,): static
+    public function text(string $text, int $fontSize, string $color = '000000', int $x = 0, int $y = 0, int $angle = 0, string $fontPath = '', int $width = 0): static
     {
         // TODO: Implement text() method.
     }
 
-    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0,): string
+    public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
     {
         // TODO: Implement wrapText() method.
     }
@@ -206,7 +206,6 @@ class VipsDriver implements ImageDriver
 
     public function resize(int $width, int $height, array $constraints): static
     {
-
 
         $this->image->scale();
     }
