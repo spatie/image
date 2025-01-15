@@ -71,7 +71,9 @@ class VipsDriver implements ImageDriver
 
     public function brightness(int $brightness): static
     {
-        // TODO: Implement brightness() method.
+        $this->image = $this->image->add($brightness);
+
+        return $this;
     }
 
     public function gamma(float $gamma): static
@@ -81,12 +83,12 @@ class VipsDriver implements ImageDriver
 
     public function contrast(float $level): static
     {
-        // TODO: Implement contrast() method.
+
     }
 
     public function blur(int $blur): static
     {
-        // TODO: Implement blur() method.
+
     }
 
     public function colorize(int $red, int $green, int $blue): static
