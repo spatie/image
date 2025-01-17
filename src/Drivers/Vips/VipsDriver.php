@@ -118,7 +118,9 @@ class VipsDriver implements ImageDriver
 
     public function blur(int $blur): static
     {
-        // TODO: Implement blur() method.
+        $this->image = $this->image->gaussblur($blur / 10);
+
+        return $this;
     }
 
     public function colorize(int $red, int $green, int $blue): static
