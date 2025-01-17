@@ -44,7 +44,7 @@ class VipsDriver implements ImageDriver
     public function new(int $width, int $height, ?string $backgroundColor = null): static
     {
         $rgb = $backgroundColor
-            ? sscanf($backgroundColor, "#%02x%02x%02x")
+            ? sscanf($backgroundColor, '#%02x%02x%02x')
             : [0, 0, 0, 0];
 
         $image = Image::newFromArray(array_fill(0, $height, array_fill(0, $width, $rgb)));
