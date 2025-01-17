@@ -43,11 +43,9 @@ class VipsDriver implements ImageDriver
 
     public function new(int $width, int $height, ?string $backgroundColor = null): static
     {
-        $rgb = $backgroundColor
-            ? sscanf($backgroundColor, '#%02x%02x%02x')
-            : [0, 0, 0, 0];
+        $color = new VipsColor($backgroundColor);
 
-        $image = Image::newFromArray(array_fill(0, $height, array_fill(0, $width, $rgb)));
+        $image = Image::newFromArray(array_fill(0, $height, array_fill(0, $width, $color->getArray())));
 
         return (new static)->setImage($image);
     }
@@ -191,7 +189,15 @@ class VipsDriver implements ImageDriver
 
     public function background(string $color): static
     {
-        // TODO: Implement background() method.
+        $backgroundColor = new VipsColor($color);
+
+        $background = Image::newFromArray(
+            array_fill(0, $this->image->height, array_fill(0, $this->image->width, $backgroundColor->getArray()))
+        );
+
+        $this->image = $background->composite2($this->image, 'over');
+
+        return $this;
     }
 
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): static
