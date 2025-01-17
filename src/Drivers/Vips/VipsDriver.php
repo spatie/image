@@ -134,7 +134,9 @@ class VipsDriver implements ImageDriver
 
     public function greyscale(): static
     {
-        // TODO: Implement greyscale() method.
+        $this->image = $this->image->colourspace('b-w');
+
+        return $this;
     }
 
     public function sepia(): static
