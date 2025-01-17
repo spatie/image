@@ -103,7 +103,11 @@ class VipsDriver implements ImageDriver
 
     public function brightness(int $brightness): static
     {
-        // TODO: Implement brightness() method.
+        $brightness = 1 + ($brightness / 100);
+
+        $this->image = $this->image->linear([$brightness, $brightness, $brightness], [0, 0, 0]);
+
+        return $this;
     }
 
     public function gamma(float $gamma): static
