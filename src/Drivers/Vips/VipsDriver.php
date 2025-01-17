@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Drivers\Vips;
 
+use Jcupitt\Vips\Exception;
 use Jcupitt\Vips\Image;
 use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
@@ -19,6 +20,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Enums\Unit;
+use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Size;
 use Spatie\ImageOptimizer\OptimizerChain;
 
@@ -34,14 +36,38 @@ class VipsDriver implements ImageDriver
 
     protected Image $image;
 
+    protected ?string $format = null;
+
+    /** @var array<string, mixed> */
+    protected array $exif = [];
+
     public function new(int $width, int $height, ?string $backgroundColor = null): static
     {
-        // TODO: Implement new() method.
+        $rgb = $backgroundColor
+            ? sscanf($backgroundColor, "#%02x%02x%02x")
+            : [0, 0, 0, 0];
+
+        $image = Image::newFromArray(array_fill(0, $height, array_fill(0, $width, $rgb)));
+
+        return (new static)->setImage($image);
     }
 
-    public function loadFile(string $path): static
+    protected function setImage(Image $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function loadFile(string $path, bool $autoRotate = true): static
     {
         $this->image = Image::newFromFile($path);
+
+        $this->setExif($path);
+
+        if ($autoRotate) {
+            $this->autoRotate();
+        }
 
         return $this;
     }
@@ -54,7 +80,15 @@ class VipsDriver implements ImageDriver
 
     public function save(string $path = ''): static
     {
-        $this->image->writeToFile($path);
+        try {
+            $this->image->writeToFile($path);
+        } catch (Exception $exception) {
+            if (str_contains($exception->getMessage(), 'is not a known file format')) {
+                throw UnsupportedImageFormat::make($this->format, $exception);
+            }
+
+            throw $exception;
+        }
 
         return $this;
     }
@@ -146,7 +180,13 @@ class VipsDriver implements ImageDriver
 
     public function base64(string $imageFormat, bool $prefixWithFormat = true): string
     {
-        // TODO: Implement base64() method.
+        $contents = base64_encode($this->image->writeToBuffer('.'.$imageFormat));
+
+        if ($prefixWithFormat) {
+            return 'data:image/'.$imageFormat.';base64,'.$contents;
+        }
+
+        return $contents;
     }
 
     public function background(string $color): static
@@ -164,9 +204,61 @@ class VipsDriver implements ImageDriver
         // TODO: Implement orientation() method.
     }
 
+    public function autoRotate(): void
+    {
+        if (! $this->exif || empty($this->exif['Orientation'])) {
+            return;
+        }
+
+        switch ($this->exif['Orientation']) {
+            case 8:
+                $this->image = $this->image->rot90();
+                break;
+            case 3:
+                $this->image = $this->image->rot180();
+                break;
+            case 5:
+            case 7:
+            case 6:
+                $this->image = $this->image->rot270();
+                break;
+        }
+    }
+
+    public function setExif(string $path): void
+    {
+        if (! extension_loaded('exif')) {
+            return;
+        }
+
+        if (! extension_loaded('fileinfo')) {
+            return;
+        }
+
+        $fInfo = finfo_open(FILEINFO_RAW);
+        if ($fInfo) {
+            $info = finfo_file($fInfo, $path);
+            finfo_close($fInfo);
+        }
+
+        if (! isset($info) || ! is_string($info) || ! str_contains($info, 'Exif')) {
+            return;
+        }
+
+        $result = @exif_read_data($path);
+
+        if (! is_array($result)) {
+            $this->exif = [];
+
+            return;
+        }
+
+        $this->exif = $result;
+    }
+
     public function exif(): array
     {
-        // TODO: Implement exif() method.
+        return $this->exif;
     }
 
     public function flip(FlipDirection $flip): static
@@ -239,7 +331,9 @@ class VipsDriver implements ImageDriver
 
     public function format(string $format): static
     {
-        // TODO: Implement format() method.
+        $this->format = $format;
+
+        return $this;
     }
 
     public function optimize(?OptimizerChain $optimizerChain = null): static
