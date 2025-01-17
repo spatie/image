@@ -141,7 +141,26 @@ class VipsDriver implements ImageDriver
 
     public function sepia(): static
     {
-        // TODO: Implement sepia() method.
+        /* Implementation from https://github.com/libvips/php-vips/issues/104#issuecomment-686348179 */
+        $sepia = Image::newFromArray([
+            [0.393, 0.769, 0.189],
+            [0.349, 0.686, 0.168],
+            [0.272, 0.534, 0.131]
+        ]);
+
+        if ($this->image->hasAlpha()) {
+            // Separate alpha channel
+            $imageWithoutAlpha = $this->image->extract_band(0, ['n' => $this->image->bands - 1]);
+            $alpha = $this->image->extract_band($this->image->bands - 1, ['n' => 1]);
+
+            $this->image = $imageWithoutAlpha->recomb($sepia)->bandjoin($alpha);
+
+            return $this;
+        }
+
+        $this->image = $this->image->recomb($sepia);
+
+        return $this;
     }
 
     public function sharpen(float $amount): static
