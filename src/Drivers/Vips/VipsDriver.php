@@ -165,7 +165,13 @@ class VipsDriver implements ImageDriver
 
     public function sharpen(float $amount): static
     {
-        // TODO: Implement sharpen() method.
+        if ($amount > 0) {
+            $this->image = $this->image->sharpen([
+                'm2' => $amount,
+            ]);
+        }
+
+        return $this;
     }
 
     public function getSize(): Size
