@@ -1,7 +1,6 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 use function Spatie\Snapshots\assertMatchesImageSnapshot;
 
