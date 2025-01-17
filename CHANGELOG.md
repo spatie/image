@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.8.0 - 2025-01-17
+
+### What's Changed
+
+* Add -90 rotation degree by @hbakouane in https://github.com/spatie/image/pull/285
+
+### New Contributors
+
+* @hbakouane made their first contribution in https://github.com/spatie/image/pull/285
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.7.5...3.8.0
+
 ## 3.7.5 - 2025-01-13
 
 ### What's Changed
