@@ -240,7 +240,9 @@ class VipsDriver implements ImageDriver
 
     public function orientation(?Orientation $orientation = null): static
     {
-        // TODO: Implement orientation() method.
+        $this->image = $this->image->rot($orientation->degrees());
+
+        return $this;
     }
 
     public function autoRotate(): void
