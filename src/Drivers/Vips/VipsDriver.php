@@ -347,8 +347,7 @@ class VipsDriver implements ImageDriver
 
     public function resize(int $width, int $height, array $constraints): static
     {
-
-        $this->image->scale();
+        // TODO: Implement resize() method.
     }
 
     public function width(int $width, array $constraints = []): static
