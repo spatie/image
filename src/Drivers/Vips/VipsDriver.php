@@ -369,7 +369,7 @@ class VipsDriver implements ImageDriver
 
     public function text(string $text, int $fontSize, string $color = '000000', int $x = 0, int $y = 0, int $angle = 0, string $fontPath = '', int $width = 0): static
     {
-        // TODO: Implement text() method.
+        // TODO: Implement text() method. Maybe try this method: https://github.com/libvips/php-vips/issues/94
     }
 
     public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
