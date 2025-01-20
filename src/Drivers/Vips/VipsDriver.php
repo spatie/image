@@ -201,9 +201,6 @@ class VipsDriver implements ImageDriver
     {
         $colors = $this->image->getpoint($x, $y);
 
-        // set alpha if it is not set
-        $colors[3] ??= 1.0;
-
         $color = (new VipsColor())->initFromArray($colors);
 
         return $color->format($colorFormat);
