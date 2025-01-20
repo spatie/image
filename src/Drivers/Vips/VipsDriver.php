@@ -201,7 +201,13 @@ class VipsDriver implements ImageDriver
         // TODO: Implement pickColor() method.
     }
 
-    public function resizeCanvas(?int $width = null, ?int $height = null, ?AlignPosition $position = null, bool $relative = false, string $backgroundColor = '#000000'): static
+    public function resizeCanvas(
+        ?int $width = null,
+        ?int $height = null,
+        ?AlignPosition $position = null,
+        bool $relative = false,
+        string $backgroundColor = '#000000'
+    ): static
     {
         // TODO: Implement resizeCanvas() method.
     }
