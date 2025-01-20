@@ -12,7 +12,6 @@ use Spatie\Image\Drivers\Concerns\PerformsFitCrops;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
-use Spatie\Image\Drivers\Imagick\ImagickColor;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
@@ -206,7 +205,7 @@ class VipsDriver implements ImageDriver
     {
         $colors = $this->image->getpoint($x, $y);
 
-        $color = (new VipsColor())->initFromArray($colors);
+        $color = (new VipsColor)->initFromArray($colors);
 
         return $color->format($colorFormat);
     }
@@ -217,8 +216,7 @@ class VipsDriver implements ImageDriver
         ?AlignPosition $position = null,
         bool $relative = false,
         string $backgroundColor = '#000000'
-    ): static
-    {
+    ): static {
         // TODO: Implement resizeCanvas() method.
     }
 
