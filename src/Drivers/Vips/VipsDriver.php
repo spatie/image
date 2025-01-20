@@ -22,7 +22,6 @@ use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Enums\Unit;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Size;
-use Spatie\ImageOptimizer\OptimizerChain;
 
 class VipsDriver implements ImageDriver
 {
@@ -341,9 +340,9 @@ class VipsDriver implements ImageDriver
         // TODO: Implement wrapText() method.
     }
 
-    public function image(): mixed
+    public function image(): Image
     {
-        // TODO: Implement image() method.
+        return $this->image;
     }
 
     public function resize(int $width, int $height, array $constraints): static
@@ -384,10 +383,5 @@ class VipsDriver implements ImageDriver
         $this->format = $format;
 
         return $this;
-    }
-
-    public function optimize(?OptimizerChain $optimizerChain = null): static
-    {
-        // TODO: Implement optimize() method.
     }
 }
