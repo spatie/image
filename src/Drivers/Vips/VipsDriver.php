@@ -317,7 +317,17 @@ class VipsDriver implements ImageDriver
 
     public function pixelate(int $pixelate): static
     {
-        // TODO: Implement pixelate() method.
+        if ($pixelate === 0) {
+            return $this;
+        }
+
+        // Resize the image to a smaller size (shrink)
+        $this->image = $this->image->resize(1 / $pixelate, ['kernel' => 'nearest']);
+
+        // Resize the image back to the original size (enlarge)
+        $this->image = $this->image->resize($pixelate, ['kernel' => 'nearest']);
+
+        return $this;
     }
 
     public function watermark(ImageDriver|string $watermarkImage, AlignPosition $position = AlignPosition::BottomRight, int $paddingX = 0, int $paddingY = 0, Unit $paddingUnit = Unit::Pixel, int $width = 0, Unit $widthUnit = Unit::Pixel, int $height = 0, Unit $heightUnit = Unit::Pixel, Fit $fit = Fit::Contain, int $alpha = 100): static
