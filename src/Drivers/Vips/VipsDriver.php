@@ -12,6 +12,7 @@ use Spatie\Image\Drivers\Concerns\PerformsFitCrops;
 use Spatie\Image\Drivers\Concerns\PerformsOptimizations;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Drivers\Imagick\ImagickColor;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
@@ -198,7 +199,14 @@ class VipsDriver implements ImageDriver
 
     public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed
     {
-        // TODO: Implement pickColor() method.
+        $colors = $this->image->getpoint($x, $y);
+
+        // set alpha if it is not set
+        $colors[3] ??= 1.0;
+
+        $color = (new VipsColor())->initFromArray($colors);
+
+        return $color->format($colorFormat);
     }
 
     public function resizeCanvas(
