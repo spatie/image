@@ -192,8 +192,13 @@ class VipsDriver implements ImageDriver
         return new Size($this->getWidth(), $this->getHeight());
     }
 
-    public function fit(Fit $fit, ?int $desiredWidth = null, ?int $desiredHeight = null, bool $relative = false, string $backgroundColor = '#ffffff'): static
-    {
+    public function fit(
+        Fit $fit,
+        ?int $desiredWidth = null,
+        ?int $desiredHeight = null,
+        bool $relative = false,
+        string $backgroundColor = '#ffffff'
+    ): static {
         // TODO: Implement fit() method.
     }
 
