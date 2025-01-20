@@ -20,6 +20,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Enums\Unit;
+use Spatie\Image\Exceptions\CannotOptimizePng;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Size;
 
@@ -36,6 +37,10 @@ class VipsDriver implements ImageDriver
     protected Image $image;
 
     protected ?string $format = null;
+
+    protected int $defaultQuality = 75;
+
+    protected ?int $quality = null;
 
     /** @var array<string, mixed> */
     protected array $exif = [];
@@ -77,8 +82,16 @@ class VipsDriver implements ImageDriver
 
     public function save(string $path = ''): static
     {
+        if ($this->quality && $this->format === 'png') {
+            throw CannotOptimizePng::make();
+        }
+
+        $saveProperties = [
+            'Q' => $this->quality ?? $this->defaultQuality,
+        ];
+
         try {
-            $this->image->writeToFile($path);
+            $this->image->writeToFile($path, $saveProperties);
         } catch (Exception $exception) {
             if (str_contains($exception->getMessage(), 'is not a known file format')) {
                 throw UnsupportedImageFormat::make($this->format, $exception);
@@ -394,7 +407,9 @@ class VipsDriver implements ImageDriver
 
     public function quality(int $quality): static
     {
-        // TODO: Implement quality() method.
+        $this->quality = $quality;
+
+        return $this;
     }
 
     public function format(string $format): static

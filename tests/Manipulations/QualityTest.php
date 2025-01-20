@@ -3,8 +3,8 @@
 use Spatie\Image\Drivers\ImageDriver;
 
 it('can set the quality of an image', function (ImageDriver $driver, string $format) {
-    if ($format === 'avif' && ! function_exists('imageavif')) {
-        $this->markTestSkipped('avif is not supported on this system');
+    if ($format === 'png' && $driver->driverName()  === 'vips') {
+        $this->markTestSkipped('Vips does not support setting quality on PNG images');
 
         return;
     }
