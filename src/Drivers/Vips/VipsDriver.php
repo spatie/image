@@ -363,7 +363,7 @@ class VipsDriver implements ImageDriver
         $heightRatio = $resized->height / $this->image->height;
 
         $this->image = $this->image->resize($widthRatio, [
-            'vscale' => $heightRatio
+            'vscale' => $heightRatio,
         ]);
 
         return $this;
