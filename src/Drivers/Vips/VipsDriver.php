@@ -373,17 +373,18 @@ class VipsDriver implements ImageDriver
     {
         $newHeight = (int) round($width / $this->getSize()->aspectRatio());
 
-        $this->image = $this->image->thumbnail_image($width, [
-            'height' => $newHeight,
-            'crop' => 'centre',
-        ]);
+        $this->resize($width, $newHeight, $constraints);
 
         return $this;
     }
 
     public function height(int $height, array $constraints = []): static
     {
-        // TODO: Implement height() method.
+        $newWidth = (int) round($height * $this->getSize()->aspectRatio());
+
+        $this->resize($newWidth, $height, $constraints);
+
+        return $this;
     }
 
     public function border(int $width, BorderType $type, string $color = '000000'): static
