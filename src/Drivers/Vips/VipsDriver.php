@@ -304,7 +304,16 @@ class VipsDriver implements ImageDriver
 
     public function flip(FlipDirection $flip): static
     {
-        // TODO: Implement flip() method.
+        if ($flip === FlipDirection::Both) {
+            $this->image = $this->image->flip(FlipDirection::Vertical->value);
+            $this->image = $this->image->flip(FlipDirection::Horizontal->value);
+
+            return $this;
+        }
+
+        $this->image = $this->image->flip($flip->value);
+
+        return $this;
     }
 
     public function pixelate(int $pixelate): static
