@@ -10,7 +10,7 @@ it('can manually crop to the given dimensions', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $fileName = 'manual-crop-' . implode('-', $dimensions) . "-{$expectedWidth}-{$expectedHeight}.png";
+    $fileName = 'manual-crop-'.implode('-', $dimensions)."-{$expectedWidth}-{$expectedHeight}.png";
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/{$fileName}");
 
