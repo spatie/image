@@ -226,8 +226,7 @@ class VipsDriver implements ImageDriver
         int $height,
         ?int $x = 0,
         ?int $y = 0
-    ): static
-    {
+    ): static {
         $cropped = new Size($width, $height);
         $position = new Point($x ?? 0, $y ?? 0);
 
