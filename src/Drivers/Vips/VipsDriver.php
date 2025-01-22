@@ -256,7 +256,17 @@ class VipsDriver implements ImageDriver
 
     public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): static
     {
-        // TODO: Implement crop() method.
+        $width = min($width, $this->getWidth());
+        $height = min($height, $this->getHeight());
+
+        [$offsetX, $offsetY] = $this->calculateCropOffsets($width, $height, $position);
+
+        $maxWidth = $this->getWidth() - $offsetX;
+        $maxHeight = $this->getHeight() - $offsetY;
+        $width = min($width, $maxWidth);
+        $height = min($height, $maxHeight);
+
+        return $this->manualCrop($width, $height, $offsetX, $offsetY);
     }
 
     public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static

@@ -11,7 +11,12 @@ it('can crop an image relative to a position', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/manual-crop.png");
+    $stringableCropArguments = $cropArguments;
+    $stringableCropArguments[2] = $stringableCropArguments[2]->value;
+
+    $fileName = "manual-crop-" . implode('-', $stringableCropArguments) ."{$expectedWidth}-{$expectedHeight}.png";
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/{$fileName}");
 
     $driver->loadFile(getTestJpg())->crop(...$cropArguments)->save($targetFile);
 
