@@ -22,6 +22,7 @@ use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Enums\Unit;
 use Spatie\Image\Exceptions\CannotOptimizePng;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
+use Spatie\Image\Point;
 use Spatie\Image\Size;
 
 class VipsDriver implements ImageDriver
@@ -220,9 +221,37 @@ class VipsDriver implements ImageDriver
         // TODO: Implement resizeCanvas() method.
     }
 
-    public function manualCrop(int $width, int $height, int $x = 0, int $y = 0): static
+    public function manualCrop(
+        int $width,
+        int $height,
+        ?int $x = 0,
+        ?int $y = 0
+    ): static
     {
-        // TODO: Implement manualCrop() method.
+        $cropped = new Size($width, $height);
+        $position = new Point($x ?? 0, $y ?? 0);
+
+        if (is_null($x) && is_null($y)) {
+            $position = $this
+                ->getSize()
+                ->align(AlignPosition::Center)
+                ->relativePosition($cropped->align(AlignPosition::Center));
+        }
+
+        $maxCroppedWidth = $this->getWidth() - $x;
+        $maxCroppedHeight = $this->getHeight() - $y;
+
+        $width = min($cropped->width, $maxCroppedWidth);
+        $height = min($cropped->height, $maxCroppedHeight);
+
+        $this->image = $this->image->crop(
+            $position->x,
+            $position->y,
+            $width,
+            $height,
+        );
+
+        return $this;
     }
 
     public function crop(int $width, int $height, CropPosition $position = CropPosition::Center): static
