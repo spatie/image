@@ -14,7 +14,7 @@ it('can crop an image relative to a position', function (
     $stringableCropArguments = $cropArguments;
     $stringableCropArguments[2] = $stringableCropArguments[2]->value;
 
-    $fileName = "manual-crop-" . implode('-', $stringableCropArguments) ."{$expectedWidth}-{$expectedHeight}.png";
+    $fileName = 'manual-crop-'.implode('-', $stringableCropArguments)."{$expectedWidth}-{$expectedHeight}.png";
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/{$fileName}");
 
