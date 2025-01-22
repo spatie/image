@@ -270,7 +270,16 @@ class VipsDriver implements ImageDriver
 
     public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
     {
-        // TODO: Implement focalCrop() method.
+        [$width, $height, $cropCenterX, $cropCenterY] = $this->calculateFocalCropCoordinates(
+            $width,
+            $height,
+            $cropCenterX,
+            $cropCenterY
+        );
+
+        $this->manualCrop($width, $height, $cropCenterX, $cropCenterY);
+
+        return $this;
     }
 
     public function base64(string $imageFormat, bool $prefixWithFormat = true): string

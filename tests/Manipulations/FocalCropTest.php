@@ -10,7 +10,9 @@ it('can perform a crop centered around given coordinates', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/focal-crop.png");
+    $fileName = implode('-', $focalCropArguments) . "-{$expectedWidth}-{$expectedHeight}-focal-crop.png";
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/$fileName");
 
     $driver->loadFile(getTestJpg())->focalCrop(...$focalCropArguments)->save($targetFile);
 
