@@ -404,7 +404,19 @@ class VipsDriver implements ImageDriver
         return $this;
     }
 
-    public function watermark(ImageDriver|string $watermarkImage, AlignPosition $position = AlignPosition::BottomRight, int $paddingX = 0, int $paddingY = 0, Unit $paddingUnit = Unit::Pixel, int $width = 0, Unit $widthUnit = Unit::Pixel, int $height = 0, Unit $heightUnit = Unit::Pixel, Fit $fit = Fit::Contain, int $alpha = 100): static
+    public function watermark(
+        ImageDriver|string $watermarkImage,
+        AlignPosition $position = AlignPosition::BottomRight,
+        int $paddingX = 0,
+        int $paddingY = 0,
+        Unit $paddingUnit = Unit::Pixel,
+        int $width = 0,
+        Unit $widthUnit = Unit::Pixel,
+        int $height = 0,
+        Unit $heightUnit = Unit::Pixel,
+        Fit $fit = Fit::Contain,
+        int $alpha = 100,
+    ): static
     {
         // TODO: Implement watermark() method.
     }
