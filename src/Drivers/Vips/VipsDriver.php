@@ -423,8 +423,7 @@ class VipsDriver implements ImageDriver
         Unit $heightUnit = Unit::Pixel,
         Fit $fit = Fit::Contain,
         int $alpha = 100,
-    ): static
-    {
+    ): static {
         // TODO: Implement watermark() method.
     }
 
