@@ -2,6 +2,7 @@
 
 namespace Spatie\Image\Drivers\Vips;
 
+use Jcupitt\Vips\BandFormat;
 use Jcupitt\Vips\Exception;
 use Jcupitt\Vips\Image;
 use Spatie\Image\Drivers\Concerns\AddsWatermark;
@@ -142,7 +143,13 @@ class VipsDriver implements ImageDriver
 
     public function colorize(int $red, int $green, int $blue): static
     {
-        // TODO: Implement colorize() method.
+        $overlay = Image::black($this->image->width, $this->image->height)
+            ->add([$red, $green, $blue])
+            ->cast(BandFormat::UCHAR);
+
+        $this->image = $this->image->composite2($overlay, 'add');
+
+        return $this;
     }
 
     public function greyscale(): static
