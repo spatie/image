@@ -10,7 +10,7 @@ it('can perform a crop centered around given coordinates', function (
     int $expectedWidth,
     int $expectedHeight,
 ) {
-    $fileName = implode('-', $focalCropArguments) . "-{$expectedWidth}-{$expectedHeight}-focal-crop.png";
+    $fileName = implode('-', $focalCropArguments)."-{$expectedWidth}-{$expectedHeight}-focal-crop.png";
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/$fileName");
 
