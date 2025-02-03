@@ -6,6 +6,7 @@ use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\Gd\GdDriver;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Drivers\Imagick\ImagickDriver;
+use Spatie\Image\Drivers\Vips\VipsDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
@@ -61,6 +62,7 @@ class Image implements ImageDriver
         $driver = match ($imageDriver) {
             ImageDriverEnum::Gd => new GdDriver,
             ImageDriverEnum::Imagick => new ImagickDriver,
+            ImageDriverEnum::Vips => new VipsDriver,
         };
 
         $image = new static;

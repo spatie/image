@@ -58,6 +58,7 @@ function assertImageType(string $filePath, $expectedType): void
 dataset('drivers', [
     'imagick' => [Image::useImageDriver('imagick')],
     'gd' => [Image::useImageDriver('gd')],
+    'vips' => [Image::useImageDriver('vips')],
 ]);
 
 expect()->extend('toHaveMime', function (string $expectedMime) {
@@ -70,6 +71,10 @@ expect()->extend('toHaveMime', function (string $expectedMime) {
 
 function avifIsSupported(string $driverName): bool
 {
+    if ($driverName === 'vips') {
+        return true;
+    }
+
     if ($driverName === 'gd') {
         return function_exists('imageavif');
     }
