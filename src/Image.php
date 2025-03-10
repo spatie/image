@@ -53,15 +53,19 @@ class Image implements ImageDriver
 
     public static function useImageDriver(ImageDriverEnum|string $imageDriver): static
     {
-        if (is_string($imageDriver)) {
-            $imageDriver = ImageDriverEnum::tryFrom($imageDriver)
-                ?? throw InvalidImageDriver::driver($imageDriver);
-        }
+        if (is_subclass_of($imageDriver, ImageDriver::class)) {
+            $driver = new $imageDriver;
+        } else {
+            if (is_string($imageDriver)) {
+                $imageDriver = ImageDriverEnum::tryFrom($imageDriver)
+                    ?? throw InvalidImageDriver::driver($imageDriver);
+            }
 
-        $driver = match ($imageDriver) {
-            ImageDriverEnum::Gd => new GdDriver,
-            ImageDriverEnum::Imagick => new ImagickDriver,
-        };
+            $driver = match ($imageDriver) {
+                ImageDriverEnum::Gd => new GdDriver,
+                ImageDriverEnum::Imagick => new ImagickDriver,
+            };
+        }
 
         $image = new static;
         $image->imageDriver = $driver;

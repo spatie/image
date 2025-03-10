@@ -55,7 +55,7 @@ class ImagickDriver implements ImageDriver
         $image->setImageType(Imagick::IMGTYPE_UNDEFINED);
         $image->setColorspace(Imagick::COLORSPACE_UNDEFINED);
 
-        return (new self)->setImage($image);
+        return (new static)->setImage($image);
     }
 
     protected function setImage(Imagick $image): static
@@ -512,11 +512,11 @@ class ImagickDriver implements ImageDriver
     ): static {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
-            $otherImage = (new self)->loadFile($otherImage);
+            $otherImage = (new static)->loadFile($otherImage);
         }
 
-        $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
-        $otherImage->image->evaluateImage(Imagick::EVALUATE_DIVIDE, (1 / ($alpha / 100)), Imagick::CHANNEL_ALPHA);
+        $otherImage->image()->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
+        $otherImage->image()->evaluateImage(Imagick::EVALUATE_DIVIDE, (1 / ($alpha / 100)), Imagick::CHANNEL_ALPHA);
 
         $imageSize = $this->getSize()->align($position, $x, $y);
         $watermarkSize = $otherImage->getSize()->align($position);
@@ -524,7 +524,7 @@ class ImagickDriver implements ImageDriver
 
         foreach ($this->image as $image) {
             $image->compositeImage(
-                $otherImage->image,
+                $otherImage->image(),
                 Imagick::COMPOSITE_OVER,
                 $target->x,
                 $target->y

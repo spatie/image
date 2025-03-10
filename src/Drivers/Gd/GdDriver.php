@@ -628,7 +628,7 @@ class GdDriver implements ImageDriver
     ): static {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
-            $otherImage = (new self)->loadFile($otherImage);
+            $otherImage = (new static)->loadFile($otherImage);
         }
 
         $imageSize = $this->getSize()->align($position, $x, $y);
@@ -642,7 +642,7 @@ class GdDriver implements ImageDriver
             throw new Exception('Could not create image');
         }
         imagecopy($cut, $this->image, 0, 0, $target->x, $target->y, $otherImageSize->width, $otherImageSize->height);
-        imagecopy($cut, $otherImage->image, 0, 0, 0, 0, $otherImageSize->width, $otherImageSize->height);
+        imagecopy($cut, $otherImage->image(), 0, 0, 0, 0, $otherImageSize->width, $otherImageSize->height);
 
         imagecopymerge(
             $this->image,
