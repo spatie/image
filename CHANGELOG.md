@@ -2,6 +2,16 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.8.1 - 2025-03-27
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/spatie/image/pull/287
+* Bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/spatie/image/pull/288
+* Allow custom image drivers by @Peeterush in https://github.com/spatie/image/pull/290
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.8.0...3.8.1
+
 ## 3.8.0 - 2025-01-17
 
 ### What's Changed
