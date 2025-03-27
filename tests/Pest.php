@@ -60,6 +60,13 @@ dataset('drivers', [
     'gd' => [Image::useImageDriver('gd')],
 ]);
 
+class CustomDriver extends \Spatie\Image\Drivers\Imagick\ImagickDriver {
+    public function driverName(): string
+    {
+        return 'custom';
+    }
+}
+
 expect()->extend('toHaveMime', function (string $expectedMime) {
     $file = finfo_open(FILEINFO_MIME_TYPE);
     $actualMime = finfo_file($file, $this->value);
