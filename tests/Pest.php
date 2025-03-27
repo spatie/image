@@ -60,7 +60,8 @@ dataset('drivers', [
     'gd' => [Image::useImageDriver('gd')],
 ]);
 
-class CustomDriver extends \Spatie\Image\Drivers\Imagick\ImagickDriver {
+class CustomDriver extends \Spatie\Image\Drivers\Imagick\ImagickDriver
+{
     public function driverName(): string
     {
         return 'custom';

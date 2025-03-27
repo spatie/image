@@ -58,6 +58,7 @@ class Image implements ImageDriver
         if (is_subclass_of($imageDriver, ImageDriver::class)) {
             /** @var ImageDriver $imageDriver */
             $image->imageDriver = new $imageDriver;
+
             return $image;
         }
 
@@ -70,6 +71,7 @@ class Image implements ImageDriver
             ImageDriverEnum::Gd => new GdDriver,
             ImageDriverEnum::Imagick => new ImagickDriver,
         };
+
         return $image;
     }
 
