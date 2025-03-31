@@ -27,6 +27,7 @@
     "require-dev": {
         "ext-gd": "*",
         "ext-imagick": "*",
+        "jcupitt/vips": "^2.4",
         "laravel/sail": "^1.34",
         "pestphp/pest": "^2.28",
         "phpstan/phpstan": "^1.10.50",
@@ -34,6 +35,11 @@
         "spatie/pixelmatch-php": "^1.0",
         "spatie/ray": "^1.40.1",
         "symfony/var-dumper": "^6.4|7.0"
+    },
+    "suggest": {
+        "ext-gd": "To use the GD driver",
+        "ext-imagick": "To use the Imagick driver",
+        "jcupitt/vips": "To use the Vips driver"
     },
     "autoload": {
         "psr-4": {
