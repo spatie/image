@@ -1,9 +1,19 @@
-# Manipulate images with an expressive API
+<div align="left">
+    <a href="https://spatie.be/open-source?utm_source=github&utm_medium=banner&utm_campaign=image">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://spatie.be/packages/header/image/html/dark.webp">
+        <img alt="Logo for image" src=" https://spatie.be/packages/header/image/html/light.webp" height="190">
+      </picture>
+    </a>
+
+<h1>Manipulate images with an expressive API</h1>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/image.svg?style=flat-square)](https://packagist.org/packages/spatie/image)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/spatie/image/run-tests.yml?label=tests)](https://github.com/spatie/image/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/image.svg?style=flat-square)](https://packagist.org/packages/spatie/image)
+    
+</div>
 
 Image manipulation doesn't have to be hard. Here are a few examples on how this package makes it very easy to manipulate images.
 
