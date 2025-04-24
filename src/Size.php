@@ -30,17 +30,6 @@ class Size
             throw new InvalidArgumentException("Width and height can't both be null");
         }
 
-        $dominantWidthSize = clone $this;
-
-        $dominantWidthSize = $dominantWidthSize
-            ->resizeHeight($desiredHeight, $constraints)
-            ->resizeWidth($desiredWidth, $constraints);
-
-        $dominantHeightSize = clone $this;
-        $dominantHeightSize = $dominantHeightSize
-            ->resizeWidth($desiredWidth, $constraints)
-            ->resizeHeight($desiredHeight, $constraints);
-
         if ($desiredWidth === null) {
             throw CannotResize::invalidWidth();
         }
@@ -48,6 +37,14 @@ class Size
         if ($desiredHeight === null) {
             throw CannotResize::invalidHeight();
         }
+
+        $dominantWidthSize = (clone $this)
+            ->resizeHeight($desiredHeight, $constraints)
+            ->resizeWidth($desiredWidth, $constraints);
+
+        $dominantHeightSize = (clone $this)
+            ->resizeWidth($desiredWidth, $constraints)
+            ->resizeHeight($desiredHeight, $constraints);
 
         // @todo desiredWidth and desiredHeight can still be null here, which will cause an error
         return $dominantHeightSize->fitsInto(new self($desiredWidth, $desiredHeight))
