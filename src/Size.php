@@ -87,35 +87,26 @@ class Size
     /** @param  array<Constraint>  $constraints */
     public function resizeHeight(?int $desiredHeight = null, array $constraints = []): self
     {
-        $originalWidth = $this->width;
-        $originalHeight = $this->height;
-
         if (! is_numeric($desiredHeight)) {
             return $this;
         }
 
-        if (in_array(Constraint::DoNotUpsize, $constraints)) {
-            $maximumHeight = $this->height;
-            $maximumWidth = $this->width;
+        $originalWidth = $this->width;
+        $originalHeight = $this->height;
 
-            $this->height = $desiredHeight > $maximumHeight
-                ? $maximumHeight
-                : $desiredHeight;
-        } else {
-            $this->height = $desiredHeight;
+        $preserveAspect = in_array(Constraint::PreserveAspectRatio, $constraints);
+        $doNotUpsize = in_array(Constraint::DoNotUpsize, $constraints);
+
+        $newHeight = $doNotUpsize ? min($desiredHeight, $originalHeight) : $desiredHeight;
+        $newWidth = $this->width;
+
+        if ($preserveAspect) {
+            $calculatedWidth = max(1, (int) round($newHeight * (new Size($originalWidth, $originalHeight))->aspectRatio()));
+            $newWidth = $doNotUpsize ? min($calculatedWidth, $originalWidth) : $calculatedWidth;
         }
 
-        if (in_array(Constraint::PreserveAspectRatio, $constraints)) {
-            $calculatedWidth = max(1, (int) (round($this->height * (new Size($originalWidth, $originalHeight))->aspectRatio())));
-
-            if (in_array(Constraint::DoNotUpsize, $constraints)) {
-                $this->width = $calculatedWidth > $maximumWidth
-                    ? $maximumWidth
-                    : $calculatedWidth;
-            } else {
-                $this->width = $calculatedWidth;
-            }
-        }
+        $this->height = $newHeight;
+        $this->width = $newWidth;
 
         return $this;
     }
