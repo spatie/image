@@ -2,6 +2,20 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.8.2 - 2025-04-24
+
+### What's Changed
+
+* refactor: simplify resizeWidth method by @Ayoub-Mabrouk in https://github.com/spatie/image/pull/292
+* refactor: simplify and optimize resizeHeight method by @Ayoub-Mabrouk in https://github.com/spatie/image/pull/293
+* refactor: simplify resize method by @Ayoub-Mabrouk in https://github.com/spatie/image/pull/294
+
+### New Contributors
+
+* @Ayoub-Mabrouk made their first contribution in https://github.com/spatie/image/pull/292
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.8.1...3.8.2
+
 ## 3.8.1 - 2025-03-27
 
 ### What's Changed
