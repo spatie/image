@@ -60,34 +60,26 @@ class Size
         ?int $desiredWidth = null,
         array $constraints = []
     ): self {
-        $originalWidth = $this->width;
-        $originalHeight = $this->height;
-
         if (! is_numeric($desiredWidth)) {
             return $this;
         }
 
-        if (in_array(Constraint::DoNotUpsize, $constraints)) {
-            $maximumWidth = $this->width;
-            $maximumHeight = $this->height;
+        $originalWidth = $this->width;
+        $originalHeight = $this->height;
 
-            $this->width = min($desiredWidth, $maximumWidth);
-        } else {
-            $this->width = $desiredWidth;
+        $preserveAspect = in_array(Constraint::PreserveAspectRatio, $constraints);
+        $doNotUpsize = in_array(Constraint::DoNotUpsize, $constraints);
+
+        $newWidth = $doNotUpsize ? min($desiredWidth, $originalWidth) : $desiredWidth;
+        $newHeight = $this->height;
+
+        if ($preserveAspect) {
+            $calculatedHeight = max(1, (int) round($newWidth / (new Size($originalWidth, $originalHeight))->aspectRatio()));
+            $newHeight = $doNotUpsize ? min($calculatedHeight, $originalHeight) : $calculatedHeight;
         }
 
-        if (in_array(Constraint::PreserveAspectRatio, $constraints)) {
-            $calculatedHeight = max(1, (int) (round($this->width / (new Size($originalWidth, $originalHeight))->aspectRatio())));
-
-            if (in_array(Constraint::DoNotUpsize, $constraints)) {
-                $this->height = $calculatedHeight > $maximumHeight
-                    ? $maximumHeight
-                    : $calculatedHeight;
-
-            } else {
-                $this->height = $calculatedHeight;
-            }
-        }
+        $this->width = $newWidth;
+        $this->height = $newHeight;
 
         return $this;
     }
