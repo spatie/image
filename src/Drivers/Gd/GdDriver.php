@@ -76,14 +76,9 @@ class GdDriver implements ImageDriver
         $this->quality = -1;
         $this->originalPath = $path;
 
-        $handle = fopen($path, 'r');
-
-        $contents = '';
-        if (filesize($path)) {
-            $contents = fread($handle, filesize($path));
-        }
-
-        fclose($handle);
+        $contents = is_file($path) && filesize($path) > 0
+            ? file_get_contents($path)
+            : '';
 
         $this->setExif($path);
 
