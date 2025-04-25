@@ -285,7 +285,7 @@ class GdDriver implements ImageDriver
         $transparentColorValue = imagecolortransparent($this->image);
 
         if ($transparentColorValue !== -1) {
-            $rgba = imagecolorsforindex($newImage, $transparentColorValue);
+            $rgba = imagecolorsforindex($this->image, $transparentColorValue);
 
             $transparentColor = imagecolorallocatealpha(
                 $newImage,
