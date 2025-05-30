@@ -86,7 +86,7 @@ class GdDriver implements ImageDriver
         try {
             $image = imagecreatefromstring($contents);
         } catch (Throwable $e) {
-            throw CouldNotLoadImage::make($path);
+            throw CouldNotLoadImage::make($e);
         }
 
         if (! $image) {
