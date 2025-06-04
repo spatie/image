@@ -26,6 +26,7 @@ use Spatie\Image\Exceptions\MissingParameter;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
+use Throwable;
 
 class GdDriver implements ImageDriver
 {
@@ -82,7 +83,11 @@ class GdDriver implements ImageDriver
 
         $this->setExif($path);
 
-        $image = @imagecreatefromstring($contents);
+        try {
+            $image = imagecreatefromstring($contents);
+        } catch (Throwable $throwable) {
+            throw CouldNotLoadImage::make(`{$path} : {$throwable->getMessage()}`);
+        }
 
         if (! $image) {
             throw CouldNotLoadImage::make($path);
