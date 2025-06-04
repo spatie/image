@@ -2,6 +2,19 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.8.4 - 2025-06-04
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot in https://github.com/spatie/image/pull/297
+* Update GdDriver.php by @GhostvOne in https://github.com/spatie/image/pull/298
+
+### New Contributors
+
+* @GhostvOne made their first contribution in https://github.com/spatie/image/pull/298
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.8.3...3.8.4
+
 ## 3.8.3 - 2025-04-25
 
 ### What's Changed
