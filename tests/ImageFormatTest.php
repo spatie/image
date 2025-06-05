@@ -21,7 +21,7 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
         $expectedFormat = 'jpeg';
     }
 
-    $this->write('Using driver: ' . $driver->driverName() . ' to save as ' . $expectedFormat);
+    $this->write('Using driver: '.$driver->driverName().' to save as '.$expectedFormat);
 
     expect($targetFile)->toHaveMime("image/$expectedFormat");
 })->with('drivers', ['jpeg', 'jpg', 'jfif', 'gif', 'png', 'webp', 'avif']);
