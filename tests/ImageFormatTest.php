@@ -5,7 +5,6 @@ use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
 
 it('can save supported formats', function (ImageDriver $driver, string $format) {
-
     if ($format === 'avif' && ! avifIsSupported($driver->driverName())) {
         $this->markTestSkipped('avif is not supported on this system');
 
@@ -21,6 +20,8 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
     if (in_array($expectedFormat, ['jpg', 'jfif'])) {
         $expectedFormat = 'jpeg';
     }
+
+    $this->write('Using driver: ' . $driver->driverName() . ' to save as ' . $expectedFormat);
 
     expect($targetFile)->toHaveMime("image/$expectedFormat");
 })->with('drivers', ['jpeg', 'jpg', 'jfif', 'gif', 'png', 'webp', 'avif']);
@@ -54,7 +55,7 @@ it('can save heic', function () {
     $driver->loadFile(getTestJpg())->save($targetFile);
 
     expect($targetFile)->toHaveMime("image/$format");
-})->skipIfImagickDoesNotSupportFormat('heic');
+})->only();
 
 it('throws an error for unsupported GD image formats', function (string $format) {
     $driver = Image::useImageDriver('gd');
