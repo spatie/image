@@ -55,7 +55,7 @@ it('can save heic', function () {
     $driver->loadFile(getTestJpg())->save($targetFile);
 
     expect($targetFile)->toHaveMime("image/$format");
-})->only();
+})->skipIfImagickDoesNotSupportFormat('heic');
 
 it('throws an error for unsupported GD image formats', function (string $format) {
     $driver = Image::useImageDriver('gd');
