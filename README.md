@@ -2,7 +2,7 @@
     <a href="https://spatie.be/open-source?utm_source=github&utm_medium=banner&utm_campaign=image">
       <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://spatie.be/packages/header/image/html/dark.webp">
-        <img alt="Logo for image" src="https://spatie.be/packages/header/image/html/light.webp" height="190">
+        <img alt="Logo for image" src="https://spatie.be/packages/header/image/html/light.webp">
       </picture>
     </a>
 
