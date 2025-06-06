@@ -1,5 +1,6 @@
 <?php
 
+use Imagick;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
@@ -47,13 +48,15 @@ it('can save tiff', function () {
 })->skipIfImagickDoesNotSupportFormat('tiff');
 
 it('can save heic', function () {
-    if (count(Imagick::queryFormats('AVIF*')) === 0) {
+    $formats = Imagick::queryFormats('*');
+    ray($formats);
+    if (! in_array(strtoupper('heic'), $formats)) {
         $this->markTestSkipped('Imagick does not support HEIC format.');
     }
 
     $driver = Image::useImageDriver('imagick');
 
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.'heic'");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.heic");
 
     $driver->loadFile(getTestJpg())->save($targetFile);
 

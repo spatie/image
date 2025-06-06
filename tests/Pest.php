@@ -94,7 +94,7 @@ function skipIfImagickDoesNotSupportFormat(string $format)
     $formats = Imagick::queryFormats('*');
 
     if (! in_array(strtoupper($format), $formats)) {
-        test()->markTestSkipped('Imagick does not support this format.');
+        test()->markTestSkipped('Imagick does not support this format. FOO');
     }
 }
 
