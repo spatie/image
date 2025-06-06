@@ -47,14 +47,13 @@ it('can save tiff', function () {
 })->skipIfImagickDoesNotSupportFormat('tiff');
 
 it('can save heic', function () {
-    $format = 'heic';
     $driver = Image::useImageDriver('imagick');
 
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.'heic'");
 
     $driver->loadFile(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toHaveMime("image/$format");
+    expect($targetFile)->toHaveMime("image/heic");
 })->skipIfImagickDoesNotSupportFormat('heic');
 
 it('throws an error for unsupported GD image formats', function (string $format) {
