@@ -56,8 +56,8 @@ function assertImageType(string $filePath, $expectedType): void
 }
 
 dataset('drivers', [
-        'imagick' => [Image::useImageDriver('imagick')],
-//    'gd' => [Image::useImageDriver('gd')],
+    'imagick' => [Image::useImageDriver('imagick')],
+    //    'gd' => [Image::useImageDriver('gd')],
 ]);
 
 class CustomDriver extends \Spatie\Image\Drivers\Imagick\ImagickDriver

@@ -1,6 +1,5 @@
 <?php
 
-use Imagick;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
