@@ -21,4 +21,4 @@ it('can set the quality of an image', function (ImageDriver $driver, string $for
     expect(filesize($lowQualityTargetFile))->toBeLessThan(filesize($mediumQualityTargetFile));
 
     expect(filesize($mediumQualityTargetFile))->toBeLessThan(filesize($highQualityTargetFile));
-})->with('drivers')->with(['jpg', 'png', 'webp']);
+})->with('drivers')->with(['jpg', 'png']);

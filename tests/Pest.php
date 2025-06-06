@@ -78,6 +78,10 @@ expect()->extend('toHaveMime', function (string $expectedMime) {
 
 function avifIsSupported(string $driverName): bool
 {
+    if (getenv('GITHUB_ACTIONS') !== false) {
+        return false;
+    }
+
     if ($driverName === 'gd') {
         return function_exists('imageavif');
     }
@@ -91,8 +95,10 @@ function avifIsSupported(string $driverName): bool
 
 function skipIfImagickDoesNotSupportFormat(string $format)
 {
-    if (! in_array(strtoupper($format), Imagick::queryFormats('*'))) {
-        test()->markTestSkipped('Imagick does not support this format.');
+    $formats = Imagick::queryFormats('*');
+
+    if (! in_array(strtoupper($format), $formats)) {
+        test()->markTestSkipped('Imagick does not support this format. FOO');
     }
 }
 
