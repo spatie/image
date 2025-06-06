@@ -47,7 +47,7 @@ it('can save tiff', function () {
 })->skipIfImagickDoesNotSupportFormat('tiff');
 
 it('can save heic', function () {
-    if(count(Imagick::queryFormats('AVIF*')) === 0) {
+    if (count(Imagick::queryFormats('AVIF*')) === 0) {
         $this->markTestSkipped('Imagick does not support HEIC format.');
     }
 
@@ -57,7 +57,7 @@ it('can save heic', function () {
 
     $driver->loadFile(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toHaveMime("image/heic");
+    expect($targetFile)->toHaveMime('image/heic');
 })->skipIfImagickDoesNotSupportFormat('heic');
 
 it('throws an error for unsupported GD image formats', function (string $format) {

@@ -1,6 +1,5 @@
 <?php
 
-use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
