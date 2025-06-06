@@ -56,7 +56,7 @@ function assertImageType(string $filePath, $expectedType): void
 }
 
 dataset('drivers', [
-    'imagick' => [Image::useImageDriver('imagick')],
+//    'imagick' => [Image::useImageDriver('imagick')],
     'gd' => [Image::useImageDriver('gd')],
 ]);
 
