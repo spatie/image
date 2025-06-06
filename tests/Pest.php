@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
@@ -91,7 +92,9 @@ function avifIsSupported(string $driverName): bool
 
 function skipIfImagickDoesNotSupportFormat(string $format)
 {
-    if (! in_array(strtoupper($format), Imagick::queryFormats('*'))) {
+    $formats = Imagick::queryFormats('*');
+
+    if (! in_array(strtoupper($format), $formats)) {
         test()->markTestSkipped('Imagick does not support this format.');
     }
 }
