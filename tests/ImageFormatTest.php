@@ -47,6 +47,10 @@ it('can save tiff', function () {
 })->skipIfImagickDoesNotSupportFormat('tiff');
 
 it('can save heic', function () {
+    if(count(Imagick::queryFormats('AVIF*')) === 0) {
+        $this->markTestSkipped('Imagick does not support HEIC format.');
+    }
+
     $driver = Image::useImageDriver('imagick');
 
     $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.'heic'");
