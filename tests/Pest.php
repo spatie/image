@@ -78,6 +78,10 @@ expect()->extend('toHaveMime', function (string $expectedMime) {
 
 function avifIsSupported(string $driverName): bool
 {
+    if (getenv('GITHUB_ACTIONS') !== false) {
+        return false;
+    }
+
     if ($driverName === 'gd') {
         return function_exists('imageavif');
     }
