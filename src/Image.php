@@ -224,6 +224,13 @@ class Image implements ImageDriver
         return $this;
     }
 
+    public function focalCropAndResize(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
+    {
+        $this->imageDriver->focalCropAndResize($width, $height, $cropCenterX, $cropCenterY);
+
+        return $this;
+    }
+
     public function base64(string $imageFormat = 'jpeg', bool $prefixWithFormat = true): string
     {
         return $this->imageDriver->base64($imageFormat, $prefixWithFormat);
