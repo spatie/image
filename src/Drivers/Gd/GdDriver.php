@@ -33,8 +33,8 @@ class GdDriver implements ImageDriver
 {
     use AddsWatermark;
     use CalculatesCropOffsets;
-    use CalculatesFocalCropCoordinates;
     use CalculatesFocalCropAndResizeCoordinates;
+    use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
     use PerformsFitCrops;
     use PerformsOptimizations;

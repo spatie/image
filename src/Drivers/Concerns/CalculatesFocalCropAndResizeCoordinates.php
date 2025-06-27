@@ -2,8 +2,6 @@
 
 namespace Spatie\Image\Drivers\Concerns;
 
-use Spatie\Image\Enums\AlignPosition;
-use Spatie\Image\Enums\Fit;
 use Spatie\Image\Image;
 
 trait CalculatesFocalCropAndResizeCoordinates
