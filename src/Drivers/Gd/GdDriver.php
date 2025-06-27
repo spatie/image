@@ -6,6 +6,7 @@ use Exception;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
+use Spatie\Image\Drivers\Concerns\CalculatesFocalCropAndResizeCoordinates;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\PerformsFitCrops;
@@ -33,6 +34,7 @@ class GdDriver implements ImageDriver
     use AddsWatermark;
     use CalculatesCropOffsets;
     use CalculatesFocalCropCoordinates;
+    use CalculatesFocalCropAndResizeCoordinates;
     use GetsOrientationFromExif;
     use PerformsFitCrops;
     use PerformsOptimizations;
@@ -494,6 +496,22 @@ class GdDriver implements ImageDriver
         );
 
         $this->manualCrop($width, $height, $cropCenterX, $cropCenterY);
+
+        return $this;
+    }
+
+    public function focalCropAndResize(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
+    {
+        [$cropWidth, $cropHeight, $cropX, $cropY] = $this->calculateFocalCropAndResizeCoordinates(
+            $width,
+            $height,
+            $cropCenterX,
+            $cropCenterY
+        );
+
+        $this->manualCrop($cropWidth, $cropHeight, $cropX, $cropY)
+            ->width($width)
+            ->height($height);
 
         return $this;
     }
