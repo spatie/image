@@ -2,6 +2,20 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.8.5 - 2025-06-27
+
+### What's Changed
+
+* Fix tests by @timvandijck in https://github.com/spatie/image/pull/299
+* Bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot in https://github.com/spatie/image/pull/300
+* Focal Crop and Resize by @GarethSomers in https://github.com/spatie/image/pull/301
+
+### New Contributors
+
+* @GarethSomers made their first contribution in https://github.com/spatie/image/pull/301
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.8.4...3.8.5
+
 ## 3.8.4 - 2025-06-04
 
 ### What's Changed
