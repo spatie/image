@@ -2,6 +2,22 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.8.6 - 2025-09-25
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/spatie/image/pull/302
+* Update issue template by @AlexVanderbist in https://github.com/spatie/image/pull/305
+* Bump actions/setup-node from 4 to 5 by @dependabot[bot] in https://github.com/spatie/image/pull/304
+* Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/spatie/image/pull/303
+* fix(gddriver): fix CouldNotLoadImage::make error by @glesende in https://github.com/spatie/image/pull/307
+
+### New Contributors
+
+* @glesende made their first contribution in https://github.com/spatie/image/pull/307
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.8.5...3.8.6
+
 ## 3.8.5 - 2025-06-27
 
 ### What's Changed
