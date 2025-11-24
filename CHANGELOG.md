@@ -2,6 +2,25 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.8.7 - 2025-11-24
+
+### What's Changed
+
+* Bump stefanzweifel/git-auto-commit-action from 6 to 7 by @dependabot[bot] in https://github.com/spatie/image/pull/308
+* Bump actions/setup-node from 5 to 6 by @dependabot[bot] in https://github.com/spatie/image/pull/309
+* ci: add tests for PHP 8.5 by @Chris53897 in https://github.com/spatie/image/pull/312
+* Change default driver to Gd when Imagick is not available by @andreasnij in https://github.com/spatie/image/pull/315
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/spatie/image/pull/314
+* Added Symfony 8 support to all symfony/* packages. by @thecaliskan in https://github.com/spatie/image/pull/313
+
+### New Contributors
+
+* @Chris53897 made their first contribution in https://github.com/spatie/image/pull/312
+* @andreasnij made their first contribution in https://github.com/spatie/image/pull/315
+* @thecaliskan made their first contribution in https://github.com/spatie/image/pull/313
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.8.6...3.8.7
+
 ## 3.8.6 - 2025-09-25
 
 ### What's Changed
