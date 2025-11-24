@@ -2,6 +2,7 @@
 
 namespace Spatie\Image;
 
+use Imagick;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\Gd\GdDriver;
 use Spatie\Image\Drivers\ImageDriver;
@@ -28,7 +29,7 @@ class Image implements ImageDriver
 
     public function __construct(?string $pathToImage = null)
     {
-        $this->imageDriver = new ImagickDriver;
+        $this->imageDriver = class_exists(Imagick::class) ? new ImagickDriver : new GdDriver;
 
         if ($pathToImage) {
             $this->imageDriver->loadFile($pathToImage);
