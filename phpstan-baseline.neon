@@ -36,22 +36,12 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#1 \\$width of method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
 			message: "#^Parameter \\#2 \\$color of function imagecolorsforindex expects int, int\\<0, max\\>\\|false given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
 			message: "#^Parameter \\#2 \\$color of function imagecolortransparent expects int\\|null, int\\<0, max\\>\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#2 \\$height of method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
@@ -87,16 +77,6 @@ parameters:
 
 		-
 			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:new\\(\\) should return static\\(Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\) but returns Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\.$#"
-			count: 1
-			path: src/Drivers/Imagick/ImagickDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$width of method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Drivers/Imagick/ImagickDriver.php
-
-		-
-			message: "#^Parameter \\#2 \\$height of method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Drivers/Imagick/ImagickDriver.php
 

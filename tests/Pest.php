@@ -93,11 +93,16 @@ function avifIsSupported(string $driverName): bool
 {
     if ($driverName === 'vips') {
         // Check if vips can actually save AVIF by trying to find the saver
+        // The saver must be a HEIF saver (vips uses HEIF for AVIF) - not a fallback
         try {
             $ffi = \Jcupitt\Vips\FFI::vips();
             $saver = $ffi->vips_foreign_find_save('.avif');
 
-            return $saver !== '' && $saver !== null;
+            // Ensure the saver is actually a HEIF/AVIF saver, not a fallback
+            return ! empty($saver) && (
+                str_contains(strtolower($saver), 'heif') ||
+                str_contains(strtolower($saver), 'avif')
+            );
         } catch (\Throwable) {
             return false;
         }

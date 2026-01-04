@@ -254,10 +254,6 @@ class VipsDriver implements ImageDriver
                 throw new MissingParameter('Both desiredWidth and desiredHeight must be set when using Fit::FillMax');
             }
 
-            if (is_null($backgroundColor)) {
-                throw new MissingParameter('backgroundColor must be set when using Fit::FillMax');
-            }
-
             return $this->fitFillMax($desiredWidth, $desiredHeight, $backgroundColor);
         }
 
@@ -465,7 +461,10 @@ class VipsDriver implements ImageDriver
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): static
     {
         $bottomImage->insert($topImage, AlignPosition::Center, $x, $y);
-        $this->image = $bottomImage->image();
+
+        $image = $bottomImage->image();
+        assert($image instanceof Image);
+        $this->image = $image;
 
         return $this;
     }
@@ -473,7 +472,9 @@ class VipsDriver implements ImageDriver
     public function orientation(?Orientation $orientation = null): static
     {
         if (is_null($orientation)) {
-            $orientation = $this->getOrientationFromExif($this->exif);
+            /** @var array{'Orientation'?: int} $exif */
+            $exif = $this->exif;
+            $orientation = $this->getOrientationFromExif($exif);
         }
 
         $degrees = $orientation->degrees();
@@ -590,6 +591,7 @@ class VipsDriver implements ImageDriver
         $target = $imageSize->relativePosition($watermarkSize);
 
         $otherVipsImage = $otherImage->image();
+        assert($otherVipsImage instanceof Image);
 
         // Apply alpha if not 100%
         if ($alpha < 100) {
@@ -801,8 +803,6 @@ class VipsDriver implements ImageDriver
 
             return $this;
         }
-
-        return $this;
     }
 
     public function quality(int $quality): static
