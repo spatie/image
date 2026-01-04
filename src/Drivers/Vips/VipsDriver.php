@@ -79,6 +79,8 @@ class VipsDriver implements ImageDriver
 
     public function loadFile(string $path, bool $autoRotate = true): static
     {
+        $this->optimize = false;
+
         // Use 'access' => 'sequential' to avoid libvips file caching issues
         // when the same file path is overwritten between loads
         $this->image = Image::newFromFile($path, ['access' => 'sequential']);
@@ -125,6 +127,10 @@ class VipsDriver implements ImageDriver
             }
 
             throw $exception;
+        }
+
+        if ($this->optimize) {
+            $this->optimizerChain->optimize($path);
         }
 
         return $this;

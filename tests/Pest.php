@@ -92,7 +92,15 @@ expect()->extend('toHaveMime', function (string $expectedMime) {
 function avifIsSupported(string $driverName): bool
 {
     if ($driverName === 'vips') {
-        return true;
+        // Check if vips can actually save AVIF by trying to find the saver
+        try {
+            $ffi = \Jcupitt\Vips\FFI::vips();
+            $saver = $ffi->vips_foreign_find_save('.avif');
+
+            return $saver !== '' && $saver !== null;
+        } catch (\Throwable) {
+            return false;
+        }
     }
 
     if ($driverName === 'gd') {
