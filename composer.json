@@ -20,21 +20,22 @@
         "ext-exif": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "spatie/image-optimizer": "^1.7.5",
-        "spatie/temporary-directory": "^2.2",
-        "symfony/process": "^6.4|^7.0"
+        "spatie/image-optimizer": "^1.8.0",
+        "spatie/temporary-directory": "^2.3",
+        "symfony/process": "^6.4|^7.4.3"
     },
     "require-dev": {
         "ext-gd": "*",
         "ext-imagick": "*",
-        "jcupitt/vips": "^2.4",
-        "laravel/sail": "^1.34",
-        "pestphp/pest": "^2.28",
-        "phpstan/phpstan": "^1.10.50",
-        "spatie/pest-plugin-snapshots": "^2.1",
-        "spatie/pixelmatch-php": "^1.0",
-        "spatie/ray": "^1.40.1",
-        "symfony/var-dumper": "^6.4|7.0"
+        "jcupitt/vips": "^2.4.1",
+        "laravel/sail": "^1.40",
+        "pestphp/pest": "^4",
+        "pestphp/pest-plugin-arch": "^4",
+        "phpstan/phpstan": "^1.12.15",
+        "spatie/pest-plugin-snapshots": "dev-main",
+        "spatie/pixelmatch-php": "^1.1",
+        "spatie/ray": "^1.44.1",
+        "symfony/var-dumper": "^6.4.26|7.0"
     },
     "suggest": {
         "ext-gd": "To use the GD driver",
@@ -52,7 +53,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest",
+        "test": "php -d zend.max_allowed_stack_size=-1 -d error_reporting=E_ALL\\&~E_DEPRECATED vendor/bin/pest",
         "analyse": "phpstan analyse --memory-limit=1G --no-progress",
         "baseline": "./vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline"
     },

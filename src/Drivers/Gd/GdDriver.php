@@ -573,7 +573,6 @@ class GdDriver implements ImageDriver
         $fInfo = finfo_open(FILEINFO_RAW);
         if ($fInfo) {
             $info = finfo_file($fInfo, $path);
-            finfo_close($fInfo);
         }
 
         if (! isset($info) || ! is_string($info) || ! str_contains($info, 'Exif')) {

@@ -16,12 +16,15 @@ use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\BorderType;
 use Spatie\Image\Enums\ColorFormat;
+use Spatie\Image\Enums\Constraint;
 use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Enums\Unit;
 use Spatie\Image\Exceptions\CannotOptimizePng;
+use Spatie\Image\Exceptions\InvalidFont;
+use Spatie\Image\Exceptions\MissingParameter;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
@@ -50,8 +53,19 @@ class VipsDriver implements ImageDriver
     public function new(int $width, int $height, ?string $backgroundColor = null): static
     {
         $color = new VipsColor($backgroundColor);
+        $rgba = $color->getArray();
 
-        $image = Image::newFromArray(array_fill(0, $height, array_fill(0, $width, $color->getArray())));
+        // Create a proper sRGB image with the background color
+        $image = Image::black($width, $height, ['bands' => 3])
+            ->add([$rgba[0], $rgba[1], $rgba[2]])
+            ->cast(BandFormat::UCHAR)
+            ->copy(['interpretation' => 'srgb']);
+
+        // Add alpha channel if color has alpha
+        if (isset($rgba[3]) && $rgba[3] < 255) {
+            $alpha = Image::black($width, $height)->add($rgba[3])->cast(BandFormat::UCHAR);
+            $image = $image->bandjoin($alpha);
+        }
 
         return (new static)->setImage($image);
     }
@@ -65,7 +79,9 @@ class VipsDriver implements ImageDriver
 
     public function loadFile(string $path, bool $autoRotate = true): static
     {
-        $this->image = Image::newFromFile($path);
+        // Use 'access' => 'sequential' to avoid libvips file caching issues
+        // when the same file path is overwritten between loads
+        $this->image = Image::newFromFile($path, ['access' => 'sequential']);
 
         $this->setExif($path);
 
@@ -84,19 +100,28 @@ class VipsDriver implements ImageDriver
 
     public function save(string $path = ''): static
     {
-        if ($this->quality && $this->format === 'png') {
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        if ($this->quality && $extension === 'png') {
             throw CannotOptimizePng::make();
         }
 
-        $saveProperties = [
-            'Q' => $this->quality ?? $this->defaultQuality,
-        ];
+        // Q parameter is only supported for JPEG, WebP, AVIF, HEIC
+        $formatsWithQuality = ['jpg', 'jpeg', 'webp', 'avif', 'heic', 'heif'];
+        $saveProperties = [];
+
+        if (in_array($extension, $formatsWithQuality)) {
+            $saveProperties['Q'] = $this->quality ?? $this->defaultQuality;
+        }
 
         try {
             $this->image->writeToFile($path, $saveProperties);
         } catch (Exception $exception) {
-            if (str_contains($exception->getMessage(), 'is not a known file format')) {
-                throw UnsupportedImageFormat::make($this->format, $exception);
+            $message = $exception->getMessage();
+            if (str_contains($message, 'is not a known file format') ||
+                str_contains($message, 'unsupported') ||
+                str_contains($message, 'unable to call')) {
+                throw UnsupportedImageFormat::make($extension ?: $this->format ?? 'unknown', $exception);
             }
 
             throw $exception;
@@ -126,12 +151,21 @@ class VipsDriver implements ImageDriver
 
     public function gamma(float $gamma): static
     {
-        // TODO: Implement gamma() method.
+        $this->image = $this->image->gamma(['exponent' => $gamma]);
+
+        return $this;
     }
 
     public function contrast(float $level): static
     {
-        // TODO: Implement contrast() method.
+        // Convert level (-100 to 100) to a contrast factor
+        // level > 0 increases contrast, level < 0 decreases contrast
+        $factor = (100 + $level) / 100;
+
+        // Apply contrast using linear transformation: (pixel - 128) * factor + 128
+        $this->image = $this->image->linear([$factor, $factor, $factor], [128 * (1 - $factor), 128 * (1 - $factor), 128 * (1 - $factor)]);
+
+        return $this;
     }
 
     public function blur(int $blur): static
@@ -206,7 +240,49 @@ class VipsDriver implements ImageDriver
         bool $relative = false,
         string $backgroundColor = '#ffffff'
     ): static {
-        // TODO: Implement fit() method.
+        if ($fit === Fit::Crop) {
+            return $this->fitCrop($fit, $this->getWidth(), $this->getHeight(), $desiredWidth, $desiredHeight);
+        }
+
+        if ($fit === Fit::FillMax) {
+            if (is_null($desiredWidth) || is_null($desiredHeight)) {
+                throw new MissingParameter('Both desiredWidth and desiredHeight must be set when using Fit::FillMax');
+            }
+
+            if (is_null($backgroundColor)) {
+                throw new MissingParameter('backgroundColor must be set when using Fit::FillMax');
+            }
+
+            return $this->fitFillMax($desiredWidth, $desiredHeight, $backgroundColor);
+        }
+
+        $calculatedSize = $fit->calculateSize(
+            $this->getWidth(),
+            $this->getHeight(),
+            $desiredWidth,
+            $desiredHeight
+        );
+
+        $widthRatio = $calculatedSize->width / $this->image->width;
+        $heightRatio = $calculatedSize->height / $this->image->height;
+
+        $this->image = $this->image->resize($widthRatio, [
+            'vscale' => $heightRatio,
+        ]);
+
+        if ($fit->shouldResizeCanvas()) {
+            $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center, $relative, $backgroundColor);
+        }
+
+        return $this;
+    }
+
+    public function fitFillMax(int $desiredWidth, int $desiredHeight, string $backgroundColor, bool $relative = false): static
+    {
+        $this->resize($desiredWidth, $desiredHeight, [Constraint::PreserveAspectRatio]);
+        $this->resizeCanvas($desiredWidth, $desiredHeight, AlignPosition::Center, $relative, $backgroundColor);
+
+        return $this;
     }
 
     public function pickColor(int $x, int $y, ColorFormat $colorFormat): mixed
@@ -225,7 +301,64 @@ class VipsDriver implements ImageDriver
         bool $relative = false,
         string $backgroundColor = '#000000'
     ): static {
-        // TODO: Implement resizeCanvas() method.
+        $position ??= AlignPosition::Center;
+
+        $originalWidth = $this->getWidth();
+        $originalHeight = $this->getHeight();
+
+        $width ??= $originalWidth;
+        $height ??= $originalHeight;
+
+        if ($relative) {
+            $width = $originalWidth + $width;
+            $height = $originalHeight + $height;
+        }
+
+        $width = $width <= 0
+            ? $width + $originalWidth
+            : $width;
+
+        $height = $height <= 0
+            ? $height + $originalHeight
+            : $height;
+
+        $canvas = $this->new($width, $height, $backgroundColor);
+
+        $canvasSize = $canvas->getSize()->align($position);
+        $imageSize = $this->getSize()->align($position);
+        $canvasPosition = $imageSize->relativePosition($canvasSize);
+        $imagePosition = $canvasSize->relativePosition($imageSize);
+
+        if ($width <= $originalWidth) {
+            $destinationX = 0;
+            $sourceX = $canvasPosition->x;
+            $sourceWidth = $canvasSize->width;
+        } else {
+            $destinationX = $imagePosition->x;
+            $sourceX = 0;
+            $sourceWidth = $originalWidth;
+        }
+
+        if ($height <= $originalHeight) {
+            $destinationY = 0;
+            $sourceY = $canvasPosition->y;
+            $sourceHeight = $canvasSize->height;
+        } else {
+            $destinationY = $imagePosition->y;
+            $sourceY = 0;
+            $sourceHeight = $originalHeight;
+        }
+
+        // Crop the source image if needed
+        $croppedImage = $this->image->crop($sourceX, $sourceY, $sourceWidth, $sourceHeight);
+
+        // Composite the cropped image onto the canvas
+        $this->image = $canvas->image->composite2($croppedImage, 'over', [
+            'x' => $destinationX,
+            'y' => $destinationY,
+        ]);
+
+        return $this;
     }
 
     public function manualCrop(
@@ -303,10 +436,21 @@ class VipsDriver implements ImageDriver
     public function background(string $color): static
     {
         $backgroundColor = new VipsColor($color);
+        $rgba = $backgroundColor->getArray();
 
-        $background = Image::newFromArray(
-            array_fill(0, $this->image->height, array_fill(0, $this->image->width, $backgroundColor->getArray()))
-        );
+        // Create background with proper sRGB colorspace
+        $background = Image::black($this->image->width, $this->image->height, ['bands' => 3])
+            ->add([$rgba[0], $rgba[1], $rgba[2]])
+            ->cast(BandFormat::UCHAR)
+            ->copy(['interpretation' => 'srgb']);
+
+        // Ensure the current image has an alpha channel for proper compositing
+        if (! $this->image->hasAlpha()) {
+            $this->image = $this->image->bandjoin(255);
+        }
+
+        // Add alpha to background
+        $background = $background->bandjoin(255);
 
         $this->image = $background->composite2($this->image, 'over');
 
@@ -315,12 +459,30 @@ class VipsDriver implements ImageDriver
 
     public function overlay(ImageDriver $bottomImage, ImageDriver $topImage, int $x, int $y): static
     {
-        // TODO: Implement overlay() method.
+        $bottomImage->insert($topImage, AlignPosition::Center, $x, $y);
+        $this->image = $bottomImage->image();
+
+        return $this;
     }
 
     public function orientation(?Orientation $orientation = null): static
     {
-        $this->image = $this->image->rot($orientation->degrees());
+        if (is_null($orientation)) {
+            $orientation = $this->getOrientationFromExif($this->exif);
+        }
+
+        $degrees = $orientation->degrees();
+        if ($degrees === 0) {
+            return $this;
+        }
+
+        // Map degrees to vips rotation
+        $this->image = match ($degrees) {
+            90, -270 => $this->image->rot90(),
+            180, -180 => $this->image->rot180(),
+            270, -90 => $this->image->rot270(),
+            default => $this->image,
+        };
 
         return $this;
     }
@@ -359,7 +521,6 @@ class VipsDriver implements ImageDriver
         $fInfo = finfo_open(FILEINFO_RAW);
         if ($fInfo) {
             $info = finfo_file($fInfo, $path);
-            finfo_close($fInfo);
         }
 
         if (! isset($info) || ! is_string($info) || ! str_contains($info, 'Exif')) {
@@ -411,36 +572,117 @@ class VipsDriver implements ImageDriver
         return $this;
     }
 
-    public function watermark(
-        ImageDriver|string $watermarkImage,
-        AlignPosition $position = AlignPosition::BottomRight,
-        int $paddingX = 0,
-        int $paddingY = 0,
-        Unit $paddingUnit = Unit::Pixel,
-        int $width = 0,
-        Unit $widthUnit = Unit::Pixel,
-        int $height = 0,
-        Unit $heightUnit = Unit::Pixel,
-        Fit $fit = Fit::Contain,
-        int $alpha = 100,
-    ): static
-    {
-        // TODO: Implement watermark() method.
-    }
-
     public function insert(ImageDriver|string $otherImage, AlignPosition $position = AlignPosition::Center, int $x = 0, int $y = 0, int $alpha = 100): static
     {
-        // TODO: Implement insert() method.
+        $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
+
+        if (is_string($otherImage)) {
+            $otherImage = (new self)->loadFile($otherImage);
+        }
+
+        $imageSize = $this->getSize()->align($position, $x, $y);
+        $watermarkSize = $otherImage->getSize()->align($position);
+        $target = $imageSize->relativePosition($watermarkSize);
+
+        $otherVipsImage = $otherImage->image();
+
+        // Apply alpha if not 100%
+        if ($alpha < 100) {
+            $alphaFactor = $alpha / 100;
+            if ($otherVipsImage->hasAlpha()) {
+                // Multiply existing alpha channel
+                $bands = $otherVipsImage->bands;
+                $rgb = $otherVipsImage->extract_band(0, ['n' => $bands - 1]);
+                $existingAlpha = $otherVipsImage->extract_band($bands - 1);
+                $newAlpha = $existingAlpha->linear($alphaFactor, 0);
+                $otherVipsImage = $rgb->bandjoin($newAlpha);
+            } else {
+                // Add alpha channel
+                $alphaChannel = Image::black($otherVipsImage->width, $otherVipsImage->height)
+                    ->add(255 * $alphaFactor)
+                    ->cast(BandFormat::UCHAR);
+                $otherVipsImage = $otherVipsImage->bandjoin($alphaChannel);
+            }
+        }
+
+        $this->image = $this->image->composite2($otherVipsImage, 'over', [
+            'x' => $target->x,
+            'y' => $target->y,
+        ]);
+
+        return $this;
     }
 
     public function text(string $text, int $fontSize, string $color = '000000', int $x = 0, int $y = 0, int $angle = 0, string $fontPath = '', int $width = 0): static
     {
-        // TODO: Implement text() method. Maybe try this method: https://github.com/libvips/php-vips/issues/94
+        if ($fontPath && ! file_exists($fontPath)) {
+            throw InvalidFont::make($fontPath);
+        }
+
+        $textColor = new VipsColor($color);
+
+        $textOptions = [
+            'dpi' => 72,
+            'rgba' => true,
+        ];
+
+        if ($fontPath) {
+            $textOptions['fontfile'] = $fontPath;
+        }
+
+        if ($width > 0) {
+            $text = $this->wrapText($text, $fontSize, $fontPath, $angle, $width);
+            $textOptions['width'] = $width;
+        }
+
+        // Create text image using Pango markup for font size
+        $markup = sprintf('<span foreground="#%s" size="%d">%s</span>',
+            ltrim($color, '#'),
+            $fontSize * 1024,
+            htmlspecialchars($text)
+        );
+
+        $textImage = Image::text($markup, $textOptions);
+
+        // Apply rotation if needed
+        if ($angle !== 0) {
+            $textImage = $textImage->rotate($angle);
+        }
+
+        // Ensure main image has alpha channel for compositing
+        if (! $this->image->hasAlpha()) {
+            $this->image = $this->image->bandjoin(255);
+        }
+
+        // Composite text onto image
+        $this->image = $this->image->composite2($textImage, 'over', [
+            'x' => $x,
+            'y' => $y,
+        ]);
+
+        return $this;
     }
 
     public function wrapText(string $text, int $fontSize, string $fontPath = '', int $angle = 0, int $width = 0): string
     {
-        // TODO: Implement wrapText() method.
+        if ($fontPath && ! file_exists($fontPath)) {
+            throw InvalidFont::make($fontPath);
+        }
+
+        if ($width <= 0) {
+            return $text;
+        }
+
+        // Simple word wrapping based on estimated character width
+        // This is approximate since we don't have access to font metrics
+        $avgCharWidth = $fontSize * 0.6; // Approximate average character width
+        $charsPerLine = (int) floor($width / $avgCharWidth);
+
+        if ($charsPerLine <= 0) {
+            return $text;
+        }
+
+        return wordwrap($text, $charsPerLine, "\n", true);
     }
 
     public function image(): Image
@@ -482,7 +724,80 @@ class VipsDriver implements ImageDriver
 
     public function border(int $width, BorderType $type, string $color = '000000'): static
     {
-        // TODO: Implement border() method.
+        if ($type === BorderType::Shrink) {
+            $originalWidth = $this->getWidth();
+            $originalHeight = $this->getHeight();
+
+            $this
+                ->resize(
+                    (int) round($this->getWidth() - ($width * 2)),
+                    (int) round($this->getHeight() - ($width * 2)),
+                    [Constraint::PreserveAspectRatio],
+                )
+                ->resizeCanvas(
+                    $originalWidth,
+                    $originalHeight,
+                    AlignPosition::Center,
+                    false,
+                    $color,
+                );
+
+            return $this;
+        }
+
+        if ($type === BorderType::Expand) {
+            $this->resizeCanvas(
+                (int) round($width * 2),
+                (int) round($width * 2),
+                AlignPosition::Center,
+                true,
+                $color,
+            );
+
+            return $this;
+        }
+
+        if ($type === BorderType::Overlay) {
+            $borderColor = new VipsColor($color);
+
+            // Create a rectangle border by drawing lines on each edge
+            $imgWidth = $this->getWidth();
+            $imgHeight = $this->getHeight();
+
+            // Create a mask for the inner area (transparent)
+            $innerWidth = $imgWidth - ($width * 2);
+            $innerHeight = $imgHeight - ($width * 2);
+
+            if ($innerWidth > 0 && $innerHeight > 0) {
+                // Create border frame with proper sRGB colorspace
+                $rgba = $borderColor->getArray();
+                $borderFrame = Image::black($imgWidth, $imgHeight, ['bands' => 3])
+                    ->add([$rgba[0], $rgba[1], $rgba[2]])
+                    ->cast(BandFormat::UCHAR)
+                    ->copy(['interpretation' => 'srgb']);
+
+                $innerMask = Image::black($innerWidth, $innerHeight)->add(0)->cast(BandFormat::UCHAR);
+                $outerMask = Image::black($imgWidth, $imgHeight)->add(255)->cast(BandFormat::UCHAR);
+
+                // Embed inner mask in outer mask
+                $mask = $outerMask->insert($innerMask, $width, $width);
+
+                // Add alpha channel to border frame
+                $borderFrame = $borderFrame->bandjoin($mask);
+
+                // Ensure main image has alpha channel
+                if (! $this->image->hasAlpha()) {
+                    $this->image = $this->image->bandjoin(255);
+                }
+
+                // Composite border onto image
+                $this->image = $this->image->composite2($borderFrame, 'over');
+            }
+
+            return $this;
+        }
+
+        return $this;
     }
 
     public function quality(int $quality): static

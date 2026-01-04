@@ -55,16 +55,36 @@ function assertImageType(string $filePath, $expectedType): void
     expect($type)->toBe($expectedType);
 }
 
-dataset('drivers', [
-    'imagick' => [Image::useImageDriver('imagick')],
-    'gd' => [Image::useImageDriver('gd')],
-    'vips' => [Image::useImageDriver('vips')],
-]);
+dataset('drivers', function () {
+    yield 'imagick' => [Image::useImageDriver('imagick')];
+    yield 'gd' => [Image::useImageDriver('gd')];
+
+    if (vipsIsAvailable()) {
+        yield 'vips' => [Image::useImageDriver('vips')];
+    }
+});
+
+function vipsIsAvailable(): bool
+{
+    if (! extension_loaded('ffi') || ! ini_get('ffi.enable')) {
+        return false;
+    }
+
+    $libraryPaths = ['/opt/homebrew/lib/', '/usr/local/lib/'];
+    $vipsLib = PHP_OS_FAMILY === 'Darwin' ? 'libvips.42.dylib' : 'libvips.so.42';
+
+    foreach ($libraryPaths as $path) {
+        if (file_exists($path.$vipsLib)) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 expect()->extend('toHaveMime', function (string $expectedMime) {
     $file = finfo_open(FILEINFO_MIME_TYPE);
     $actualMime = finfo_file($file, $this->value);
-    finfo_close($file);
 
     expect($actualMime)->toBe($expectedMime);
 });
