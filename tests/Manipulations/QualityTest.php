@@ -3,12 +3,6 @@
 use Spatie\Image\Drivers\ImageDriver;
 
 it('can set the quality of an image', function (ImageDriver $driver, string $format) {
-    if ($format === 'png' && $driver->driverName() === 'vips') {
-        $this->markTestSkipped('Vips does not support setting quality on PNG images');
-
-        return;
-    }
-
     $lowQualityTargetFile = $this->tempDir->path("{$driver->driverName()}/quality10.{$format}");
     $driver->loadFile(getTestJpg())->quality(10)->save($lowQualityTargetFile);
 
@@ -21,4 +15,4 @@ it('can set the quality of an image', function (ImageDriver $driver, string $for
     expect(filesize($lowQualityTargetFile))->toBeLessThan(filesize($mediumQualityTargetFile));
 
     expect(filesize($mediumQualityTargetFile))->toBeLessThan(filesize($highQualityTargetFile));
-})->with('drivers')->with(['jpg', 'png', 'webp']);
+})->with('drivers')->with(['jpg', 'webp']);

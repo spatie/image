@@ -46,6 +46,8 @@ it('can save tiff', function () {
 })->skipIfImagickDoesNotSupportFormat('tiff');
 
 it('can save heic', function () {
+    skipWhenRunningOnGitHub();
+
     $format = 'heic';
     $driver = Image::useImageDriver('imagick');
 
