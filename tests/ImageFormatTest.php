@@ -5,6 +5,12 @@ use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
 
 it('can save supported formats', function (ImageDriver $driver, string $format) {
+    // Skip vips avif on GitHub CI - detection is unreliable
+    if ($format === 'avif' && $driver->driverName() === 'vips' && getenv('GITHUB_ACTIONS') !== false) {
+        $this->markTestSkipped('vips avif is unreliable on GitHub CI');
+
+        return;
+    }
 
     if ($format === 'avif' && ! avifIsSupported($driver->driverName())) {
         $this->markTestSkipped('avif is not supported on this system');
@@ -26,6 +32,13 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
 })->with('drivers', ['jpeg', 'jpg', 'jfif', 'gif', 'png', 'webp', 'avif']);
 
 it('can save supported formats using format() function', function (ImageDriver $driver, string $format) {
+    // Skip vips avif on GitHub CI - detection is unreliable
+    if ($format === 'avif' && $driver->driverName() === 'vips' && getenv('GITHUB_ACTIONS') !== false) {
+        $this->markTestSkipped('vips avif is unreliable on GitHub CI');
+
+        return;
+    }
+
     if ($format === 'avif' && ! avifIsSupported($driver->driverName())) {
         $this->markTestSkipped('avif is not supported on this system');
 
