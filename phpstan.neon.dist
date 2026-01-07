@@ -7,7 +7,8 @@ parameters:
         - src/
 
     excludePaths:
-        - src/Drivers/Vips/
+        analyse:
+            - src/Drivers/Vips/*
 
     ignoreErrors:
         - '#Unsafe usage of new static#'
