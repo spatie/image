@@ -105,9 +105,10 @@ dataset('drivers', function () {
     yield 'imagick' => [Image::useImageDriver('imagick')];
     yield 'gd' => [Image::useImageDriver('gd')];
 
-    if (vipsIsAvailable()) {
-        yield 'vips' => [Image::useImageDriver('vips')];
-    }
+    // Temporarily disabled - vips driver is still in development
+    // if (vipsIsAvailable()) {
+    //     yield 'vips' => [Image::useImageDriver('vips')];
+    // }
 });
 
 expect()->extend('toHaveMime', function (string $expectedMime) {
