@@ -10,6 +10,13 @@ it('can set the quality of an image', function (ImageDriver $driver, string $for
         return;
     }
 
+    // Webp quality on GitHub CI produces inconsistent file sizes
+    if ($format === 'webp' && isRunningOnGitHub()) {
+        $this->markTestSkipped('Webp quality is unreliable on GitHub CI');
+
+        return;
+    }
+
     $lowQualityTargetFile = $this->tempDir->path("{$driver->driverName()}/quality10.{$format}");
     $driver->loadFile(getTestJpg())->quality(10)->save($lowQualityTargetFile);
 
