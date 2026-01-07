@@ -57,7 +57,25 @@ function assertImageType(string $filePath, $expectedType): void
 
 function isRunningOnGitHub(): bool
 {
-    return getenv('GITHUB_ACTIONS') !== false;
+    // Check multiple sources as getenv() may not work in all contexts
+    if (getenv('GITHUB_ACTIONS') !== false) {
+        return true;
+    }
+
+    if (isset($_SERVER['GITHUB_ACTIONS'])) {
+        return true;
+    }
+
+    if (isset($_ENV['GITHUB_ACTIONS'])) {
+        return true;
+    }
+
+    // Also check CI environment variable as fallback
+    if (getenv('CI') !== false || isset($_SERVER['CI']) || isset($_ENV['CI'])) {
+        return true;
+    }
+
+    return false;
 }
 
 function vipsIsAvailable(): bool
