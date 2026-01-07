@@ -3,16 +3,8 @@
 use Spatie\Image\Drivers\ImageDriver;
 
 it('can set the quality of an image', function (ImageDriver $driver, string $format) {
-    // Vips quality differences are not reliable for small test images
-    if ($driver->driverName() === 'vips') {
-        $this->markTestSkipped('Vips quality differences not reliable for small test images');
-
-        return;
-    }
-
-    // Webp quality on GitHub CI produces inconsistent file sizes
-    if ($format === 'webp' && isRunningOnGitHub()) {
-        $this->markTestSkipped('Webp quality is unreliable on GitHub CI');
+    if ($format === 'avif' && ! function_exists('imageavif')) {
+        $this->markTestSkipped('avif is not supported on this system');
 
         return;
     }
@@ -29,4 +21,4 @@ it('can set the quality of an image', function (ImageDriver $driver, string $for
     expect(filesize($lowQualityTargetFile))->toBeLessThan(filesize($mediumQualityTargetFile));
 
     expect(filesize($mediumQualityTargetFile))->toBeLessThan(filesize($highQualityTargetFile));
-})->with('drivers')->with(['jpg', 'webp']);
+})->with('drivers')->with(['jpg', 'png']);

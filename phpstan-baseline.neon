@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Access to an undefined property Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:\\$image\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
 			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:pngCompression\\(\\) should return int\\<\\-1, 9\\> but returns int\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
@@ -21,18 +16,13 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Parameter \\#1 \\$stream of function fclose expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
-			message: "#^Parameter \\#1 \\$stream of function fread expects resource, resource\\|false given\\.$#"
-			count: 1
-			path: src/Drivers/Gd/GdDriver.php
-
-		-
 			message: "#^Parameter \\#1 \\$string of function base64_encode expects string, string\\|false given\\.$#"
 			count: 2
+			path: src/Drivers/Gd/GdDriver.php
+
+		-
+			message: "#^Parameter \\#1 \\$width of method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
@@ -42,6 +32,16 @@ parameters:
 
 		-
 			message: "#^Parameter \\#2 \\$color of function imagecolortransparent expects int\\|null, int\\<0, max\\>\\|false given\\.$#"
+			count: 1
+			path: src/Drivers/Gd/GdDriver.php
+
+		-
+			message: "#^Parameter \\#2 \\$height of method Spatie\\\\Image\\\\Drivers\\\\Gd\\\\GdDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Drivers/Gd/GdDriver.php
+
+		-
+			message: "#^Parameter \\#2 \\$src_image of function imagecopy expects GdImage, mixed given\\.$#"
 			count: 1
 			path: src/Drivers/Gd/GdDriver.php
 
@@ -71,12 +71,27 @@ parameters:
 			path: src/Drivers/Gd/GdDriver.php
 
 		-
-			message: "#^Access to an undefined property Spatie\\\\Image\\\\Drivers\\\\ImageDriver\\:\\:\\$image\\.$#"
-			count: 3
+			message: "#^Cannot call method evaluateImage\\(\\) on mixed\\.$#"
+			count: 1
 			path: src/Drivers/Imagick/ImagickDriver.php
 
 		-
-			message: "#^Method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:new\\(\\) should return static\\(Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\) but returns Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\.$#"
+			message: "#^Cannot call method setImageOrientation\\(\\) on mixed\\.$#"
+			count: 1
+			path: src/Drivers/Imagick/ImagickDriver.php
+
+		-
+			message: "#^Parameter \\#1 \\$composite_object of method Imagick\\:\\:compositeImage\\(\\) expects Imagick, mixed given\\.$#"
+			count: 1
+			path: src/Drivers/Imagick/ImagickDriver.php
+
+		-
+			message: "#^Parameter \\#1 \\$width of method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Drivers/Imagick/ImagickDriver.php
+
+		-
+			message: "#^Parameter \\#2 \\$height of method Spatie\\\\Image\\\\Drivers\\\\Imagick\\\\ImagickDriver\\:\\:manualCrop\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Drivers/Imagick/ImagickDriver.php
 

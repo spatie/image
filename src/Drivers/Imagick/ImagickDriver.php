@@ -7,6 +7,7 @@ use ImagickDraw;
 use ImagickPixel;
 use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
+use Spatie\Image\Drivers\Concerns\CalculatesFocalCropAndResizeCoordinates;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\PerformsFitCrops;
@@ -31,6 +32,7 @@ class ImagickDriver implements ImageDriver
 {
     use AddsWatermark;
     use CalculatesCropOffsets;
+    use CalculatesFocalCropAndResizeCoordinates;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
     use PerformsFitCrops;
@@ -55,7 +57,7 @@ class ImagickDriver implements ImageDriver
         $image->setImageType(Imagick::IMGTYPE_UNDEFINED);
         $image->setColorspace(Imagick::COLORSPACE_UNDEFINED);
 
-        return (new self)->setImage($image);
+        return (new static)->setImage($image);
     }
 
     protected function setImage(Imagick $image): static
@@ -408,6 +410,22 @@ class ImagickDriver implements ImageDriver
         return $this;
     }
 
+    public function focalCropAndResize(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
+    {
+        [$cropWidth, $cropHeight, $cropX, $cropY] = $this->calculateFocalCropAndResizeCoordinates(
+            $width,
+            $height,
+            $cropCenterX,
+            $cropCenterY
+        );
+
+        $this->manualCrop($cropWidth, $cropHeight, $cropX, $cropY)
+            ->width($width)
+            ->height($height);
+
+        return $this;
+    }
+
     public function sepia(): static
     {
         return $this
@@ -512,11 +530,11 @@ class ImagickDriver implements ImageDriver
     ): static {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
-            $otherImage = (new self)->loadFile($otherImage);
+            $otherImage = (new static)->loadFile($otherImage);
         }
 
-        $otherImage->image->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
-        $otherImage->image->evaluateImage(Imagick::EVALUATE_DIVIDE, (1 / ($alpha / 100)), Imagick::CHANNEL_ALPHA);
+        $otherImage->image()->setImageOrientation(Imagick::ORIENTATION_UNDEFINED);
+        $otherImage->image()->evaluateImage(Imagick::EVALUATE_DIVIDE, (1 / ($alpha / 100)), Imagick::CHANNEL_ALPHA);
 
         $imageSize = $this->getSize()->align($position, $x, $y);
         $watermarkSize = $otherImage->getSize()->align($position);
@@ -524,7 +542,7 @@ class ImagickDriver implements ImageDriver
 
         foreach ($this->image as $image) {
             $image->compositeImage(
-                $otherImage->image,
+                $otherImage->image(),
                 Imagick::COMPOSITE_OVER,
                 $target->x,
                 $target->y

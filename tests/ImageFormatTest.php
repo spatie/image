@@ -5,13 +5,6 @@ use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Image;
 
 it('can save supported formats', function (ImageDriver $driver, string $format) {
-    // Skip avif on GitHub CI - detection is unreliable across all drivers
-    if ($format === 'avif' && isRunningOnGitHub()) {
-        $this->markTestSkipped('avif is unreliable on GitHub CI');
-
-        return;
-    }
-
     if ($format === 'avif' && ! avifIsSupported($driver->driverName())) {
         $this->markTestSkipped('avif is not supported on this system');
 
@@ -28,17 +21,12 @@ it('can save supported formats', function (ImageDriver $driver, string $format) 
         $expectedFormat = 'jpeg';
     }
 
+    echo 'Using driver: '.$driver->driverName().' to save as '.$expectedFormat;
+
     expect($targetFile)->toHaveMime("image/$expectedFormat");
 })->with('drivers', ['jpeg', 'jpg', 'jfif', 'gif', 'png', 'webp', 'avif']);
 
 it('can save supported formats using format() function', function (ImageDriver $driver, string $format) {
-    // Skip avif on GitHub CI - detection is unreliable across all drivers
-    if ($format === 'avif' && isRunningOnGitHub()) {
-        $this->markTestSkipped('avif is unreliable on GitHub CI');
-
-        return;
-    }
-
     if ($format === 'avif' && ! avifIsSupported($driver->driverName())) {
         $this->markTestSkipped('avif is not supported on this system');
 
@@ -59,17 +47,14 @@ it('can save tiff', function () {
 })->skipIfImagickDoesNotSupportFormat('tiff');
 
 it('can save heic', function () {
-    skipWhenRunningOnGitHub();
-
-    $format = 'heic';
     $driver = Image::useImageDriver('imagick');
 
-    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.$format");
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-test.heic");
 
     $driver->loadFile(getTestJpg())->save($targetFile);
 
-    expect($targetFile)->toHaveMime("image/$format");
-})->skipIfImagickDoesNotSupportFormat('heic');
+    expect($targetFile)->toHaveMime('image/heic');
+})->skipWhenRunningOnGitHub();
 
 it('throws an error for unsupported GD image formats', function (string $format) {
     $driver = Image::useImageDriver('gd');

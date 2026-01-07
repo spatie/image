@@ -23,6 +23,14 @@ use Spatie\Image\Image;
 Image::useImageDriver(ImageDriver::Gd)->loadFile(string $pathToImage);
 ```
 
+It's also possible to pass an implementation of `ImageDriver` directly. Build your own driver from scatch, or extend one of the provided drivers (`ImagickDriver` or `GdDriver`).
+
+```php
+use Spatie\Image\Image;
+
+Image::useImageDriver(MyDriver::class)->loadFile(string $pathToImage);
+```
+
 ## Applying manipulations
 
 Any of the [image manipulations](/docs/image/v3/image-manipulations/overview) can be applied to the loaded `Image` by calling the manipulation's method. All image manipulation methods can be chained.

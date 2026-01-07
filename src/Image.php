@@ -2,6 +2,7 @@
 
 namespace Spatie\Image;
 
+use Imagick;
 use Spatie\Image\Drivers\Concerns\ValidatesArguments;
 use Spatie\Image\Drivers\Gd\GdDriver;
 use Spatie\Image\Drivers\ImageDriver;
@@ -29,7 +30,7 @@ class Image implements ImageDriver
 
     public function __construct(?string $pathToImage = null)
     {
-        $this->imageDriver = new ImagickDriver;
+        $this->imageDriver = class_exists(Imagick::class) ? new ImagickDriver : new GdDriver;
 
         if ($pathToImage) {
             $this->imageDriver->loadFile($pathToImage);
@@ -54,19 +55,25 @@ class Image implements ImageDriver
 
     public static function useImageDriver(ImageDriverEnum|string $imageDriver): static
     {
+        $image = new static;
+
+        if (is_subclass_of($imageDriver, ImageDriver::class)) {
+            /** @var ImageDriver $imageDriver */
+            $image->imageDriver = new $imageDriver;
+
+            return $image;
+        }
+
         if (is_string($imageDriver)) {
             $imageDriver = ImageDriverEnum::tryFrom($imageDriver)
                 ?? throw InvalidImageDriver::driver($imageDriver);
         }
 
-        $driver = match ($imageDriver) {
+        $image->imageDriver = match ($imageDriver) {
             ImageDriverEnum::Gd => new GdDriver,
             ImageDriverEnum::Imagick => new ImagickDriver,
             ImageDriverEnum::Vips => new VipsDriver,
         };
-
-        $image = new static;
-        $image->imageDriver = $driver;
 
         return $image;
     }
@@ -216,6 +223,13 @@ class Image implements ImageDriver
     public function focalCrop(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
     {
         $this->imageDriver->focalCrop($width, $height, $cropCenterX, $cropCenterY);
+
+        return $this;
+    }
+
+    public function focalCropAndResize(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
+    {
+        $this->imageDriver->focalCropAndResize($width, $height, $cropCenterX, $cropCenterY);
 
         return $this;
     }

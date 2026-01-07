@@ -55,80 +55,31 @@ function assertImageType(string $filePath, $expectedType): void
     expect($type)->toBe($expectedType);
 }
 
-function isRunningOnGitHub(): bool
+dataset('drivers', [
+    'imagick' => [Image::useImageDriver('imagick')],
+    'gd' => [Image::useImageDriver('gd')],
+]);
+
+class CustomDriver extends \Spatie\Image\Drivers\Imagick\ImagickDriver
 {
-    // Check multiple sources as getenv() may not work in all contexts
-    if (getenv('GITHUB_ACTIONS') !== false) {
-        return true;
+    public function driverName(): string
+    {
+        return 'custom';
     }
-
-    if (isset($_SERVER['GITHUB_ACTIONS'])) {
-        return true;
-    }
-
-    if (isset($_ENV['GITHUB_ACTIONS'])) {
-        return true;
-    }
-
-    // Also check CI environment variable as fallback
-    if (getenv('CI') !== false || isset($_SERVER['CI']) || isset($_ENV['CI'])) {
-        return true;
-    }
-
-    return false;
 }
-
-function vipsIsAvailable(): bool
-{
-    if (! extension_loaded('ffi') || ! ini_get('ffi.enable')) {
-        return false;
-    }
-
-    $libraryPaths = ['/opt/homebrew/lib/', '/usr/local/lib/', '/usr/lib/', '/usr/lib/x86_64-linux-gnu/'];
-    $vipsLib = PHP_OS_FAMILY === 'Darwin' ? 'libvips.42.dylib' : 'libvips.so.42';
-
-    foreach ($libraryPaths as $path) {
-        if (file_exists($path.$vipsLib)) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-dataset('drivers', function () {
-    yield 'imagick' => [Image::useImageDriver('imagick')];
-    yield 'gd' => [Image::useImageDriver('gd')];
-
-    if (vipsIsAvailable()) {
-        yield 'vips' => [Image::useImageDriver('vips')];
-    }
-});
 
 expect()->extend('toHaveMime', function (string $expectedMime) {
     $file = finfo_open(FILEINFO_MIME_TYPE);
     $actualMime = finfo_file($file, $this->value);
+    finfo_close($file);
 
     expect($actualMime)->toBe($expectedMime);
 });
 
 function avifIsSupported(string $driverName): bool
 {
-    if ($driverName === 'vips') {
-        // Check if vips can actually save AVIF by trying to find the saver
-        // The saver must be a HEIF saver (vips uses HEIF for AVIF) - not a fallback
-        try {
-            $ffi = \Jcupitt\Vips\FFI::vips();
-            $saver = $ffi->vips_foreign_find_save('.avif');
-
-            // Ensure the saver is actually a HEIF/AVIF saver, not a fallback
-            return ! empty($saver) && (
-                str_contains(strtolower($saver), 'heif') ||
-                str_contains(strtolower($saver), 'avif')
-            );
-        } catch (\Throwable) {
-            return false;
-        }
+    if (getenv('GITHUB_ACTIONS') !== false) {
+        return false;
     }
 
     if ($driverName === 'gd') {
@@ -144,8 +95,10 @@ function avifIsSupported(string $driverName): bool
 
 function skipIfImagickDoesNotSupportFormat(string $format)
 {
-    if (! in_array(strtoupper($format), Imagick::queryFormats('*'))) {
-        test()->markTestSkipped('Imagick does not support this format.');
+    $formats = Imagick::queryFormats('*');
+
+    if (! in_array(strtoupper($format), $formats)) {
+        test()->markTestSkipped('Imagick does not support this format. FOO');
     }
 }
 

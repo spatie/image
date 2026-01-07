@@ -6,6 +6,7 @@ use Exception;
 use GdImage;
 use Spatie\Image\Drivers\Concerns\AddsWatermark;
 use Spatie\Image\Drivers\Concerns\CalculatesCropOffsets;
+use Spatie\Image\Drivers\Concerns\CalculatesFocalCropAndResizeCoordinates;
 use Spatie\Image\Drivers\Concerns\CalculatesFocalCropCoordinates;
 use Spatie\Image\Drivers\Concerns\GetsOrientationFromExif;
 use Spatie\Image\Drivers\Concerns\PerformsFitCrops;
@@ -26,11 +27,13 @@ use Spatie\Image\Exceptions\MissingParameter;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
 use Spatie\Image\Point;
 use Spatie\Image\Size;
+use Throwable;
 
 class GdDriver implements ImageDriver
 {
     use AddsWatermark;
     use CalculatesCropOffsets;
+    use CalculatesFocalCropAndResizeCoordinates;
     use CalculatesFocalCropCoordinates;
     use GetsOrientationFromExif;
     use PerformsFitCrops;
@@ -76,18 +79,17 @@ class GdDriver implements ImageDriver
         $this->quality = -1;
         $this->originalPath = $path;
 
-        $handle = fopen($path, 'r');
-
-        $contents = '';
-        if (filesize($path)) {
-            $contents = fread($handle, filesize($path));
-        }
-
-        fclose($handle);
+        $contents = is_file($path) && filesize($path) > 0
+            ? file_get_contents($path)
+            : '';
 
         $this->setExif($path);
 
-        $image = @imagecreatefromstring($contents);
+        try {
+            $image = imagecreatefromstring($contents);
+        } catch (Throwable $throwable) {
+            throw CouldNotLoadImage::make("{$path} : {$throwable->getMessage()}");
+        }
 
         if (! $image) {
             throw CouldNotLoadImage::make($path);
@@ -498,6 +500,22 @@ class GdDriver implements ImageDriver
         return $this;
     }
 
+    public function focalCropAndResize(int $width, int $height, ?int $cropCenterX = null, ?int $cropCenterY = null): static
+    {
+        [$cropWidth, $cropHeight, $cropX, $cropY] = $this->calculateFocalCropAndResizeCoordinates(
+            $width,
+            $height,
+            $cropCenterX,
+            $cropCenterY
+        );
+
+        $this->manualCrop($cropWidth, $cropHeight, $cropX, $cropY)
+            ->width($width)
+            ->height($height);
+
+        return $this;
+    }
+
     public function sepia(): static
     {
         return $this
@@ -562,32 +580,24 @@ class GdDriver implements ImageDriver
 
     public function setExif(string $path): void
     {
-        if (! extension_loaded('exif')) {
-            return;
-        }
-
-        if (! extension_loaded('fileinfo')) {
+        if (! extension_loaded('exif') || ! extension_loaded('fileinfo')) {
             return;
         }
 
         $fInfo = finfo_open(FILEINFO_RAW);
-        if ($fInfo) {
-            $info = finfo_file($fInfo, $path);
+        if (! $fInfo) {
+            return;
         }
 
-        if (! isset($info) || ! is_string($info) || ! str_contains($info, 'Exif')) {
+        $info = finfo_file($fInfo, $path);
+        finfo_close($fInfo);
+
+        if (! is_string($info) || ! str_contains($info, 'Exif')) {
             return;
         }
 
         $result = @exif_read_data($path);
-
-        if (! is_array($result)) {
-            $this->exif = [];
-
-            return;
-        }
-
-        $this->exif = $result;
+        $this->exif = is_array($result) ? $result : [];
     }
 
     /**
@@ -627,7 +637,7 @@ class GdDriver implements ImageDriver
     ): static {
         $this->ensureNumberBetween($alpha, 0, 100, 'alpha');
         if (is_string($otherImage)) {
-            $otherImage = (new self)->loadFile($otherImage);
+            $otherImage = (new static)->loadFile($otherImage);
         }
 
         $imageSize = $this->getSize()->align($position, $x, $y);
@@ -641,7 +651,7 @@ class GdDriver implements ImageDriver
             throw new Exception('Could not create image');
         }
         imagecopy($cut, $this->image, 0, 0, $target->x, $target->y, $otherImageSize->width, $otherImageSize->height);
-        imagecopy($cut, $otherImage->image, 0, 0, 0, 0, $otherImageSize->width, $otherImageSize->height);
+        imagecopy($cut, $otherImage->image(), 0, 0, 0, 0, $otherImageSize->width, $otherImageSize->height);
 
         imagecopymerge(
             $this->image,
