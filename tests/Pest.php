@@ -55,23 +55,18 @@ function assertImageType(string $filePath, $expectedType): void
     expect($type)->toBe($expectedType);
 }
 
-dataset('drivers', function () {
-    yield 'imagick' => [Image::useImageDriver('imagick')];
-    yield 'gd' => [Image::useImageDriver('gd')];
-
-    // Skip vips on GitHub CI - format support is unreliable
-    if (vipsIsAvailable() && ! isRunningOnGitHub()) {
-        yield 'vips' => [Image::useImageDriver('vips')];
-    }
-});
-
 function isRunningOnGitHub(): bool
 {
-    return (bool) (getenv('GITHUB_ACTIONS') ?: ($_SERVER['GITHUB_ACTIONS'] ?? ($_ENV['GITHUB_ACTIONS'] ?? false)));
+    return getenv('GITHUB_ACTIONS') !== false;
 }
 
 function vipsIsAvailable(): bool
 {
+    // Skip vips on GitHub CI - format support is unreliable
+    if (isRunningOnGitHub()) {
+        return false;
+    }
+
     if (! extension_loaded('ffi') || ! ini_get('ffi.enable')) {
         return false;
     }
@@ -87,6 +82,15 @@ function vipsIsAvailable(): bool
 
     return false;
 }
+
+dataset('drivers', function () {
+    yield 'imagick' => [Image::useImageDriver('imagick')];
+    yield 'gd' => [Image::useImageDriver('gd')];
+
+    if (vipsIsAvailable()) {
+        yield 'vips' => [Image::useImageDriver('vips')];
+    }
+});
 
 expect()->extend('toHaveMime', function (string $expectedMime) {
     $file = finfo_open(FILEINFO_MIME_TYPE);
