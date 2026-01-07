@@ -6,5 +6,8 @@ parameters:
     paths:
         - src/
 
+    excludePaths:
+        - src/Drivers/Vips/
+
     ignoreErrors:
         - '#Unsafe usage of new static#'
