@@ -60,10 +60,15 @@ dataset('drivers', function () {
     yield 'gd' => [Image::useImageDriver('gd')];
 
     // Skip vips on GitHub CI - format support is unreliable
-    if (vipsIsAvailable() && ! getenv('GITHUB_ACTIONS')) {
+    if (vipsIsAvailable() && ! isRunningOnGitHub()) {
         yield 'vips' => [Image::useImageDriver('vips')];
     }
 });
+
+function isRunningOnGitHub(): bool
+{
+    return getenv('GITHUB_ACTIONS') !== false;
+}
 
 function vipsIsAvailable(): bool
 {
