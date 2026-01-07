@@ -15,15 +15,26 @@ $image = Image::load(string $pathToImage);
 
 ## Selecting a driver
 
-By default, the Imagick driver will be used. However if you would like to use GD you can do this by selecting the driver before loading the image.
+By default, the Imagick driver will be used. The package supports three drivers: **Imagick**, **GD**, and **Vips**.
 
 ```php
 use Spatie\Image\Image;
+use Spatie\Image\Enums\ImageDriver;
 
+// Use GD
 Image::useImageDriver(ImageDriver::Gd)->loadFile(string $pathToImage);
+
+// Use Vips (requires libvips and jcupitt/vips package)
+Image::useImageDriver(ImageDriver::Vips)->loadFile(string $pathToImage);
 ```
 
-It's also possible to pass an implementation of `ImageDriver` directly. Build your own driver from scatch, or extend one of the provided drivers (`ImagickDriver` or `GdDriver`).
+To use the Vips driver, you need to have [libvips](https://www.libvips.org/) installed on your system and require the `jcupitt/vips` package:
+
+```bash
+composer require jcupitt/vips
+```
+
+It's also possible to pass an implementation of `ImageDriver` directly. Build your own driver from scratch, or extend one of the provided drivers (`ImagickDriver`, `GdDriver`, or `VipsDriver`).
 
 ```php
 use Spatie\Image\Image;
