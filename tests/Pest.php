@@ -80,11 +80,6 @@ function isRunningOnGitHub(): bool
 
 function vipsIsAvailable(): bool
 {
-    // Skip vips on GitHub CI - format support is unreliable
-    if (isRunningOnGitHub()) {
-        return false;
-    }
-
     if (! extension_loaded('ffi') || ! ini_get('ffi.enable')) {
         return false;
     }
@@ -105,10 +100,9 @@ dataset('drivers', function () {
     yield 'imagick' => [Image::useImageDriver('imagick')];
     yield 'gd' => [Image::useImageDriver('gd')];
 
-    // Temporarily disabled - vips driver is still in development
-    // if (vipsIsAvailable()) {
-    //     yield 'vips' => [Image::useImageDriver('vips')];
-    // }
+    if (vipsIsAvailable()) {
+        yield 'vips' => [Image::useImageDriver('vips')];
+    }
 });
 
 expect()->extend('toHaveMime', function (string $expectedMime) {
