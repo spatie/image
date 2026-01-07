@@ -67,7 +67,7 @@ dataset('drivers', function () {
 
 function isRunningOnGitHub(): bool
 {
-    return getenv('GITHUB_ACTIONS') !== false;
+    return (bool) (getenv('GITHUB_ACTIONS') ?: ($_SERVER['GITHUB_ACTIONS'] ?? ($_ENV['GITHUB_ACTIONS'] ?? false)));
 }
 
 function vipsIsAvailable(): bool
@@ -76,7 +76,7 @@ function vipsIsAvailable(): bool
         return false;
     }
 
-    $libraryPaths = ['/opt/homebrew/lib/', '/usr/local/lib/'];
+    $libraryPaths = ['/opt/homebrew/lib/', '/usr/local/lib/', '/usr/lib/', '/usr/lib/x86_64-linux-gnu/'];
     $vipsLib = PHP_OS_FAMILY === 'Darwin' ? 'libvips.42.dylib' : 'libvips.so.42';
 
     foreach ($libraryPaths as $path) {
