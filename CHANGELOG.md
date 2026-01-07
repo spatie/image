@@ -2,6 +2,14 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.0 - 2026-01-07
+
+### What's Changed
+
+* Add support for Vips by @freekmurze in https://github.com/spatie/image/pull/286
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.8.7...3.9.0
+
 ## 3.8.7 - 2025-11-24
 
 ### What's Changed
