@@ -6,6 +6,7 @@ use Spatie\Image\Image;
 
 trait CalculatesFocalCropAndResizeCoordinates
 {
+    /** @return array{int, int, int, int} */
     public function calculateFocalCropAndResizeCoordinates(
         ?int $desiredWidth,
         ?int $desiredHeight,
