@@ -70,6 +70,14 @@ it('can not save a bogus extension', function (ImageDriver $driver) {
     $driver->loadFile(getTestJpg())->save($targetFile);
 })->with('drivers')->throws(UnsupportedImageFormat::class);
 
+it('format() overrides the path extension', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/format-override.jpg");
+
+    $driver->loadFile(getTestJpg())->format('webp')->save($targetFile);
+
+    expect($targetFile)->toHaveMime('image/webp');
+})->with('drivers');
+
 it('can store webp palette images', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/palette-webp.webp");
 

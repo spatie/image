@@ -125,7 +125,14 @@ class VipsDriver implements ImageDriver
         }
 
         try {
-            $this->image->writeToFile($path, $saveProperties);
+            $pathExtension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+            if ($this->format && $this->format !== $pathExtension) {
+                $buffer = $this->image->writeToBuffer('.'.$extension, $saveProperties);
+                file_put_contents($path, $buffer);
+            } else {
+                $this->image->writeToFile($path, $saveProperties);
+            }
         } catch (Exception $exception) {
             $message = $exception->getMessage();
             if (str_contains($message, 'is not a known file format') ||
