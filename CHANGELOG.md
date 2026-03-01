@@ -2,6 +2,14 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.3 - 2026-03-01
+
+### What's Changed
+
+* Fix VipsDriver `format()` being ignored when saving to a path with a different extension
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.9.2...3.9.3
+
 ## 3.9.1 - 2026-01-12
 
 ### What's Changed
