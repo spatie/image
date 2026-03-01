@@ -42,6 +42,8 @@ class VipsDriver implements ImageDriver
 
     protected Image $image;
 
+    protected string $originalPath;
+
     protected ?string $format = null;
 
     protected int $defaultQuality = 75;
@@ -81,6 +83,7 @@ class VipsDriver implements ImageDriver
     public function loadFile(string $path, bool $autoRotate = true): static
     {
         $this->optimize = false;
+        $this->originalPath = $path;
 
         // Use 'access' => 'sequential' to avoid libvips file caching issues
         // when the same file path is overwritten between loads
@@ -103,7 +106,15 @@ class VipsDriver implements ImageDriver
 
     public function save(string $path = ''): static
     {
-        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        if (! $path) {
+            $path = $this->originalPath;
+        }
+
+        if (is_null($this->format)) {
+            $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        } else {
+            $extension = $this->format;
+        }
 
         if ($this->quality && $extension === 'png') {
             throw CannotOptimizePng::make();
@@ -124,7 +135,7 @@ class VipsDriver implements ImageDriver
             if (str_contains($message, 'is not a known file format') ||
                 str_contains($message, 'unsupported') ||
                 str_contains($message, 'unable to call')) {
-                throw UnsupportedImageFormat::make($extension ?: $this->format ?? 'unknown', $exception);
+                throw UnsupportedImageFormat::make($extension ?: 'unknown', $exception);
             }
 
             throw $exception;
@@ -133,6 +144,8 @@ class VipsDriver implements ImageDriver
         if ($this->optimize) {
             $this->optimizerChain->optimize($path);
         }
+
+        $this->format = null;
 
         return $this;
     }
