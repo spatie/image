@@ -61,6 +61,17 @@ it('can resize a gif without losing frames when Imagick is used', function () {
     expect($targetImage->getWidth())->toEqual(200);
 });
 
+it('can save without a path to overwrite the original file', function (ImageDriver $driver) {
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/save-without-path.jpg");
+
+    copy(getTestJpg(), $targetFile);
+
+    $driver->loadFile($targetFile)->greyscale()->save();
+
+    expect($targetFile)->toBeFile();
+    expect($targetFile)->toHaveMime('image/jpeg');
+})->with('drivers');
+
 it('works with transparent pngs', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/saving-transparent-png.png");
 
