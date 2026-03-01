@@ -110,11 +110,7 @@ class VipsDriver implements ImageDriver
             $path = $this->originalPath;
         }
 
-        if (is_null($this->format)) {
-            $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-        } else {
-            $extension = $this->format;
-        }
+        $extension = $this->format ?? strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         if ($this->quality && $extension === 'png') {
             throw CannotOptimizePng::make();
