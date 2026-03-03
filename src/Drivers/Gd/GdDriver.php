@@ -798,16 +798,39 @@ class GdDriver implements ImageDriver
         }
 
         switch ($this->exif['Orientation']) {
-            case 8:
-                $this->image = imagerotate($this->image, 90, 0);
+
+            case 1: // TOPLEFT (normal)
                 break;
-            case 3:
+
+            case 2: // TOPRIGHT (flop)
+                imageflip($this->image, IMG_FLIP_HORIZONTAL);
+                break;
+
+            case 3: // BOTTOMRIGHT (rotate 180)
                 $this->image = imagerotate($this->image, 180, 0);
                 break;
-            case 5:
-            case 7:
-            case 6:
+
+            case 4: // BOTTOMLEFT (flop + rotate 180)
+                imageflip($this->image, IMG_FLIP_HORIZONTAL);
+                $this->image = imagerotate($this->image, 180, 0);
+                break;
+
+            case 5: // LEFTTOP (flop + rotate -90)
+                imageflip($this->image, IMG_FLIP_HORIZONTAL);
+                $this->image = imagerotate($this->image, 90, 0);
+                break;
+
+            case 6: // RIGHTTOP (rotate 90)
                 $this->image = imagerotate($this->image, -90, 0);
+                break;
+
+            case 7: // RIGHTBOTTOM (flop + rotate 90)
+                imageflip($this->image, IMG_FLIP_HORIZONTAL);
+                $this->image = imagerotate($this->image, -90, 0);
+                break;
+
+            case 8: // LEFTBOTTOM (rotate -90)
+                $this->image = imagerotate($this->image, 90, 0);
                 break;
         }
     }
