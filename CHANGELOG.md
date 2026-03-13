@@ -2,6 +2,14 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.4 - 2026-03-13
+
+### What's Changed
+
+* Fix unhandled EXIF orientations in GD driver by @GarethSomers in https://github.com/spatie/image/pull/322
+
+The GD driver now correctly handles all 8 EXIF orientations (including flipped variants), matching the existing Imagick driver behavior.
+
 ## 3.9.3 - 2026-03-01
 
 ### What's Changed
