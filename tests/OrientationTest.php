@@ -15,3 +15,12 @@ it('keeps the correct orientation based on Exif data', function (ImageDriver $dr
     expect($image->getWidth())->toEqual(340);
     expect($image->getHeight())->toEqual(280);
 })->with('drivers');
+
+it('handles all EXIF orientations correctly', function (ImageDriver $driver, int $orientation) {
+    $file = getTestFile("orientation/orientation-{$orientation}.jpg");
+
+    $image = $driver->loadFile($file);
+
+    expect($image->getWidth())->toEqual(340);
+    expect($image->getHeight())->toEqual(280);
+})->with('drivers')->with(range(1, 8));
