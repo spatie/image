@@ -20,7 +20,7 @@ it('will use imagick if it is available', function () {
 });
 
 it('can load an image with the specified driver', function () {
-    $image = Image::useImageDriver(\Spatie\Image\Enums\ImageDriver::Gd)->loadFile(getTestJpg());
+    $image = Image::useImageDriver(Spatie\Image\Enums\ImageDriver::Gd)->loadFile(getTestJpg());
 
     expect($image)->toBeInstanceOf(ImageDriver::class);
 });

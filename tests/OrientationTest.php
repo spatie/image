@@ -4,8 +4,6 @@ use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Image;
 use Spatie\Pixelmatch\Pixelmatch;
 
-use function Spatie\Snapshots\assertMatchesImageSnapshot;
-
 it('keeps the correct orientation based on Exif data', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation.jpg");
 
