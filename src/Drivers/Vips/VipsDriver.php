@@ -23,6 +23,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
 use Spatie\Image\Exceptions\CannotOptimizePng;
+use Spatie\Image\Exceptions\CouldNotSaveImage;
 use Spatie\Image\Exceptions\InvalidFont;
 use Spatie\Image\Exceptions\MissingParameter;
 use Spatie\Image\Exceptions\UnsupportedImageFormat;
@@ -42,7 +43,7 @@ class VipsDriver implements ImageDriver
 
     protected Image $image;
 
-    protected string $originalPath;
+    protected ?string $originalPath = null;
 
     protected ?string $format = null;
 
@@ -136,13 +137,16 @@ class VipsDriver implements ImageDriver
 
             if ($this->format && $this->format !== $pathExtension) {
                 $buffer = $this->image->writeToBuffer('.'.$extension, $saveProperties);
-                file_put_contents($writePath, $buffer);
+
+                if (file_put_contents($writePath, $buffer) === false) {
+                    throw CouldNotSaveImage::failedToWriteToPath($writePath);
+                }
             } else {
                 $this->image->writeToFile($writePath, $saveProperties);
             }
         } catch (Exception $exception) {
             if ($writePath !== $path && file_exists($writePath)) {
-                @unlink($writePath);
+                unlink($writePath);
             }
 
             $message = $exception->getMessage();
@@ -155,8 +159,10 @@ class VipsDriver implements ImageDriver
             throw $exception;
         }
 
-        if ($writePath !== $path) {
-            rename($writePath, $path);
+        if ($writePath !== $path && ! rename($writePath, $path)) {
+            unlink($writePath);
+
+            throw CouldNotSaveImage::failedToRename($writePath, $path);
         }
 
         if ($this->optimize) {
@@ -170,7 +176,7 @@ class VipsDriver implements ImageDriver
 
     protected function resolveWritePath(string $path): string
     {
-        if (! isset($this->originalPath) || $path !== $this->originalPath) {
+        if ($this->originalPath === null || $path !== $this->originalPath) {
             return $path;
         }
 

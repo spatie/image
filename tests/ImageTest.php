@@ -68,30 +68,14 @@ it('can save without a path to overwrite the original file', function (ImageDriv
 
     $driver->loadFile($targetFile)->greyscale()->save();
 
-    expect($targetFile)->toBeFile();
-    expect($targetFile)->toHaveMime('image/jpeg');
-})->with('drivers');
-
-it('can save a vips loaded jpeg back to the same path without corrupting the file', function () {
-    // libvips streams from the source while writing the result. Writing back to
-    // the file we loaded from used to crash libjpeg-turbo with SIGBUS on JPEGs.
-    // See https://github.com/libvips/libvips/issues/4397.
-    $targetFile = $this->tempDir->path('vips/save-without-path.jpg');
-
-    copy(getTestJpg(), $targetFile);
-
-    Image::useImageDriver(Spatie\Image\Enums\ImageDriver::Vips)
-        ->loadFile($targetFile)
-        ->greyscale()
-        ->save();
-
-    expect($targetFile)->toBeFile();
-    expect($targetFile)->toHaveMime('image/jpeg');
-
+    [$expectedWidth, $expectedHeight] = getimagesize(getTestJpg());
     [$width, $height] = getimagesize($targetFile);
-    expect($width)->toBe(340);
-    expect($height)->toBe(280);
-});
+
+    expect($targetFile)->toBeFile();
+    expect($targetFile)->toHaveMime('image/jpeg');
+    expect($width)->toBe($expectedWidth);
+    expect($height)->toBe($expectedHeight);
+})->with('drivers');
 
 it('works with transparent pngs', function (ImageDriver $driver) {
     $targetFile = $this->tempDir->path("{$driver->driverName()}/saving-transparent-png.png");
