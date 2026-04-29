@@ -2,9 +2,10 @@
 
 namespace Spatie\Image\Drivers\Concerns;
 
+use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\CropPosition;
 
-/** @mixin \Spatie\Image\Drivers\ImageDriver */
+/** @mixin ImageDriver */
 trait CalculatesCropOffsets
 {
     /** @return array<int> */

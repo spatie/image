@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Image\Drivers\Imagick\ImagickDriver;
 use Spatie\Image\Image;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
@@ -61,7 +62,7 @@ dataset('drivers', [
     'vips' => [Image::useImageDriver('vips')],
 ]);
 
-class CustomDriver extends \Spatie\Image\Drivers\Imagick\ImagickDriver
+class CustomDriver extends ImagickDriver
 {
     public function driverName(): string
     {

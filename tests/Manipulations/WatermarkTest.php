@@ -1,6 +1,7 @@
 <?php
 
 use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\Unit;
 
@@ -15,7 +16,7 @@ it('can insert watermark to image', function (
     $testImage = $driver->loadFile(getTestJpg());
 
     $testImage
-        ->watermark(getTestFile('watermark.png'), \Spatie\Image\Enums\AlignPosition::BottomRight, ...$watermarkArguments)
+        ->watermark(getTestFile('watermark.png'), AlignPosition::BottomRight, ...$watermarkArguments)
         ->save($targetFile);
 
     assertMatchesImageSnapshot($targetFile);

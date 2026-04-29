@@ -7,7 +7,7 @@ use Spatie\Image\Enums\AlignPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\Unit;
 
-/** @mixin \Spatie\Image\Drivers\ImageDriver */
+/** @mixin ImageDriver */
 trait AddsWatermark
 {
     public function watermark(
