@@ -25,8 +25,10 @@
         "symfony/process": "^6.4|^7.0|^8.0"
     },
     "require-dev": {
+        "ext-ffi": "*",
         "ext-gd": "*",
         "ext-imagick": "*",
+        "jcupitt/vips": "^2.4",
         "laravel/sail": "^1.34",
         "pestphp/pest": "^3.0|^4.0",
         "phpstan/phpstan": "^1.10.50",

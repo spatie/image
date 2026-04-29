@@ -124,16 +124,27 @@ class VipsDriver implements ImageDriver
             $saveProperties['Q'] = $this->quality ?? $this->defaultQuality;
         }
 
+        // libvips is a streaming library: it reads from the source while writing
+        // the result. Writing back to the file we loaded from corrupts the source
+        // mid-decode, which can crash libjpeg-turbo with SIGBUS on JPEGs (see
+        // https://github.com/libvips/libvips/issues/4397). When the destination
+        // matches the load path, write to a sibling temp file and rename over it.
+        $writePath = $this->resolveWritePath($path);
+
         try {
             $pathExtension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
             if ($this->format && $this->format !== $pathExtension) {
                 $buffer = $this->image->writeToBuffer('.'.$extension, $saveProperties);
-                file_put_contents($path, $buffer);
+                file_put_contents($writePath, $buffer);
             } else {
-                $this->image->writeToFile($path, $saveProperties);
+                $this->image->writeToFile($writePath, $saveProperties);
             }
         } catch (Exception $exception) {
+            if ($writePath !== $path && file_exists($writePath)) {
+                @unlink($writePath);
+            }
+
             $message = $exception->getMessage();
             if (str_contains($message, 'is not a known file format') ||
                 str_contains($message, 'unsupported') ||
@@ -144,6 +155,10 @@ class VipsDriver implements ImageDriver
             throw $exception;
         }
 
+        if ($writePath !== $path) {
+            rename($writePath, $path);
+        }
+
         if ($this->optimize) {
             $this->optimizerChain->optimize($path);
         }
@@ -151,6 +166,25 @@ class VipsDriver implements ImageDriver
         $this->format = null;
 
         return $this;
+    }
+
+    protected function resolveWritePath(string $path): string
+    {
+        if (! isset($this->originalPath) || $path !== $this->originalPath) {
+            return $path;
+        }
+
+        $directory = dirname($path);
+        $filename = pathinfo($path, PATHINFO_FILENAME);
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        $writePath = $directory.DIRECTORY_SEPARATOR.$filename.'.tmp-'.bin2hex(random_bytes(8));
+
+        if ($extension !== '') {
+            $writePath .= '.'.$extension;
+        }
+
+        return $writePath;
     }
 
     public function getWidth(): int

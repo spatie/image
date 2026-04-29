@@ -26,14 +26,15 @@ jobs:
             -   name: Install optimizers
                 run: |
                     sudo apt-get update -y
-                    sudo apt-get install -y jpegoptim pngquant gifsicle optipng libjpeg-progs webp libavif-bin
+                    sudo apt-get install -y jpegoptim pngquant gifsicle optipng libjpeg-progs webp libavif-bin libvips42 libvips-tools
                     sudo npm install -g svgo
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo, ffi
+                    ini-values: ffi.enable=true, zend.max_allowed_stack_size=-1
                     coverage: pcov
 
             - name: Setup Problem Matches
