@@ -22,7 +22,6 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 use Spatie\Image\Enums\Orientation;
-use Spatie\Image\Exceptions\CannotOptimizePng;
 use Spatie\Image\Exceptions\CouldNotSaveImage;
 use Spatie\Image\Exceptions\InvalidFont;
 use Spatie\Image\Exceptions\MissingParameter;
@@ -84,6 +83,7 @@ class VipsDriver implements ImageDriver
     public function loadFile(string $path, bool $autoRotate = true): static
     {
         $this->optimize = false;
+        $this->quality = null;
         $this->originalPath = $path;
 
         // Use 'access' => 'sequential' to avoid libvips file caching issues
@@ -113,16 +113,17 @@ class VipsDriver implements ImageDriver
 
         $extension = $this->format ?? strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        if ($this->quality && $extension === 'png') {
-            throw CannotOptimizePng::make();
-        }
-
         // Q parameter is only supported for JPEG, WebP, AVIF, HEIC
         $formatsWithQuality = ['jpg', 'jpeg', 'webp', 'avif', 'heic', 'heif'];
         $saveProperties = [];
 
         if (in_array($extension, $formatsWithQuality)) {
             $saveProperties['Q'] = $this->quality ?? $this->defaultQuality;
+        }
+
+        if ($extension === 'png' && $this->quality !== null) {
+            // Map quality (0-100) to PNG compression (0-9), matching GdDriver
+            $saveProperties['compression'] = max(0, min(9, (int) round((100 - $this->quality) / 10)));
         }
 
         // libvips is a streaming library: it reads from the source while writing
