@@ -574,6 +574,15 @@ class VipsDriver implements ImageDriver
             return;
         }
 
+        $loadedFromJpeg = str_starts_with((string) $this->image->get('vips-loader'), 'jpegload');
+        $needsRotation = in_array($this->exif['Orientation'], [3, 5, 6, 7, 8]);
+
+        if ($loadedFromJpeg) {
+            if ($needsRotation) {
+                $this->image = $this->image->copyMemory();
+            }
+        }
+
         switch ($this->exif['Orientation']) {
             case 8:
                 $this->image = $this->image->rot90();
