@@ -1,5 +1,6 @@
 <?php
 
+use Jcupitt\Vips\Image as VipsImage;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Image;
 use Spatie\Pixelmatch\Pixelmatch;
@@ -74,3 +75,30 @@ it('auto rotates all EXIF orientations to the same result', function (ImageDrive
             ->toBeTrue("Orientation {$orientation}: pixels don't match orientation 1");
     }
 })->with('drivers');
+
+it('auto rotates a large JPEG without an out of order read error', function (int $orientation, int $expectedWidth, int $expectedHeight) {
+    $sourceImage = VipsImage::black(2000, 1500)
+        ->add([120, 140, 160])
+        ->cast('uchar')
+        ->copy(['interpretation' => 'srgb']);
+
+    $sourceImage->set('orientation', $orientation);
+
+    $sourceFile = $this->tempDir->path("large-orientation-{$orientation}.jpg");
+    $sourceImage->writeToFile($sourceFile);
+
+    $targetFile = $this->tempDir->path("vips/large-orientation-{$orientation}.jpg");
+
+    Image::useImageDriver('vips')->loadFile($sourceFile)->save($targetFile);
+
+    [$width, $height] = getimagesize($targetFile);
+
+    expect($width)->toEqual($expectedWidth);
+    expect($height)->toEqual($expectedHeight);
+})->with([
+    'orientation 3' => [3, 2000, 1500],
+    'orientation 5' => [5, 1500, 2000],
+    'orientation 6' => [6, 1500, 2000],
+    'orientation 7' => [7, 1500, 2000],
+    'orientation 8' => [8, 1500, 2000],
+]);

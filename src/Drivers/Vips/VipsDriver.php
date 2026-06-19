@@ -574,13 +574,13 @@ class VipsDriver implements ImageDriver
             return;
         }
 
-        if (
-            str_starts_with((string) $this->image->get('vips-loader'), 'jpegload')
-            && ! in_array($this->exif['Orientation'], [3, 5, 6, 7, 8])
-        ) {
-            // libvips cannot save rotated JPEG with sequential access so
-            // copy it into memory with random access
-            $this->image = $this->image->copyMemory();
+        $loadedFromJpeg = str_starts_with((string) $this->image->get('vips-loader'), 'jpegload');
+        $needsRotation = in_array($this->exif['Orientation'], [3, 5, 6, 7, 8]);
+
+        if ($loadedFromJpeg) {
+            if ($needsRotation) {
+                $this->image = $this->image->copyMemory();
+            }
         }
 
         switch ($this->exif['Orientation']) {
