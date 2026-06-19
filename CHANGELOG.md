@@ -2,6 +2,22 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.5 - 2026-06-19
+
+### What's Changed
+
+* Bump ramsey/composer-install from 3 to 4 by @dependabot[bot] in https://github.com/spatie/image/pull/323
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/spatie/image/pull/324
+* Bump dependabot/fetch-metadata from 3.0.0 to 3.1.0 by @dependabot[bot] in https://github.com/spatie/image/pull/325
+* Fix VipsDriver save() corrupting source on same-path writes by @freekmurze in https://github.com/spatie/image/pull/326
+* Fix VipsDriver autoRotate with sequential access by @thisispiers in https://github.com/spatie/image/pull/328
+
+### New Contributors
+
+* @thisispiers made their first contribution in https://github.com/spatie/image/pull/328
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.9.4...3.9.5
+
 ## 3.9.4 - 2026-03-13
 
 ### What's Changed
