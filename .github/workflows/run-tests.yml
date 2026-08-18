@@ -26,7 +26,7 @@ jobs:
             -   name: Install optimizers
                 run: |
                     sudo apt-get update -y
-                    sudo apt-get install -y jpegoptim pngquant gifsicle optipng libjpeg-progs webp libavif-bin libvips42 libvips-tools
+                    sudo apt-get install -y jpegoptim pngquant gifsicle optipng libjpeg-progs webp libavif-bin libheif1 libheif-plugin-aomenc libheif-plugin-libde265 libvips42 libvips-tools
                     sudo npm install -g svgo
 
             -   name: Setup PHP
@@ -44,6 +44,14 @@ jobs:
 
             -   name: Install dependencies
                 run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+
+            -   name: Report avif support
+                run: |
+                    php -r '
+                        echo "gd imageavif(): ", function_exists("imageavif") ? "yes" : "no", PHP_EOL;
+                        echo "imagick AVIF formats: ", implode(", ", Imagick::queryFormats("AVIF*")) ?: "none", PHP_EOL;
+                    '
+                continue-on-error: true
 
             -   name: Execute tests
                 run: |

@@ -41,14 +41,18 @@ it('does not invert the quality of an avif image', function (ImageDriver $driver
     expect(filesize($highQualityTargetFile))->toBeGreaterThan(filesize($lowQualityTargetFile));
 })->with('drivers');
 
-// Only covers the imagick driver: the gd and vips drivers do not pass the
-// quality on to every format when encoding to base64.
-it('applies the quality to a base64 encoded image', function (string $format) {
-    $lowQuality = Image::useImageDriver('imagick')
+it('applies the quality to a base64 encoded image', function (ImageDriver $driver, string $format) {
+    if ($format === 'avif' && ! avifIsSupported($driver->driverName())) {
+        $this->markTestSkipped('avif is not supported on this system');
+
+        return;
+    }
+
+    $lowQuality = Image::useImageDriver($driver->driverName())
         ->loadFile(getTestJpg())->quality(10)->base64($format, false);
 
-    $highQuality = Image::useImageDriver('imagick')
+    $highQuality = Image::useImageDriver($driver->driverName())
         ->loadFile(getTestJpg())->quality(90)->base64($format, false);
 
     expect(strlen($lowQuality))->toBeLessThan(strlen($highQuality));
-})->with(['jpeg', 'png']);
+})->with('drivers')->with(['jpeg', 'png', 'webp', 'avif']);

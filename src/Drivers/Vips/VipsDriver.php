@@ -105,6 +105,25 @@ class VipsDriver implements ImageDriver
 
     }
 
+    /** @return array<string, int> */
+    protected function savePropertiesForFormat(string $format): array
+    {
+        // Q parameter is only supported for JPEG, WebP, AVIF, HEIC
+        $formatsWithQuality = ['jpg', 'jpeg', 'webp', 'avif', 'heic', 'heif'];
+        $saveProperties = [];
+
+        if (in_array($format, $formatsWithQuality)) {
+            $saveProperties['Q'] = $this->quality ?? $this->defaultQuality;
+        }
+
+        if ($format === 'png' && $this->quality !== null) {
+            // Map quality (0-100) to PNG compression (0-9), matching GdDriver
+            $saveProperties['compression'] = max(0, min(9, (int) round((100 - $this->quality) / 10)));
+        }
+
+        return $saveProperties;
+    }
+
     public function save(string $path = ''): static
     {
         if (! $path) {
@@ -113,18 +132,7 @@ class VipsDriver implements ImageDriver
 
         $extension = $this->format ?? strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        // Q parameter is only supported for JPEG, WebP, AVIF, HEIC
-        $formatsWithQuality = ['jpg', 'jpeg', 'webp', 'avif', 'heic', 'heif'];
-        $saveProperties = [];
-
-        if (in_array($extension, $formatsWithQuality)) {
-            $saveProperties['Q'] = $this->quality ?? $this->defaultQuality;
-        }
-
-        if ($extension === 'png' && $this->quality !== null) {
-            // Map quality (0-100) to PNG compression (0-9), matching GdDriver
-            $saveProperties['compression'] = max(0, min(9, (int) round((100 - $this->quality) / 10)));
-        }
+        $saveProperties = $this->savePropertiesForFormat($extension);
 
         // libvips is a streaming library: it reads from the source while writing
         // the result. Writing back to the file we loaded from corrupts the source
@@ -500,7 +508,10 @@ class VipsDriver implements ImageDriver
 
     public function base64(string $imageFormat, bool $prefixWithFormat = true): string
     {
-        $contents = base64_encode($this->image->writeToBuffer('.'.$imageFormat));
+        $contents = base64_encode($this->image->writeToBuffer(
+            '.'.$imageFormat,
+            $this->savePropertiesForFormat(strtolower($imageFormat)),
+        ));
 
         if ($prefixWithFormat) {
             return 'data:image/'.$imageFormat.';base64,'.$contents;

@@ -79,19 +79,41 @@ expect()->extend('toHaveMime', function (string $expectedMime) {
 
 function avifIsSupported(string $driverName): bool
 {
-    if (getenv('GITHUB_ACTIONS') !== false) {
+    static $supported = [];
+
+    if (array_key_exists($driverName, $supported)) {
+        return $supported[$driverName];
+    }
+
+    // Reporting the format as available is not enough: a driver can be built
+    // against a libheif without an AVIF encoder, which only fails once we
+    // actually encode something. Write a tiny image to find out for sure.
+    return $supported[$driverName] = match ($driverName) {
+        'gd' => function_exists('imageavif') && canEncodeAvif('gd'),
+        'imagick' => count(Imagick::queryFormats('AVIF*')) > 0 && canEncodeAvif('imagick'),
+        'vips' => canEncodeAvif('vips'),
+        default => false,
+    };
+}
+
+function canEncodeAvif(string $driverName): bool
+{
+    $path = tempnam(sys_get_temp_dir(), 'avif-probe').'.avif';
+
+    try {
+        Spatie\Image\Image::useImageDriver($driverName)
+            ->loadFile(getTestJpg())
+            ->width(16)
+            ->save($path);
+
+        return file_exists($path) && filesize($path) > 0;
+    } catch (Throwable) {
         return false;
+    } finally {
+        if (file_exists($path)) {
+            unlink($path);
+        }
     }
-
-    if ($driverName === 'gd') {
-        return function_exists('imageavif');
-    }
-
-    if ($driverName === 'imagick') {
-        return count(Imagick::queryFormats('AVIF*')) > 0;
-    }
-
-    return false;
 }
 
 function skipIfImagickDoesNotSupportFormat(string $format)
