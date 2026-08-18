@@ -101,7 +101,7 @@ function canEncodeAvif(string $driverName): bool
     $path = tempnam(sys_get_temp_dir(), 'avif-probe').'.avif';
 
     try {
-        Spatie\Image\Image::useImageDriver($driverName)
+        Image::useImageDriver($driverName)
             ->loadFile(getTestJpg())
             ->width(16)
             ->save($path);
