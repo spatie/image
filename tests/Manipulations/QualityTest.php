@@ -54,5 +54,20 @@ it('applies the quality to a base64 encoded image', function (ImageDriver $drive
     $highQuality = Image::useImageDriver($driver->driverName())
         ->loadFile(getTestJpg())->quality(90)->base64($format, false);
 
-    expect(strlen($lowQuality))->toBeLessThan(strlen($highQuality));
+    // Not every encoder build varies its output for every format, so this only
+    // asserts that the quality is never applied in reverse.
+    expect(strlen($highQuality))->toBeGreaterThanOrEqual(strlen($lowQuality));
 })->with('drivers')->with(['jpeg', 'png', 'webp', 'avif']);
+
+// jpeg is the one format every driver reliably varies the output for, so it can
+// be asserted strictly. Without it, a driver that drops the quality entirely
+// when encoding to base64 would still pass the test above.
+it('does not ignore the quality when encoding to base64', function (ImageDriver $driver) {
+    $lowQuality = Image::useImageDriver($driver->driverName())
+        ->loadFile(getTestJpg())->quality(10)->base64('jpeg', false);
+
+    $highQuality = Image::useImageDriver($driver->driverName())
+        ->loadFile(getTestJpg())->quality(90)->base64('jpeg', false);
+
+    expect(strlen($lowQuality))->toBeLessThan(strlen($highQuality));
+})->with('drivers');
