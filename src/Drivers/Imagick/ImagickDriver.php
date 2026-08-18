@@ -43,6 +43,8 @@ class ImagickDriver implements ImageDriver
 
     protected ?string $format = null;
 
+    protected ?int $quality = null;
+
     protected array $exif = [];
 
     protected string $originalPath;
@@ -288,6 +290,8 @@ class ImagickDriver implements ImageDriver
             }
         }
 
+        $this->applyQualityForFormat($format);
+
         if ($this->isAnimated()) {
             $image = $this->image->deconstructImages();
             $image->writeImages($path, true);
@@ -307,6 +311,8 @@ class ImagickDriver implements ImageDriver
     {
         $image = clone $this->image;
         $image->setFormat($imageFormat);
+
+        $this->applyQualityForFormat($imageFormat, $image);
 
         if ($prefixWithFormat) {
             return 'data:image/'.$imageFormat.';base64,'.base64_encode($image->getImageBlob());
@@ -644,12 +650,27 @@ class ImagickDriver implements ImageDriver
 
     public function quality(int $quality): static
     {
-        foreach ($this->image as $image) {
-            $this->image->setImageCompressionQuality($quality);
-            $this->image->setCompressionQuality(100 - $quality); // For PNGs
-        }
+        $this->quality = $quality;
+
+        // The final value of the global compression quality depends on the
+        // format, so it gets resolved again right before writing the image.
+        $this->image->setImageCompressionQuality($quality);
+        $this->image->setCompressionQuality($quality);
 
         return $this;
+    }
+
+    protected function applyQualityForFormat(string $format, ?Imagick $image = null): void
+    {
+        if ($this->quality === null) {
+            return;
+        }
+
+        $value = strtolower($format) === 'png'
+            ? 100 - $this->quality
+            : $this->quality;
+
+        ($image ?? $this->image)->setCompressionQuality($value);
     }
 
     public function format(string $format): static
