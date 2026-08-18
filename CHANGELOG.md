@@ -2,6 +2,20 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.6 - 2026-08-18
+
+### What's Changed
+
+* Bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/spatie/image/pull/329
+* Bump actions/setup-node from 6 to 7 by @dependabot[bot] in https://github.com/spatie/image/pull/331
+* Fix inverted AVIF quality on imagick, and quality being ignored by base64() on gd and vips by @NickBevers in https://github.com/spatie/image/pull/332
+
+### New Contributors
+
+* @NickBevers made their first contribution in https://github.com/spatie/image/pull/332
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.9.5...3.9.6
+
 ## 3.9.5 - 2026-06-19
 
 ### What's Changed
