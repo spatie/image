@@ -2,6 +2,18 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.7 - 2026-09-30
+
+### What's Changed
+
+* Convert palette images to truecolor before encoding avif with gd by @AlexisSerneels in https://github.com/spatie/image/pull/333
+
+### New Contributors
+
+* @AlexisSerneels made their first contribution in https://github.com/spatie/image/pull/333
+
+**Full Changelog**: https://github.com/spatie/image/compare/3.9.6...3.9.7
+
 ## 3.9.6 - 2026-08-18
 
 ### What's Changed
