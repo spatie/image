@@ -169,6 +169,7 @@ class GdDriver implements ImageDriver
                 \imagewebp($this->image, $path, $quality);
                 break;
             case 'avif':
+                \imagepalettetotruecolor($this->image);
                 \imageavif($this->image, $path, $this->quality);
                 break;
             default:
@@ -205,6 +206,7 @@ class GdDriver implements ImageDriver
                 \imagewebp($this->image, null, $quality);
                 break;
             case 'avif':
+                \imagepalettetotruecolor($this->image);
                 \imageavif($this->image, null, $this->quality);
                 break;
             default:

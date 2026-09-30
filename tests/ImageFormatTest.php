@@ -85,3 +85,31 @@ it('can store webp palette images', function (ImageDriver $driver) {
 
     expect($targetFile)->toHaveMime('image/webp');
 })->with('drivers');
+
+it('can store avif palette images', function (ImageDriver $driver) {
+    if (! avifIsSupported($driver->driverName())) {
+        $this->markTestSkipped('avif is not supported on this system');
+
+        return;
+    }
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/palette-avif.avif");
+
+    $driver->loadFile(getTestFile('palette-webp.png'))->save($targetFile);
+
+    expect($targetFile)->toHaveMime('image/avif');
+})->with('drivers');
+
+it('can encode avif palette images to base64', function (ImageDriver $driver) {
+    if (! avifIsSupported($driver->driverName())) {
+        $this->markTestSkipped('avif is not supported on this system');
+
+        return;
+    }
+
+    $base64 = $driver->loadFile(getTestFile('palette-webp.png'))->base64('avif', prefixWithFormat: false);
+
+    $mime = (new finfo(FILEINFO_MIME_TYPE))->buffer(base64_decode($base64));
+
+    expect($mime)->toBe('image/avif');
+})->with('drivers');
