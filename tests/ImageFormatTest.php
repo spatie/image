@@ -109,5 +109,7 @@ it('can encode avif palette images to base64', function (ImageDriver $driver) {
 
     $base64 = $driver->loadFile(getTestFile('palette-webp.png'))->base64('avif', prefixWithFormat: false);
 
-    expect(base64_decode($base64))->not->toBeEmpty();
+    $mime = (new finfo(FILEINFO_MIME_TYPE))->buffer(base64_decode($base64));
+
+    expect($mime)->toBe('image/avif');
 })->with('drivers');
