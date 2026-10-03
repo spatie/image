@@ -808,7 +808,7 @@ class VipsDriver implements ImageDriver
 
     public function width(int $width, array $constraints = []): static
     {
-        $newHeight = (int) round($width / $this->getSize()->aspectRatio());
+        $newHeight = max(1, (int) round($width / $this->getSize()->aspectRatio()));
 
         $this->resize($width, $newHeight, $constraints);
 
@@ -817,7 +817,7 @@ class VipsDriver implements ImageDriver
 
     public function height(int $height, array $constraints = []): static
     {
-        $newWidth = (int) round($height * $this->getSize()->aspectRatio());
+        $newWidth = max(1, (int) round($height * $this->getSize()->aspectRatio()));
 
         $this->resize($newWidth, $height, $constraints);
 
