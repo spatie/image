@@ -63,9 +63,7 @@ it('auto rotates all EXIF orientations to the same result', function (ImageDrive
     foreach (range(2, 8) as $orientation) {
         $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-{$orientation}.png");
 
-        $newDriver = $driver->driverName() === 'imagick'
-            ? Image::useImageDriver('imagick')
-            : Image::useImageDriver('gd');
+        $newDriver = Image::useImageDriver($driver->driverName());
 
         $newDriver->loadFile($orientedFiles[$orientation])->save($targetFile);
 
@@ -75,6 +73,27 @@ it('auto rotates all EXIF orientations to the same result', function (ImageDrive
             ->toBeTrue("Orientation {$orientation}: pixels don't match orientation 1");
     }
 })->with('drivers');
+
+it('does not keep the EXIF orientation after auto rotating', function (ImageDriver $driver, int $orientation) {
+    $sourceFile = $this->tempDir->path("exif-orientation-source-{$orientation}.jpg");
+
+    $source = new Imagick(getTestFile('testOrientation.jpg'));
+    $source->setImageOrientation($orientation);
+    $source->writeImage($sourceFile);
+    $source->destroy();
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/exif-orientation-{$orientation}.jpg");
+
+    $driver->loadFile($sourceFile)->save($targetFile);
+
+    $exif = @exif_read_data($targetFile) ?: [];
+
+    // A viewer that honours the tag would otherwise rotate the already rotated pixels again
+    expect($exif['Orientation'] ?? 1)->toEqual(1);
+})->with('drivers')->with([
+    'orientation 6' => [6],
+    'orientation 8' => [8],
+]);
 
 it('auto rotates a large JPEG without an out of order read error', function (int $orientation, int $expectedWidth, int $expectedHeight) {
     $sourceImage = VipsImage::black(2000, 1500)
