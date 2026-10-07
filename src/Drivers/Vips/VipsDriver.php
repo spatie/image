@@ -581,32 +581,21 @@ class VipsDriver implements ImageDriver
 
     public function autoRotate(): void
     {
-        if (! $this->exif || empty($this->exif['Orientation'])) {
+        if ($this->image->typeof('orientation') === 0) {
             return;
         }
 
-        $loadedFromJpeg = str_starts_with((string) $this->image->get('vips-loader'), 'jpegload');
-        $needsRotation = in_array($this->exif['Orientation'], [3, 5, 6, 7, 8]);
+        $orientation = (int) $this->image->get('orientation');
 
-        if ($loadedFromJpeg) {
-            if ($needsRotation) {
-                $this->image = $this->image->copyMemory();
-            }
+        if ($orientation < 2 || $orientation > 8) {
+            return;
         }
 
-        switch ($this->exif['Orientation']) {
-            case 8:
-                $this->image = $this->image->rot90();
-                break;
-            case 3:
-                $this->image = $this->image->rot180();
-                break;
-            case 5:
-            case 7:
-            case 6:
-                $this->image = $this->image->rot270();
-                break;
-        }
+        // Rotating needs random access, which a sequentially loaded image doesn't
+        // allow (see libvips/libvips#4475). autorot() applies all eight EXIF
+        // orientations and resets the orientation tag, so viewers that honour
+        // the tag won't rotate the already rotated pixels a second time.
+        $this->image = $this->image->copyMemory()->autorot();
     }
 
     public function setExif(string $path): void
