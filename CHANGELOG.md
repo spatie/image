@@ -2,6 +2,27 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.8 - 2026-10-19
+
+### What’s changed
+
+- Fix Vips EXIF auto-rotation: correct orientations 6 and 8, handle mirrored orientations, and remove orientation metadata after transforming pixels (#335).
+- Keep at least one pixel when resizing images with extreme aspect ratios (#334).
+- Expand regression coverage to all eight EXIF orientations, opt-out behavior, and large JPEG/TIFF images.
+- Update development tooling to Pest 5 and PHPUnit 13, test PHP 8.4/8.5, and run PHPStan on pull requests.
+
+### Requirements
+
+The minimum PHP version is now 8.4. There are no public API changes.
+
+### Validation
+
+PHP 8.4 and PHP 8.5 CI each passed with 569 tests, 22 existing skips, and 1,596 assertions. PHPStan and Pint pass.
+
+Thanks to @dimitrykostin for the orientation fix.
+
+**Full changelog:** https://github.com/spatie/image/compare/3.9.7...3.9.8
+
 ## 3.9.7 - 2026-09-30
 
 ### What's Changed
