@@ -47,6 +47,30 @@ it('will throw an exception when passing an invalid image driver name', function
     Image::useImageDriver('invalid')->load(getTestJpg());
 })->throws(InvalidImageDriver::class);
 
+it('can load a png that makes libpng emit a warning when warnings are converted to exceptions', function () {
+    $handler = function (int $level, string $message, string $file, int $line) {
+        throw new ErrorException($message, 0, $level, $file, $line);
+    };
+
+    set_error_handler($handler);
+
+    try {
+        $image = Image::useImageDriver('gd')->loadFile(getTestFile('libpng-warning.png'));
+
+        $currentHandler = set_error_handler(null);
+        restore_error_handler();
+    } finally {
+        restore_error_handler();
+    }
+
+    expect($image->getWidth())->toBe(8);
+    expect($currentHandler)->toBe($handler);
+});
+
+it('includes the reason when gd cannot load an image', function () {
+    Image::useImageDriver('gd')->loadFile(getTestFile('text.txt'));
+})->throws(CouldNotLoadImage::class, 'not in a recognized format');
+
 it('can resize a gif without losing frames when Imagick is used', function () {
     $driver = Image::useImageDriver('imagick');
     $image = $driver->loadFile(getTestGif());
