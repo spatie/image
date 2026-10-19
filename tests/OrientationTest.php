@@ -2,6 +2,7 @@
 
 use Jcupitt\Vips\Image as VipsImage;
 use Spatie\Image\Drivers\ImageDriver;
+use Spatie\Image\Drivers\Vips\VipsDriver;
 use Spatie\Image\Image;
 use Spatie\Pixelmatch\Pixelmatch;
 
@@ -22,15 +23,12 @@ it('keeps the correct orientation based on Exif data', function (ImageDriver $dr
 it('auto rotates all EXIF orientations to the same result', function (ImageDriver $driver) {
     $sourceFile = getTestFile('testOrientation.jpg');
 
-    // Create a canonical image by auto-orienting the source with Imagick
     $canonical = new Imagick($sourceFile);
-    $canonical->setImageOrientation($canonical->getImageOrientation());
     $canonical->autoOrient();
 
     $orientedFiles = [];
 
     foreach (range(1, 8) as $orientation) {
-        // Apply the reverse transformation so autoRotate will produce the canonical result
         $img = clone $canonical;
 
         match ($orientation) {
@@ -55,11 +53,9 @@ it('auto rotates all EXIF orientations to the same result', function (ImageDrive
 
     $canonical->destroy();
 
-    // Save orientation 1 as the reference
     $referenceFile = $this->tempDir->path("{$driver->driverName()}/orientation-reference.png");
     $driver->loadFile($orientedFiles[1])->save($referenceFile);
 
-    // Every other orientation should produce the same image after autoRotate
     foreach (range(2, 8) as $orientation) {
         $targetFile = $this->tempDir->path("{$driver->driverName()}/orientation-{$orientation}.png");
 
@@ -82,20 +78,25 @@ it('does not keep the EXIF orientation after auto rotating', function (ImageDriv
     $source->writeImage($sourceFile);
     $source->destroy();
 
+    expect(exif_read_data($sourceFile)['Orientation'])->toBe($orientation);
+
     $targetFile = $this->tempDir->path("{$driver->driverName()}/exif-orientation-{$orientation}.jpg");
 
     $driver->loadFile($sourceFile)->save($targetFile);
 
-    $exif = @exif_read_data($targetFile) ?: [];
+    $exif = exif_read_data($targetFile);
 
-    // A viewer that honours the tag would otherwise rotate the already rotated pixels again
     expect($exif['Orientation'] ?? 1)->toEqual(1);
-})->with('drivers')->with([
-    'orientation 6' => [6],
-    'orientation 8' => [8],
-]);
+})->with('drivers')->with(range(1, 8));
 
-it('auto rotates a large JPEG without an out of order read error', function (int $orientation, int $expectedWidth, int $expectedHeight) {
+it('can leave the original vips orientation unchanged', function () {
+    $image = (new VipsDriver)->loadFile(getTestFile('testOrientation.jpg'), autoRotate: false);
+
+    expect($image->getWidth())->toBe(280)
+        ->and($image->getHeight())->toBe(340);
+});
+
+it('auto rotates a large image without an out of order read error', function (int $orientation, int $expectedWidth, int $expectedHeight, string $extension) {
     $sourceImage = VipsImage::black(2000, 1500)
         ->add([120, 140, 160])
         ->cast('uchar')
@@ -103,10 +104,10 @@ it('auto rotates a large JPEG without an out of order read error', function (int
 
     $sourceImage->set('orientation', $orientation);
 
-    $sourceFile = $this->tempDir->path("large-orientation-{$orientation}.jpg");
+    $sourceFile = $this->tempDir->path("large-orientation-{$orientation}.{$extension}");
     $sourceImage->writeToFile($sourceFile);
 
-    $targetFile = $this->tempDir->path("vips/large-orientation-{$orientation}.jpg");
+    $targetFile = $this->tempDir->path("vips/large-orientation-{$orientation}.{$extension}");
 
     Image::useImageDriver('vips')->loadFile($sourceFile)->save($targetFile);
 
@@ -115,9 +116,11 @@ it('auto rotates a large JPEG without an out of order read error', function (int
     expect($width)->toEqual($expectedWidth);
     expect($height)->toEqual($expectedHeight);
 })->with([
+    'orientation 2' => [2, 2000, 1500],
     'orientation 3' => [3, 2000, 1500],
+    'orientation 4' => [4, 2000, 1500],
     'orientation 5' => [5, 1500, 2000],
     'orientation 6' => [6, 1500, 2000],
     'orientation 7' => [7, 1500, 2000],
     'orientation 8' => [8, 1500, 2000],
-]);
+])->with(['jpg', 'tiff']);

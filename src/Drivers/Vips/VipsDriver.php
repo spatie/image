@@ -591,10 +591,7 @@ class VipsDriver implements ImageDriver
             return;
         }
 
-        // Rotating needs random access, which a sequentially loaded image doesn't
-        // allow (see libvips/libvips#4475). autorot() applies all eight EXIF
-        // orientations and resets the orientation tag, so viewers that honour
-        // the tag won't rotate the already rotated pixels a second time.
+        // Rotation needs random access to a sequentially loaded image (libvips/libvips#4475).
         $this->image = $this->image->copyMemory()->autorot();
     }
 

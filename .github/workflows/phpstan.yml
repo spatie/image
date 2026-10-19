@@ -4,6 +4,14 @@ on:
     push:
         paths:
             - '**.php'
+            - 'composer.json'
+            - 'phpstan.neon.dist'
+            - 'phpstan-baseline.neon'
+            - '.github/workflows/phpstan.yml'
+    pull_request:
+        paths:
+            - '**.php'
+            - 'composer.json'
             - 'phpstan.neon.dist'
             - 'phpstan-baseline.neon'
             - '.github/workflows/phpstan.yml'
