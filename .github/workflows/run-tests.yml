@@ -66,8 +66,8 @@ jobs:
                     coverage: none
                 env:
                     GD_PATH: ext/gd
-                    GD_CONFIGURE_OPTS: --enable-gd
-                    GD_LIBS: libpng-dev
+                    GD_CONFIGURE_OPTS: --enable-gd --with-jpeg --with-webp --with-avif --with-freetype --with-xpm
+                    GD_LIBS: libpng-dev libjpeg-dev libwebp-dev libavif-dev libfreetype6-dev libxpm-dev
 
             -   name: Test GD decoder warnings
                 run: |
