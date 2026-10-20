@@ -85,10 +85,10 @@ class GdDriver implements ImageDriver
 
         $this->setExif($path);
 
-        $warning = null;
+        $warnings = [];
 
-        set_error_handler(function (int $level, string $message) use (&$warning) {
-            $warning = $message;
+        set_error_handler(function (int $level, string $message) use (&$warnings): bool {
+            $warnings[] = $message;
 
             return true;
         }, E_WARNING);
@@ -102,7 +102,9 @@ class GdDriver implements ImageDriver
         }
 
         if (! $image) {
-            throw CouldNotLoadImage::make($warning ? "{$path} : {$warning}" : $path);
+            $reason = implode('; ', $warnings);
+
+            throw CouldNotLoadImage::make($reason ? "{$path} : {$reason}" : $path);
         }
 
         imagealphablending($image, false);

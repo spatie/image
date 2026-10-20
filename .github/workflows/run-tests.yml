@@ -57,3 +57,19 @@ jobs:
                 run: |
                    npm install
                    vendor/bin/pest
+
+            -   name: Setup PHP with bundled GD
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: gd-php/php-src@PHP-${{ matrix.php }}
+                    coverage: none
+                env:
+                    GD_PATH: ext/gd
+                    GD_CONFIGURE_OPTS: --enable-gd
+                    GD_LIBS: libpng-dev
+
+            -   name: Test GD decoder warnings
+                run: |
+                    php -r 'exit(str_contains(gd_info()["GD Version"], "bundled") ? 0 : 1);'
+                    vendor/bin/pest tests/ImageTest.php --filter='libpng|gd failure'
