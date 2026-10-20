@@ -2,6 +2,20 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.9 - 2026-10-20
+
+### What’s changed
+
+- Fix GD image loading for valid PNGs that emit non-fatal decoder warnings when an application converts PHP warnings to exceptions, including Laravel applications (#336).
+- Preserve decoder diagnostics for genuinely invalid images and restore the application error handler after decoding.
+- Strengthen regression coverage for successful conversions, invalid/empty/truncated images, and error-handler restoration. Exercise both external and bundled GD on PHP 8.4 and PHP 8.5.
+
+There are no public API or PHP requirement changes.
+
+Thanks to @MohannadElemary for the fix.
+
+**Full changelog:** https://github.com/spatie/image/compare/3.9.8...3.9.9
+
 ## 3.9.8 - 2026-10-19
 
 ### What’s changed
