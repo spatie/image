@@ -1,6 +1,7 @@
 <?php
 
 use Jcupitt\Vips\Image as VipsImage;
+use Spatie\Image\Drivers\Gd\GdDriver;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Drivers\Vips\VipsDriver;
 use Spatie\Image\Image;
@@ -125,7 +126,9 @@ it('auto rotates a large image without an out of order read error', function (in
     'orientation 8' => [8, 1500, 2000],
 ])->with(['jpg', 'tiff']);
 
-it('reads the exif orientation when fileinfo cannot identify the exif data', function (ImageDriver $driver) {
+it('reads the exif orientation when fileinfo cannot identify the exif data', function (string $driverClass, bool $autoRotate) {
+    $driver = new $driverClass;
+
     set_error_handler(function (int $level, string $message, string $file, int $line): bool {
         if (! (error_reporting() & $level)) {
             return true;
@@ -135,11 +138,25 @@ it('reads the exif orientation when fileinfo cannot identify the exif data', fun
     });
 
     try {
-        $image = $driver->loadFile(getTestFile('exif-fileinfo-limit.jpg'));
+        $image = $driver->loadFile(getTestFile('exif-fileinfo-limit.jpg'), $autoRotate);
     } finally {
         restore_error_handler();
     }
 
-    expect($image->getWidth())->toBe(40)
-        ->and($image->getHeight())->toBe(80);
-})->with('drivers');
+    expect($image->exif()['Orientation'])->toBe(6)
+        ->and($image->getWidth())->toBe($autoRotate ? 40 : 80)
+        ->and($image->getHeight())->toBe($autoRotate ? 80 : 40);
+
+    $targetFile = $this->tempDir->path("{$driver->driverName()}/exif-fileinfo-limit.png");
+    $image->save($targetFile);
+
+    $pixels = imagecreatefrompng($targetFile);
+    $red = imagecolorsforindex($pixels, imagecolorat($pixels, 10, 10));
+    $blue = imagecolorsforindex($pixels, imagecolorat($pixels, $autoRotate ? 10 : 70, $autoRotate ? 70 : 10));
+
+    expect($red['red'])->toBeGreaterThan($red['blue'])
+        ->and($blue['blue'])->toBeGreaterThan($blue['red']);
+})->with([
+    'gd' => GdDriver::class,
+    'vips' => VipsDriver::class,
+])->with([true, false]);
