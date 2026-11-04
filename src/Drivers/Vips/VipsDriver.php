@@ -607,7 +607,12 @@ class VipsDriver implements ImageDriver
 
         $fInfo = finfo_open(FILEINFO_RAW);
         if ($fInfo) {
-            $info = finfo_file($fInfo, $path);
+            $info = @finfo_file($fInfo, $path);
+        }
+
+        // fileinfo gives up on some Exif blocks ("name use count (50) exceeded"), the file can still have Exif data
+        if (($info ?? null) === false && @exif_imagetype($path) === IMAGETYPE_JPEG) {
+            $info = 'Exif';
         }
 
         if (! isset($info) || ! is_string($info) || ! str_contains($info, 'Exif')) {

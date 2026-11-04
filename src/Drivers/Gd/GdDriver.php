@@ -605,7 +605,12 @@ class GdDriver implements ImageDriver
             return;
         }
 
-        $info = finfo_file($fInfo, $path);
+        $info = @finfo_file($fInfo, $path);
+
+        // fileinfo gives up on some Exif blocks ("name use count (50) exceeded"), the file can still have Exif data
+        if ($info === false && @exif_imagetype($path) === IMAGETYPE_JPEG) {
+            $info = 'Exif';
+        }
 
         if (! is_string($info) || ! str_contains($info, 'Exif')) {
             return;
