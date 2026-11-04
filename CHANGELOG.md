@@ -2,6 +2,21 @@
 
 All notable changes to `image` will be documented in this file
 
+## 3.9.10 - 2026-11-04
+
+### What’s changed
+
+- Fix GD and Vips image loading for valid JPEGs whose EXIF metadata makes fileinfo/libmagic fail, including applications that convert PHP warnings to exceptions (#337).
+- Recover JPEG EXIF data when fileinfo returns false, preserving automatic orientation in GD and EXIF metadata access in Vips.
+- Strengthen regression coverage for recovered metadata, rotation direction, and disabling automatic rotation on PHP 8.4 and PHP 8.5.
+- Keep README support images hosted on spatie.be.
+
+There are no public API, PHP requirement, or dependency requirement changes.
+
+Thanks to @kg-bot for the fix.
+
+**Full changelog:** https://github.com/spatie/image/compare/3.9.9...3.9.10
+
 ## 3.9.9 - 2026-10-20
 
 ### What’s changed
