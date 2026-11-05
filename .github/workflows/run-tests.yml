@@ -6,11 +6,14 @@ jobs:
     test:
         runs-on: ${{ matrix.os }}
         strategy:
-            fail-fast: true
+            fail-fast: false
             matrix:
                 os: [ubuntu-latest]
-                php: ['8.5', '8.4']
+                php: ['8.6', '8.5', '8.4']
                 dependency-version: [prefer-stable]
+                include:
+                    - php: '8.6'
+                      imagick: imagick-Imagick/imagick@55ed2e9fda264395636a2e27e51f31673f5566ab
 
         name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
@@ -33,9 +36,13 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo, ffi
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, ${{ matrix.imagick || 'imagick' }}, fileinfo, ffi
                     ini-values: ffi.enable=true, zend.max_allowed_stack_size=-1
                     coverage: pcov
+
+            -   name: Verify PHP version and Imagick
+                run: |
+                    php -r 'echo PHP_VERSION, PHP_EOL; exit(PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION === "${{ matrix.php }}" && extension_loaded("imagick") ? 0 : 1);'
 
             - name: Setup Problem Matches
               run: |
