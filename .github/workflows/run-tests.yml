@@ -39,6 +39,8 @@ jobs:
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, ${{ matrix.imagick || 'imagick' }}, fileinfo, ffi
                     ini-values: ffi.enable=true, zend.max_allowed_stack_size=-1
                     coverage: pcov
+                env:
+                    IMAGICK_PATH: .
 
             -   name: Verify PHP version and Imagick
                 run: |
